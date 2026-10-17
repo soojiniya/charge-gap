@@ -1,0 +1,588 @@
+{
+  "mode": "collect",
+  "started_at": "2026-10-15T04:18:56+09:00",
+  "status": "collection_success",
+  "collected_rows": 527433,
+  "missing": {
+    "statNm": 0,
+    "statId": 0,
+    "chgerId": 0,
+    "chgerType": 0,
+    "powerType": 527433,
+    "addr": 1,
+    "lat": 0,
+    "lng": 0,
+    "zcode": 0,
+    "busiId": 0,
+    "busiNm": 0,
+    "stat": 0,
+    "statUpdDt": 2759,
+    "useTime": 3344,
+    "parkingFree": 78,
+    "note": 449052
+  },
+  "duplicates_removed": 0,
+  "env_file": "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\.env",
+  "api_total_count": 527433,
+  "test_rows": 10,
+  "test_at": "2026-10-15T04:18:57+09:00",
+  "test_sample_quality": {
+    "missing_by_field": {
+      "statNm": 0,
+      "statId": 0,
+      "chgerId": 0,
+      "chgerType": 0,
+      "powerType": 10,
+      "addr": 0,
+      "lat": 0,
+      "lng": 0,
+      "zcode": 0,
+      "busiId": 0,
+      "busiNm": 0,
+      "stat": 0,
+      "statUpdDt": 0,
+      "useTime": 0,
+      "parkingFree": 0,
+      "note": 10
+    },
+    "duplicate_removed": 0,
+    "missing_identity_rows": 0,
+    "invalid_coordinates": 0,
+    "invalid_region_codes": 0,
+    "legacy_region_rows": 0,
+    "charger_count": 10,
+    "station_count": 6,
+    "clean_rows": 10,
+    "coordinate_issue_counts": {
+      "valid": 10
+    },
+    "missing_after_clean": {
+      "statNm": 0,
+      "statId": 0,
+      "chgerId": 0,
+      "chgerType": 0,
+      "powerType": 10,
+      "addr": 0,
+      "lat": 0,
+      "lng": 0,
+      "zcode": 0,
+      "busiId": 0,
+      "busiNm": 0,
+      "stat": 0,
+      "statUpdDt": 0,
+      "useTime": 0,
+      "parkingFree": 0,
+      "note": 10
+    },
+    "invalid_nonmissing_statUpdDt": 0,
+    "unknown_nonmissing_chgerType": 0,
+    "unknown_nonmissing_stat": 0,
+    "power_kw_missing_or_nonpositive": 0,
+    "stations_in_multiple_regions": 0
+  },
+  "collection_started_at": "2026-10-15T04:16:31+09:00",
+  "effective_page_size": 9999,
+  "pages": [
+    {
+      "pageNo": 1,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:31+09:00"
+    },
+    {
+      "pageNo": 2,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:33+09:00"
+    },
+    {
+      "pageNo": 3,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:34+09:00"
+    },
+    {
+      "pageNo": 4,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:36+09:00"
+    },
+    {
+      "pageNo": 5,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:38+09:00"
+    },
+    {
+      "pageNo": 6,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:39+09:00"
+    },
+    {
+      "pageNo": 7,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:41+09:00"
+    },
+    {
+      "pageNo": 8,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:42+09:00"
+    },
+    {
+      "pageNo": 9,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:44+09:00"
+    },
+    {
+      "pageNo": 10,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:46+09:00"
+    },
+    {
+      "pageNo": 11,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:48+09:00"
+    },
+    {
+      "pageNo": 12,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:49+09:00"
+    },
+    {
+      "pageNo": 13,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:51+09:00"
+    },
+    {
+      "pageNo": 14,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:52+09:00"
+    },
+    {
+      "pageNo": 15,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:54+09:00"
+    },
+    {
+      "pageNo": 16,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:56+09:00"
+    },
+    {
+      "pageNo": 17,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:57+09:00"
+    },
+    {
+      "pageNo": 18,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:16:59+09:00"
+    },
+    {
+      "pageNo": 19,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:01+09:00"
+    },
+    {
+      "pageNo": 20,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:03+09:00"
+    },
+    {
+      "pageNo": 21,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:04+09:00"
+    },
+    {
+      "pageNo": 22,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:06+09:00"
+    },
+    {
+      "pageNo": 23,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:08+09:00"
+    },
+    {
+      "pageNo": 24,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:09+09:00"
+    },
+    {
+      "pageNo": 25,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:11+09:00"
+    },
+    {
+      "pageNo": 26,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:13+09:00"
+    },
+    {
+      "pageNo": 27,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:14+09:00"
+    },
+    {
+      "pageNo": 28,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:16+09:00"
+    },
+    {
+      "pageNo": 29,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:18+09:00"
+    },
+    {
+      "pageNo": 30,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:20+09:00"
+    },
+    {
+      "pageNo": 31,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:21+09:00"
+    },
+    {
+      "pageNo": 32,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:23+09:00"
+    },
+    {
+      "pageNo": 33,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:25+09:00"
+    },
+    {
+      "pageNo": 34,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:26+09:00"
+    },
+    {
+      "pageNo": 35,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:28+09:00"
+    },
+    {
+      "pageNo": 36,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:30+09:00"
+    },
+    {
+      "pageNo": 37,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:32+09:00"
+    },
+    {
+      "pageNo": 38,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:33+09:00"
+    },
+    {
+      "pageNo": 39,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:35+09:00"
+    },
+    {
+      "pageNo": 40,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:37+09:00"
+    },
+    {
+      "pageNo": 41,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:39+09:00"
+    },
+    {
+      "pageNo": 42,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:40+09:00"
+    },
+    {
+      "pageNo": 43,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:42+09:00"
+    },
+    {
+      "pageNo": 44,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:44+09:00"
+    },
+    {
+      "pageNo": 45,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:45+09:00"
+    },
+    {
+      "pageNo": 46,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:47+09:00"
+    },
+    {
+      "pageNo": 47,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:49+09:00"
+    },
+    {
+      "pageNo": 48,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:50+09:00"
+    },
+    {
+      "pageNo": 49,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:52+09:00"
+    },
+    {
+      "pageNo": 50,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:54+09:00"
+    },
+    {
+      "pageNo": 51,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:55+09:00"
+    },
+    {
+      "pageNo": 52,
+      "rows": 9999,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": true,
+      "fetched_at": "2026-10-15T04:17:57+09:00"
+    },
+    {
+      "pageNo": 53,
+      "rows": 7485,
+      "totalCount": 527433,
+      "duplicate_keys_seen_before": 0,
+      "checkpoint_reused": false,
+      "fetched_at": "2026-10-15T04:19:04+09:00"
+    }
+  ],
+  "count_changes": [],
+  "api_total_count_end": 527433,
+  "api_total_count_at_last_page": 527433,
+  "delta_raw_vs_end_total": 0,
+  "quality": {
+    "missing_by_field": {
+      "statNm": 0,
+      "statId": 0,
+      "chgerId": 0,
+      "chgerType": 0,
+      "powerType": 527433,
+      "addr": 1,
+      "lat": 0,
+      "lng": 0,
+      "zcode": 0,
+      "busiId": 0,
+      "busiNm": 0,
+      "stat": 0,
+      "statUpdDt": 2759,
+      "useTime": 3344,
+      "parkingFree": 78,
+      "note": 449052
+    },
+    "duplicate_removed": 0,
+    "missing_identity_rows": 0,
+    "invalid_coordinates": 0,
+    "invalid_region_codes": 0,
+    "legacy_region_rows": 0,
+    "charger_count": 527433,
+    "station_count": 101091,
+    "clean_rows": 527433,
+    "coordinate_issue_counts": {
+      "valid": 527433
+    },
+    "missing_after_clean": {
+      "statNm": 0,
+      "statId": 0,
+      "chgerId": 0,
+      "chgerType": 0,
+      "powerType": 527433,
+      "addr": 1,
+      "lat": 0,
+      "lng": 0,
+      "zcode": 0,
+      "busiId": 0,
+      "busiNm": 0,
+      "stat": 0,
+      "statUpdDt": 2759,
+      "useTime": 3344,
+      "parkingFree": 78,
+      "note": 449052
+    },
+    "invalid_nonmissing_statUpdDt": 0,
+    "unknown_nonmissing_chgerType": 5587,
+    "unknown_nonmissing_stat": 0,
+    "power_kw_missing_or_nonpositive": 169,
+    "deleted_flag_charger_count": 4121,
+    "not_deleted_flag_charger_count": 523312,
+    "not_deleted_flag_station_count": 100590,
+    "stations_in_multiple_regions": 0
+  },
+  "count_verified": true,
+  "delta_unique_vs_end_total": 0,
+  "collection_finished_at": "2026-10-15T04:19:29+09:00",
+  "count_interpretation": "행 수/고유키/시작종료 totalCount 일치",
+  "processed_at": "2026-10-15T04:21:42+09:00",
+  "current_region_source": "https://stcis.go.kr/org/indicator/cmmnZoneSdListAjax.do",
+  "resolved_collection_errors": [
+    {
+      "page": 53,
+      "issue": "응답 numOfRows에 잔여량 7485가 반환됨",
+      "resolution": "요청 페이지 크기 9999를 유지하고 예상 잔여량/실제 7485건 일치 검증 후 체크포인트에서 재개"
+    }
+  ],
+  "raw_sha256": "b98fbba0cf7f2c2df7ecd33b66190a3eb59a7f8826604b7811d8e1cc35845d5c",
+  "http_requests_recorded": 58,
+  "collection_reports_preserved_in_history": true
+}

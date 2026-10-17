@@ -1,0 +1,57 @@
+.env
+.env.*
+!.env.example
+
+# Local secrets (examples must contain placeholders only)
+*.pem
+*.key
+credentials*.json
+service-account*.json
+service-key*
+service_key*
+api-key*
+api_key*
+secrets/
+.npmrc
+.pypirc
+
+# Dependencies, caches and generated builds
+.venv/
+venv/
+node_modules/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.playwright-mcp/
+.vite/
+dist/
+build/
+*.tsbuildinfo
+scripts/mplconfig*/
+
+# Logs and local scratch files may contain request credentials
+*.log
+logs/
+tmp/
+temp/
+work/
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
+# Original downloads, checkpoints and archived snapshots are local artifacts
+/data/
+/reports/tests/
+/data/raw/
+/data/processed/history/
+
+# Redistribution and separate delivery are not yet approved/defined.
+# Keep all CSV/Excel local, including small derived summaries. See README.md.
+*.csv
+*.xlsx
+*.xls

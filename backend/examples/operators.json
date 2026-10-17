@@ -1,0 +1,83 @@
+{
+  "data": [
+    {
+      "charger_count": 83138,
+      "deleted_charger_count": 6,
+      "not_deleted_charger_count": 83132,
+      "operator_id": "PI",
+      "operator_name": "GS차지비",
+      "share_pct": 15.762760388523281,
+      "station_count": 13868
+    },
+    {
+      "charger_count": 51327,
+      "deleted_charger_count": 8,
+      "not_deleted_charger_count": 51319,
+      "operator_id": "PL",
+      "operator_name": "플러그링크",
+      "share_pct": 9.731473002258106,
+      "station_count": 4741
+    },
+    {
+      "charger_count": 47638,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 47638,
+      "operator_id": "EV",
+      "operator_name": "에버온",
+      "share_pct": 9.032047672405783,
+      "station_count": 14213
+    }
+  ],
+  "meta": {
+    "api_version": "1.0",
+    "filters": {
+      "charger_type": null,
+      "deletion": "all",
+      "operator_id": null,
+      "region_code": null
+    },
+    "grouping": "앞뒤 공백을 정리한 (busiId,busiNm) 조합. 다른 명칭은 자동 통합하지 않습니다.",
+    "matched": {
+      "charger_count": 527433,
+      "deleted_charger_count": 4121,
+      "not_deleted_charger_count": 523312,
+      "station_count": 101091
+    },
+    "pagination": {
+      "has_next": true,
+      "limit": 3,
+      "next_page": 2,
+      "page": 1,
+      "total_items": 342,
+      "total_pages": 114
+    },
+    "same_period_shortage_rate_computed": false,
+    "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
+    "sources": {
+      "chargers": {
+        "file": "charger_info_clean.csv",
+        "region_system": "2026_16_provinces",
+        "snapshot_date": "2026-10-15",
+        "snapshot_end_at": "2026-10-15T04:19:04+09:00",
+        "snapshot_start_at": "2026-10-15T04:16:31+09:00",
+        "source": "한국환경공단 getChargerInfo",
+        "source_url": "https://www.data.go.kr/data/15076352/openapi.do",
+        "unit": "기 / 곳 / kW"
+      }
+    },
+    "station_count_additivity": "운영기관별 고유 충전소 수를 합산하면 같은 충전소가 중복될 수 있습니다.",
+    "units": {
+      "charger_count": "기",
+      "ev_registration_count": "대",
+      "output_kw": "kW",
+      "share_pct": "%",
+      "station_count": "곳"
+    },
+    "warnings": [
+      "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+      "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
+      "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
+      "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
+    ]
+  }
+}

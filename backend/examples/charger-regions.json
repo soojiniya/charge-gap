@@ -1,0 +1,192 @@
+{
+  "data": [
+    {
+      "charger_count": 76202,
+      "deleted_charger_count": 696,
+      "not_deleted_charger_count": 75506,
+      "region_code": "11",
+      "region_name": "서울",
+      "share_pct": 14.447711842072833,
+      "station_count": 13035
+    },
+    {
+      "charger_count": 32913,
+      "deleted_charger_count": 367,
+      "not_deleted_charger_count": 32546,
+      "region_code": "12",
+      "region_name": "전남광주통합특별시",
+      "share_pct": 6.240223876776766,
+      "station_count": 8125
+    },
+    {
+      "charger_count": 32765,
+      "deleted_charger_count": 290,
+      "not_deleted_charger_count": 32475,
+      "region_code": "26",
+      "region_name": "부산",
+      "share_pct": 6.212163440664501,
+      "station_count": 5172
+    },
+    {
+      "charger_count": 25203,
+      "deleted_charger_count": 789,
+      "not_deleted_charger_count": 24414,
+      "region_code": "27",
+      "region_name": "대구",
+      "share_pct": 4.778426833360825,
+      "station_count": 4112
+    },
+    {
+      "charger_count": 33866,
+      "deleted_charger_count": 432,
+      "not_deleted_charger_count": 33434,
+      "region_code": "28",
+      "region_name": "인천",
+      "share_pct": 6.420910333634794,
+      "station_count": 5275
+    },
+    {
+      "charger_count": 15092,
+      "deleted_charger_count": 125,
+      "not_deleted_charger_count": 14967,
+      "region_code": "30",
+      "region_name": "대전",
+      "share_pct": 2.861406093285782,
+      "station_count": 2783
+    },
+    {
+      "charger_count": 10694,
+      "deleted_charger_count": 107,
+      "not_deleted_charger_count": 10587,
+      "region_code": "31",
+      "region_name": "울산",
+      "share_pct": 2.027556106652409,
+      "station_count": 2101
+    },
+    {
+      "charger_count": 6571,
+      "deleted_charger_count": 37,
+      "not_deleted_charger_count": 6534,
+      "region_code": "36",
+      "region_name": "세종",
+      "share_pct": 1.245845443876284,
+      "station_count": 1041
+    },
+    {
+      "charger_count": 155001,
+      "deleted_charger_count": 124,
+      "not_deleted_charger_count": 154877,
+      "region_code": "41",
+      "region_name": "경기",
+      "share_pct": 29.387808498899386,
+      "station_count": 25022
+    },
+    {
+      "charger_count": 17800,
+      "deleted_charger_count": 26,
+      "not_deleted_charger_count": 17774,
+      "region_code": "43",
+      "region_name": "충북",
+      "share_pct": 3.374836235123703,
+      "station_count": 3836
+    },
+    {
+      "charger_count": 22462,
+      "deleted_charger_count": 186,
+      "not_deleted_charger_count": 22276,
+      "region_code": "44",
+      "region_name": "충남",
+      "share_pct": 4.258739972660035,
+      "station_count": 5054
+    },
+    {
+      "charger_count": 23226,
+      "deleted_charger_count": 293,
+      "not_deleted_charger_count": 22933,
+      "region_code": "47",
+      "region_name": "경북",
+      "share_pct": 4.403592494212535,
+      "station_count": 5878
+    },
+    {
+      "charger_count": 31083,
+      "deleted_charger_count": 226,
+      "not_deleted_charger_count": 30857,
+      "region_code": "48",
+      "region_name": "경남",
+      "share_pct": 5.893260376199441,
+      "station_count": 7006
+    },
+    {
+      "charger_count": 8779,
+      "deleted_charger_count": 30,
+      "not_deleted_charger_count": 8749,
+      "region_code": "50",
+      "region_name": "제주",
+      "share_pct": 1.664476815064662,
+      "station_count": 3219
+    },
+    {
+      "charger_count": 17813,
+      "deleted_charger_count": 133,
+      "not_deleted_charger_count": 17680,
+      "region_code": "51",
+      "region_name": "강원",
+      "share_pct": 3.377301003160591,
+      "station_count": 4498
+    },
+    {
+      "charger_count": 17963,
+      "deleted_charger_count": 260,
+      "not_deleted_charger_count": 17703,
+      "region_code": "52",
+      "region_name": "전북",
+      "share_pct": 3.405740634355454,
+      "station_count": 4934
+    }
+  ],
+  "meta": {
+    "api_version": "1.0",
+    "count": 16,
+    "filters": {
+      "charger_type": null,
+      "deletion": "all",
+      "operator_id": null,
+      "region_code": null
+    },
+    "matched": {
+      "charger_count": 527433,
+      "deleted_charger_count": 4121,
+      "not_deleted_charger_count": 523312,
+      "station_count": 101091
+    },
+    "same_period_shortage_rate_computed": false,
+    "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
+    "sources": {
+      "chargers": {
+        "file": "charger_info_clean.csv",
+        "region_system": "2026_16_provinces",
+        "snapshot_date": "2026-10-15",
+        "snapshot_end_at": "2026-10-15T04:19:04+09:00",
+        "snapshot_start_at": "2026-10-15T04:16:31+09:00",
+        "source": "한국환경공단 getChargerInfo",
+        "source_url": "https://www.data.go.kr/data/15076352/openapi.do",
+        "unit": "기 / 곳 / kW"
+      }
+    },
+    "station_count_additivity": "각 지역 안의 고유 충전소 수. 분류별 충전소 수는 중복 가능성이 있어 전국 값은 matched.station_count를 사용하세요.",
+    "units": {
+      "charger_count": "기",
+      "ev_registration_count": "대",
+      "output_kw": "kW",
+      "share_pct": "%",
+      "station_count": "곳"
+    },
+    "warnings": [
+      "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+      "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
+      "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
+      "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
+    ]
+  }
+}

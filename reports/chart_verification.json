@@ -1,0 +1,1669 @@
+{
+  "status": "passed",
+  "font": "Malgun Gothic",
+  "font_file": "C:\\Windows\\Fonts\\malgun.ttf",
+  "dpi_requested": 200,
+  "graph_count": 10,
+  "base_graph_family_count": 6,
+  "presentation_variant_count": 9,
+  "checks": [
+    {
+      "check": "no_existing_chart_outputs",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "no_existing_chart_analysis.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "no_existing_chart_data_summary.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ev_total",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ev_reference_month",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "api_total",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "api_no_duplicate_keys",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "api_16_regions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "api_summary_counts_16",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "api_summary_date_16",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "api_summary_counts_10",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "api_summary_date_10",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "api_summary_counts_342",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "api_summary_date_342",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "api_summary_counts_40",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "api_summary_date_40",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "detailed_reconcile_zcode",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "detailed_reconcile_chgerType",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "operators_reconcile_detail",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "01_ev_registration_top10.png_figure_text_in_bounds",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "01_ev_registration_top10.png_png_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "01_ev_registration_top10.png_nonempty_pixels",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "vehicle_types_sum",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "02_ev_vehicle_type_donut.png_figure_text_in_bounds",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "02_ev_vehicle_type_donut.png_png_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "02_ev_vehicle_type_donut.png_nonempty_pixels",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "03_ev_commercial_stacked.png_figure_text_in_bounds",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "03_ev_commercial_stacked.png_png_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "03_ev_commercial_stacked.png_nonempty_pixels",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_chargers_by_region.png_figure_text_in_bounds",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "04_chargers_by_region.png_png_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "04_chargers_by_region.png_nonempty_pixels",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "valid_coordinates",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "station_points_count",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "station_not_deleted_count",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "05_station_location_scatter.png_figure_text_in_bounds",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "05_station_location_scatter.png_png_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "05_station_location_scatter.png_nonempty_pixels",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "official_types_verified",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "06_charger_type_pie.png_figure_text_in_bounds",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "06_charger_type_pie.png_png_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "06_charger_type_pie.png_nonempty_pixels",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "histogram_bins_match_output_summary",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "07_charger_output_histogram.png_figure_text_in_bounds",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "07_charger_output_histogram.png_png_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "07_charger_output_histogram.png_nonempty_pixels",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "08_operator_chargers_top10.png_figure_text_in_bounds",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "08_operator_chargers_top10.png_png_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "08_operator_chargers_top10.png_nonempty_pixels",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "annual_cumulative_sum",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "partial_year_flag",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "09_annual_charger_installation_trend.png_figure_text_in_bounds",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "09_annual_charger_installation_trend.png_png_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "09_annual_charger_installation_trend.png_nonempty_pixels",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "heatmap_counts_include_unknown",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "heatmap_region_41",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "heatmap_region_11",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "heatmap_region_28",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "heatmap_region_12",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "heatmap_region_26",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "heatmap_region_48",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "heatmap_region_27",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "heatmap_region_47",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "heatmap_region_44",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "heatmap_region_43",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "heatmap_region_52",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "heatmap_region_51",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "heatmap_region_30",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "heatmap_region_31",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "heatmap_region_50",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "heatmap_region_36",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_regional_output_heatmap.png_figure_text_in_bounds",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "10_regional_output_heatmap.png_png_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "10_regional_output_heatmap.png_nonempty_pixels",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_2025년_12월_자동차_등록자료_통계.xlsx",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_우리 지역 급속 충전 여건_2026-10-15.xlsx",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_충전기 설치 성장 추세_2026-10-15.xlsx",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_info_raw.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_by_region.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_coordinate_issues.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_duplicate_rows.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_identity_issues.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_info_clean.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_installation_trend.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_operator_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_output_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_region_output_excel.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_region_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_type_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_ev_registration_by_region_2025.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_region_comparison_2025_registration_2026_chargers.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ten_pngs",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "histogram_drawn_bin_tops",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "histogram_drawn_positive_bins",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "07_charger_output_histogram.png_figure_text_in_bounds",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "07_charger_output_histogram.png_png_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "07_charger_output_histogram.png_nonempty_pixels",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_2025년_12월_자동차_등록자료_통계.xlsx",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_우리 지역 급속 충전 여건_2026-10-15.xlsx",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_충전기 설치 성장 추세_2026-10-15.xlsx",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_info_raw.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_by_region.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_coordinate_issues.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_duplicate_rows.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_identity_issues.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_info_clean.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_installation_trend.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_operator_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_output_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_region_output_excel.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_region_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_type_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_ev_registration_by_region_2025.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_region_comparison_2025_registration_2026_chargers.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ten_pngs",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "09_annual_charger_installation_trend.png_figure_text_in_bounds",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "09_annual_charger_installation_trend.png_png_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "09_annual_charger_installation_trend.png_nonempty_pixels",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_2025년_12월_자동차_등록자료_통계.xlsx",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_우리 지역 급속 충전 여건_2026-10-15.xlsx",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_충전기 설치 성장 추세_2026-10-15.xlsx",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_info_raw.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_by_region.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_coordinate_issues.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_duplicate_rows.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_identity_issues.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_info_clean.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_installation_trend.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_operator_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_output_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_region_output_excel.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_region_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_charger_type_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_ev_registration_by_region_2025.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_unchanged_region_comparison_2025_registration_2026_chargers.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ten_pngs",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "inputs": {
+    "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\raw\\2025년_12월_자동차_등록자료_통계.xlsx": "63edcfe041d50517139c86f935c98d358aff142077a53db85d4ea72bc6c88582",
+    "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\raw\\우리 지역 급속 충전 여건_2026-10-15.xlsx": "2ec158c31b7dc688020a3b83f8e1aace7a34474e13563abb9982f8d96f263006",
+    "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\raw\\충전기 설치 성장 추세_2026-10-15.xlsx": "aa8cffe49bd71354092d356783927981c194187ae8fdb352e32c79385b48de1c",
+    "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\raw\\charger_info_raw.csv": "b98fbba0cf7f2c2df7ecd33b66190a3eb59a7f8826604b7811d8e1cc35845d5c",
+    "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\processed\\charger_by_region.csv": "ce50e9f5b60fdcdefbc1bb032307f224c6798fe6ccd8a630cf53175d776ffddb",
+    "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\processed\\charger_coordinate_issues.csv": "22cc0b0f9542e0c1d333396ce663d6a3be33e9a5ebdd442ad4315cd50c9d5374",
+    "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\processed\\charger_duplicate_rows.csv": "ed1cd3242ca43310c297dfedc4dceca2f06633f06037fdf83a5378e9ad8ac6c0",
+    "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\processed\\charger_identity_issues.csv": "22cc0b0f9542e0c1d333396ce663d6a3be33e9a5ebdd442ad4315cd50c9d5374",
+    "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\processed\\charger_info_clean.csv": "6cf8e89777a7720fdbb9f6800e555424896d870c4f45a6c5bde2f8012c5d00dd",
+    "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\processed\\charger_installation_trend.csv": "7bf139ea609e6b4b7084e0a1aac65ed687f10b9094e4aee6b00697c8edd8e976",
+    "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\processed\\charger_operator_summary.csv": "642ddef41d69fadf50c8d9bfde16e2603cdf6901ed8675e5ab93b7da6a847d88",
+    "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\processed\\charger_output_summary.csv": "fed2c362344735d7ebefbbada1b5d1c21776706ea4a26e700f0ed37d125c1ada",
+    "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\processed\\charger_region_output_excel.csv": "71ea57d6cb6e8ecaecca9604dace3f60fb8f989355eb0d3a324a97d3c8db586e",
+    "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\processed\\charger_region_summary.csv": "faf9d4dae842eb3c1701eacd47d5fbb26d11752a787d2bc1e0cc835107ce2c61",
+    "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\processed\\charger_type_summary.csv": "4bd274d37ba7894af8230479f2c5c79d49fd6a766a0a65d6a5add25df199313b",
+    "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\processed\\ev_registration_by_region_2025.csv": "2be3140319d5cc20766e598cba8f356c577b986d4ce4d3134c9f4dad8bfef075",
+    "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\processed\\region_comparison_2025_registration_2026_chargers.csv": "85cf4285ca08625c673507793f14bc8eae86cf2f23979dd49422d4fb3f3f0a5c"
+  },
+  "charts": [
+    {
+      "number": 1,
+      "file": "01_ev_registration_top10.png",
+      "purpose": "지역별 전기차 등록 규모 비교",
+      "data": "ev_registration_by_region_2025.csv",
+      "kind": "가로 막대",
+      "reason": "긴 지역 이름과 순위를 읽기 쉽고 0 기준으로 크기를 비교할 수 있습니다.",
+      "results": "경기 207,075대가 전국의 23.03%로 가장 많습니다. TOP 10 합계는 744,793대입니다.",
+      "caution": "2025-12 등록 재고이며 2026년 충전기 수와 같은 시점의 공급 적정성을 뜻하지 않습니다.",
+      "period": "2025년 12월",
+      "metrics": {
+        "national": 899101,
+        "top10_total": 744793,
+        "ranking": [
+          {
+            "region_name_2025": "경기",
+            "ev_registration_count": 207075
+          },
+          {
+            "region_name_2025": "서울",
+            "ev_registration_count": 101331
+          },
+          {
+            "region_name_2025": "인천",
+            "ev_registration_count": 79860
+          },
+          {
+            "region_name_2025": "경남",
+            "ev_registration_count": 65934
+          },
+          {
+            "region_name_2025": "제주",
+            "ev_registration_count": 61063
+          },
+          {
+            "region_name_2025": "부산",
+            "ev_registration_count": 60687
+          },
+          {
+            "region_name_2025": "경북",
+            "ev_registration_count": 45090
+          },
+          {
+            "region_name_2025": "대구",
+            "ev_registration_count": 42592
+          },
+          {
+            "region_name_2025": "전남",
+            "ev_registration_count": 41322
+          },
+          {
+            "region_name_2025": "충남",
+            "ev_registration_count": 39839
+          }
+        ]
+      },
+      "image_pixels": [
+        2400,
+        1500
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "0e96ad7970496e425ed9a8488e719de3fdc77f370ced2042bbbdb8f825cde787"
+    },
+    {
+      "number": 2,
+      "file": "02_ev_vehicle_type_donut.png",
+      "purpose": "전기차 차종 구성 파악",
+      "data": "ev_registration_by_region_2025.csv",
+      "kind": "도넛 차트",
+      "reason": "전국 합계 안에서 4개 차종의 비중을 보여 주고 가운데 합계를 표시합니다.",
+      "results": "승용 713,835대 (79.39%); 승합 14,779대 (1.64%); 화물 169,744대 (18.88%); 특수 743대 (0.08%).",
+      "caution": "차종과 충전기 커넥터 유형은 다른 개념입니다. 아주 작은 특수차 비중은 범례의 수치로 확인합니다.",
+      "period": "2025년 12월",
+      "metrics": {
+        "승용": 713835,
+        "승합": 14779,
+        "화물": 169744,
+        "특수": 743
+      },
+      "image_pixels": [
+        2600,
+        1500
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "cfafa37c02d0743e8337f7c64922e7dc81eb443b1f1e2dee4cf551866cfea4a9"
+    },
+    {
+      "number": 3,
+      "file": "03_ev_commercial_stacked.png",
+      "purpose": "지역별 사업용·비사업용 구성과 규모 비교",
+      "data": "ev_registration_by_region_2025.csv",
+      "kind": "누적 막대",
+      "reason": "전체 규모와 두 용도 집단의 기여를 동시에 보여 줍니다.",
+      "results": "전국 비사업용 730,309대 (81.23%), 사업용 168,792대 (18.77%)입니다.",
+      "caution": "막대는 비율이 아닌 대수입니다. 리스·사업용 등록지 등의 원인 자료 없이 거주·실제 이용 수요로 해석하지 않습니다.",
+      "period": "2025년 12월",
+      "metrics": {
+        "noncommercial": 730309,
+        "commercial": 168792
+      },
+      "image_pixels": [
+        2800,
+        1600
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "efd05bf2b5896aa24d2e18034071a9d3903480a72c6f8517569bfa5f829316c3"
+    },
+    {
+      "number": 4,
+      "file": "04_chargers_by_region.png",
+      "purpose": "현재 지역별 충전기 규모와 삭제 표시 구분",
+      "data": "charger_region_summary.csv; charger_info_clean.csv",
+      "kind": "세로 막대",
+      "reason": "16개 지역의 총수를 비교하면서 삭제 포함 총수의 구성도 구분합니다.",
+      "results": "경기 155,001기(비삭제 154,877기), 서울 76,202기(비삭제 75,506기) 순입니다. 전남광주통합특별시는 32,913기입니다.",
+      "caution": "API 현황은 설치량 통계와 다르며 삭제 포함 총수를 운영 중 대수로 해석하지 않습니다.",
+      "period": "2026년 10월 15일 04:16–04:19 KST",
+      "metrics": {
+        "all": 527433,
+        "not_deleted": 523312,
+        "deleted": 4121,
+        "regions": [
+          {
+            "region_code": "41",
+            "region_name": "경기",
+            "charger_count_all": 155001,
+            "charger_count_not_deleted": 154877,
+            "charger_count_deleted": 124
+          },
+          {
+            "region_code": "11",
+            "region_name": "서울",
+            "charger_count_all": 76202,
+            "charger_count_not_deleted": 75506,
+            "charger_count_deleted": 696
+          },
+          {
+            "region_code": "28",
+            "region_name": "인천",
+            "charger_count_all": 33866,
+            "charger_count_not_deleted": 33434,
+            "charger_count_deleted": 432
+          },
+          {
+            "region_code": "12",
+            "region_name": "전남광주통합특별시",
+            "charger_count_all": 32913,
+            "charger_count_not_deleted": 32546,
+            "charger_count_deleted": 367
+          },
+          {
+            "region_code": "26",
+            "region_name": "부산",
+            "charger_count_all": 32765,
+            "charger_count_not_deleted": 32475,
+            "charger_count_deleted": 290
+          },
+          {
+            "region_code": "48",
+            "region_name": "경남",
+            "charger_count_all": 31083,
+            "charger_count_not_deleted": 30857,
+            "charger_count_deleted": 226
+          },
+          {
+            "region_code": "27",
+            "region_name": "대구",
+            "charger_count_all": 25203,
+            "charger_count_not_deleted": 24414,
+            "charger_count_deleted": 789
+          },
+          {
+            "region_code": "47",
+            "region_name": "경북",
+            "charger_count_all": 23226,
+            "charger_count_not_deleted": 22933,
+            "charger_count_deleted": 293
+          },
+          {
+            "region_code": "44",
+            "region_name": "충남",
+            "charger_count_all": 22462,
+            "charger_count_not_deleted": 22276,
+            "charger_count_deleted": 186
+          },
+          {
+            "region_code": "52",
+            "region_name": "전북",
+            "charger_count_all": 17963,
+            "charger_count_not_deleted": 17703,
+            "charger_count_deleted": 260
+          },
+          {
+            "region_code": "51",
+            "region_name": "강원",
+            "charger_count_all": 17813,
+            "charger_count_not_deleted": 17680,
+            "charger_count_deleted": 133
+          },
+          {
+            "region_code": "43",
+            "region_name": "충북",
+            "charger_count_all": 17800,
+            "charger_count_not_deleted": 17774,
+            "charger_count_deleted": 26
+          },
+          {
+            "region_code": "30",
+            "region_name": "대전",
+            "charger_count_all": 15092,
+            "charger_count_not_deleted": 14967,
+            "charger_count_deleted": 125
+          },
+          {
+            "region_code": "31",
+            "region_name": "울산",
+            "charger_count_all": 10694,
+            "charger_count_not_deleted": 10587,
+            "charger_count_deleted": 107
+          },
+          {
+            "region_code": "50",
+            "region_name": "제주",
+            "charger_count_all": 8779,
+            "charger_count_not_deleted": 8749,
+            "charger_count_deleted": 30
+          },
+          {
+            "region_code": "36",
+            "region_name": "세종",
+            "charger_count_all": 6571,
+            "charger_count_not_deleted": 6534,
+            "charger_count_deleted": 37
+          }
+        ]
+      },
+      "image_pixels": [
+        2800,
+        1600
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "d7b6121823427748218e42b23fedea289d48b2f54456e01ed21b7d8ffadf3144"
+    },
+    {
+      "number": 5,
+      "file": "05_station_location_scatter.png",
+      "purpose": "전국 충전소의 지리적 분포 확인",
+      "data": "charger_info_clean.csv; statId별 대표 좌표",
+      "kind": "경위도 산점도 지도",
+      "reason": "고유 충전소의 실제 경위도 위치를 직접 보여 주며 충전기 다수인 곳의 중복 표시를 줄입니다.",
+      "results": "유효 좌표를 가진 고유 충전소 101,091곳을 표시했습니다. 비삭제 충전기가 있는 곳은 100,590곳, 삭제 표시 충전기만 있는 곳은 501곳입니다.",
+      "caution": "행정경계 지도·접근성 분석이 아닙니다. 서로 다른 좌표 쌍이 있는 statId 9개는 비삭제 행 우선 첫 유효 좌표로 대표했습니다. 비삭제 표시는 이용 가능을 뜻하지 않습니다.",
+      "period": "2026년 10월 15일 04:16–04:19 KST",
+      "metrics": {
+        "station_points": 101091,
+        "has_not_deleted_station": 100590,
+        "only_deleted_station": 501,
+        "multiple_coordinate_pairs_station_count": 9,
+        "coordinate_invalid_rows": 0
+      },
+      "image_pixels": [
+        2400,
+        1800
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "e0314e3bafcacc294fdbe15f07298d6b2080276ddda90b15d2a39719cdf6e151"
+    },
+    {
+      "number": 6,
+      "file": "06_charger_type_pie.png",
+      "purpose": "공식 충전기 커넥터 유형별 비중 확인",
+      "data": "charger_type_summary.csv; 공식 유형 정의",
+      "kind": "파이 차트",
+      "reason": "합계가 정해진 비삭제 충전기 모집단의 유형 비중을 표시하며 작은 조각은 범례에 정확한 수치를 적습니다.",
+      "results": "AC완속(02)은 465,025기로 비삭제의 88.86%입니다. DC콤보2 버스전용(11)은 5,584기입니다.",
+      "caution": "08은 DC콤보(완속)이며 11은 버스전용입니다. 커넥터 유형만으로 급속/완속을 재분류하지 않았습니다. 09 NACS는 이번 조회에 0건이라 조각을 만들지 않았습니다.",
+      "period": "2026년 10월 15일 04:16–04:19 KST",
+      "metrics": {
+        "denominator": 523312,
+        "ac_slow_count": 465025,
+        "type11_count": 5584,
+        "counts": [
+          {
+            "charger_type_code": "02",
+            "official_definition": "AC완속",
+            "charger_count_not_deleted": 465025
+          },
+          {
+            "charger_type_code": "04",
+            "official_definition": "DC콤보",
+            "charger_count_not_deleted": 43582
+          },
+          {
+            "charger_type_code": "06",
+            "official_definition": "DC차데모+AC3상+DC콤보",
+            "charger_count_not_deleted": 6449
+          },
+          {
+            "charger_type_code": "11",
+            "official_definition": "DC콤보2(버스전용)",
+            "charger_count_not_deleted": 5584
+          },
+          {
+            "charger_type_code": "05",
+            "official_definition": "DC차데모+DC콤보",
+            "charger_count_not_deleted": 1476
+          },
+          {
+            "charger_type_code": "08",
+            "official_definition": "DC콤보(완속)",
+            "charger_count_not_deleted": 600
+          },
+          {
+            "charger_type_code": "07",
+            "official_definition": "AC3상",
+            "charger_count_not_deleted": 287
+          },
+          {
+            "charger_type_code": "10",
+            "official_definition": "DC콤보+NACS",
+            "charger_count_not_deleted": 266
+          },
+          {
+            "charger_type_code": "01",
+            "official_definition": "DC차데모",
+            "charger_count_not_deleted": 40
+          },
+          {
+            "charger_type_code": "03",
+            "official_definition": "DC차데모+AC3상",
+            "charger_count_not_deleted": 3
+          }
+        ]
+      },
+      "image_pixels": [
+        3000,
+        1600
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "1915096a40fb0f3447f08d3494760449136c5eb7b1fada646d93eebf49a18f6f"
+    },
+    {
+      "number": 7,
+      "file": "07_charger_output_histogram.png",
+      "purpose": "개별 충전기의 정격 출력 분포 확인",
+      "data": "charger_info_clean.csv output; charger_output_summary.csv로 구간 검산",
+      "kind": "히스토그램",
+      "reason": "연속 수치인 출력 분포를 고정 폭 구간에 집계합니다. 드문 고출력 구간도 보이도록 로그 세로축을 사용했습니다.",
+      "results": "유효 양수 출력 523,143기, 결측 169기입니다. 중앙값 7kW, 최빈값 7kW(402,997기), 95백분위 100kW, 범위 3~400kW입니다.",
+      "caution": "로그 눈금의 막대 높이 차이는 선형 대수 차이가 아닙니다. 정격 출력은 실제 충전 속도·동시 공급전력·이용량이 아닙니다.",
+      "period": "2026년 10월 15일 04:16–04:19 KST",
+      "metrics": {
+        "valid_positive_rows": 523143,
+        "missing_rows": 169,
+        "median_kw": 7.0,
+        "p95_kw": 100.0,
+        "mode_kw": 7.0,
+        "mode_count": 402997,
+        "bin_edges": [
+          0.0,
+          10.0,
+          20.0,
+          30.0,
+          40.0,
+          50.0,
+          60.0,
+          70.0,
+          80.0,
+          90.0,
+          100.0,
+          110.0,
+          120.0,
+          130.0,
+          140.0,
+          150.0,
+          160.0,
+          170.0,
+          180.0,
+          190.0,
+          200.0,
+          210.0,
+          220.0,
+          230.0,
+          240.0,
+          250.0,
+          260.0,
+          270.0,
+          280.0,
+          290.0,
+          300.0,
+          310.0,
+          320.0,
+          330.0,
+          340.0,
+          350.0,
+          360.0,
+          370.0,
+          380.0,
+          390.0,
+          400.0,
+          410.0
+        ],
+        "bin_counts": [
+          449148,
+          16333,
+          396,
+          2100,
+          46,
+          12721,
+          10,
+          0,
+          0,
+          7,
+          24421,
+          127,
+          5077,
+          0,
+          0,
+          115,
+          18,
+          0,
+          22,
+          15,
+          8585,
+          0,
+          12,
+          0,
+          2393,
+          0,
+          320,
+          16,
+          0,
+          0,
+          389,
+          0,
+          113,
+          0,
+          0,
+          644,
+          19,
+          0,
+          0,
+          0,
+          96
+        ]
+      },
+      "image_pixels": [
+        2600,
+        1600
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "7da76317a77cff919d8922e35fb6316c8db6e63ef60a0c64f4fdc05f5bb2c2b7"
+    },
+    {
+      "number": 8,
+      "file": "08_operator_chargers_top10.png",
+      "purpose": "운영기관별 API 등록 충전기 규모 비교",
+      "data": "charger_info_clean.csv; charger_operator_summary.csv의 공백 정리 후 건수 대조",
+      "kind": "가로 막대",
+      "reason": "기관명이 길고 순위 비교가 필요하여 가로 막대를 사용했습니다.",
+      "results": "GS차지비 [PI]는 전체 83,138기, 비삭제 83,132기입니다. 정제된 ID·명칭 조합 342개 중 상위 10개를 표시했습니다.",
+      "caution": "PW의 파워큐브와 파워큐브코리아 등 표기 변형을 임의 합치지 않았습니다. 충전소 고유 수는 운영기관 간 단순 합산하지 않습니다.",
+      "period": "2026년 10월 15일 04:16–04:19 KST",
+      "metrics": {
+        "operator_pairs_all": 342,
+        "top10_total": 323648,
+        "top10": [
+          {
+            "busiId": "PI",
+            "busiNm": "GS차지비",
+            "charger_count_all": 83138,
+            "charger_count_not_deleted": 83132,
+            "charger_count_deleted": 6
+          },
+          {
+            "busiId": "PL",
+            "busiNm": "플러그링크",
+            "charger_count_all": 51327,
+            "charger_count_not_deleted": 51319,
+            "charger_count_deleted": 8
+          },
+          {
+            "busiId": "EV",
+            "busiNm": "에버온",
+            "charger_count_all": 47638,
+            "charger_count_not_deleted": 47638,
+            "charger_count_deleted": 0
+          },
+          {
+            "busiId": "PW",
+            "busiNm": "파워큐브",
+            "charger_count_all": 36192,
+            "charger_count_not_deleted": 36192,
+            "charger_count_deleted": 0
+          },
+          {
+            "busiId": "LU",
+            "busiNm": "LG유플러스볼트업",
+            "charger_count_all": 27030,
+            "charger_count_not_deleted": 27030,
+            "charger_count_deleted": 0
+          },
+          {
+            "busiId": "PW",
+            "busiNm": "파워큐브코리아",
+            "charger_count_all": 24456,
+            "charger_count_not_deleted": 24456,
+            "charger_count_deleted": 0
+          },
+          {
+            "busiId": "HM",
+            "busiNm": "휴맥스이브이",
+            "charger_count_all": 14805,
+            "charger_count_not_deleted": 14805,
+            "charger_count_deleted": 0
+          },
+          {
+            "busiId": "CV",
+            "busiNm": "채비",
+            "charger_count_all": 14391,
+            "charger_count_not_deleted": 14388,
+            "charger_count_deleted": 3
+          },
+          {
+            "busiId": "HY",
+            "busiNm": "현대엔지니어링",
+            "charger_count_all": 12409,
+            "charger_count_not_deleted": 12409,
+            "charger_count_deleted": 0
+          },
+          {
+            "busiId": "SF",
+            "busiNm": "(주)스타코프",
+            "charger_count_all": 12262,
+            "charger_count_not_deleted": 12262,
+            "charger_count_deleted": 0
+          }
+        ]
+      },
+      "image_pixels": [
+        2800,
+        1600
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "637a4fdaaa344f1cebd5687020afffa1b82ce6b9a06a443d9f3e24a1f573d319"
+    },
+    {
+      "number": 9,
+      "file": "09_annual_charger_installation_trend.png",
+      "purpose": "원본 통계의 연간 설치량과 누적 변화 확인",
+      "data": "charger_installation_trend.csv",
+      "kind": "선 그래프",
+      "reason": "시간의 순서와 변화 흐름을 표현하고 연간·누적을 같은 단위의 별도 선으로 구분합니다.",
+      "results": "연간 설치 통계 최고는 2023년 111,981기입니다. 2025년 누적 478,802기, 2026년 표기 누적 540,210기이며 2026년 연간 칸의 값은 61,408기입니다.",
+      "caution": "2026년은 부분 연도이고 정확한 마감일·삭제 처리·집계 범위는 미확인입니다. 2025년 12월 API 재고를 복원하거나 현재 API 총수와 동일시하지 않습니다.",
+      "period": "2011~2026년 연도 통계; 2026 부분 연도; 파일명 날짜 2026-10-15",
+      "metrics": {
+        "years": [
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "annual": [
+          4,
+          9,
+          3,
+          35,
+          126,
+          614,
+          5723,
+          11581,
+          16524,
+          9990,
+          31512,
+          92460,
+          111981,
+          108435,
+          89805,
+          61408
+        ],
+        "cumulative": [
+          4,
+          13,
+          16,
+          51,
+          177,
+          791,
+          6514,
+          18095,
+          34619,
+          44609,
+          76121,
+          168581,
+          280562,
+          388997,
+          478802,
+          540210
+        ],
+        "partial_year": 2026,
+        "source_cutoff_date": null
+      },
+      "image_pixels": [
+        2600,
+        1600
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "687dd3cb95079dfba3e622783f9c19b8c46843eebcb3cfe79111a90b9a86507e"
+    },
+    {
+      "number": 10,
+      "file": "10_regional_output_heatmap.png",
+      "purpose": "지역별 충전 출력 구성비 비교",
+      "data": "charger_region_summary.csv; charger_info_clean.csv로 16개 지역 재검산",
+      "kind": "히트맵",
+      "reason": "지역별 총규모 차이를 분리하기 위해 행 기준 비율을 색으로, 실제 건수를 주석으로 함께 보여 줍니다.",
+      "results": "비삭제 중 30kW 미만 양수 출력은 465,877기(89.02%), 200kW 이상은 12,587기(2.41%), 출력 미상은 169기입니다.",
+      "caution": "색은 지역 내 비율이므로 전국 대수 순위가 아닙니다. 출력 구간은 정책상 속도 분류를 자동 대체하지 않습니다. 전남광주통합특별시를 분할하지 않았습니다.",
+      "period": "2026년 10월 15일 04:16–04:19 KST",
+      "metrics": {
+        "regions": [
+          "경기",
+          "서울",
+          "인천",
+          "전남광주통합특별시",
+          "부산",
+          "경남",
+          "대구",
+          "경북",
+          "충남",
+          "충북",
+          "전북",
+          "강원",
+          "대전",
+          "울산",
+          "제주",
+          "세종"
+        ],
+        "counts": [
+          [
+            140694,
+            578,
+            2694,
+            7104,
+            3764,
+            43
+          ],
+          [
+            69540,
+            240,
+            1541,
+            3198,
+            976,
+            11
+          ],
+          [
+            30720,
+            113,
+            540,
+            1558,
+            501,
+            2
+          ],
+          [
+            28529,
+            128,
+            1048,
+            2026,
+            795,
+            20
+          ],
+          [
+            29925,
+            206,
+            471,
+            1426,
+            444,
+            3
+          ],
+          [
+            26541,
+            184,
+            738,
+            2550,
+            828,
+            16
+          ],
+          [
+            22608,
+            68,
+            555,
+            856,
+            325,
+            2
+          ],
+          [
+            18465,
+            84,
+            977,
+            2249,
+            1149,
+            9
+          ],
+          [
+            19010,
+            102,
+            567,
+            1708,
+            878,
+            11
+          ],
+          [
+            15143,
+            137,
+            658,
+            1272,
+            558,
+            6
+          ],
+          [
+            14666,
+            123,
+            476,
+            1692,
+            730,
+            16
+          ],
+          [
+            14630,
+            55,
+            531,
+            1703,
+            751,
+            10
+          ],
+          [
+            13510,
+            63,
+            427,
+            730,
+            232,
+            5
+          ],
+          [
+            9461,
+            45,
+            237,
+            617,
+            222,
+            5
+          ],
+          [
+            6442,
+            11,
+            1104,
+            900,
+            285,
+            7
+          ],
+          [
+            5993,
+            9,
+            174,
+            206,
+            149,
+            3
+          ]
+        ],
+        "row_percentages": [
+          [
+            90.84241042892101,
+            0.37319937757058824,
+            1.739444849784022,
+            4.586865706334704,
+            2.430315669854142,
+            0.027763967535528195
+          ],
+          [
+            92.09864116758934,
+            0.3178555346594973,
+            2.0408974121261885,
+            4.235424999337801,
+            1.2926125076152888,
+            0.014568378671893624
+          ],
+          [
+            91.88251480528803,
+            0.3379793025064306,
+            1.6151223305617037,
+            4.6599270203983965,
+            1.4984746066878027,
+            0.0059819345576359395
+          ],
+          [
+            87.65746942788668,
+            0.39328949794137524,
+            3.22005776439501,
+            6.225035334603331,
+            2.4426964911202607,
+            0.06145148405333989
+          ],
+          [
+            92.14780600461894,
+            0.6343341031562741,
+            1.4503464203233256,
+            4.3910700538876055,
+            1.3672055427251733,
+            0.009237875288683603
+          ],
+          [
+            86.01289820786208,
+            0.5962990569400783,
+            2.391677739248793,
+            8.26392714781087,
+            2.6833457562303527,
+            0.0518520919078329
+          ],
+          [
+            92.60260506266896,
+            0.27852871303350535,
+            2.273285819611698,
+            3.506184975833538,
+            1.3312034078807242,
+            0.008192020971573687
+          ],
+          [
+            80.51715867963198,
+            0.3662843936685126,
+            4.260236340644486,
+            9.806828587624821,
+            5.010247241965726,
+            0.03924475646448349
+          ],
+          [
+            85.3384808762794,
+            0.45789190159813253,
+            2.5453402765307955,
+            7.667444783623631,
+            3.9414616627760823,
+            0.04938049919195547
+          ],
+          [
+            85.19747946438618,
+            0.7707887926184315,
+            3.7020366827950943,
+            7.15652076066164,
+            3.1394171261393042,
+            0.03375717339934736
+          ],
+          [
+            82.8447155849291,
+            0.6947974919505169,
+            2.6888098062475287,
+            9.557702084392476,
+            4.123594870925832,
+            0.09038016155453878
+          ],
+          [
+            82.74886877828054,
+            0.31108597285067874,
+            3.003393665158371,
+            9.632352941176471,
+            4.247737556561086,
+            0.056561085972850686
+          ],
+          [
+            90.26525021714438,
+            0.4209260372820205,
+            2.8529431415781388,
+            4.877396939934522,
+            1.5500768357052181,
+            0.03340682835571591
+          ],
+          [
+            89.36431472560687,
+            0.42504958911873053,
+            2.238594502691981,
+            5.827902144139038,
+            2.0969113063190705,
+            0.04722773212430339
+          ],
+          [
+            73.63127214538805,
+            0.12572865470339467,
+            12.618584981140701,
+            10.286889930277745,
+            3.2575151445879533,
+            0.08000914390216024
+          ],
+          [
+            91.72023262932353,
+            0.13774104683195593,
+            2.6629935720844813,
+            3.15273951637588,
+            2.2803795531068256,
+            0.04591368227731864
+          ]
+        ],
+        "output_unknown_total": 169,
+        "denominator": 523312
+      },
+      "image_pixels": [
+        2800,
+        2200
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "a6d622b0d61516e42c3954fb48d5f98b4dbd6718b6b296ac020ce013ccd3d424"
+    }
+  ],
+  "libraries": {
+    "python": "3.12.10",
+    "pandas": "2.3.3",
+    "numpy": "2.5.4",
+    "matplotlib": "3.11.2",
+    "seaborn": "0.13.2"
+  }
+}

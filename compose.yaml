@@ -1,0 +1,70 @@
+name: charge-gap
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      # Browser requests are same-origin through Nginx. No cross-origin access needed.
+      CHARGE_GAP_CORS_ORIGINS: ""
+    expose:
+      - "5000"
+    volumes:
+      - type: bind
+        source: ./data/processed/charger_info_clean.csv
+        target: /app/data/processed/charger_info_clean.csv
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./data/processed/ev_registration_by_region_2025.csv
+        target: /app/data/processed/ev_registration_by_region_2025.csv
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./data/processed/charger_installation_trend.csv
+        target: /app/data/processed/charger_installation_trend.csv
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./reports/chart_verification.json
+        target: /app/reports/chart_verification.json
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./outputs/charts
+        target: /app/outputs/charts
+        read_only: true
+        bind:
+          create_host_path: false
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/api/charts', timeout=5).read()"]
+      interval: 30s
+      timeout: 10s
+      start_period: 90s
+      retries: 5
+    security_opt:
+      - no-new-privileges:true
+    init: true
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "127.0.0.1:18080:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    security_opt:
+      - no-new-privileges:true
+    init: true

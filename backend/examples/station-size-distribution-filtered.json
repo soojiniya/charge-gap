@@ -1,0 +1,84 @@
+{
+  "data": [
+    {
+      "charger_count": 70,
+      "fence_high": 3.5,
+      "fence_low": -0.5,
+      "iqr": 1.0,
+      "max": 6,
+      "mean": 1.8918918918918919,
+      "median": 2.0,
+      "min": 1,
+      "outlier_count": 5,
+      "outlier_distribution": [
+        {
+          "charger_count": 4,
+          "station_count": 4
+        },
+        {
+          "charger_count": 6,
+          "station_count": 1
+        }
+      ],
+      "q1": 1.0,
+      "q3": 2.0,
+      "region_code": "36",
+      "region_name": "세종",
+      "sample_count": 37,
+      "station_count": 37,
+      "whisker_high": 2,
+      "whisker_low": 1
+    }
+  ],
+  "meta": {
+    "api_version": "1.0",
+    "count": 1,
+    "deletion_policy": "all includes N and Y; not_deleted includes N; deleted includes Y. Filter before station aggregation. N does not imply availability.",
+    "empty_policy": "Only regions with observations appear; no observations returns data=[] and sample_count=0.",
+    "filters": {
+      "charger_type": "04",
+      "deletion": "not_deleted",
+      "operator_id": "ME",
+      "region_code": "36"
+    },
+    "matched": {
+      "charger_count": 70,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 70,
+      "station_count": 37
+    },
+    "quantile_method": "linear",
+    "same_period_shortage_rate_computed": false,
+    "sample_count": 37,
+    "sample_unit": "One (zcode, statId) after filters; count distinct chgerId within that station.",
+    "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
+    "sources": {
+      "chargers": {
+        "file": "charger_info_clean.csv",
+        "region_system": "2026_16_provinces",
+        "snapshot_date": "2026-10-15",
+        "snapshot_end_at": "2026-10-15T04:19:04+09:00",
+        "snapshot_start_at": "2026-10-15T04:16:31+09:00",
+        "source": "한국환경공단 getChargerInfo",
+        "source_url": "https://www.data.go.kr/data/15076352/openapi.do",
+        "unit": "기 / 곳 / kW"
+      }
+    },
+    "station_count_additivity": "Regional samples use (zcode, statId); national matched.station_count uses distinct statId.",
+    "units": {
+      "charger_count": "기",
+      "ev_registration_count": "대",
+      "output_kw": "kW",
+      "share_pct": "%",
+      "station_count": "곳"
+    },
+    "warnings": [
+      "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+      "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
+      "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
+      "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
+    ],
+    "whisker_iqr_multiplier": 1.5,
+    "whisker_rule": "Observed minimum/maximum within inclusive [Q1 - 1.5*IQR, Q3 + 1.5*IQR]; outliers strictly outside."
+  }
+}

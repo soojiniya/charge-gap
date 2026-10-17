@@ -1,0 +1,455 @@
+{
+  "data": [
+    {
+      "charger_count": 46148,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 46148,
+      "output_kw": 3.0,
+      "output_raw": "3",
+      "share_pct": 8.818448650136057,
+      "station_count": 3177,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 1,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 1,
+      "output_kw": 4.0,
+      "output_raw": "4",
+      "share_pct": 0.000191090592228,
+      "station_count": 1,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 1,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 1,
+      "output_kw": 5.0,
+      "output_raw": "5",
+      "share_pct": 0.000191090592228,
+      "station_count": 1,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 1,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 1,
+      "output_kw": 6.0,
+      "output_raw": "6",
+      "share_pct": 0.000191090592228,
+      "station_count": 1,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 402997,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 402997,
+      "output_kw": 7.0,
+      "output_raw": "7",
+      "share_pct": 77.00893539609258,
+      "station_count": 76426,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 64,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 64,
+      "output_kw": 10.0,
+      "output_raw": "10",
+      "share_pct": 0.01222979790259,
+      "station_count": 12,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 9408,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 9408,
+      "output_kw": 11.0,
+      "output_raw": "11",
+      "share_pct": 1.79778029168068,
+      "station_count": 2129,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 1,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 1,
+      "output_kw": 12.0,
+      "output_raw": "12",
+      "share_pct": 0.000191090592228,
+      "station_count": 1,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 678,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 678,
+      "output_kw": 13.0,
+      "output_raw": "13",
+      "share_pct": 0.129559421530559,
+      "station_count": 91,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 6164,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 6164,
+      "output_kw": 14.0,
+      "output_raw": "14",
+      "share_pct": 1.177882410493167,
+      "station_count": 1289,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 18,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 18,
+      "output_kw": 17.0,
+      "output_raw": "17",
+      "share_pct": 0.003439630660103,
+      "station_count": 7,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 14,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 14,
+      "output_kw": 20.0,
+      "output_raw": "20",
+      "share_pct": 0.002675268291191,
+      "station_count": 2,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 121,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 121,
+      "output_kw": 22.0,
+      "output_raw": "22",
+      "share_pct": 0.023121961659584,
+      "station_count": 25,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 261,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 261,
+      "output_kw": 25.0,
+      "output_raw": "25",
+      "share_pct": 0.049874644571498,
+      "station_count": 32,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 2095,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 2095,
+      "output_kw": 30.0,
+      "output_raw": "30",
+      "share_pct": 0.400334790717583,
+      "station_count": 423,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 1,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 1,
+      "output_kw": 32.0,
+      "output_raw": "32",
+      "share_pct": 0.000191090592228,
+      "station_count": 1,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 4,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 4,
+      "output_kw": 35.0,
+      "output_raw": "35",
+      "share_pct": 0.000764362368912,
+      "station_count": 3,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 46,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 46,
+      "output_kw": 40.0,
+      "output_raw": "40",
+      "share_pct": 0.008790167242486,
+      "station_count": 29,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 12721,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 12721,
+      "output_kw": 50.0,
+      "output_raw": "50",
+      "share_pct": 2.430863423731923,
+      "station_count": 9090,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 10,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 10,
+      "output_kw": 60.0,
+      "output_raw": "60",
+      "share_pct": 0.00191090592228,
+      "station_count": 3,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 7,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 7,
+      "output_kw": 90.0,
+      "output_raw": "90",
+      "share_pct": 0.001337634145596,
+      "station_count": 2,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 24293,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 24293,
+      "output_kw": 100.0,
+      "output_raw": "100",
+      "share_pct": 4.642163756993916,
+      "station_count": 11181,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 128,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 128,
+      "output_kw": 105.0,
+      "output_raw": "105",
+      "share_pct": 0.024459595805179,
+      "station_count": 39,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 127,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 127,
+      "output_kw": 110.0,
+      "output_raw": "110",
+      "share_pct": 0.024268505212951,
+      "station_count": 18,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 5077,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 5077,
+      "output_kw": 120.0,
+      "output_raw": "120",
+      "share_pct": 0.97016693674137,
+      "station_count": 489,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 115,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 115,
+      "output_kw": 150.0,
+      "output_raw": "150",
+      "share_pct": 0.021975418106216,
+      "station_count": 35,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 18,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 18,
+      "output_kw": 160.0,
+      "output_raw": "160",
+      "share_pct": 0.003439630660103,
+      "station_count": 2,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 22,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 22,
+      "output_kw": 180.0,
+      "output_raw": "180",
+      "share_pct": 0.004203993029015,
+      "station_count": 9,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 15,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 15,
+      "output_kw": 196.0,
+      "output_raw": "196",
+      "share_pct": 0.002866358883419,
+      "station_count": 2,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 8585,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 8585,
+      "output_kw": 200.0,
+      "output_raw": "200",
+      "share_pct": 1.640512734277066,
+      "station_count": 3347,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 12,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 12,
+      "output_kw": 222.0,
+      "output_raw": "222",
+      "share_pct": 0.002293087106736,
+      "station_count": 4,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 2393,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 2393,
+      "output_kw": 240.0,
+      "output_raw": "240",
+      "share_pct": 0.457279787201516,
+      "station_count": 308,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 320,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 320,
+      "output_kw": 260.0,
+      "output_raw": "260",
+      "share_pct": 0.061148989512948,
+      "station_count": 74,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 16,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 16,
+      "output_kw": 270.0,
+      "output_raw": "270",
+      "share_pct": 0.003057449475647,
+      "station_count": 3,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 389,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 389,
+      "output_kw": 300.0,
+      "output_raw": "300",
+      "share_pct": 0.074334240376678,
+      "station_count": 182,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 113,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 113,
+      "output_kw": 320.0,
+      "output_raw": "320",
+      "share_pct": 0.02159323692176,
+      "station_count": 40,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 644,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 644,
+      "output_kw": 350.0,
+      "output_raw": "350",
+      "share_pct": 0.123062341394808,
+      "station_count": 238,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 19,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 19,
+      "output_kw": 360.0,
+      "output_raw": "360",
+      "share_pct": 0.003630721252331,
+      "station_count": 6,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 96,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 96,
+      "output_kw": 400.0,
+      "output_raw": "400",
+      "share_pct": 0.018344696853884,
+      "station_count": 13,
+      "value_status": "positive_numeric"
+    },
+    {
+      "charger_count": 169,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 169,
+      "output_kw": null,
+      "output_raw": "",
+      "share_pct": 0.032294310086526,
+      "station_count": 95,
+      "value_status": "missing"
+    }
+  ],
+  "meta": {
+    "api_version": "1.0",
+    "count": 40,
+    "filters": {
+      "charger_type": null,
+      "deletion": "not_deleted",
+      "operator_id": null,
+      "region_code": null
+    },
+    "matched": {
+      "charger_count": 523312,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 523312,
+      "station_count": 100590
+    },
+    "output_note": "output(kW)을 수치화했습니다. powerType은 전체 결측이며 실제 동시 공급전력/실측 충전속도를 뜻하지 않습니다.",
+    "output_statistics": {
+      "invalid_or_missing_count": 169,
+      "max_kw": 400.0,
+      "median_kw": 7.0,
+      "min_kw": 3.0,
+      "valid_positive_count": 523143
+    },
+    "same_period_shortage_rate_computed": false,
+    "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
+    "sources": {
+      "chargers": {
+        "file": "charger_info_clean.csv",
+        "region_system": "2026_16_provinces",
+        "snapshot_date": "2026-10-15",
+        "snapshot_end_at": "2026-10-15T04:19:04+09:00",
+        "snapshot_start_at": "2026-10-15T04:16:31+09:00",
+        "source": "한국환경공단 getChargerInfo",
+        "source_url": "https://www.data.go.kr/data/15076352/openapi.do",
+        "unit": "기 / 곳 / kW"
+      }
+    },
+    "units": {
+      "charger_count": "기",
+      "ev_registration_count": "대",
+      "output_kw": "kW",
+      "share_pct": "%",
+      "station_count": "곳"
+    },
+    "warnings": [
+      "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+      "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
+      "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
+      "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
+    ]
+  }
+}

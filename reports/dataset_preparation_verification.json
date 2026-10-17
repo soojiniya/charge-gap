@@ -1,0 +1,759 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "check": "registration_reference_month",
+      "passed": true
+    },
+    {
+      "check": "one_exact_electric_subtotal",
+      "passed": true
+    },
+    {
+      "check": "registration_17_unique_regions",
+      "passed": true
+    },
+    {
+      "check": "registration_D_integer_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "서울_vehicle_and_usage_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_E_integer_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "부산_vehicle_and_usage_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_F_integer_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "대구_vehicle_and_usage_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_G_integer_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "인천_vehicle_and_usage_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_H_integer_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "광주_vehicle_and_usage_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_I_integer_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "대전_vehicle_and_usage_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_J_integer_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "울산_vehicle_and_usage_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_K_integer_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "세종_vehicle_and_usage_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_L_integer_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "경기_vehicle_and_usage_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_M_integer_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "강원_vehicle_and_usage_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_N_integer_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "충북_vehicle_and_usage_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_O_integer_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "충남_vehicle_and_usage_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_P_integer_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "전북_vehicle_and_usage_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_Q_integer_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "전남_vehicle_and_usage_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_R_integer_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "경북_vehicle_and_usage_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_S_integer_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "경남_vehicle_and_usage_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_T_integer_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "제주_vehicle_and_usage_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_national_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "registration_subtotals_no_double_count",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_2_numeric",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_2_sum",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_3_numeric",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_3_sum",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_4_numeric",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_4_sum",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_5_numeric",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_5_sum",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_6_numeric",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_6_sum",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_7_numeric",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_7_sum",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_8_numeric",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_8_sum",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_9_numeric",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_9_sum",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_10_numeric",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_10_sum",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_11_numeric",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_11_sum",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_12_numeric",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_12_sum",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_13_numeric",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_13_sum",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_14_numeric",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_14_sum",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_15_numeric",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_15_sum",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_16_numeric",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_16_sum",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_17_numeric",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_row_17_sum",
+      "passed": true
+    },
+    {
+      "check": "rapid_excel_16_unique_regions",
+      "passed": true
+    },
+    {
+      "check": "trend_no_duplicate_year",
+      "passed": true
+    },
+    {
+      "check": "trend_years_2011_2026",
+      "passed": true
+    },
+    {
+      "check": "trend_cumsum_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "api_raw_rows",
+      "passed": true
+    },
+    {
+      "check": "api_unique_station_count",
+      "passed": true
+    },
+    {
+      "check": "api_key_nonmissing",
+      "passed": true
+    },
+    {
+      "check": "api_key_duplicates",
+      "passed": true
+    },
+    {
+      "check": "api_deleted_count",
+      "passed": true
+    },
+    {
+      "check": "api_not_deleted_count",
+      "passed": true
+    },
+    {
+      "check": "api_current_region_codes",
+      "passed": true
+    },
+    {
+      "check": "types_all_count_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "types_not_deleted_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "types_deleted_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "operators_all_count_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "operators_not_deleted_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "operators_deleted_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "regions_all_count_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "regions_not_deleted_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "regions_deleted_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "outputs_all_count_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "outputs_not_deleted_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "outputs_deleted_reconciliation",
+      "passed": true
+    },
+    {
+      "check": "comparison_16_preserves_all_registrations",
+      "passed": true
+    },
+    {
+      "check": "comparison_union_gwangju_jeonnam",
+      "passed": true
+    },
+    {
+      "check": "original_sha256_2025년_12월_자동차_등록자료_통계.xlsx",
+      "passed": true
+    },
+    {
+      "check": "original_sha256_charger_info_raw.csv",
+      "passed": true
+    },
+    {
+      "check": "original_sha256_우리 지역 급속 충전 여건_2026-10-15.xlsx",
+      "passed": true
+    },
+    {
+      "check": "original_sha256_충전기 설치 성장 추세_2026-10-15.xlsx",
+      "passed": true
+    }
+  ],
+  "input_hashes": [
+    {
+      "path": "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\raw\\2025년_12월_자동차_등록자료_통계.xlsx",
+      "sha256": "63edcfe041d50517139c86f935c98d358aff142077a53db85d4ea72bc6c88582"
+    },
+    {
+      "path": "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\raw\\charger_info_raw.csv",
+      "sha256": "b98fbba0cf7f2c2df7ecd33b66190a3eb59a7f8826604b7811d8e1cc35845d5c"
+    },
+    {
+      "path": "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\raw\\우리 지역 급속 충전 여건_2026-10-15.xlsx",
+      "sha256": "2ec158c31b7dc688020a3b83f8e1aace7a34474e13563abb9982f8d96f263006"
+    },
+    {
+      "path": "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\data\\raw\\충전기 설치 성장 추세_2026-10-15.xlsx",
+      "sha256": "aa8cffe49bd71354092d356783927981c194187ae8fdb352e32c79385b48de1c"
+    }
+  ],
+  "outputs": {
+    "ev_registration_by_region_2025.csv": {
+      "rows": 17,
+      "columns": [
+        "reference_month",
+        "region_system",
+        "region_code_2025",
+        "region_name_2025",
+        "ev_registration_count",
+        "ev_passenger_count",
+        "ev_bus_count",
+        "ev_truck_count",
+        "ev_special_count",
+        "ev_noncommercial_count",
+        "ev_commercial_count",
+        "source_file",
+        "source_sheet",
+        "source_cell",
+        "fuel_filter",
+        "vehicle_filter",
+        "usage_filter"
+      ],
+      "dtypes": {
+        "reference_month": "str",
+        "region_system": "str",
+        "region_code_2025": "str",
+        "region_name_2025": "str",
+        "ev_registration_count": "int64",
+        "ev_passenger_count": "int64",
+        "ev_bus_count": "int64",
+        "ev_truck_count": "int64",
+        "ev_special_count": "int64",
+        "ev_noncommercial_count": "int64",
+        "ev_commercial_count": "int64",
+        "source_file": "str",
+        "source_sheet": "str",
+        "source_cell": "str",
+        "fuel_filter": "str",
+        "vehicle_filter": "str",
+        "usage_filter": "str"
+      }
+    },
+    "charger_region_output_excel.csv": {
+      "rows": 16,
+      "columns": [
+        "region_code",
+        "region_name_source",
+        "source_filename_date",
+        "measurement_as_of",
+        "measurement_as_of_status",
+        "output_lt30_count",
+        "output_30_lt50_count",
+        "output_50_lt100_count",
+        "output_100_lt200_count",
+        "output_ge200_count",
+        "other_count",
+        "charger_count_excel",
+        "source_file",
+        "source_sheet",
+        "source_row"
+      ],
+      "dtypes": {
+        "region_code": "str",
+        "region_name_source": "str",
+        "source_filename_date": "str",
+        "measurement_as_of": "str",
+        "measurement_as_of_status": "str",
+        "output_lt30_count": "int64",
+        "output_30_lt50_count": "int64",
+        "output_50_lt100_count": "int64",
+        "output_100_lt200_count": "int64",
+        "output_ge200_count": "int64",
+        "other_count": "int64",
+        "charger_count_excel": "int64",
+        "source_file": "str",
+        "source_sheet": "str",
+        "source_row": "int64"
+      }
+    },
+    "charger_installation_trend.csv": {
+      "rows": 16,
+      "columns": [
+        "year",
+        "annual_installed_count",
+        "cumulative_count",
+        "source_filename_date",
+        "measurement_cutoff_date",
+        "cutoff_status",
+        "completed_calendar_year",
+        "source_file",
+        "source_sheet",
+        "source_row"
+      ],
+      "dtypes": {
+        "year": "int64",
+        "annual_installed_count": "int64",
+        "cumulative_count": "int64",
+        "source_filename_date": "str",
+        "measurement_cutoff_date": "str",
+        "cutoff_status": "str",
+        "completed_calendar_year": "bool",
+        "source_file": "str",
+        "source_sheet": "str",
+        "source_row": "int64"
+      }
+    },
+    "charger_type_summary.csv": {
+      "rows": 10,
+      "columns": [
+        "charger_type_code",
+        "charger_count_all",
+        "station_count_all",
+        "charger_count_not_deleted",
+        "charger_count_deleted",
+        "output_valid_positive_count",
+        "output_min_kw",
+        "output_median_kw",
+        "output_max_kw",
+        "output_invalid_or_missing_count",
+        "snapshot_date",
+        "snapshot_start_at",
+        "snapshot_end_at",
+        "source_file",
+        "official_definition",
+        "definition_verified",
+        "definition_source",
+        "charger_share_all_pct"
+      ],
+      "dtypes": {
+        "charger_type_code": "str",
+        "charger_count_all": "int64",
+        "station_count_all": "int64",
+        "charger_count_not_deleted": "int64",
+        "charger_count_deleted": "int64",
+        "output_valid_positive_count": "int64",
+        "output_min_kw": "float64",
+        "output_median_kw": "float64",
+        "output_max_kw": "float64",
+        "output_invalid_or_missing_count": "int64",
+        "snapshot_date": "str",
+        "snapshot_start_at": "str",
+        "snapshot_end_at": "str",
+        "source_file": "str",
+        "official_definition": "str",
+        "definition_verified": "bool",
+        "definition_source": "str",
+        "charger_share_all_pct": "float64"
+      }
+    },
+    "charger_operator_summary.csv": {
+      "rows": 356,
+      "columns": [
+        "busiId",
+        "busiNm",
+        "charger_count_all",
+        "station_count_all",
+        "charger_count_not_deleted",
+        "charger_count_deleted",
+        "output_valid_positive_count",
+        "output_min_kw",
+        "output_median_kw",
+        "output_max_kw",
+        "output_invalid_or_missing_count",
+        "snapshot_date",
+        "snapshot_start_at",
+        "snapshot_end_at",
+        "source_file",
+        "charger_share_not_deleted_pct",
+        "busiId_name_variant_count"
+      ],
+      "dtypes": {
+        "busiId": "str",
+        "busiNm": "str",
+        "charger_count_all": "int64",
+        "station_count_all": "int64",
+        "charger_count_not_deleted": "int64",
+        "charger_count_deleted": "int64",
+        "output_valid_positive_count": "int64",
+        "output_min_kw": "float64",
+        "output_median_kw": "float64",
+        "output_max_kw": "float64",
+        "output_invalid_or_missing_count": "int64",
+        "snapshot_date": "str",
+        "snapshot_start_at": "str",
+        "snapshot_end_at": "str",
+        "source_file": "str",
+        "charger_share_not_deleted_pct": "float64",
+        "busiId_name_variant_count": "int64"
+      }
+    },
+    "charger_region_summary.csv": {
+      "rows": 16,
+      "columns": [
+        "region_code",
+        "charger_count_all",
+        "station_count_all",
+        "charger_count_not_deleted",
+        "charger_count_deleted",
+        "output_valid_positive_count",
+        "output_min_kw",
+        "output_median_kw",
+        "output_max_kw",
+        "output_invalid_or_missing_count",
+        "snapshot_date",
+        "snapshot_start_at",
+        "snapshot_end_at",
+        "source_file",
+        "region_name",
+        "region_system",
+        "station_count_not_deleted",
+        "output_lt30_count_all",
+        "output_lt30_count_not_deleted",
+        "output_30_lt50_count_all",
+        "output_30_lt50_count_not_deleted",
+        "output_50_lt100_count_all",
+        "output_50_lt100_count_not_deleted",
+        "output_100_lt200_count_all",
+        "output_100_lt200_count_not_deleted",
+        "output_ge200_count_all",
+        "output_ge200_count_not_deleted"
+      ],
+      "dtypes": {
+        "region_code": "str",
+        "charger_count_all": "int64",
+        "station_count_all": "int64",
+        "charger_count_not_deleted": "int64",
+        "charger_count_deleted": "int64",
+        "output_valid_positive_count": "int64",
+        "output_min_kw": "float64",
+        "output_median_kw": "float64",
+        "output_max_kw": "float64",
+        "output_invalid_or_missing_count": "int64",
+        "snapshot_date": "str",
+        "snapshot_start_at": "str",
+        "snapshot_end_at": "str",
+        "source_file": "str",
+        "region_name": "str",
+        "region_system": "str",
+        "station_count_not_deleted": "int64",
+        "output_lt30_count_all": "int64",
+        "output_lt30_count_not_deleted": "int64",
+        "output_30_lt50_count_all": "int64",
+        "output_30_lt50_count_not_deleted": "int64",
+        "output_50_lt100_count_all": "int64",
+        "output_50_lt100_count_not_deleted": "int64",
+        "output_100_lt200_count_all": "int64",
+        "output_100_lt200_count_not_deleted": "int64",
+        "output_ge200_count_all": "int64",
+        "output_ge200_count_not_deleted": "int64"
+      }
+    },
+    "charger_output_summary.csv": {
+      "rows": 40,
+      "columns": [
+        "output_raw",
+        "charger_count_all",
+        "station_count_all",
+        "charger_count_not_deleted",
+        "charger_count_deleted",
+        "output_valid_positive_count",
+        "output_min_kw",
+        "output_median_kw",
+        "output_max_kw",
+        "output_invalid_or_missing_count",
+        "snapshot_date",
+        "snapshot_start_at",
+        "snapshot_end_at",
+        "source_file",
+        "output_kw_numeric",
+        "value_status"
+      ],
+      "dtypes": {
+        "output_raw": "str",
+        "charger_count_all": "int64",
+        "station_count_all": "int64",
+        "charger_count_not_deleted": "int64",
+        "charger_count_deleted": "int64",
+        "output_valid_positive_count": "int64",
+        "output_min_kw": "float64",
+        "output_median_kw": "float64",
+        "output_max_kw": "float64",
+        "output_invalid_or_missing_count": "int64",
+        "snapshot_date": "str",
+        "snapshot_start_at": "str",
+        "snapshot_end_at": "str",
+        "source_file": "str",
+        "output_kw_numeric": "float64",
+        "value_status": "str"
+      }
+    },
+    "region_comparison_2025_registration_2026_chargers.csv": {
+      "rows": 16,
+      "columns": [
+        "comparison_region_code",
+        "ev_registration_2025_12",
+        "source_region_codes_2025",
+        "source_region_names_2025",
+        "region_name",
+        "charger_count_all_2026_10_15",
+        "charger_count_not_deleted_2026_10_15",
+        "charger_count_deleted_2026_10_15",
+        "station_count_all_2026_10_15",
+        "registration_period",
+        "charger_snapshot_date",
+        "registration_geography",
+        "same_period_ratio_allowed"
+      ],
+      "dtypes": {
+        "comparison_region_code": "str",
+        "ev_registration_2025_12": "int64",
+        "source_region_codes_2025": "str",
+        "source_region_names_2025": "str",
+        "region_name": "str",
+        "charger_count_all_2026_10_15": "int64",
+        "charger_count_not_deleted_2026_10_15": "int64",
+        "charger_count_deleted_2026_10_15": "int64",
+        "station_count_all_2026_10_15": "int64",
+        "registration_period": "str",
+        "charger_snapshot_date": "str",
+        "registration_geography": "str",
+        "same_period_ratio_allowed": "bool"
+      }
+    }
+  },
+  "ev_registration_total": 899101,
+  "api_rows": 527433,
+  "api_stations": 101091,
+  "operator_pairs": 356,
+  "busiId_count": 144,
+  "operator_name_count": 345,
+  "unknown_type_rows": 0,
+  "output_invalid_or_missing": 169,
+  "regional_excel_total": 540378,
+  "trend_last_cumulative": 540210,
+  "snapshot_start_at": "2026-10-15T04:16:31+09:00",
+  "snapshot_end_at": "2026-10-15T04:19:04+09:00"
+}

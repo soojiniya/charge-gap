@@ -1,0 +1,56 @@
+{
+  "data": [
+    {
+      "annual_installed_count": 89805,
+      "completed_calendar_year": true,
+      "cumulative_count": 478802,
+      "is_partial_year": false,
+      "measurement_cutoff_date": null,
+      "year": 2025
+    },
+    {
+      "annual_installed_count": 61408,
+      "completed_calendar_year": false,
+      "cumulative_count": 540210,
+      "is_partial_year": true,
+      "measurement_cutoff_date": null,
+      "year": 2026
+    }
+  ],
+  "meta": {
+    "api_version": "1.0",
+    "count": 2,
+    "filters": {
+      "year_from": 2025,
+      "year_to": 2026
+    },
+    "growth_warning": "2026년은 부분 연도이며 정확한 집계 마감일 미기재. API 현황과 모집단이 달라 합치거나 과거 API 재고로 간주하지 않습니다.",
+    "same_period_shortage_rate_computed": false,
+    "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
+    "sources": {
+      "growth": {
+        "file": "charger_installation_trend.csv",
+        "geography": "전국 (지역 세분 없음)",
+        "measurement_cutoff_date": null,
+        "partial_year": 2026,
+        "period": "2011–2026",
+        "source": "충전기 설치 성장 추세_2026-10-15.xlsx",
+        "source_filename_date": "2026-10-15",
+        "unit": "기"
+      }
+    },
+    "units": {
+      "charger_count": "기",
+      "ev_registration_count": "대",
+      "output_kw": "kW",
+      "share_pct": "%",
+      "station_count": "곳"
+    },
+    "warnings": [
+      "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+      "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
+      "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
+      "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
+    ]
+  }
+}

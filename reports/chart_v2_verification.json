@@ -1,0 +1,4253 @@
+{
+  "charts": [
+    {
+      "number": 1,
+      "file": "v2_01_ev_top10.png",
+      "purpose": "지역별 전기차 규모 비교",
+      "variables": [
+        "region_name_2025",
+        "ev_registration_count"
+      ],
+      "kind": "가로 막대",
+      "reason": "긴 지역명을 읽고 순위를 비교하기 쉽다.",
+      "results": "경기 207,075대로 전국의 23.03%.",
+      "metrics": {
+        "national_total": 899101,
+        "top10_total": 744793
+      },
+      "source": "2025년 12월 자동차 등록자료 · 순수 전기차 · 원래 17개 시도",
+      "caution": "2025년 등록 규모이며 충전기 부족률을 계산하지 않는다.",
+      "image_pixels": [
+        2800,
+        1600
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "ca31836c86a579a2cf7b23c169c02cdab7a26a912eb69e07e0d0a06c9057b968"
+    },
+    {
+      "number": 2,
+      "file": "v2_02_vehicle_donut.png",
+      "purpose": "차종 구성 파악",
+      "variables": [
+        "ev_passenger_count",
+        "ev_bus_count",
+        "ev_truck_count",
+        "ev_special_count"
+      ],
+      "kind": "도넛",
+      "reason": "전체 대비 차종별 비중을 표시한다.",
+      "results": "승용 713,835대 (79.39%), 화물 169,744대.",
+      "metrics": {
+        "ev_passenger_count": 713835,
+        "ev_bus_count": 14779,
+        "ev_truck_count": 169744,
+        "ev_special_count": 743
+      },
+      "source": "2025년 12월 자동차 등록자료 · 순수 전기차 · 원래 17개 시도",
+      "caution": "등록 대수 비율이며 실제 운행량이나 충전 수요 비율이 아니다.",
+      "image_pixels": [
+        2800,
+        1600
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "22daf743934019c568ec3526f0d538b879655c4f5a9f5a3ffc76ab25cf7a35d4"
+    },
+    {
+      "number": 3,
+      "file": "v2_03_commercial_percent.png",
+      "purpose": "용도별 구성 비교",
+      "variables": [
+        "ev_commercial_count",
+        "ev_noncommercial_count"
+      ],
+      "kind": "100% 누적 가로 막대",
+      "reason": "절대 규모의 영향을 분리하여 지역 내 구성비를 비교한다.",
+      "results": "전국 사업용 168,792대 (18.77%). 사업용 비율 최대 인천 40.11%.",
+      "metrics": {
+        "commercial_total": 168792,
+        "noncommercial_total": 730309,
+        "regional_percentages": {
+          "충남": 7.14124350510806,
+          "세종": 7.612551159618008,
+          "경북": 7.924151696606787,
+          "충북": 9.537704021154372,
+          "전북": 9.950509652256564,
+          "강원": 12.325246310214572,
+          "경기": 12.694434383677411,
+          "광주": 14.004708344232277,
+          "울산": 14.227886056971514,
+          "대구": 15.329169797145003,
+          "경남": 18.97958564625231,
+          "대전": 20.36410821012897,
+          "부산": 21.329114966961622,
+          "서울": 23.07586029941479,
+          "제주": 27.183400750045035,
+          "전남": 30.097768743042447,
+          "인천": 40.10768845479589
+        }
+      },
+      "source": "2025년 12월 자동차 등록자료 · 순수 전기차 · 원래 17개 시도",
+      "caution": "사업용 여부만으로 실제 주행거리 또는 충전 수요를 추정하지 않는다.",
+      "image_pixels": [
+        2800,
+        2000
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "fbe6b7b4227365f6bf13f84960fcc33a428b617127a96c8f2ef5f2237cfafc3d"
+    },
+    {
+      "number": 4,
+      "file": "v2_04_stations_chargers_regression.png",
+      "purpose": "지역 규모의 연관성 탐색",
+      "variables": [
+        "station_count",
+        "charger_count"
+      ],
+      "kind": "산점도·회귀선",
+      "reason": "두 수치 변수의 관계와 지역별 편차를 보여준다.",
+      "results": "16개 지역 Pearson r=0.98629, R²=0.97278, 회귀 기울기 6.29330. 전국 비삭제 충전소 100,590곳·충전기 523,312기.",
+      "metrics": {
+        "n": 16,
+        "pearson_r": 0.986294187634238,
+        "slope": 6.293303994977147,
+        "intercept": -6858.215553421963,
+        "r_squared": 0.9727762245610816
+      },
+      "source": "한국환경공단 getChargerInfo · 2026-10-15 04:16–04:19 KST 조회",
+      "caution": "비삭제 표시(N)만 집계 · 실제 이용 가능 상태를 뜻하지 않음 · 현재 16개 지역 유지 · 상관관계는 인과관계가 아님",
+      "image_pixels": [
+        2800,
+        1600
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "92d8a15c3b4dc1118540fdc4b7a26df7016477f8088eefd29b6e478b9e193afc"
+    },
+    {
+      "number": 5,
+      "file": "v2_05_station_size_boxplot.png",
+      "purpose": "지역별 충전소 규모 분포 비교",
+      "variables": [
+        "zcode",
+        "statId",
+        "chgerId"
+      ],
+      "kind": "박스플롯",
+      "reason": "원시 충전소 관측 분포의 중앙값·산포·극단값을 함께 보여준다.",
+      "results": "표본 100,590곳, 지역별 1.5×IQR 기준 이상치 9,748곳. 지역 중앙값 범위 2–3기/곳.",
+      "metrics": {
+        "sample_count": 100590,
+        "outlier_count": 9748,
+        "regions": [
+          {
+            "charger_count": 75506,
+            "fence_high": 12.0,
+            "fence_low": -4.0,
+            "iqr": 4.0,
+            "max": 100,
+            "mean": 5.836889301175016,
+            "median": 3.0,
+            "min": 1,
+            "outlier_count": 1149,
+            "outlier_distribution": [
+              {
+                "charger_count": 13,
+                "station_count": 75
+              },
+              {
+                "charger_count": 14,
+                "station_count": 84
+              },
+              {
+                "charger_count": 15,
+                "station_count": 83
+              },
+              {
+                "charger_count": 16,
+                "station_count": 73
+              },
+              {
+                "charger_count": 17,
+                "station_count": 42
+              },
+              {
+                "charger_count": 18,
+                "station_count": 63
+              },
+              {
+                "charger_count": 19,
+                "station_count": 32
+              },
+              {
+                "charger_count": 20,
+                "station_count": 96
+              },
+              {
+                "charger_count": 21,
+                "station_count": 44
+              },
+              {
+                "charger_count": 22,
+                "station_count": 41
+              },
+              {
+                "charger_count": 23,
+                "station_count": 25
+              },
+              {
+                "charger_count": 24,
+                "station_count": 37
+              },
+              {
+                "charger_count": 25,
+                "station_count": 23
+              },
+              {
+                "charger_count": 26,
+                "station_count": 21
+              },
+              {
+                "charger_count": 27,
+                "station_count": 14
+              },
+              {
+                "charger_count": 28,
+                "station_count": 25
+              },
+              {
+                "charger_count": 29,
+                "station_count": 11
+              },
+              {
+                "charger_count": 30,
+                "station_count": 44
+              },
+              {
+                "charger_count": 31,
+                "station_count": 12
+              },
+              {
+                "charger_count": 32,
+                "station_count": 16
+              },
+              {
+                "charger_count": 33,
+                "station_count": 11
+              },
+              {
+                "charger_count": 34,
+                "station_count": 6
+              },
+              {
+                "charger_count": 35,
+                "station_count": 8
+              },
+              {
+                "charger_count": 36,
+                "station_count": 10
+              },
+              {
+                "charger_count": 37,
+                "station_count": 7
+              },
+              {
+                "charger_count": 38,
+                "station_count": 6
+              },
+              {
+                "charger_count": 39,
+                "station_count": 8
+              },
+              {
+                "charger_count": 40,
+                "station_count": 40
+              },
+              {
+                "charger_count": 41,
+                "station_count": 11
+              },
+              {
+                "charger_count": 42,
+                "station_count": 8
+              },
+              {
+                "charger_count": 43,
+                "station_count": 3
+              },
+              {
+                "charger_count": 44,
+                "station_count": 7
+              },
+              {
+                "charger_count": 45,
+                "station_count": 4
+              },
+              {
+                "charger_count": 46,
+                "station_count": 7
+              },
+              {
+                "charger_count": 47,
+                "station_count": 2
+              },
+              {
+                "charger_count": 48,
+                "station_count": 6
+              },
+              {
+                "charger_count": 49,
+                "station_count": 4
+              },
+              {
+                "charger_count": 50,
+                "station_count": 27
+              },
+              {
+                "charger_count": 51,
+                "station_count": 8
+              },
+              {
+                "charger_count": 52,
+                "station_count": 5
+              },
+              {
+                "charger_count": 53,
+                "station_count": 3
+              },
+              {
+                "charger_count": 54,
+                "station_count": 2
+              },
+              {
+                "charger_count": 55,
+                "station_count": 2
+              },
+              {
+                "charger_count": 56,
+                "station_count": 2
+              },
+              {
+                "charger_count": 57,
+                "station_count": 1
+              },
+              {
+                "charger_count": 59,
+                "station_count": 1
+              },
+              {
+                "charger_count": 60,
+                "station_count": 4
+              },
+              {
+                "charger_count": 61,
+                "station_count": 2
+              },
+              {
+                "charger_count": 62,
+                "station_count": 4
+              },
+              {
+                "charger_count": 63,
+                "station_count": 2
+              },
+              {
+                "charger_count": 65,
+                "station_count": 1
+              },
+              {
+                "charger_count": 66,
+                "station_count": 3
+              },
+              {
+                "charger_count": 67,
+                "station_count": 2
+              },
+              {
+                "charger_count": 69,
+                "station_count": 2
+              },
+              {
+                "charger_count": 70,
+                "station_count": 17
+              },
+              {
+                "charger_count": 71,
+                "station_count": 3
+              },
+              {
+                "charger_count": 72,
+                "station_count": 3
+              },
+              {
+                "charger_count": 73,
+                "station_count": 2
+              },
+              {
+                "charger_count": 74,
+                "station_count": 2
+              },
+              {
+                "charger_count": 75,
+                "station_count": 2
+              },
+              {
+                "charger_count": 77,
+                "station_count": 5
+              },
+              {
+                "charger_count": 78,
+                "station_count": 1
+              },
+              {
+                "charger_count": 80,
+                "station_count": 2
+              },
+              {
+                "charger_count": 83,
+                "station_count": 2
+              },
+              {
+                "charger_count": 84,
+                "station_count": 2
+              },
+              {
+                "charger_count": 86,
+                "station_count": 1
+              },
+              {
+                "charger_count": 88,
+                "station_count": 1
+              },
+              {
+                "charger_count": 89,
+                "station_count": 3
+              },
+              {
+                "charger_count": 90,
+                "station_count": 2
+              },
+              {
+                "charger_count": 92,
+                "station_count": 1
+              },
+              {
+                "charger_count": 96,
+                "station_count": 3
+              },
+              {
+                "charger_count": 97,
+                "station_count": 2
+              },
+              {
+                "charger_count": 98,
+                "station_count": 2
+              },
+              {
+                "charger_count": 99,
+                "station_count": 5
+              },
+              {
+                "charger_count": 100,
+                "station_count": 8
+              }
+            ],
+            "q1": 2.0,
+            "q3": 6.0,
+            "region_code": "11",
+            "region_name": "서울",
+            "sample_count": 12936,
+            "station_count": 12936,
+            "whisker_high": 12,
+            "whisker_low": 1
+          },
+          {
+            "charger_count": 32546,
+            "fence_high": 11.0,
+            "fence_low": -5.0,
+            "iqr": 4.0,
+            "max": 99,
+            "mean": 4.031962338949455,
+            "median": 2.0,
+            "min": 1,
+            "outlier_count": 449,
+            "outlier_distribution": [
+              {
+                "charger_count": 12,
+                "station_count": 65
+              },
+              {
+                "charger_count": 13,
+                "station_count": 37
+              },
+              {
+                "charger_count": 14,
+                "station_count": 48
+              },
+              {
+                "charger_count": 15,
+                "station_count": 43
+              },
+              {
+                "charger_count": 16,
+                "station_count": 30
+              },
+              {
+                "charger_count": 17,
+                "station_count": 16
+              },
+              {
+                "charger_count": 18,
+                "station_count": 25
+              },
+              {
+                "charger_count": 19,
+                "station_count": 12
+              },
+              {
+                "charger_count": 20,
+                "station_count": 33
+              },
+              {
+                "charger_count": 21,
+                "station_count": 13
+              },
+              {
+                "charger_count": 22,
+                "station_count": 10
+              },
+              {
+                "charger_count": 23,
+                "station_count": 13
+              },
+              {
+                "charger_count": 24,
+                "station_count": 13
+              },
+              {
+                "charger_count": 25,
+                "station_count": 6
+              },
+              {
+                "charger_count": 26,
+                "station_count": 7
+              },
+              {
+                "charger_count": 27,
+                "station_count": 7
+              },
+              {
+                "charger_count": 28,
+                "station_count": 5
+              },
+              {
+                "charger_count": 29,
+                "station_count": 2
+              },
+              {
+                "charger_count": 30,
+                "station_count": 12
+              },
+              {
+                "charger_count": 31,
+                "station_count": 3
+              },
+              {
+                "charger_count": 32,
+                "station_count": 5
+              },
+              {
+                "charger_count": 33,
+                "station_count": 7
+              },
+              {
+                "charger_count": 34,
+                "station_count": 2
+              },
+              {
+                "charger_count": 35,
+                "station_count": 3
+              },
+              {
+                "charger_count": 36,
+                "station_count": 3
+              },
+              {
+                "charger_count": 37,
+                "station_count": 1
+              },
+              {
+                "charger_count": 38,
+                "station_count": 2
+              },
+              {
+                "charger_count": 40,
+                "station_count": 2
+              },
+              {
+                "charger_count": 41,
+                "station_count": 2
+              },
+              {
+                "charger_count": 42,
+                "station_count": 1
+              },
+              {
+                "charger_count": 43,
+                "station_count": 1
+              },
+              {
+                "charger_count": 44,
+                "station_count": 1
+              },
+              {
+                "charger_count": 45,
+                "station_count": 2
+              },
+              {
+                "charger_count": 46,
+                "station_count": 2
+              },
+              {
+                "charger_count": 49,
+                "station_count": 2
+              },
+              {
+                "charger_count": 50,
+                "station_count": 1
+              },
+              {
+                "charger_count": 52,
+                "station_count": 1
+              },
+              {
+                "charger_count": 53,
+                "station_count": 2
+              },
+              {
+                "charger_count": 56,
+                "station_count": 1
+              },
+              {
+                "charger_count": 60,
+                "station_count": 1
+              },
+              {
+                "charger_count": 64,
+                "station_count": 1
+              },
+              {
+                "charger_count": 67,
+                "station_count": 1
+              },
+              {
+                "charger_count": 71,
+                "station_count": 1
+              },
+              {
+                "charger_count": 74,
+                "station_count": 2
+              },
+              {
+                "charger_count": 87,
+                "station_count": 1
+              },
+              {
+                "charger_count": 99,
+                "station_count": 1
+              }
+            ],
+            "q1": 1.0,
+            "q3": 5.0,
+            "region_code": "12",
+            "region_name": "전남광주통합특별시",
+            "sample_count": 8072,
+            "station_count": 8072,
+            "whisker_high": 11,
+            "whisker_low": 1
+          },
+          {
+            "charger_count": 32475,
+            "fence_high": 12.0,
+            "fence_low": -4.0,
+            "iqr": 4.0,
+            "max": 99,
+            "mean": 6.313180404354588,
+            "median": 3.0,
+            "min": 1,
+            "outlier_count": 551,
+            "outlier_distribution": [
+              {
+                "charger_count": 13,
+                "station_count": 36
+              },
+              {
+                "charger_count": 14,
+                "station_count": 61
+              },
+              {
+                "charger_count": 15,
+                "station_count": 45
+              },
+              {
+                "charger_count": 16,
+                "station_count": 27
+              },
+              {
+                "charger_count": 17,
+                "station_count": 18
+              },
+              {
+                "charger_count": 18,
+                "station_count": 27
+              },
+              {
+                "charger_count": 19,
+                "station_count": 23
+              },
+              {
+                "charger_count": 20,
+                "station_count": 33
+              },
+              {
+                "charger_count": 21,
+                "station_count": 30
+              },
+              {
+                "charger_count": 22,
+                "station_count": 20
+              },
+              {
+                "charger_count": 23,
+                "station_count": 12
+              },
+              {
+                "charger_count": 24,
+                "station_count": 11
+              },
+              {
+                "charger_count": 25,
+                "station_count": 9
+              },
+              {
+                "charger_count": 26,
+                "station_count": 11
+              },
+              {
+                "charger_count": 27,
+                "station_count": 13
+              },
+              {
+                "charger_count": 28,
+                "station_count": 11
+              },
+              {
+                "charger_count": 29,
+                "station_count": 5
+              },
+              {
+                "charger_count": 30,
+                "station_count": 19
+              },
+              {
+                "charger_count": 31,
+                "station_count": 4
+              },
+              {
+                "charger_count": 32,
+                "station_count": 7
+              },
+              {
+                "charger_count": 33,
+                "station_count": 2
+              },
+              {
+                "charger_count": 34,
+                "station_count": 8
+              },
+              {
+                "charger_count": 35,
+                "station_count": 8
+              },
+              {
+                "charger_count": 36,
+                "station_count": 6
+              },
+              {
+                "charger_count": 37,
+                "station_count": 6
+              },
+              {
+                "charger_count": 38,
+                "station_count": 3
+              },
+              {
+                "charger_count": 39,
+                "station_count": 7
+              },
+              {
+                "charger_count": 40,
+                "station_count": 5
+              },
+              {
+                "charger_count": 41,
+                "station_count": 3
+              },
+              {
+                "charger_count": 42,
+                "station_count": 2
+              },
+              {
+                "charger_count": 43,
+                "station_count": 2
+              },
+              {
+                "charger_count": 45,
+                "station_count": 3
+              },
+              {
+                "charger_count": 46,
+                "station_count": 5
+              },
+              {
+                "charger_count": 48,
+                "station_count": 3
+              },
+              {
+                "charger_count": 49,
+                "station_count": 2
+              },
+              {
+                "charger_count": 50,
+                "station_count": 3
+              },
+              {
+                "charger_count": 51,
+                "station_count": 1
+              },
+              {
+                "charger_count": 52,
+                "station_count": 3
+              },
+              {
+                "charger_count": 55,
+                "station_count": 2
+              },
+              {
+                "charger_count": 56,
+                "station_count": 1
+              },
+              {
+                "charger_count": 58,
+                "station_count": 1
+              },
+              {
+                "charger_count": 59,
+                "station_count": 3
+              },
+              {
+                "charger_count": 60,
+                "station_count": 1
+              },
+              {
+                "charger_count": 61,
+                "station_count": 2
+              },
+              {
+                "charger_count": 65,
+                "station_count": 1
+              },
+              {
+                "charger_count": 66,
+                "station_count": 2
+              },
+              {
+                "charger_count": 67,
+                "station_count": 1
+              },
+              {
+                "charger_count": 68,
+                "station_count": 4
+              },
+              {
+                "charger_count": 69,
+                "station_count": 3
+              },
+              {
+                "charger_count": 72,
+                "station_count": 3
+              },
+              {
+                "charger_count": 74,
+                "station_count": 1
+              },
+              {
+                "charger_count": 78,
+                "station_count": 1
+              },
+              {
+                "charger_count": 79,
+                "station_count": 1
+              },
+              {
+                "charger_count": 80,
+                "station_count": 1
+              },
+              {
+                "charger_count": 81,
+                "station_count": 2
+              },
+              {
+                "charger_count": 84,
+                "station_count": 1
+              },
+              {
+                "charger_count": 85,
+                "station_count": 2
+              },
+              {
+                "charger_count": 88,
+                "station_count": 2
+              },
+              {
+                "charger_count": 91,
+                "station_count": 3
+              },
+              {
+                "charger_count": 92,
+                "station_count": 1
+              },
+              {
+                "charger_count": 93,
+                "station_count": 1
+              },
+              {
+                "charger_count": 95,
+                "station_count": 1
+              },
+              {
+                "charger_count": 96,
+                "station_count": 1
+              },
+              {
+                "charger_count": 97,
+                "station_count": 3
+              },
+              {
+                "charger_count": 98,
+                "station_count": 1
+              },
+              {
+                "charger_count": 99,
+                "station_count": 11
+              }
+            ],
+            "q1": 2.0,
+            "q3": 6.0,
+            "region_code": "26",
+            "region_name": "부산",
+            "sample_count": 5144,
+            "station_count": 5144,
+            "whisker_high": 12,
+            "whisker_low": 1
+          },
+          {
+            "charger_count": 24414,
+            "fence_high": 14.5,
+            "fence_low": -5.5,
+            "iqr": 5.0,
+            "max": 99,
+            "mean": 6.0311264822134385,
+            "median": 3.0,
+            "min": 1,
+            "outlier_count": 389,
+            "outlier_distribution": [
+              {
+                "charger_count": 15,
+                "station_count": 36
+              },
+              {
+                "charger_count": 16,
+                "station_count": 44
+              },
+              {
+                "charger_count": 17,
+                "station_count": 30
+              },
+              {
+                "charger_count": 18,
+                "station_count": 30
+              },
+              {
+                "charger_count": 19,
+                "station_count": 20
+              },
+              {
+                "charger_count": 20,
+                "station_count": 30
+              },
+              {
+                "charger_count": 21,
+                "station_count": 30
+              },
+              {
+                "charger_count": 22,
+                "station_count": 13
+              },
+              {
+                "charger_count": 23,
+                "station_count": 15
+              },
+              {
+                "charger_count": 24,
+                "station_count": 13
+              },
+              {
+                "charger_count": 25,
+                "station_count": 11
+              },
+              {
+                "charger_count": 26,
+                "station_count": 7
+              },
+              {
+                "charger_count": 27,
+                "station_count": 5
+              },
+              {
+                "charger_count": 28,
+                "station_count": 10
+              },
+              {
+                "charger_count": 29,
+                "station_count": 9
+              },
+              {
+                "charger_count": 30,
+                "station_count": 13
+              },
+              {
+                "charger_count": 31,
+                "station_count": 6
+              },
+              {
+                "charger_count": 32,
+                "station_count": 6
+              },
+              {
+                "charger_count": 33,
+                "station_count": 4
+              },
+              {
+                "charger_count": 34,
+                "station_count": 1
+              },
+              {
+                "charger_count": 35,
+                "station_count": 3
+              },
+              {
+                "charger_count": 36,
+                "station_count": 6
+              },
+              {
+                "charger_count": 37,
+                "station_count": 2
+              },
+              {
+                "charger_count": 38,
+                "station_count": 2
+              },
+              {
+                "charger_count": 39,
+                "station_count": 2
+              },
+              {
+                "charger_count": 40,
+                "station_count": 4
+              },
+              {
+                "charger_count": 41,
+                "station_count": 2
+              },
+              {
+                "charger_count": 42,
+                "station_count": 2
+              },
+              {
+                "charger_count": 43,
+                "station_count": 1
+              },
+              {
+                "charger_count": 44,
+                "station_count": 2
+              },
+              {
+                "charger_count": 45,
+                "station_count": 4
+              },
+              {
+                "charger_count": 46,
+                "station_count": 3
+              },
+              {
+                "charger_count": 47,
+                "station_count": 2
+              },
+              {
+                "charger_count": 48,
+                "station_count": 1
+              },
+              {
+                "charger_count": 49,
+                "station_count": 1
+              },
+              {
+                "charger_count": 53,
+                "station_count": 3
+              },
+              {
+                "charger_count": 54,
+                "station_count": 2
+              },
+              {
+                "charger_count": 55,
+                "station_count": 1
+              },
+              {
+                "charger_count": 60,
+                "station_count": 1
+              },
+              {
+                "charger_count": 65,
+                "station_count": 1
+              },
+              {
+                "charger_count": 66,
+                "station_count": 1
+              },
+              {
+                "charger_count": 67,
+                "station_count": 2
+              },
+              {
+                "charger_count": 71,
+                "station_count": 1
+              },
+              {
+                "charger_count": 74,
+                "station_count": 1
+              },
+              {
+                "charger_count": 75,
+                "station_count": 1
+              },
+              {
+                "charger_count": 77,
+                "station_count": 1
+              },
+              {
+                "charger_count": 79,
+                "station_count": 1
+              },
+              {
+                "charger_count": 80,
+                "station_count": 1
+              },
+              {
+                "charger_count": 99,
+                "station_count": 2
+              }
+            ],
+            "q1": 2.0,
+            "q3": 7.0,
+            "region_code": "27",
+            "region_name": "대구",
+            "sample_count": 4048,
+            "station_count": 4048,
+            "whisker_high": 14,
+            "whisker_low": 1
+          },
+          {
+            "charger_count": 33434,
+            "fence_high": 12.0,
+            "fence_low": -4.0,
+            "iqr": 4.0,
+            "max": 100,
+            "mean": 6.391512139170331,
+            "median": 3.0,
+            "min": 1,
+            "outlier_count": 548,
+            "outlier_distribution": [
+              {
+                "charger_count": 13,
+                "station_count": 26
+              },
+              {
+                "charger_count": 14,
+                "station_count": 43
+              },
+              {
+                "charger_count": 15,
+                "station_count": 43
+              },
+              {
+                "charger_count": 16,
+                "station_count": 27
+              },
+              {
+                "charger_count": 17,
+                "station_count": 20
+              },
+              {
+                "charger_count": 18,
+                "station_count": 31
+              },
+              {
+                "charger_count": 19,
+                "station_count": 24
+              },
+              {
+                "charger_count": 20,
+                "station_count": 41
+              },
+              {
+                "charger_count": 21,
+                "station_count": 22
+              },
+              {
+                "charger_count": 22,
+                "station_count": 18
+              },
+              {
+                "charger_count": 23,
+                "station_count": 8
+              },
+              {
+                "charger_count": 24,
+                "station_count": 25
+              },
+              {
+                "charger_count": 25,
+                "station_count": 11
+              },
+              {
+                "charger_count": 26,
+                "station_count": 14
+              },
+              {
+                "charger_count": 27,
+                "station_count": 13
+              },
+              {
+                "charger_count": 28,
+                "station_count": 9
+              },
+              {
+                "charger_count": 29,
+                "station_count": 3
+              },
+              {
+                "charger_count": 30,
+                "station_count": 11
+              },
+              {
+                "charger_count": 31,
+                "station_count": 9
+              },
+              {
+                "charger_count": 32,
+                "station_count": 7
+              },
+              {
+                "charger_count": 33,
+                "station_count": 8
+              },
+              {
+                "charger_count": 34,
+                "station_count": 11
+              },
+              {
+                "charger_count": 35,
+                "station_count": 9
+              },
+              {
+                "charger_count": 36,
+                "station_count": 5
+              },
+              {
+                "charger_count": 37,
+                "station_count": 3
+              },
+              {
+                "charger_count": 38,
+                "station_count": 3
+              },
+              {
+                "charger_count": 39,
+                "station_count": 4
+              },
+              {
+                "charger_count": 40,
+                "station_count": 4
+              },
+              {
+                "charger_count": 41,
+                "station_count": 2
+              },
+              {
+                "charger_count": 42,
+                "station_count": 5
+              },
+              {
+                "charger_count": 43,
+                "station_count": 3
+              },
+              {
+                "charger_count": 44,
+                "station_count": 1
+              },
+              {
+                "charger_count": 45,
+                "station_count": 2
+              },
+              {
+                "charger_count": 46,
+                "station_count": 1
+              },
+              {
+                "charger_count": 47,
+                "station_count": 2
+              },
+              {
+                "charger_count": 48,
+                "station_count": 3
+              },
+              {
+                "charger_count": 49,
+                "station_count": 4
+              },
+              {
+                "charger_count": 50,
+                "station_count": 4
+              },
+              {
+                "charger_count": 51,
+                "station_count": 1
+              },
+              {
+                "charger_count": 52,
+                "station_count": 3
+              },
+              {
+                "charger_count": 53,
+                "station_count": 2
+              },
+              {
+                "charger_count": 54,
+                "station_count": 2
+              },
+              {
+                "charger_count": 55,
+                "station_count": 2
+              },
+              {
+                "charger_count": 56,
+                "station_count": 3
+              },
+              {
+                "charger_count": 57,
+                "station_count": 2
+              },
+              {
+                "charger_count": 58,
+                "station_count": 2
+              },
+              {
+                "charger_count": 59,
+                "station_count": 1
+              },
+              {
+                "charger_count": 60,
+                "station_count": 5
+              },
+              {
+                "charger_count": 61,
+                "station_count": 1
+              },
+              {
+                "charger_count": 63,
+                "station_count": 2
+              },
+              {
+                "charger_count": 64,
+                "station_count": 2
+              },
+              {
+                "charger_count": 65,
+                "station_count": 1
+              },
+              {
+                "charger_count": 66,
+                "station_count": 3
+              },
+              {
+                "charger_count": 69,
+                "station_count": 2
+              },
+              {
+                "charger_count": 70,
+                "station_count": 2
+              },
+              {
+                "charger_count": 71,
+                "station_count": 1
+              },
+              {
+                "charger_count": 73,
+                "station_count": 2
+              },
+              {
+                "charger_count": 74,
+                "station_count": 1
+              },
+              {
+                "charger_count": 75,
+                "station_count": 1
+              },
+              {
+                "charger_count": 76,
+                "station_count": 3
+              },
+              {
+                "charger_count": 77,
+                "station_count": 1
+              },
+              {
+                "charger_count": 78,
+                "station_count": 2
+              },
+              {
+                "charger_count": 80,
+                "station_count": 3
+              },
+              {
+                "charger_count": 81,
+                "station_count": 3
+              },
+              {
+                "charger_count": 84,
+                "station_count": 1
+              },
+              {
+                "charger_count": 85,
+                "station_count": 2
+              },
+              {
+                "charger_count": 87,
+                "station_count": 1
+              },
+              {
+                "charger_count": 89,
+                "station_count": 1
+              },
+              {
+                "charger_count": 90,
+                "station_count": 2
+              },
+              {
+                "charger_count": 92,
+                "station_count": 1
+              },
+              {
+                "charger_count": 97,
+                "station_count": 1
+              },
+              {
+                "charger_count": 98,
+                "station_count": 1
+              },
+              {
+                "charger_count": 99,
+                "station_count": 4
+              },
+              {
+                "charger_count": 100,
+                "station_count": 2
+              }
+            ],
+            "q1": 2.0,
+            "q3": 6.0,
+            "region_code": "28",
+            "region_name": "인천",
+            "sample_count": 5231,
+            "station_count": 5231,
+            "whisker_high": 12,
+            "whisker_low": 1
+          },
+          {
+            "charger_count": 14967,
+            "fence_high": 9.5,
+            "fence_low": -2.5,
+            "iqr": 3.0,
+            "max": 99,
+            "mean": 5.395457822638789,
+            "median": 3.0,
+            "min": 1,
+            "outlier_count": 370,
+            "outlier_distribution": [
+              {
+                "charger_count": 10,
+                "station_count": 64
+              },
+              {
+                "charger_count": 11,
+                "station_count": 22
+              },
+              {
+                "charger_count": 12,
+                "station_count": 34
+              },
+              {
+                "charger_count": 13,
+                "station_count": 23
+              },
+              {
+                "charger_count": 14,
+                "station_count": 21
+              },
+              {
+                "charger_count": 15,
+                "station_count": 20
+              },
+              {
+                "charger_count": 16,
+                "station_count": 17
+              },
+              {
+                "charger_count": 17,
+                "station_count": 13
+              },
+              {
+                "charger_count": 18,
+                "station_count": 16
+              },
+              {
+                "charger_count": 19,
+                "station_count": 17
+              },
+              {
+                "charger_count": 20,
+                "station_count": 19
+              },
+              {
+                "charger_count": 21,
+                "station_count": 14
+              },
+              {
+                "charger_count": 22,
+                "station_count": 5
+              },
+              {
+                "charger_count": 23,
+                "station_count": 4
+              },
+              {
+                "charger_count": 24,
+                "station_count": 3
+              },
+              {
+                "charger_count": 25,
+                "station_count": 4
+              },
+              {
+                "charger_count": 26,
+                "station_count": 6
+              },
+              {
+                "charger_count": 27,
+                "station_count": 4
+              },
+              {
+                "charger_count": 28,
+                "station_count": 6
+              },
+              {
+                "charger_count": 29,
+                "station_count": 2
+              },
+              {
+                "charger_count": 30,
+                "station_count": 4
+              },
+              {
+                "charger_count": 31,
+                "station_count": 1
+              },
+              {
+                "charger_count": 32,
+                "station_count": 2
+              },
+              {
+                "charger_count": 33,
+                "station_count": 1
+              },
+              {
+                "charger_count": 34,
+                "station_count": 1
+              },
+              {
+                "charger_count": 35,
+                "station_count": 3
+              },
+              {
+                "charger_count": 36,
+                "station_count": 6
+              },
+              {
+                "charger_count": 37,
+                "station_count": 1
+              },
+              {
+                "charger_count": 40,
+                "station_count": 2
+              },
+              {
+                "charger_count": 41,
+                "station_count": 4
+              },
+              {
+                "charger_count": 42,
+                "station_count": 4
+              },
+              {
+                "charger_count": 43,
+                "station_count": 1
+              },
+              {
+                "charger_count": 45,
+                "station_count": 4
+              },
+              {
+                "charger_count": 46,
+                "station_count": 1
+              },
+              {
+                "charger_count": 47,
+                "station_count": 1
+              },
+              {
+                "charger_count": 48,
+                "station_count": 3
+              },
+              {
+                "charger_count": 50,
+                "station_count": 1
+              },
+              {
+                "charger_count": 55,
+                "station_count": 3
+              },
+              {
+                "charger_count": 57,
+                "station_count": 1
+              },
+              {
+                "charger_count": 60,
+                "station_count": 1
+              },
+              {
+                "charger_count": 68,
+                "station_count": 1
+              },
+              {
+                "charger_count": 72,
+                "station_count": 1
+              },
+              {
+                "charger_count": 73,
+                "station_count": 2
+              },
+              {
+                "charger_count": 74,
+                "station_count": 2
+              },
+              {
+                "charger_count": 78,
+                "station_count": 2
+              },
+              {
+                "charger_count": 81,
+                "station_count": 1
+              },
+              {
+                "charger_count": 85,
+                "station_count": 1
+              },
+              {
+                "charger_count": 99,
+                "station_count": 1
+              }
+            ],
+            "q1": 2.0,
+            "q3": 5.0,
+            "region_code": "30",
+            "region_name": "대전",
+            "sample_count": 2774,
+            "station_count": 2774,
+            "whisker_high": 9,
+            "whisker_low": 1
+          },
+          {
+            "charger_count": 10587,
+            "fence_high": 11.375,
+            "fence_low": -3.625,
+            "iqr": 3.75,
+            "max": 99,
+            "mean": 5.085014409221902,
+            "median": 3.0,
+            "min": 1,
+            "outlier_count": 206,
+            "outlier_distribution": [
+              {
+                "charger_count": 12,
+                "station_count": 18
+              },
+              {
+                "charger_count": 13,
+                "station_count": 15
+              },
+              {
+                "charger_count": 14,
+                "station_count": 19
+              },
+              {
+                "charger_count": 15,
+                "station_count": 15
+              },
+              {
+                "charger_count": 16,
+                "station_count": 19
+              },
+              {
+                "charger_count": 17,
+                "station_count": 14
+              },
+              {
+                "charger_count": 18,
+                "station_count": 14
+              },
+              {
+                "charger_count": 19,
+                "station_count": 7
+              },
+              {
+                "charger_count": 20,
+                "station_count": 15
+              },
+              {
+                "charger_count": 21,
+                "station_count": 5
+              },
+              {
+                "charger_count": 22,
+                "station_count": 9
+              },
+              {
+                "charger_count": 23,
+                "station_count": 1
+              },
+              {
+                "charger_count": 24,
+                "station_count": 6
+              },
+              {
+                "charger_count": 25,
+                "station_count": 7
+              },
+              {
+                "charger_count": 27,
+                "station_count": 4
+              },
+              {
+                "charger_count": 28,
+                "station_count": 3
+              },
+              {
+                "charger_count": 29,
+                "station_count": 4
+              },
+              {
+                "charger_count": 30,
+                "station_count": 5
+              },
+              {
+                "charger_count": 32,
+                "station_count": 4
+              },
+              {
+                "charger_count": 34,
+                "station_count": 3
+              },
+              {
+                "charger_count": 35,
+                "station_count": 1
+              },
+              {
+                "charger_count": 37,
+                "station_count": 2
+              },
+              {
+                "charger_count": 38,
+                "station_count": 1
+              },
+              {
+                "charger_count": 39,
+                "station_count": 4
+              },
+              {
+                "charger_count": 40,
+                "station_count": 1
+              },
+              {
+                "charger_count": 41,
+                "station_count": 1
+              },
+              {
+                "charger_count": 42,
+                "station_count": 1
+              },
+              {
+                "charger_count": 47,
+                "station_count": 2
+              },
+              {
+                "charger_count": 50,
+                "station_count": 1
+              },
+              {
+                "charger_count": 54,
+                "station_count": 1
+              },
+              {
+                "charger_count": 58,
+                "station_count": 1
+              },
+              {
+                "charger_count": 60,
+                "station_count": 1
+              },
+              {
+                "charger_count": 86,
+                "station_count": 1
+              },
+              {
+                "charger_count": 99,
+                "station_count": 1
+              }
+            ],
+            "q1": 2.0,
+            "q3": 5.75,
+            "region_code": "31",
+            "region_name": "울산",
+            "sample_count": 2082,
+            "station_count": 2082,
+            "whisker_high": 11,
+            "whisker_low": 1
+          },
+          {
+            "charger_count": 6534,
+            "fence_high": 14.5,
+            "fence_low": -5.5,
+            "iqr": 5.0,
+            "max": 86,
+            "mean": 6.294797687861272,
+            "median": 3.0,
+            "min": 1,
+            "outlier_count": 107,
+            "outlier_distribution": [
+              {
+                "charger_count": 15,
+                "station_count": 12
+              },
+              {
+                "charger_count": 16,
+                "station_count": 6
+              },
+              {
+                "charger_count": 17,
+                "station_count": 5
+              },
+              {
+                "charger_count": 18,
+                "station_count": 9
+              },
+              {
+                "charger_count": 19,
+                "station_count": 4
+              },
+              {
+                "charger_count": 20,
+                "station_count": 9
+              },
+              {
+                "charger_count": 21,
+                "station_count": 3
+              },
+              {
+                "charger_count": 22,
+                "station_count": 5
+              },
+              {
+                "charger_count": 23,
+                "station_count": 4
+              },
+              {
+                "charger_count": 24,
+                "station_count": 3
+              },
+              {
+                "charger_count": 25,
+                "station_count": 4
+              },
+              {
+                "charger_count": 26,
+                "station_count": 2
+              },
+              {
+                "charger_count": 27,
+                "station_count": 4
+              },
+              {
+                "charger_count": 28,
+                "station_count": 3
+              },
+              {
+                "charger_count": 29,
+                "station_count": 2
+              },
+              {
+                "charger_count": 30,
+                "station_count": 3
+              },
+              {
+                "charger_count": 31,
+                "station_count": 2
+              },
+              {
+                "charger_count": 32,
+                "station_count": 5
+              },
+              {
+                "charger_count": 33,
+                "station_count": 1
+              },
+              {
+                "charger_count": 34,
+                "station_count": 1
+              },
+              {
+                "charger_count": 35,
+                "station_count": 2
+              },
+              {
+                "charger_count": 36,
+                "station_count": 4
+              },
+              {
+                "charger_count": 37,
+                "station_count": 1
+              },
+              {
+                "charger_count": 39,
+                "station_count": 2
+              },
+              {
+                "charger_count": 40,
+                "station_count": 3
+              },
+              {
+                "charger_count": 44,
+                "station_count": 1
+              },
+              {
+                "charger_count": 47,
+                "station_count": 2
+              },
+              {
+                "charger_count": 49,
+                "station_count": 1
+              },
+              {
+                "charger_count": 57,
+                "station_count": 1
+              },
+              {
+                "charger_count": 67,
+                "station_count": 1
+              },
+              {
+                "charger_count": 81,
+                "station_count": 1
+              },
+              {
+                "charger_count": 86,
+                "station_count": 1
+              }
+            ],
+            "q1": 2.0,
+            "q3": 7.0,
+            "region_code": "36",
+            "region_name": "세종",
+            "sample_count": 1038,
+            "station_count": 1038,
+            "whisker_high": 14,
+            "whisker_low": 1
+          },
+          {
+            "charger_count": 154877,
+            "fence_high": 12.0,
+            "fence_low": -4.0,
+            "iqr": 4.0,
+            "max": 100,
+            "mean": 6.1943366795984485,
+            "median": 3.0,
+            "min": 1,
+            "outlier_count": 2617,
+            "outlier_distribution": [
+              {
+                "charger_count": 13,
+                "station_count": 189
+              },
+              {
+                "charger_count": 14,
+                "station_count": 176
+              },
+              {
+                "charger_count": 15,
+                "station_count": 208
+              },
+              {
+                "charger_count": 16,
+                "station_count": 205
+              },
+              {
+                "charger_count": 17,
+                "station_count": 122
+              },
+              {
+                "charger_count": 18,
+                "station_count": 149
+              },
+              {
+                "charger_count": 19,
+                "station_count": 98
+              },
+              {
+                "charger_count": 20,
+                "station_count": 195
+              },
+              {
+                "charger_count": 21,
+                "station_count": 96
+              },
+              {
+                "charger_count": 22,
+                "station_count": 78
+              },
+              {
+                "charger_count": 23,
+                "station_count": 53
+              },
+              {
+                "charger_count": 24,
+                "station_count": 84
+              },
+              {
+                "charger_count": 25,
+                "station_count": 61
+              },
+              {
+                "charger_count": 26,
+                "station_count": 55
+              },
+              {
+                "charger_count": 27,
+                "station_count": 47
+              },
+              {
+                "charger_count": 28,
+                "station_count": 43
+              },
+              {
+                "charger_count": 29,
+                "station_count": 29
+              },
+              {
+                "charger_count": 30,
+                "station_count": 60
+              },
+              {
+                "charger_count": 31,
+                "station_count": 34
+              },
+              {
+                "charger_count": 32,
+                "station_count": 43
+              },
+              {
+                "charger_count": 33,
+                "station_count": 40
+              },
+              {
+                "charger_count": 34,
+                "station_count": 29
+              },
+              {
+                "charger_count": 35,
+                "station_count": 23
+              },
+              {
+                "charger_count": 36,
+                "station_count": 24
+              },
+              {
+                "charger_count": 37,
+                "station_count": 18
+              },
+              {
+                "charger_count": 38,
+                "station_count": 30
+              },
+              {
+                "charger_count": 39,
+                "station_count": 21
+              },
+              {
+                "charger_count": 40,
+                "station_count": 25
+              },
+              {
+                "charger_count": 41,
+                "station_count": 14
+              },
+              {
+                "charger_count": 42,
+                "station_count": 20
+              },
+              {
+                "charger_count": 43,
+                "station_count": 21
+              },
+              {
+                "charger_count": 44,
+                "station_count": 8
+              },
+              {
+                "charger_count": 45,
+                "station_count": 14
+              },
+              {
+                "charger_count": 46,
+                "station_count": 18
+              },
+              {
+                "charger_count": 47,
+                "station_count": 8
+              },
+              {
+                "charger_count": 48,
+                "station_count": 17
+              },
+              {
+                "charger_count": 49,
+                "station_count": 8
+              },
+              {
+                "charger_count": 50,
+                "station_count": 20
+              },
+              {
+                "charger_count": 51,
+                "station_count": 7
+              },
+              {
+                "charger_count": 52,
+                "station_count": 12
+              },
+              {
+                "charger_count": 53,
+                "station_count": 11
+              },
+              {
+                "charger_count": 54,
+                "station_count": 15
+              },
+              {
+                "charger_count": 55,
+                "station_count": 7
+              },
+              {
+                "charger_count": 56,
+                "station_count": 11
+              },
+              {
+                "charger_count": 57,
+                "station_count": 5
+              },
+              {
+                "charger_count": 58,
+                "station_count": 5
+              },
+              {
+                "charger_count": 59,
+                "station_count": 3
+              },
+              {
+                "charger_count": 60,
+                "station_count": 10
+              },
+              {
+                "charger_count": 61,
+                "station_count": 1
+              },
+              {
+                "charger_count": 62,
+                "station_count": 4
+              },
+              {
+                "charger_count": 63,
+                "station_count": 5
+              },
+              {
+                "charger_count": 64,
+                "station_count": 4
+              },
+              {
+                "charger_count": 65,
+                "station_count": 6
+              },
+              {
+                "charger_count": 66,
+                "station_count": 8
+              },
+              {
+                "charger_count": 67,
+                "station_count": 3
+              },
+              {
+                "charger_count": 68,
+                "station_count": 8
+              },
+              {
+                "charger_count": 69,
+                "station_count": 5
+              },
+              {
+                "charger_count": 70,
+                "station_count": 6
+              },
+              {
+                "charger_count": 71,
+                "station_count": 1
+              },
+              {
+                "charger_count": 72,
+                "station_count": 5
+              },
+              {
+                "charger_count": 74,
+                "station_count": 3
+              },
+              {
+                "charger_count": 75,
+                "station_count": 3
+              },
+              {
+                "charger_count": 76,
+                "station_count": 4
+              },
+              {
+                "charger_count": 77,
+                "station_count": 2
+              },
+              {
+                "charger_count": 78,
+                "station_count": 7
+              },
+              {
+                "charger_count": 79,
+                "station_count": 3
+              },
+              {
+                "charger_count": 80,
+                "station_count": 4
+              },
+              {
+                "charger_count": 81,
+                "station_count": 3
+              },
+              {
+                "charger_count": 82,
+                "station_count": 1
+              },
+              {
+                "charger_count": 83,
+                "station_count": 1
+              },
+              {
+                "charger_count": 84,
+                "station_count": 4
+              },
+              {
+                "charger_count": 86,
+                "station_count": 3
+              },
+              {
+                "charger_count": 87,
+                "station_count": 2
+              },
+              {
+                "charger_count": 88,
+                "station_count": 3
+              },
+              {
+                "charger_count": 89,
+                "station_count": 2
+              },
+              {
+                "charger_count": 90,
+                "station_count": 3
+              },
+              {
+                "charger_count": 91,
+                "station_count": 3
+              },
+              {
+                "charger_count": 92,
+                "station_count": 2
+              },
+              {
+                "charger_count": 93,
+                "station_count": 3
+              },
+              {
+                "charger_count": 94,
+                "station_count": 2
+              },
+              {
+                "charger_count": 95,
+                "station_count": 1
+              },
+              {
+                "charger_count": 96,
+                "station_count": 2
+              },
+              {
+                "charger_count": 97,
+                "station_count": 3
+              },
+              {
+                "charger_count": 98,
+                "station_count": 1
+              },
+              {
+                "charger_count": 99,
+                "station_count": 17
+              },
+              {
+                "charger_count": 100,
+                "station_count": 10
+              }
+            ],
+            "q1": 2.0,
+            "q3": 6.0,
+            "region_code": "41",
+            "region_name": "경기",
+            "sample_count": 25003,
+            "station_count": 25003,
+            "whisker_high": 12,
+            "whisker_low": 1
+          },
+          {
+            "charger_count": 17774,
+            "fence_high": 9.5,
+            "fence_low": -2.5,
+            "iqr": 3.0,
+            "max": 100,
+            "mean": 4.640731070496083,
+            "median": 3.0,
+            "min": 1,
+            "outlier_count": 378,
+            "outlier_distribution": [
+              {
+                "charger_count": 10,
+                "station_count": 71
+              },
+              {
+                "charger_count": 11,
+                "station_count": 32
+              },
+              {
+                "charger_count": 12,
+                "station_count": 37
+              },
+              {
+                "charger_count": 13,
+                "station_count": 22
+              },
+              {
+                "charger_count": 14,
+                "station_count": 14
+              },
+              {
+                "charger_count": 15,
+                "station_count": 22
+              },
+              {
+                "charger_count": 16,
+                "station_count": 17
+              },
+              {
+                "charger_count": 17,
+                "station_count": 14
+              },
+              {
+                "charger_count": 18,
+                "station_count": 17
+              },
+              {
+                "charger_count": 19,
+                "station_count": 12
+              },
+              {
+                "charger_count": 20,
+                "station_count": 17
+              },
+              {
+                "charger_count": 21,
+                "station_count": 11
+              },
+              {
+                "charger_count": 22,
+                "station_count": 7
+              },
+              {
+                "charger_count": 23,
+                "station_count": 4
+              },
+              {
+                "charger_count": 24,
+                "station_count": 9
+              },
+              {
+                "charger_count": 25,
+                "station_count": 4
+              },
+              {
+                "charger_count": 26,
+                "station_count": 4
+              },
+              {
+                "charger_count": 27,
+                "station_count": 8
+              },
+              {
+                "charger_count": 28,
+                "station_count": 1
+              },
+              {
+                "charger_count": 29,
+                "station_count": 1
+              },
+              {
+                "charger_count": 30,
+                "station_count": 6
+              },
+              {
+                "charger_count": 31,
+                "station_count": 2
+              },
+              {
+                "charger_count": 32,
+                "station_count": 1
+              },
+              {
+                "charger_count": 33,
+                "station_count": 3
+              },
+              {
+                "charger_count": 34,
+                "station_count": 1
+              },
+              {
+                "charger_count": 35,
+                "station_count": 1
+              },
+              {
+                "charger_count": 36,
+                "station_count": 1
+              },
+              {
+                "charger_count": 37,
+                "station_count": 1
+              },
+              {
+                "charger_count": 38,
+                "station_count": 1
+              },
+              {
+                "charger_count": 40,
+                "station_count": 3
+              },
+              {
+                "charger_count": 41,
+                "station_count": 1
+              },
+              {
+                "charger_count": 42,
+                "station_count": 2
+              },
+              {
+                "charger_count": 44,
+                "station_count": 3
+              },
+              {
+                "charger_count": 45,
+                "station_count": 1
+              },
+              {
+                "charger_count": 46,
+                "station_count": 2
+              },
+              {
+                "charger_count": 47,
+                "station_count": 1
+              },
+              {
+                "charger_count": 48,
+                "station_count": 2
+              },
+              {
+                "charger_count": 50,
+                "station_count": 1
+              },
+              {
+                "charger_count": 51,
+                "station_count": 1
+              },
+              {
+                "charger_count": 52,
+                "station_count": 5
+              },
+              {
+                "charger_count": 56,
+                "station_count": 1
+              },
+              {
+                "charger_count": 57,
+                "station_count": 1
+              },
+              {
+                "charger_count": 59,
+                "station_count": 1
+              },
+              {
+                "charger_count": 63,
+                "station_count": 3
+              },
+              {
+                "charger_count": 66,
+                "station_count": 1
+              },
+              {
+                "charger_count": 70,
+                "station_count": 1
+              },
+              {
+                "charger_count": 74,
+                "station_count": 1
+              },
+              {
+                "charger_count": 77,
+                "station_count": 1
+              },
+              {
+                "charger_count": 78,
+                "station_count": 2
+              },
+              {
+                "charger_count": 83,
+                "station_count": 1
+              },
+              {
+                "charger_count": 85,
+                "station_count": 1
+              },
+              {
+                "charger_count": 100,
+                "station_count": 1
+              }
+            ],
+            "q1": 2.0,
+            "q3": 5.0,
+            "region_code": "43",
+            "region_name": "충북",
+            "sample_count": 3830,
+            "station_count": 3830,
+            "whisker_high": 9,
+            "whisker_low": 1
+          },
+          {
+            "charger_count": 22276,
+            "fence_high": 9.5,
+            "fence_low": -2.5,
+            "iqr": 3.0,
+            "max": 99,
+            "mean": 4.42950884867767,
+            "median": 3.0,
+            "min": 1,
+            "outlier_count": 486,
+            "outlier_distribution": [
+              {
+                "charger_count": 10,
+                "station_count": 84
+              },
+              {
+                "charger_count": 11,
+                "station_count": 34
+              },
+              {
+                "charger_count": 12,
+                "station_count": 62
+              },
+              {
+                "charger_count": 13,
+                "station_count": 28
+              },
+              {
+                "charger_count": 14,
+                "station_count": 33
+              },
+              {
+                "charger_count": 15,
+                "station_count": 30
+              },
+              {
+                "charger_count": 16,
+                "station_count": 25
+              },
+              {
+                "charger_count": 17,
+                "station_count": 15
+              },
+              {
+                "charger_count": 18,
+                "station_count": 25
+              },
+              {
+                "charger_count": 19,
+                "station_count": 5
+              },
+              {
+                "charger_count": 20,
+                "station_count": 25
+              },
+              {
+                "charger_count": 21,
+                "station_count": 12
+              },
+              {
+                "charger_count": 22,
+                "station_count": 10
+              },
+              {
+                "charger_count": 23,
+                "station_count": 8
+              },
+              {
+                "charger_count": 24,
+                "station_count": 14
+              },
+              {
+                "charger_count": 25,
+                "station_count": 7
+              },
+              {
+                "charger_count": 26,
+                "station_count": 5
+              },
+              {
+                "charger_count": 27,
+                "station_count": 8
+              },
+              {
+                "charger_count": 28,
+                "station_count": 1
+              },
+              {
+                "charger_count": 29,
+                "station_count": 2
+              },
+              {
+                "charger_count": 30,
+                "station_count": 4
+              },
+              {
+                "charger_count": 31,
+                "station_count": 2
+              },
+              {
+                "charger_count": 32,
+                "station_count": 3
+              },
+              {
+                "charger_count": 33,
+                "station_count": 4
+              },
+              {
+                "charger_count": 35,
+                "station_count": 2
+              },
+              {
+                "charger_count": 36,
+                "station_count": 2
+              },
+              {
+                "charger_count": 37,
+                "station_count": 1
+              },
+              {
+                "charger_count": 38,
+                "station_count": 2
+              },
+              {
+                "charger_count": 39,
+                "station_count": 2
+              },
+              {
+                "charger_count": 40,
+                "station_count": 1
+              },
+              {
+                "charger_count": 42,
+                "station_count": 3
+              },
+              {
+                "charger_count": 43,
+                "station_count": 2
+              },
+              {
+                "charger_count": 44,
+                "station_count": 4
+              },
+              {
+                "charger_count": 45,
+                "station_count": 1
+              },
+              {
+                "charger_count": 49,
+                "station_count": 1
+              },
+              {
+                "charger_count": 53,
+                "station_count": 1
+              },
+              {
+                "charger_count": 54,
+                "station_count": 1
+              },
+              {
+                "charger_count": 55,
+                "station_count": 3
+              },
+              {
+                "charger_count": 56,
+                "station_count": 2
+              },
+              {
+                "charger_count": 57,
+                "station_count": 1
+              },
+              {
+                "charger_count": 59,
+                "station_count": 1
+              },
+              {
+                "charger_count": 60,
+                "station_count": 2
+              },
+              {
+                "charger_count": 62,
+                "station_count": 1
+              },
+              {
+                "charger_count": 63,
+                "station_count": 1
+              },
+              {
+                "charger_count": 76,
+                "station_count": 1
+              },
+              {
+                "charger_count": 79,
+                "station_count": 1
+              },
+              {
+                "charger_count": 80,
+                "station_count": 1
+              },
+              {
+                "charger_count": 96,
+                "station_count": 1
+              },
+              {
+                "charger_count": 98,
+                "station_count": 1
+              },
+              {
+                "charger_count": 99,
+                "station_count": 1
+              }
+            ],
+            "q1": 2.0,
+            "q3": 5.0,
+            "region_code": "44",
+            "region_name": "충남",
+            "sample_count": 5029,
+            "station_count": 5029,
+            "whisker_high": 9,
+            "whisker_low": 1
+          },
+          {
+            "charger_count": 22933,
+            "fence_high": 8.5,
+            "fence_low": -3.5,
+            "iqr": 3.0,
+            "max": 62,
+            "mean": 3.930248500428449,
+            "median": 2.0,
+            "min": 1,
+            "outlier_count": 593,
+            "outlier_distribution": [
+              {
+                "charger_count": 9,
+                "station_count": 81
+              },
+              {
+                "charger_count": 10,
+                "station_count": 113
+              },
+              {
+                "charger_count": 11,
+                "station_count": 43
+              },
+              {
+                "charger_count": 12,
+                "station_count": 59
+              },
+              {
+                "charger_count": 13,
+                "station_count": 30
+              },
+              {
+                "charger_count": 14,
+                "station_count": 18
+              },
+              {
+                "charger_count": 15,
+                "station_count": 29
+              },
+              {
+                "charger_count": 16,
+                "station_count": 32
+              },
+              {
+                "charger_count": 17,
+                "station_count": 28
+              },
+              {
+                "charger_count": 18,
+                "station_count": 14
+              },
+              {
+                "charger_count": 19,
+                "station_count": 15
+              },
+              {
+                "charger_count": 20,
+                "station_count": 11
+              },
+              {
+                "charger_count": 21,
+                "station_count": 13
+              },
+              {
+                "charger_count": 22,
+                "station_count": 10
+              },
+              {
+                "charger_count": 23,
+                "station_count": 8
+              },
+              {
+                "charger_count": 24,
+                "station_count": 8
+              },
+              {
+                "charger_count": 25,
+                "station_count": 11
+              },
+              {
+                "charger_count": 26,
+                "station_count": 4
+              },
+              {
+                "charger_count": 27,
+                "station_count": 5
+              },
+              {
+                "charger_count": 28,
+                "station_count": 1
+              },
+              {
+                "charger_count": 29,
+                "station_count": 4
+              },
+              {
+                "charger_count": 30,
+                "station_count": 8
+              },
+              {
+                "charger_count": 31,
+                "station_count": 9
+              },
+              {
+                "charger_count": 32,
+                "station_count": 5
+              },
+              {
+                "charger_count": 34,
+                "station_count": 3
+              },
+              {
+                "charger_count": 35,
+                "station_count": 2
+              },
+              {
+                "charger_count": 36,
+                "station_count": 3
+              },
+              {
+                "charger_count": 37,
+                "station_count": 2
+              },
+              {
+                "charger_count": 38,
+                "station_count": 1
+              },
+              {
+                "charger_count": 39,
+                "station_count": 1
+              },
+              {
+                "charger_count": 40,
+                "station_count": 3
+              },
+              {
+                "charger_count": 41,
+                "station_count": 1
+              },
+              {
+                "charger_count": 42,
+                "station_count": 3
+              },
+              {
+                "charger_count": 43,
+                "station_count": 1
+              },
+              {
+                "charger_count": 44,
+                "station_count": 2
+              },
+              {
+                "charger_count": 45,
+                "station_count": 3
+              },
+              {
+                "charger_count": 46,
+                "station_count": 2
+              },
+              {
+                "charger_count": 47,
+                "station_count": 1
+              },
+              {
+                "charger_count": 48,
+                "station_count": 1
+              },
+              {
+                "charger_count": 53,
+                "station_count": 1
+              },
+              {
+                "charger_count": 54,
+                "station_count": 2
+              },
+              {
+                "charger_count": 62,
+                "station_count": 2
+              }
+            ],
+            "q1": 1.0,
+            "q3": 4.0,
+            "region_code": "47",
+            "region_name": "경북",
+            "sample_count": 5835,
+            "station_count": 5835,
+            "whisker_high": 8,
+            "whisker_low": 1
+          },
+          {
+            "charger_count": 30857,
+            "fence_high": 11.0,
+            "fence_low": -5.0,
+            "iqr": 4.0,
+            "max": 90,
+            "mean": 4.4258462421113025,
+            "median": 2.0,
+            "min": 1,
+            "outlier_count": 543,
+            "outlier_distribution": [
+              {
+                "charger_count": 12,
+                "station_count": 75
+              },
+              {
+                "charger_count": 13,
+                "station_count": 43
+              },
+              {
+                "charger_count": 14,
+                "station_count": 33
+              },
+              {
+                "charger_count": 15,
+                "station_count": 63
+              },
+              {
+                "charger_count": 16,
+                "station_count": 36
+              },
+              {
+                "charger_count": 17,
+                "station_count": 27
+              },
+              {
+                "charger_count": 18,
+                "station_count": 32
+              },
+              {
+                "charger_count": 19,
+                "station_count": 10
+              },
+              {
+                "charger_count": 20,
+                "station_count": 30
+              },
+              {
+                "charger_count": 21,
+                "station_count": 24
+              },
+              {
+                "charger_count": 22,
+                "station_count": 14
+              },
+              {
+                "charger_count": 23,
+                "station_count": 19
+              },
+              {
+                "charger_count": 24,
+                "station_count": 10
+              },
+              {
+                "charger_count": 25,
+                "station_count": 6
+              },
+              {
+                "charger_count": 26,
+                "station_count": 12
+              },
+              {
+                "charger_count": 27,
+                "station_count": 6
+              },
+              {
+                "charger_count": 28,
+                "station_count": 6
+              },
+              {
+                "charger_count": 29,
+                "station_count": 4
+              },
+              {
+                "charger_count": 30,
+                "station_count": 11
+              },
+              {
+                "charger_count": 31,
+                "station_count": 5
+              },
+              {
+                "charger_count": 32,
+                "station_count": 5
+              },
+              {
+                "charger_count": 33,
+                "station_count": 5
+              },
+              {
+                "charger_count": 34,
+                "station_count": 4
+              },
+              {
+                "charger_count": 35,
+                "station_count": 2
+              },
+              {
+                "charger_count": 36,
+                "station_count": 4
+              },
+              {
+                "charger_count": 37,
+                "station_count": 9
+              },
+              {
+                "charger_count": 38,
+                "station_count": 2
+              },
+              {
+                "charger_count": 39,
+                "station_count": 3
+              },
+              {
+                "charger_count": 40,
+                "station_count": 3
+              },
+              {
+                "charger_count": 41,
+                "station_count": 4
+              },
+              {
+                "charger_count": 42,
+                "station_count": 1
+              },
+              {
+                "charger_count": 43,
+                "station_count": 1
+              },
+              {
+                "charger_count": 44,
+                "station_count": 3
+              },
+              {
+                "charger_count": 45,
+                "station_count": 2
+              },
+              {
+                "charger_count": 48,
+                "station_count": 1
+              },
+              {
+                "charger_count": 50,
+                "station_count": 3
+              },
+              {
+                "charger_count": 52,
+                "station_count": 2
+              },
+              {
+                "charger_count": 53,
+                "station_count": 3
+              },
+              {
+                "charger_count": 55,
+                "station_count": 1
+              },
+              {
+                "charger_count": 57,
+                "station_count": 2
+              },
+              {
+                "charger_count": 58,
+                "station_count": 1
+              },
+              {
+                "charger_count": 59,
+                "station_count": 1
+              },
+              {
+                "charger_count": 60,
+                "station_count": 1
+              },
+              {
+                "charger_count": 61,
+                "station_count": 1
+              },
+              {
+                "charger_count": 62,
+                "station_count": 1
+              },
+              {
+                "charger_count": 66,
+                "station_count": 1
+              },
+              {
+                "charger_count": 70,
+                "station_count": 3
+              },
+              {
+                "charger_count": 72,
+                "station_count": 1
+              },
+              {
+                "charger_count": 77,
+                "station_count": 1
+              },
+              {
+                "charger_count": 78,
+                "station_count": 2
+              },
+              {
+                "charger_count": 80,
+                "station_count": 1
+              },
+              {
+                "charger_count": 82,
+                "station_count": 1
+              },
+              {
+                "charger_count": 87,
+                "station_count": 1
+              },
+              {
+                "charger_count": 90,
+                "station_count": 1
+              }
+            ],
+            "q1": 1.0,
+            "q3": 5.0,
+            "region_code": "48",
+            "region_name": "경남",
+            "sample_count": 6972,
+            "station_count": 6972,
+            "whisker_high": 11,
+            "whisker_low": 1
+          },
+          {
+            "charger_count": 8749,
+            "fence_high": 3.5,
+            "fence_low": -0.5,
+            "iqr": 1.0,
+            "max": 91,
+            "mean": 2.7221530802738023,
+            "median": 2.0,
+            "min": 1,
+            "outlier_count": 534,
+            "outlier_distribution": [
+              {
+                "charger_count": 4,
+                "station_count": 181
+              },
+              {
+                "charger_count": 5,
+                "station_count": 75
+              },
+              {
+                "charger_count": 6,
+                "station_count": 64
+              },
+              {
+                "charger_count": 7,
+                "station_count": 19
+              },
+              {
+                "charger_count": 8,
+                "station_count": 37
+              },
+              {
+                "charger_count": 9,
+                "station_count": 15
+              },
+              {
+                "charger_count": 10,
+                "station_count": 37
+              },
+              {
+                "charger_count": 11,
+                "station_count": 9
+              },
+              {
+                "charger_count": 12,
+                "station_count": 25
+              },
+              {
+                "charger_count": 13,
+                "station_count": 10
+              },
+              {
+                "charger_count": 14,
+                "station_count": 7
+              },
+              {
+                "charger_count": 15,
+                "station_count": 3
+              },
+              {
+                "charger_count": 16,
+                "station_count": 10
+              },
+              {
+                "charger_count": 17,
+                "station_count": 2
+              },
+              {
+                "charger_count": 18,
+                "station_count": 3
+              },
+              {
+                "charger_count": 19,
+                "station_count": 1
+              },
+              {
+                "charger_count": 20,
+                "station_count": 4
+              },
+              {
+                "charger_count": 21,
+                "station_count": 5
+              },
+              {
+                "charger_count": 22,
+                "station_count": 4
+              },
+              {
+                "charger_count": 23,
+                "station_count": 2
+              },
+              {
+                "charger_count": 24,
+                "station_count": 2
+              },
+              {
+                "charger_count": 27,
+                "station_count": 1
+              },
+              {
+                "charger_count": 29,
+                "station_count": 1
+              },
+              {
+                "charger_count": 30,
+                "station_count": 1
+              },
+              {
+                "charger_count": 32,
+                "station_count": 1
+              },
+              {
+                "charger_count": 33,
+                "station_count": 1
+              },
+              {
+                "charger_count": 34,
+                "station_count": 2
+              },
+              {
+                "charger_count": 36,
+                "station_count": 1
+              },
+              {
+                "charger_count": 37,
+                "station_count": 1
+              },
+              {
+                "charger_count": 40,
+                "station_count": 2
+              },
+              {
+                "charger_count": 43,
+                "station_count": 1
+              },
+              {
+                "charger_count": 48,
+                "station_count": 1
+              },
+              {
+                "charger_count": 50,
+                "station_count": 2
+              },
+              {
+                "charger_count": 51,
+                "station_count": 1
+              },
+              {
+                "charger_count": 65,
+                "station_count": 1
+              },
+              {
+                "charger_count": 73,
+                "station_count": 1
+              },
+              {
+                "charger_count": 91,
+                "station_count": 1
+              }
+            ],
+            "q1": 1.0,
+            "q3": 2.0,
+            "region_code": "50",
+            "region_name": "제주",
+            "sample_count": 3214,
+            "station_count": 3214,
+            "whisker_high": 3,
+            "whisker_low": 1
+          },
+          {
+            "charger_count": 17680,
+            "fence_high": 8.5,
+            "fence_low": -3.5,
+            "iqr": 3.0,
+            "max": 89,
+            "mean": 3.947309667336459,
+            "median": 2.0,
+            "min": 1,
+            "outlier_count": 442,
+            "outlier_distribution": [
+              {
+                "charger_count": 9,
+                "station_count": 80
+              },
+              {
+                "charger_count": 10,
+                "station_count": 81
+              },
+              {
+                "charger_count": 11,
+                "station_count": 26
+              },
+              {
+                "charger_count": 12,
+                "station_count": 41
+              },
+              {
+                "charger_count": 13,
+                "station_count": 22
+              },
+              {
+                "charger_count": 14,
+                "station_count": 32
+              },
+              {
+                "charger_count": 15,
+                "station_count": 19
+              },
+              {
+                "charger_count": 16,
+                "station_count": 16
+              },
+              {
+                "charger_count": 17,
+                "station_count": 10
+              },
+              {
+                "charger_count": 18,
+                "station_count": 12
+              },
+              {
+                "charger_count": 19,
+                "station_count": 6
+              },
+              {
+                "charger_count": 20,
+                "station_count": 23
+              },
+              {
+                "charger_count": 21,
+                "station_count": 8
+              },
+              {
+                "charger_count": 22,
+                "station_count": 7
+              },
+              {
+                "charger_count": 23,
+                "station_count": 10
+              },
+              {
+                "charger_count": 24,
+                "station_count": 11
+              },
+              {
+                "charger_count": 25,
+                "station_count": 4
+              },
+              {
+                "charger_count": 26,
+                "station_count": 2
+              },
+              {
+                "charger_count": 27,
+                "station_count": 4
+              },
+              {
+                "charger_count": 28,
+                "station_count": 2
+              },
+              {
+                "charger_count": 30,
+                "station_count": 4
+              },
+              {
+                "charger_count": 31,
+                "station_count": 1
+              },
+              {
+                "charger_count": 32,
+                "station_count": 4
+              },
+              {
+                "charger_count": 33,
+                "station_count": 1
+              },
+              {
+                "charger_count": 34,
+                "station_count": 1
+              },
+              {
+                "charger_count": 35,
+                "station_count": 3
+              },
+              {
+                "charger_count": 40,
+                "station_count": 1
+              },
+              {
+                "charger_count": 44,
+                "station_count": 1
+              },
+              {
+                "charger_count": 47,
+                "station_count": 1
+              },
+              {
+                "charger_count": 50,
+                "station_count": 2
+              },
+              {
+                "charger_count": 55,
+                "station_count": 1
+              },
+              {
+                "charger_count": 61,
+                "station_count": 1
+              },
+              {
+                "charger_count": 62,
+                "station_count": 1
+              },
+              {
+                "charger_count": 72,
+                "station_count": 1
+              },
+              {
+                "charger_count": 75,
+                "station_count": 1
+              },
+              {
+                "charger_count": 87,
+                "station_count": 1
+              },
+              {
+                "charger_count": 89,
+                "station_count": 1
+              }
+            ],
+            "q1": 1.0,
+            "q3": 4.0,
+            "region_code": "51",
+            "region_name": "강원",
+            "sample_count": 4479,
+            "station_count": 4479,
+            "whisker_high": 8,
+            "whisker_low": 1
+          },
+          {
+            "charger_count": 17703,
+            "fence_high": 8.5,
+            "fence_low": -3.5,
+            "iqr": 3.0,
+            "max": 99,
+            "mean": 3.610646542932898,
+            "median": 2.0,
+            "min": 1,
+            "outlier_count": 386,
+            "outlier_distribution": [
+              {
+                "charger_count": 9,
+                "station_count": 72
+              },
+              {
+                "charger_count": 10,
+                "station_count": 64
+              },
+              {
+                "charger_count": 11,
+                "station_count": 23
+              },
+              {
+                "charger_count": 12,
+                "station_count": 49
+              },
+              {
+                "charger_count": 13,
+                "station_count": 20
+              },
+              {
+                "charger_count": 14,
+                "station_count": 20
+              },
+              {
+                "charger_count": 15,
+                "station_count": 29
+              },
+              {
+                "charger_count": 16,
+                "station_count": 21
+              },
+              {
+                "charger_count": 17,
+                "station_count": 9
+              },
+              {
+                "charger_count": 18,
+                "station_count": 10
+              },
+              {
+                "charger_count": 19,
+                "station_count": 5
+              },
+              {
+                "charger_count": 20,
+                "station_count": 17
+              },
+              {
+                "charger_count": 21,
+                "station_count": 10
+              },
+              {
+                "charger_count": 22,
+                "station_count": 4
+              },
+              {
+                "charger_count": 23,
+                "station_count": 5
+              },
+              {
+                "charger_count": 24,
+                "station_count": 4
+              },
+              {
+                "charger_count": 25,
+                "station_count": 1
+              },
+              {
+                "charger_count": 26,
+                "station_count": 4
+              },
+              {
+                "charger_count": 28,
+                "station_count": 1
+              },
+              {
+                "charger_count": 29,
+                "station_count": 1
+              },
+              {
+                "charger_count": 30,
+                "station_count": 3
+              },
+              {
+                "charger_count": 32,
+                "station_count": 2
+              },
+              {
+                "charger_count": 34,
+                "station_count": 1
+              },
+              {
+                "charger_count": 36,
+                "station_count": 2
+              },
+              {
+                "charger_count": 37,
+                "station_count": 1
+              },
+              {
+                "charger_count": 44,
+                "station_count": 1
+              },
+              {
+                "charger_count": 45,
+                "station_count": 1
+              },
+              {
+                "charger_count": 48,
+                "station_count": 2
+              },
+              {
+                "charger_count": 55,
+                "station_count": 1
+              },
+              {
+                "charger_count": 57,
+                "station_count": 1
+              },
+              {
+                "charger_count": 70,
+                "station_count": 1
+              },
+              {
+                "charger_count": 99,
+                "station_count": 1
+              }
+            ],
+            "q1": 1.0,
+            "q3": 4.0,
+            "region_code": "52",
+            "region_name": "전북",
+            "sample_count": 4903,
+            "station_count": 4903,
+            "whisker_high": 8,
+            "whisker_low": 1
+          }
+        ]
+      },
+      "source": "한국환경공단 getChargerInfo · 2026-10-15 04:16–04:19 KST 조회",
+      "caution": "비삭제 표시(N)만 집계 · 실제 이용 가능 상태를 뜻하지 않음 · 현재 16개 지역 유지 · 이상치는 오류 판정이 아니며 제거하지 않음",
+      "image_pixels": [
+        2800,
+        2200
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "90362eac4cffc5be2f99afab77235278782131468601388a5a9181db6cd38e0c"
+    },
+    {
+      "number": 6,
+      "file": "v2_06_type_top4_donut.png",
+      "purpose": "공식 유형 구성 파악",
+      "variables": [
+        "chgerType"
+      ],
+      "kind": "도넛",
+      "reason": "다수 유형을 상위4와 기타로 묶어 읽기 쉽게 표현한다.",
+      "results": "02 AC완속 465,025기 (88.86%). 기타 2,672기.",
+      "metrics": {
+        "labels": [
+          "02 AC완속",
+          "04 DC콤보",
+          "06 DC차데모+AC3상+DC콤보",
+          "11 DC콤보2(버스전용)",
+          "기타 유형"
+        ],
+        "charger_counts": [
+          465025,
+          43582,
+          6449,
+          5584,
+          2672
+        ]
+      },
+      "source": "한국환경공단 getChargerInfo · 2026-10-15 04:16–04:19 KST 조회",
+      "caution": "비삭제 표시(N)만 집계 · 실제 이용 가능 상태를 뜻하지 않음 · 현재 16개 지역 유지 · 커넥터 유형을 출력 구간으로 해석하지 않음",
+      "image_pixels": [
+        2800,
+        1600
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "59a8e37ad4c79c5256ce0fa6fb36f1ee589c1423cf9d76478ad8ef63c6e3ea7c"
+    },
+    {
+      "number": 7,
+      "file": "v2_07_output_histogram_kde.png",
+      "purpose": "출력 집중과 분포 탐색",
+      "variables": [
+        "output"
+      ],
+      "kind": "히스토그램·KDE",
+      "reason": "연속 출력의 빈도와 평활 추정 분포를 함께 보여준다.",
+      "results": "유효 양수 523,143기, 결측·무효 169기. 7kW 402,997기, 중앙값 7kW.",
+      "metrics": {
+        "valid_positive_count": 523143,
+        "missing_or_invalid": 169,
+        "bin_edges_log10": [
+          0.375,
+          0.5,
+          0.625,
+          0.75,
+          0.875,
+          1.0,
+          1.125,
+          1.25,
+          1.375,
+          1.5,
+          1.625,
+          1.75,
+          1.875,
+          2.0,
+          2.125,
+          2.25,
+          2.375,
+          2.5,
+          2.625
+        ],
+        "bin_counts": [
+          46148,
+          1,
+          1,
+          402998,
+          0,
+          10151,
+          6182,
+          135,
+          2356,
+          51,
+          12721,
+          10,
+          7,
+          29625,
+          133,
+          8634,
+          3118,
+          872
+        ],
+        "kde_bandwidth_log10": 0.125,
+        "seven_kw_count": 402997
+      },
+      "source": "한국환경공단 getChargerInfo · 2026-10-15 04:16–04:19 KST 조회",
+      "caution": "비삭제 표시(N)만 집계 · 실제 이용 가능 상태를 뜻하지 않음 · 현재 16개 지역 유지 · KDE는 평활 추정 · 명목 출력은 실측 충전속도가 아님",
+      "image_pixels": [
+        2800,
+        1600
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "ac72e9ef87a230b9a794d7137f8e204398b743e8fb79cf61cc616257281d07ce"
+    },
+    {
+      "number": 8,
+      "file": "v2_08_regional_output_heatmap.png",
+      "purpose": "지역별 출력 구성 비교",
+      "variables": [
+        "zcode",
+        "output"
+      ],
+      "kind": "히트맵",
+      "reason": "동일 비율 척도로 16개 지역의 출력 구간 구성을 비교한다.",
+      "results": "30kW 미만 465,877기, 미상 169기. 지역별 행 합계 100%.",
+      "metrics": {
+        "bands": [
+          "30 미만",
+          "30–50 미만",
+          "50–100 미만",
+          "100–200 미만",
+          "200 이상",
+          "미상"
+        ],
+        "counts": {
+          "11": [
+            69540,
+            240,
+            1541,
+            3198,
+            976,
+            11
+          ],
+          "12": [
+            28529,
+            128,
+            1048,
+            2026,
+            795,
+            20
+          ],
+          "26": [
+            29925,
+            206,
+            471,
+            1426,
+            444,
+            3
+          ],
+          "27": [
+            22608,
+            68,
+            555,
+            856,
+            325,
+            2
+          ],
+          "28": [
+            30720,
+            113,
+            540,
+            1558,
+            501,
+            2
+          ],
+          "30": [
+            13510,
+            63,
+            427,
+            730,
+            232,
+            5
+          ],
+          "31": [
+            9461,
+            45,
+            237,
+            617,
+            222,
+            5
+          ],
+          "36": [
+            5993,
+            9,
+            174,
+            206,
+            149,
+            3
+          ],
+          "41": [
+            140694,
+            578,
+            2694,
+            7104,
+            3764,
+            43
+          ],
+          "43": [
+            15143,
+            137,
+            658,
+            1272,
+            558,
+            6
+          ],
+          "44": [
+            19010,
+            102,
+            567,
+            1708,
+            878,
+            11
+          ],
+          "47": [
+            18465,
+            84,
+            977,
+            2249,
+            1149,
+            9
+          ],
+          "48": [
+            26541,
+            184,
+            738,
+            2550,
+            828,
+            16
+          ],
+          "50": [
+            6442,
+            11,
+            1104,
+            900,
+            285,
+            7
+          ],
+          "51": [
+            14630,
+            55,
+            531,
+            1703,
+            751,
+            10
+          ],
+          "52": [
+            14666,
+            123,
+            476,
+            1692,
+            730,
+            16
+          ]
+        },
+        "total": 523312
+      },
+      "source": "한국환경공단 getChargerInfo · 2026-10-15 04:16–04:19 KST 조회",
+      "caution": "비삭제 표시(N)만 집계 · 실제 이용 가능 상태를 뜻하지 않음 · 현재 16개 지역 유지 · 비율은 지역 내 충전기 수 기준이며 공급전력 점유율이 아님",
+      "image_pixels": [
+        2800,
+        2000
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "9418617cbc02e84064387786670fa68fdca3d5320b4db212a802329660b02707"
+    },
+    {
+      "number": 9,
+      "file": "v2_09_cumulative_installation_area.png",
+      "purpose": "누적 설치 통계의 변화 파악",
+      "variables": [
+        "year",
+        "annual_installed_count",
+        "cumulative_count"
+      ],
+      "kind": "영역 그래프",
+      "reason": "누적 규모의 시간별 변화를 강조한다.",
+      "results": "2025년 누적 478,802기, 2026년 부분 연도 누적 540,210기. 2026년 연간 추가 집계 61,408기.",
+      "metrics": {
+        "2025_cumulative": 478802,
+        "2026_partial_cumulative": 540210,
+        "2026_partial_annual": 61408
+      },
+      "source": "연도별 설치 통계 CSV · 2011–2026년 · 2026 정확한 집계 마감일 미기재",
+      "caution": "설치 통계의 누적값은 API 조회 재고가 아니며 서로 차감·결합하지 않는다. 2026년은 부분 연도.",
+      "image_pixels": [
+        2800,
+        1600
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "7c646c6d0d0572a14d4dc3f1ef9f051e6acbe5211daa1aa7c47d74373da97bfb"
+    },
+    {
+      "number": 10,
+      "file": "v2_10_operator_treemap.png",
+      "purpose": "운영기관별 충전기 구성 비교",
+      "variables": [
+        "busiId",
+        "busiNm"
+      ],
+      "kind": "트리맵",
+      "reason": "다수 기관의 구성비를 면적으로 나타낸다. 이분 분할 레이아웃의 면적 비율을 검증했다.",
+      "results": "기관 ID·명칭 조합 342개. 최대 GS차지비 [PI] 83,132기. 기타 113,573기.",
+      "metrics": {
+        "operator_pairs": 342,
+        "labels": [
+          "GS차지비\n[PI]",
+          "플러그링크\n[PL]",
+          "에버온\n[EV]",
+          "파워큐브\n[PW]",
+          "LG유플러스볼트업\n[LU]",
+          "파워큐브코리아\n[PW]",
+          "휴맥스이브이\n[HM]",
+          "채비\n[CV]",
+          "현대엔지니어링\n[HY]",
+          "(주)스타코프\n[SF]",
+          "한국전자금융\n[NT]",
+          "SK일렉링크\n[ST]",
+          "NICE인프라\n[NT]",
+          "파워큐브(SP)\n[PW]",
+          "기후에너지환경부\n[ME]",
+          "이브이시스\n[JA]",
+          "엘지유플러스\n[LU]",
+          "이지차저\n[EC]",
+          "주식회사 에버온\n[EV]",
+          "한국전력\n[KP]",
+          "기타 운영기관"
+        ],
+        "charger_counts": [
+          83132,
+          51319,
+          47638,
+          36192,
+          27030,
+          24456,
+          14805,
+          14388,
+          12409,
+          12262,
+          10958,
+          10649,
+          9594,
+          8568,
+          8280,
+          8078,
+          7814,
+          7724,
+          7454,
+          6989,
+          113573
+        ],
+        "area_ratios_verified": true
+      },
+      "source": "한국환경공단 getChargerInfo · 2026-10-15 04:16–04:19 KST 조회",
+      "caution": "비삭제 표시(N)만 집계 · 실제 이용 가능 상태를 뜻하지 않음 · 현재 16개 지역 유지 · 앞뒤 공백만 정리 · 다른 명칭 자동 통합 안 함 · 보유/소유권의 법적 의미가 아님",
+      "image_pixels": [
+        2800,
+        2000
+      ],
+      "dpi": [
+        199.9996,
+        199.9996
+      ],
+      "sha256": "49d2e812cf4fbf133a54658304756d454f5e67798bf9cbbe87ebd8f018ba9613"
+    }
+  ],
+  "checks": [
+    {
+      "check": "region_counts",
+      "region_code": "11",
+      "charger_count": 75506,
+      "station_count": 12936
+    },
+    {
+      "check": "region_counts",
+      "region_code": "12",
+      "charger_count": 32546,
+      "station_count": 8072
+    },
+    {
+      "check": "region_counts",
+      "region_code": "26",
+      "charger_count": 32475,
+      "station_count": 5144
+    },
+    {
+      "check": "region_counts",
+      "region_code": "27",
+      "charger_count": 24414,
+      "station_count": 4048
+    },
+    {
+      "check": "region_counts",
+      "region_code": "28",
+      "charger_count": 33434,
+      "station_count": 5231
+    },
+    {
+      "check": "region_counts",
+      "region_code": "30",
+      "charger_count": 14967,
+      "station_count": 2774
+    },
+    {
+      "check": "region_counts",
+      "region_code": "31",
+      "charger_count": 10587,
+      "station_count": 2082
+    },
+    {
+      "check": "region_counts",
+      "region_code": "36",
+      "charger_count": 6534,
+      "station_count": 1038
+    },
+    {
+      "check": "region_counts",
+      "region_code": "41",
+      "charger_count": 154877,
+      "station_count": 25003
+    },
+    {
+      "check": "region_counts",
+      "region_code": "43",
+      "charger_count": 17774,
+      "station_count": 3830
+    },
+    {
+      "check": "region_counts",
+      "region_code": "44",
+      "charger_count": 22276,
+      "station_count": 5029
+    },
+    {
+      "check": "region_counts",
+      "region_code": "47",
+      "charger_count": 22933,
+      "station_count": 5835
+    },
+    {
+      "check": "region_counts",
+      "region_code": "48",
+      "charger_count": 30857,
+      "station_count": 6972
+    },
+    {
+      "check": "region_counts",
+      "region_code": "50",
+      "charger_count": 8749,
+      "station_count": 3214
+    },
+    {
+      "check": "region_counts",
+      "region_code": "51",
+      "charger_count": 17680,
+      "station_count": 4479
+    },
+    {
+      "check": "region_counts",
+      "region_code": "52",
+      "charger_count": 17703,
+      "station_count": 4903
+    }
+  ],
+  "boxplot_matplotlib_crosscheck_regions": 16,
+  "api_input_sha256": "359a3ff8cacaab5a6b1a6ebf742d01787f36919ea0c96f0df0bdc159e65f416a",
+  "source_sha256": {
+    "data\\processed\\charger_by_region.csv": "ce50e9f5b60fdcdefbc1bb032307f224c6798fe6ccd8a630cf53175d776ffddb",
+    "data\\processed\\charger_coordinate_issues.csv": "22cc0b0f9542e0c1d333396ce663d6a3be33e9a5ebdd442ad4315cd50c9d5374",
+    "data\\processed\\charger_duplicate_rows.csv": "ed1cd3242ca43310c297dfedc4dceca2f06633f06037fdf83a5378e9ad8ac6c0",
+    "data\\processed\\charger_identity_issues.csv": "22cc0b0f9542e0c1d333396ce663d6a3be33e9a5ebdd442ad4315cd50c9d5374",
+    "data\\processed\\charger_info_clean.csv": "6cf8e89777a7720fdbb9f6800e555424896d870c4f45a6c5bde2f8012c5d00dd",
+    "data\\processed\\charger_installation_trend.csv": "7bf139ea609e6b4b7084e0a1aac65ed687f10b9094e4aee6b00697c8edd8e976",
+    "data\\processed\\charger_operator_summary.csv": "642ddef41d69fadf50c8d9bfde16e2603cdf6901ed8675e5ab93b7da6a847d88",
+    "data\\processed\\charger_output_summary.csv": "fed2c362344735d7ebefbbada1b5d1c21776706ea4a26e700f0ed37d125c1ada",
+    "data\\processed\\charger_region_output_excel.csv": "71ea57d6cb6e8ecaecca9604dace3f60fb8f989355eb0d3a324a97d3c8db586e",
+    "data\\processed\\charger_region_summary.csv": "faf9d4dae842eb3c1701eacd47d5fbb26d11752a787d2bc1e0cc835107ce2c61",
+    "data\\processed\\charger_type_summary.csv": "4bd274d37ba7894af8230479f2c5c79d49fd6a766a0a65d6a5add25df199313b",
+    "data\\processed\\ev_registration_by_region_2025.csv": "2be3140319d5cc20766e598cba8f356c577b986d4ce4d3134c9f4dad8bfef075",
+    "data\\processed\\region_comparison_2025_registration_2026_chargers.csv": "85cf4285ca08625c673507793f14bc8eae86cf2f23979dd49422d4fb3f3f0a5c"
+  },
+  "default_deletion": "not_deleted",
+  "dpi": 200,
+  "new_files_count": 10,
+  "graph_kind_count": 9,
+  "graph_kind_definition": "10 analytical forms counting compound scatter+OLS and histogram+KDE as one each; donut is shared by charts 2 and 6, giving 9 distinct chart labels."
+}

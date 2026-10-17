@@ -1,0 +1,224 @@
+{
+  "verified_at": "2026-10-15T04:19:51+09:00",
+  "status": "passed",
+  "api_total_count_start": 527433,
+  "api_total_count_end": 527433,
+  "raw_rows": 527433,
+  "clean_rows": 527433,
+  "duplicates_removed": 0,
+  "charger_count": 527433,
+  "station_count": 101091,
+  "invalid_coordinates_in_raw": 0,
+  "invalid_coordinates_in_clean": 0,
+  "missing_by_field": {
+    "statNm": 0,
+    "statId": 0,
+    "chgerId": 0,
+    "chgerType": 0,
+    "powerType": 527433,
+    "addr": 1,
+    "lat": 0,
+    "lng": 0,
+    "zcode": 0,
+    "busiId": 0,
+    "busiNm": 0,
+    "stat": 0,
+    "statUpdDt": 2759,
+    "useTime": 3344,
+    "parkingFree": 78,
+    "note": 449052
+  },
+  "pages": 53,
+  "checkpoint_rows": 527433,
+  "checkpoint_totalCounts": [
+    527433
+  ],
+  "region_rows": [
+    {
+      "region_code": "11",
+      "region_name": "서울",
+      "charger_count": 76202,
+      "station_count": 13035
+    },
+    {
+      "region_code": "26",
+      "region_name": "부산",
+      "charger_count": 32765,
+      "station_count": 5172
+    },
+    {
+      "region_code": "27",
+      "region_name": "대구",
+      "charger_count": 25203,
+      "station_count": 4112
+    },
+    {
+      "region_code": "28",
+      "region_name": "인천",
+      "charger_count": 33866,
+      "station_count": 5275
+    },
+    {
+      "region_code": "30",
+      "region_name": "대전",
+      "charger_count": 15092,
+      "station_count": 2783
+    },
+    {
+      "region_code": "31",
+      "region_name": "울산",
+      "charger_count": 10694,
+      "station_count": 2101
+    },
+    {
+      "region_code": "36",
+      "region_name": "세종",
+      "charger_count": 6571,
+      "station_count": 1041
+    },
+    {
+      "region_code": "41",
+      "region_name": "경기",
+      "charger_count": 155001,
+      "station_count": 25022
+    },
+    {
+      "region_code": "43",
+      "region_name": "충북",
+      "charger_count": 17800,
+      "station_count": 3836
+    },
+    {
+      "region_code": "44",
+      "region_name": "충남",
+      "charger_count": 22462,
+      "station_count": 5054
+    },
+    {
+      "region_code": "47",
+      "region_name": "경북",
+      "charger_count": 23226,
+      "station_count": 5878
+    },
+    {
+      "region_code": "48",
+      "region_name": "경남",
+      "charger_count": 31083,
+      "station_count": 7006
+    },
+    {
+      "region_code": "50",
+      "region_name": "제주",
+      "charger_count": 8779,
+      "station_count": 3219
+    },
+    {
+      "region_code": "51",
+      "region_name": "강원",
+      "charger_count": 17813,
+      "station_count": 4498
+    },
+    {
+      "region_code": "52",
+      "region_name": "전북",
+      "charger_count": 17963,
+      "station_count": 4934
+    },
+    {
+      "region_code": "unknown",
+      "region_name": "미확인",
+      "charger_count": 32913,
+      "station_count": 8125
+    }
+  ],
+  "source_field_count": 37,
+  "source_distributions": {
+    "delYn": {
+      "N": 523312,
+      "Y": 4121
+    },
+    "stat": {
+      "2": 352780,
+      "3": 139761,
+      "1": 11541,
+      "9": 20666,
+      "5": 2108,
+      "4": 577
+    },
+    "chgerType": {
+      "02": 469049,
+      "04": 43676,
+      "06": 6449,
+      "08": 600,
+      "10": 266,
+      "05": 1476,
+      "07": 287,
+      "11": 5587,
+      "01": 40,
+      "03": 3
+    },
+    "powerType": {
+      "": 527433
+    }
+  },
+  "excel_originals": [
+    {
+      "file": "2025년_12월_자동차_등록자료_통계.xlsx",
+      "sha256": "63EDCFE041D50517139C86F935C98D358AFF142077A53DB85D4EA72BC6C88582",
+      "unchanged": true
+    },
+    {
+      "file": "우리 지역 급속 충전 여건_2026-10-15.xlsx",
+      "sha256": "2EC158C31B7DC688020A3B83F8E1AACE7A34474E13563ABB9982F8D96F263006",
+      "unchanged": true
+    },
+    {
+      "file": "충전기 설치 성장 추세_2026-10-15.xlsx",
+      "sha256": "AA8CFFE49BD71354092D356783927981C194187AE8FDB352E32C79385B48DE1C",
+      "unchanged": true
+    }
+  ],
+  "files": [
+    {
+      "file": "data\\raw\\charger_info_raw.csv",
+      "bytes": 211796078,
+      "sha256": "b98fbba0cf7f2c2df7ecd33b66190a3eb59a7f8826604b7811d8e1cc35845d5c"
+    },
+    {
+      "file": "data\\processed\\charger_by_region.csv",
+      "bytes": 417,
+      "sha256": "02ade4c9546c81a2ffb08571eb8d9bde7148e310576a837c561b62692e8fc7e4"
+    },
+    {
+      "file": "data\\processed\\charger_coordinate_issues.csv",
+      "bytes": 478,
+      "sha256": "22cc0b0f9542e0c1d333396ce663d6a3be33e9a5ebdd442ad4315cd50c9d5374"
+    },
+    {
+      "file": "data\\processed\\charger_duplicate_rows.csv",
+      "bytes": 312,
+      "sha256": "ed1cd3242ca43310c297dfedc4dceca2f06633f06037fdf83a5378e9ad8ac6c0"
+    },
+    {
+      "file": "data\\processed\\charger_identity_issues.csv",
+      "bytes": 478,
+      "sha256": "22cc0b0f9542e0c1d333396ce663d6a3be33e9a5ebdd442ad4315cd50c9d5374"
+    },
+    {
+      "file": "data\\processed\\charger_info_clean.csv",
+      "bytes": 239975730,
+      "sha256": "dd1808d90c53aba2d420fbf85fbe844ceabdbaa8bdbce2311e1ba3bed49d5ae5"
+    },
+    {
+      "file": "reports\\collection_report.md",
+      "bytes": 16437,
+      "sha256": "729cb1a2fde216ce5d985f8b67fff3438bfe3127861d727b46b8b32e62643d44"
+    },
+    {
+      "file": "reports\\data_quality_report.md",
+      "bytes": 4895,
+      "sha256": "94237f06338cd707223d8fa5cb6fbc387b02d64d6de8fb6b189c16fa920c89c2"
+    }
+  ],
+  "secrets_absent_in_deliverables": true
+}

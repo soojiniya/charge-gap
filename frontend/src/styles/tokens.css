@@ -1,0 +1,68 @@
+/*
+ * CHARGE GAP 디자인 토큰 (v2, 저채도 분석 대시보드)
+ * 바탕 #10141C, 카드 #1B2230, 보조 텍스트 #8F9CAD, 포인트 #A49BC8, 비교 #81ADA8.
+ * 차트 범주색은 고정 순서 4색. 라벤더와 세이지가 명도가 같아 구분이 어려워
+ * 채움용 비교색은 같은 계열의 진한 단계 #418F86을 씁니다
+ * (dataviz 검증기: 카드 표면 기준 CVD ΔE 10.8, 일반 시각 ΔE 16.4 통과).
+ */
+:root {
+  color-scheme: dark;
+
+  /* surfaces */
+  --bg: #10141c;
+  --bg-rail: #0d1017;
+  --panel: #1b2230;
+  --panel-2: #222a39;
+  --panel-3: #2b3445;
+  --line: rgba(255, 255, 255, 0.06);
+  --line-strong: rgba(255, 255, 255, 0.11);
+
+  /* ink */
+  --ink: #e7eaf0;
+  --ink-2: #c0c7d2;
+  --muted: #8f9cad;
+
+  /* accents */
+  --point: #a49bc8;
+  --point-soft: rgba(164, 155, 200, 0.14);
+  --compare: #81ada8;
+  --compare-soft: rgba(129, 173, 168, 0.14);
+  --warn: #d9a85f;
+  --warn-soft: rgba(217, 168, 95, 0.1);
+
+  /* categorical series — fixed order, never cycled */
+  --s1: #a49bc8;
+  --s2: #418f86;
+  --s3: #dbaa5e;
+  --s4: #bf6f8b;
+  --s-other: #566173;
+
+  /* chart chrome */
+  --grid: #273042;
+  --axis: #36405290;
+
+  /* status */
+  --critical: #e07a7a;
+  --good: #6fbf8e;
+
+  /* type */
+  --font-ui: 'IBM Plex Sans KR', system-ui, -apple-system, 'Segoe UI', 'Malgun Gothic', sans-serif;
+  --font-num: 'Archivo Variable', 'Archivo', 'IBM Plex Sans KR', system-ui, sans-serif;
+
+  /* type scale — 한글 가독성을 위해 최소 13px */
+  --t-xs: 0.8125rem;
+  --t-sm: 0.875rem;
+  --t-md: 1rem;
+  --t-lg: 1.125rem;
+  --t-xl: 1.5rem;
+  --t-2xl: 2rem;
+
+  /* radius by hierarchy */
+  --r-hero: 16px;
+  --r-card: 14px;
+  --r-ctl: 9px;
+  --r-chip: 999px;
+
+  --sidebar-w: 236px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}

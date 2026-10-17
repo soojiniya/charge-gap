@@ -1,0 +1,74 @@
+{
+  "status": "passed",
+  "verified_at": "2026-10-16T14:16:18+09:00",
+  "pytest_tests": 60,
+  "pytest_failures_or_errors": 0,
+  "http_requests": [
+    {
+      "request": "GET /api/overview",
+      "status": 200,
+      "elapsed_ms": 396.25,
+      "bytes": 3981
+    },
+    {
+      "request": "GET /api/ev-registration",
+      "status": 200,
+      "elapsed_ms": 3.03,
+      "bytes": 6109
+    },
+    {
+      "request": "GET /api/charger-regions",
+      "status": 200,
+      "elapsed_ms": 313.53,
+      "bytes": 4329
+    },
+    {
+      "request": "GET /api/charger-types",
+      "status": 200,
+      "elapsed_ms": 291.38,
+      "bytes": 3732
+    },
+    {
+      "request": "GET /api/charger-output?deletion=not_deleted",
+      "status": 200,
+      "elapsed_ms": 312.69,
+      "bytes": 9471
+    },
+    {
+      "request": "GET /api/operators?limit=3",
+      "status": 200,
+      "elapsed_ms": 375.43,
+      "bytes": 2157
+    },
+    {
+      "request": "GET /api/growth?year_from=2025&year_to=2026",
+      "status": 200,
+      "elapsed_ms": 3.08,
+      "bytes": 1537
+    },
+    {
+      "request": "GET /api/locations?limit=2",
+      "status": 200,
+      "elapsed_ms": 792.58,
+      "bytes": 2452
+    },
+    {
+      "request": "GET /api/charts?chart_id=7",
+      "status": 200,
+      "elapsed_ms": 1.7,
+      "bytes": 2566
+    },
+    {
+      "request": "GET /api/charts/7/image",
+      "status": 200,
+      "bytes": 102631
+    }
+  ],
+  "original_files_hash_verified": 39,
+  "existing_charts_verified": 10,
+  "original_data_graph_reports_modified": 0,
+  "actual_response_examples": 9,
+  "openapi_paths": 10,
+  "credentials_used": false,
+  "temporary_http_server_stopped": true
+}

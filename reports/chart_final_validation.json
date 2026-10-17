@@ -1,0 +1,1038 @@
+{
+  "status": "passed",
+  "audited_at": "2026-10-15T16:00:30+09:00",
+  "check_count": 200,
+  "checks": [
+    {
+      "check": "exactly_ten_existing_pngs",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "previous_verification_passed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "malgun_font_recorded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "original_unchanged_2025년_12월_자동차_등록자료_통계.xlsx",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "original_unchanged_우리 지역 급속 충전 여건_2026-10-15.xlsx",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "original_unchanged_충전기 설치 성장 추세_2026-10-15.xlsx",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "original_unchanged_charger_info_raw.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "original_unchanged_charger_by_region.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "original_unchanged_charger_coordinate_issues.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "original_unchanged_charger_duplicate_rows.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "original_unchanged_charger_identity_issues.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "original_unchanged_charger_info_clean.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "original_unchanged_charger_installation_trend.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "original_unchanged_charger_operator_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "original_unchanged_charger_output_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "original_unchanged_charger_region_output_excel.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "original_unchanged_charger_region_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "original_unchanged_charger_type_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "original_unchanged_ev_registration_by_region_2025.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "original_unchanged_region_comparison_2025_registration_2026_chargers.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "01_png_hash_matches_metadata",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "01_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "01_dimensions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "01_nonempty",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "01_visual_review",
+      "passed": true,
+      "detail": "既存画像を表示し、韓国語・タイトル・軸・凡例・脚注の切れ/重なりを確認"
+    },
+    {
+      "check": "02_png_hash_matches_metadata",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "02_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "02_dimensions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "02_nonempty",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "02_visual_review",
+      "passed": true,
+      "detail": "既存画像を表示し、韓国語・タイトル・軸・凡例・脚注の切れ/重なりを確認"
+    },
+    {
+      "check": "03_png_hash_matches_metadata",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "03_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "03_dimensions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "03_nonempty",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "03_visual_review",
+      "passed": true,
+      "detail": "既存画像を表示し、韓国語・タイトル・軸・凡例・脚注の切れ/重なりを確認"
+    },
+    {
+      "check": "04_png_hash_matches_metadata",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "04_dimensions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_nonempty",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_visual_review",
+      "passed": true,
+      "detail": "既存画像を表示し、韓国語・タイトル・軸・凡例・脚注の切れ/重なりを確認"
+    },
+    {
+      "check": "05_png_hash_matches_metadata",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "05_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "05_dimensions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "05_nonempty",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "05_visual_review",
+      "passed": true,
+      "detail": "既存画像を表示し、韓国語・タイトル・軸・凡例・脚注の切れ/重なりを確認"
+    },
+    {
+      "check": "06_png_hash_matches_metadata",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "06_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "06_dimensions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "06_nonempty",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "06_visual_review",
+      "passed": true,
+      "detail": "既存画像を表示し、韓国語・タイトル・軸・凡例・脚注の切れ/重なりを確認"
+    },
+    {
+      "check": "07_png_hash_matches_metadata",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "07_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "07_dimensions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "07_nonempty",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "07_log_histogram_visible_data_bars",
+      "passed": true,
+      "detail": "blue plot-area fraction=0.2563"
+    },
+    {
+      "check": "07_visual_review",
+      "passed": true,
+      "detail": "既存画像を表示し、韓国語・タイトル・軸・凡例・脚注の切れ/重なりを確認"
+    },
+    {
+      "check": "08_png_hash_matches_metadata",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "08_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "08_dimensions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "08_nonempty",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "08_visual_review",
+      "passed": true,
+      "detail": "既存画像を表示し、韓国語・タイトル・軸・凡例・脚注の切れ/重なりを確認"
+    },
+    {
+      "check": "09_png_hash_matches_metadata",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "09_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "09_dimensions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "09_nonempty",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "09_visual_review",
+      "passed": true,
+      "detail": "既存画像を表示し、韓国語・タイトル・軸・凡例・脚注の切れ/重なりを確認"
+    },
+    {
+      "check": "10_png_hash_matches_metadata",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_dpi",
+      "passed": true,
+      "detail": "(199.9996, 199.9996)"
+    },
+    {
+      "check": "10_dimensions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_nonempty",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_visual_review",
+      "passed": true,
+      "detail": "既存画像を表示し、韓国語・タイトル・軸・凡例・脚注の切れ/重なりを確認"
+    },
+    {
+      "check": "EV_date_2025_12",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "EV_17_original_regions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "API_counts",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "API_dates",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "API_16_integrated_regions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "01_ranking",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "01_national_and_top10",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "02_vehicle_type_counts",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "02_sum_matches_registration",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "03_usage_counts",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_region_41",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_region_11",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_region_28",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_region_12",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_region_26",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_region_48",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_region_27",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_region_47",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_region_44",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_region_52",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_region_51",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_region_43",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_region_30",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_region_31",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_region_50",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_region_36",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "04_total",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "05_valid_coordinates",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "05_station_points",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "05_station_deletion_groups",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "05_all_representative_points_inside_view",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "05_multiple_coordinate_count",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "06_type_02",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "06_type_04",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "06_type_06",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "06_type_11",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "06_type_05",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "06_type_08",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "06_type_07",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "06_type_10",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "06_type_01",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "06_type_03",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "06_pie_denominator",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "07_histogram_all_bins_exact",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "07_histogram_rows_and_missing",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "07_histogram_summary_statistics",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "08_operator_PI_GS차지비",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "08_operator_PL_플러그링크",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "08_operator_EV_에버온",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "08_operator_PW_파워큐브",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "08_operator_LU_LG유플러스볼트업",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "08_operator_PW_파워큐브코리아",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "08_operator_HM_휴맥스이브이",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "08_operator_CV_채비",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "08_operator_HY_현대엔지니어링",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "08_operator_SF_(주)스타코프",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "08_operator_pair_count",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "09_years",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "09_annual",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "09_cumulative",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "09_partial_year",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "09_cumulative_reconcile",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_heatmap_경기",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_heatmap_서울",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_heatmap_인천",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_heatmap_전남광주통합특별시",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_heatmap_부산",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_heatmap_경남",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_heatmap_대구",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_heatmap_경북",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_heatmap_충남",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_heatmap_충북",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_heatmap_전북",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_heatmap_강원",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_heatmap_대전",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_heatmap_울산",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_heatmap_제주",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_heatmap_세종",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "10_heatmap_denominator",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "analysis_has_ten_sections",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "analysis_complete_분석 목적",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "analysis_complete_사용한 데이터",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "analysis_complete_기준일/기간",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "analysis_complete_그래프 종류",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "analysis_complete_선택 이유",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "analysis_complete_주요 결과",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "analysis_complete_해석 주의",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "summary_has_ten_metric_json_blocks",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "date_and_deletion_cautions_present",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "chart_file_named_in_reports_1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "chart_file_named_in_reports_2",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "chart_file_named_in_reports_3",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "chart_file_named_in_reports_4",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "chart_file_named_in_reports_5",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "chart_file_named_in_reports_6",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "chart_file_named_in_reports_7",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "chart_file_named_in_reports_8",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "chart_file_named_in_reports_9",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "chart_file_named_in_reports_10",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "PNG_unchanged_during_final_audit_01_ev_registration_top10.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "PNG_unchanged_during_final_audit_02_ev_vehicle_type_donut.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "PNG_unchanged_during_final_audit_03_ev_commercial_stacked.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "PNG_unchanged_during_final_audit_04_chargers_by_region.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "PNG_unchanged_during_final_audit_05_station_location_scatter.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "PNG_unchanged_during_final_audit_06_charger_type_pie.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "PNG_unchanged_during_final_audit_07_charger_output_histogram.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "PNG_unchanged_during_final_audit_08_operator_chargers_top10.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "PNG_unchanged_during_final_audit_09_annual_charger_installation_trend.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "PNG_unchanged_during_final_audit_10_regional_output_heatmap.png",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "existing_report_unchanged_chart_analysis.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "existing_report_unchanged_chart_data_summary.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "existing_report_unchanged_chart_verification.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_still_unchanged_2025년_12월_자동차_등록자료_통계.xlsx",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_still_unchanged_우리 지역 급속 충전 여건_2026-10-15.xlsx",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_still_unchanged_충전기 설치 성장 추세_2026-10-15.xlsx",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_still_unchanged_charger_info_raw.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_still_unchanged_charger_by_region.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_still_unchanged_charger_coordinate_issues.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_still_unchanged_charger_duplicate_rows.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_still_unchanged_charger_identity_issues.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_still_unchanged_charger_info_clean.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_still_unchanged_charger_installation_trend.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_still_unchanged_charger_operator_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_still_unchanged_charger_output_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_still_unchanged_charger_region_output_excel.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_still_unchanged_charger_region_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_still_unchanged_charger_type_summary.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_still_unchanged_ev_registration_by_region_2025.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "input_still_unchanged_region_comparison_2025_registration_2026_chargers.csv",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "graph_count": 10,
+  "graph_files_modified": 0,
+  "source_files_modified": 0,
+  "existing_reports_modified": 0,
+  "histogram_log_rendering": "already_fixed_and_visually_confirmed",
+  "visual_review": "all_10_images_displayed_and_reviewed",
+  "font": "Malgun Gothic",
+  "min_dpi": 199.9,
+  "base_graph_families": 6,
+  "presentation_variants": 9,
+  "histogram_valid_rows": 523143,
+  "histogram_missing_rows": 169,
+  "histogram_median_kw": 7,
+  "histogram_p95_kw": 100,
+  "png_hashes": {
+    "01_ev_registration_top10.png": "0e96ad7970496e425ed9a8488e719de3fdc77f370ced2042bbbdb8f825cde787",
+    "02_ev_vehicle_type_donut.png": "cfafa37c02d0743e8337f7c64922e7dc81eb443b1f1e2dee4cf551866cfea4a9",
+    "03_ev_commercial_stacked.png": "efd05bf2b5896aa24d2e18034071a9d3903480a72c6f8517569bfa5f829316c3",
+    "04_chargers_by_region.png": "d7b6121823427748218e42b23fedea289d48b2f54456e01ed21b7d8ffadf3144",
+    "05_station_location_scatter.png": "e0314e3bafcacc294fdbe15f07298d6b2080276ddda90b15d2a39719cdf6e151",
+    "06_charger_type_pie.png": "1915096a40fb0f3447f08d3494760449136c5eb7b1fada646d93eebf49a18f6f",
+    "07_charger_output_histogram.png": "7da76317a77cff919d8922e35fb6316c8db6e63ef60a0c64f4fdc05f5bb2c2b7",
+    "08_operator_chargers_top10.png": "637a4fdaaa344f1cebd5687020afffa1b82ce6b9a06a443d9f3e24a1f573d319",
+    "09_annual_charger_installation_trend.png": "687dd3cb95079dfba3e622783f9c19b8c46843eebcb3cfe79111a90b9a86507e",
+    "10_regional_output_heatmap.png": "a6d622b0d61516e42c3954fb48d5f98b4dbd6718b6b296ac020ce013ccd3d424"
+  },
+  "report_hashes": {
+    "chart_analysis.md": "7681d9555012d3ad7f27bfc90d618e12610f801091c1db038c07b3ef3d87e603",
+    "chart_data_summary.md": "2b374b1891fa781de617cea4bbb221ff9c3c3a72baec81779347bf4c8f17358c",
+    "chart_verification.json": "f077acf5e2ac72db5fba7edd1a4d05c815dbb57f57d8f9ce4baa506a896ba50a"
+  }
+}

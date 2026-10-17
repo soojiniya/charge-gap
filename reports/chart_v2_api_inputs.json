@@ -1,0 +1,6729 @@
+{
+  "ev-registration": {
+    "data": [
+      {
+        "ev_bus_count": 2596,
+        "ev_commercial_count": 23383,
+        "ev_noncommercial_count": 77948,
+        "ev_passenger_count": 86969,
+        "ev_registration_count": 101331,
+        "ev_special_count": 95,
+        "ev_truck_count": 11671,
+        "reference_month": "2025-12",
+        "region_code_2025": "11",
+        "region_name_2025": "서울",
+        "region_system": "2025_17_provinces"
+      },
+      {
+        "ev_bus_count": 948,
+        "ev_commercial_count": 12944,
+        "ev_noncommercial_count": 47743,
+        "ev_passenger_count": 50973,
+        "ev_registration_count": 60687,
+        "ev_special_count": 24,
+        "ev_truck_count": 8742,
+        "reference_month": "2025-12",
+        "region_code_2025": "26",
+        "region_name_2025": "부산",
+        "region_system": "2025_17_provinces"
+      },
+      {
+        "ev_bus_count": 143,
+        "ev_commercial_count": 6529,
+        "ev_noncommercial_count": 36063,
+        "ev_passenger_count": 34976,
+        "ev_registration_count": 42592,
+        "ev_special_count": 23,
+        "ev_truck_count": 7450,
+        "reference_month": "2025-12",
+        "region_code_2025": "27",
+        "region_name_2025": "대구",
+        "region_system": "2025_17_provinces"
+      },
+      {
+        "ev_bus_count": 631,
+        "ev_commercial_count": 32030,
+        "ev_noncommercial_count": 47830,
+        "ev_passenger_count": 70052,
+        "ev_registration_count": 79860,
+        "ev_special_count": 38,
+        "ev_truck_count": 9139,
+        "reference_month": "2025-12",
+        "region_code_2025": "28",
+        "region_name_2025": "인천",
+        "region_system": "2025_17_provinces"
+      },
+      {
+        "ev_bus_count": 85,
+        "ev_commercial_count": 2677,
+        "ev_noncommercial_count": 16438,
+        "ev_passenger_count": 15274,
+        "ev_registration_count": 19115,
+        "ev_special_count": 6,
+        "ev_truck_count": 3750,
+        "reference_month": "2025-12",
+        "region_code_2025": "29",
+        "region_name_2025": "광주",
+        "region_system": "2025_17_provinces"
+      },
+      {
+        "ev_bus_count": 181,
+        "ev_commercial_count": 5179,
+        "ev_noncommercial_count": 20253,
+        "ev_passenger_count": 20891,
+        "ev_registration_count": 25432,
+        "ev_special_count": 7,
+        "ev_truck_count": 4353,
+        "reference_month": "2025-12",
+        "region_code_2025": "30",
+        "region_name_2025": "대전",
+        "region_system": "2025_17_provinces"
+      },
+      {
+        "ev_bus_count": 170,
+        "ev_commercial_count": 1898,
+        "ev_noncommercial_count": 11442,
+        "ev_passenger_count": 9994,
+        "ev_registration_count": 13340,
+        "ev_special_count": 17,
+        "ev_truck_count": 3159,
+        "reference_month": "2025-12",
+        "region_code_2025": "31",
+        "region_name_2025": "울산",
+        "region_system": "2025_17_provinces"
+      },
+      {
+        "ev_bus_count": 169,
+        "ev_commercial_count": 558,
+        "ev_noncommercial_count": 6772,
+        "ev_passenger_count": 6526,
+        "ev_registration_count": 7330,
+        "ev_special_count": 4,
+        "ev_truck_count": 631,
+        "reference_month": "2025-12",
+        "region_code_2025": "36",
+        "region_name_2025": "세종",
+        "region_system": "2025_17_provinces"
+      },
+      {
+        "ev_bus_count": 6105,
+        "ev_commercial_count": 26287,
+        "ev_noncommercial_count": 180788,
+        "ev_passenger_count": 164383,
+        "ev_registration_count": 207075,
+        "ev_special_count": 214,
+        "ev_truck_count": 36373,
+        "reference_month": "2025-12",
+        "region_code_2025": "41",
+        "region_name_2025": "경기",
+        "region_system": "2025_17_provinces"
+      },
+      {
+        "ev_bus_count": 408,
+        "ev_commercial_count": 3165,
+        "ev_noncommercial_count": 22514,
+        "ev_passenger_count": 18111,
+        "ev_registration_count": 25679,
+        "ev_special_count": 44,
+        "ev_truck_count": 7116,
+        "reference_month": "2025-12",
+        "region_code_2025": "51",
+        "region_name_2025": "강원",
+        "region_system": "2025_17_provinces"
+      },
+      {
+        "ev_bus_count": 337,
+        "ev_commercial_count": 3138,
+        "ev_noncommercial_count": 29763,
+        "ev_passenger_count": 23911,
+        "ev_registration_count": 32901,
+        "ev_special_count": 26,
+        "ev_truck_count": 8627,
+        "reference_month": "2025-12",
+        "region_code_2025": "43",
+        "region_name_2025": "충북",
+        "region_system": "2025_17_provinces"
+      },
+      {
+        "ev_bus_count": 455,
+        "ev_commercial_count": 2845,
+        "ev_noncommercial_count": 36994,
+        "ev_passenger_count": 27843,
+        "ev_registration_count": 39839,
+        "ev_special_count": 52,
+        "ev_truck_count": 11489,
+        "reference_month": "2025-12",
+        "region_code_2025": "44",
+        "region_name_2025": "충남",
+        "region_system": "2025_17_provinces"
+      },
+      {
+        "ev_bus_count": 306,
+        "ev_commercial_count": 3036,
+        "ev_noncommercial_count": 27475,
+        "ev_passenger_count": 20664,
+        "ev_registration_count": 30511,
+        "ev_special_count": 34,
+        "ev_truck_count": 9507,
+        "reference_month": "2025-12",
+        "region_code_2025": "52",
+        "region_name_2025": "전북",
+        "region_system": "2025_17_provinces"
+      },
+      {
+        "ev_bus_count": 379,
+        "ev_commercial_count": 12437,
+        "ev_noncommercial_count": 28885,
+        "ev_passenger_count": 32508,
+        "ev_registration_count": 41322,
+        "ev_special_count": 41,
+        "ev_truck_count": 8394,
+        "reference_month": "2025-12",
+        "region_code_2025": "46",
+        "region_name_2025": "전남",
+        "region_system": "2025_17_provinces"
+      },
+      {
+        "ev_bus_count": 423,
+        "ev_commercial_count": 3573,
+        "ev_noncommercial_count": 41517,
+        "ev_passenger_count": 30355,
+        "ev_registration_count": 45090,
+        "ev_special_count": 43,
+        "ev_truck_count": 14269,
+        "reference_month": "2025-12",
+        "region_code_2025": "47",
+        "region_name_2025": "경북",
+        "region_system": "2025_17_provinces"
+      },
+      {
+        "ev_bus_count": 1038,
+        "ev_commercial_count": 12514,
+        "ev_noncommercial_count": 53420,
+        "ev_passenger_count": 51091,
+        "ev_registration_count": 65934,
+        "ev_special_count": 36,
+        "ev_truck_count": 13769,
+        "reference_month": "2025-12",
+        "region_code_2025": "48",
+        "region_name_2025": "경남",
+        "region_system": "2025_17_provinces"
+      },
+      {
+        "ev_bus_count": 405,
+        "ev_commercial_count": 16599,
+        "ev_noncommercial_count": 44464,
+        "ev_passenger_count": 49314,
+        "ev_registration_count": 61063,
+        "ev_special_count": 39,
+        "ev_truck_count": 11305,
+        "reference_month": "2025-12",
+        "region_code_2025": "50",
+        "region_name_2025": "제주",
+        "region_system": "2025_17_provinces"
+      }
+    ],
+    "meta": {
+      "api_version": "1.0",
+      "count": 17,
+      "filters": {
+        "region_code": null
+      },
+      "same_period_shortage_rate_computed": false,
+      "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
+      "sources": {
+        "ev_registration": {
+          "file": "ev_registration_by_region_2025.csv",
+          "fuel": "전기 (하이브리드·수소전기 제외)",
+          "reference_month": "2025-12",
+          "region_system": "2025_17_provinces",
+          "source": "2025년 12월 자동차 등록자료 / 10.연료별_등록현황",
+          "unit": "대"
+        }
+      },
+      "totals": {
+        "ev_registration_count": 899101
+      },
+      "units": {
+        "charger_count": "기",
+        "ev_registration_count": "대",
+        "output_kw": "kW",
+        "share_pct": "%",
+        "station_count": "곳"
+      },
+      "warnings": [
+        "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+        "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
+        "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
+        "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
+      ]
+    }
+  },
+  "charger-regions": {
+    "data": [
+      {
+        "charger_count": 75506,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 75506,
+        "region_code": "11",
+        "region_name": "서울",
+        "share_pct": 14.428486256764609,
+        "station_count": 12936
+      },
+      {
+        "charger_count": 32546,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 32546,
+        "region_code": "12",
+        "region_name": "전남광주통합특별시",
+        "share_pct": 6.219234414651298,
+        "station_count": 8072
+      },
+      {
+        "charger_count": 32475,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 32475,
+        "region_code": "26",
+        "region_name": "부산",
+        "share_pct": 6.205666982603113,
+        "station_count": 5144
+      },
+      {
+        "charger_count": 24414,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 24414,
+        "region_code": "27",
+        "region_name": "대구",
+        "share_pct": 4.665285718653499,
+        "station_count": 4048
+      },
+      {
+        "charger_count": 33434,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 33434,
+        "region_code": "28",
+        "region_name": "인천",
+        "share_pct": 6.38892286054973,
+        "station_count": 5231
+      },
+      {
+        "charger_count": 14967,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 14967,
+        "region_code": "30",
+        "region_name": "대전",
+        "share_pct": 2.860052893875928,
+        "station_count": 2774
+      },
+      {
+        "charger_count": 10587,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 10587,
+        "region_code": "31",
+        "region_name": "울산",
+        "share_pct": 2.023076099917449,
+        "station_count": 2082
+      },
+      {
+        "charger_count": 6534,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 6534,
+        "region_code": "36",
+        "region_name": "세종",
+        "share_pct": 1.248585929617513,
+        "station_count": 1038
+      },
+      {
+        "charger_count": 154877,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 154877,
+        "region_code": "41",
+        "region_name": "경기",
+        "share_pct": 29.595537652490293,
+        "station_count": 25003
+      },
+      {
+        "charger_count": 17774,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 17774,
+        "region_code": "43",
+        "region_name": "충북",
+        "share_pct": 3.396444186259822,
+        "station_count": 3830
+      },
+      {
+        "charger_count": 22276,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 22276,
+        "region_code": "44",
+        "region_name": "충남",
+        "share_pct": 4.256734032470114,
+        "station_count": 5029
+      },
+      {
+        "charger_count": 22933,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 22933,
+        "region_code": "47",
+        "region_name": "경북",
+        "share_pct": 4.382280551563886,
+        "station_count": 5835
+      },
+      {
+        "charger_count": 30857,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 30857,
+        "region_code": "48",
+        "region_name": "경남",
+        "share_pct": 5.896482404378268,
+        "station_count": 6972
+      },
+      {
+        "charger_count": 8749,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 8749,
+        "region_code": "50",
+        "region_name": "제주",
+        "share_pct": 1.671851591402452,
+        "station_count": 3214
+      },
+      {
+        "charger_count": 17680,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 17680,
+        "region_code": "51",
+        "region_name": "강원",
+        "share_pct": 3.378481670590393,
+        "station_count": 4479
+      },
+      {
+        "charger_count": 17703,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 17703,
+        "region_code": "52",
+        "region_name": "전북",
+        "share_pct": 3.382876754211637,
+        "station_count": 4903
+      }
+    ],
+    "meta": {
+      "api_version": "1.0",
+      "count": 16,
+      "filters": {
+        "charger_type": null,
+        "deletion": "not_deleted",
+        "operator_id": null,
+        "region_code": null
+      },
+      "matched": {
+        "charger_count": 523312,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 523312,
+        "station_count": 100590
+      },
+      "same_period_shortage_rate_computed": false,
+      "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
+      "sources": {
+        "chargers": {
+          "file": "charger_info_clean.csv",
+          "region_system": "2026_16_provinces",
+          "snapshot_date": "2026-10-15",
+          "snapshot_end_at": "2026-10-15T04:19:04+09:00",
+          "snapshot_start_at": "2026-10-15T04:16:31+09:00",
+          "source": "한국환경공단 getChargerInfo",
+          "source_url": "https://www.data.go.kr/data/15076352/openapi.do",
+          "unit": "기 / 곳 / kW"
+        }
+      },
+      "station_count_additivity": "각 지역 안의 고유 충전소 수. 분류별 충전소 수는 중복 가능성이 있어 전국 값은 matched.station_count를 사용하세요.",
+      "units": {
+        "charger_count": "기",
+        "ev_registration_count": "대",
+        "output_kw": "kW",
+        "share_pct": "%",
+        "station_count": "곳"
+      },
+      "warnings": [
+        "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+        "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
+        "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
+        "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
+      ]
+    }
+  },
+  "charger-types": {
+    "data": [
+      {
+        "charger_count": 40,
+        "charger_type_code": "01",
+        "definition_verified": true,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 40,
+        "official_definition": "DC차데모",
+        "share_pct": 0.007643623689119,
+        "station_count": 26
+      },
+      {
+        "charger_count": 465025,
+        "charger_type_code": "02",
+        "definition_verified": true,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 465025,
+        "official_definition": "AC완속",
+        "share_pct": 88.8619026508087,
+        "station_count": 81894
+      },
+      {
+        "charger_count": 3,
+        "charger_type_code": "03",
+        "definition_verified": true,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 3,
+        "official_definition": "DC차데모+AC3상",
+        "share_pct": 0.000573271776684,
+        "station_count": 3
+      },
+      {
+        "charger_count": 43582,
+        "charger_type_code": "04",
+        "definition_verified": true,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 43582,
+        "official_definition": "DC콤보",
+        "share_pct": 8.328110190479103,
+        "station_count": 18217
+      },
+      {
+        "charger_count": 1476,
+        "charger_type_code": "05",
+        "definition_verified": true,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 1476,
+        "official_definition": "DC차데모+DC콤보",
+        "share_pct": 0.282049714128474,
+        "station_count": 793
+      },
+      {
+        "charger_count": 6449,
+        "charger_type_code": "06",
+        "definition_verified": true,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 6449,
+        "official_definition": "DC차데모+AC3상+DC콤보",
+        "share_pct": 1.232343229278136,
+        "station_count": 5124
+      },
+      {
+        "charger_count": 287,
+        "charger_type_code": "07",
+        "definition_verified": true,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 287,
+        "official_definition": "AC3상",
+        "share_pct": 0.054842999969426,
+        "station_count": 124
+      },
+      {
+        "charger_count": 600,
+        "charger_type_code": "08",
+        "definition_verified": true,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 600,
+        "official_definition": "DC콤보(완속)",
+        "share_pct": 0.114654355336778,
+        "station_count": 158
+      },
+      {
+        "charger_count": 266,
+        "charger_type_code": "10",
+        "definition_verified": true,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 266,
+        "official_definition": "DC콤보+NACS",
+        "share_pct": 0.050830097532638,
+        "station_count": 107
+      },
+      {
+        "charger_count": 5584,
+        "charger_type_code": "11",
+        "definition_verified": true,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 5584,
+        "official_definition": "DC콤보2(버스전용)",
+        "share_pct": 1.067049867000948,
+        "station_count": 567
+      }
+    ],
+    "meta": {
+      "api_version": "1.0",
+      "classification_note": "커넥터 유형을 출력/급속 분류로 임의 변환하지 않습니다. 관측 0건인 유형은 data에 나타나지 않습니다.",
+      "count": 10,
+      "definition_source": "한국환경공단 활용가이드 v1.25 §3.3",
+      "filters": {
+        "charger_type": null,
+        "deletion": "not_deleted",
+        "operator_id": null,
+        "region_code": null
+      },
+      "matched": {
+        "charger_count": 523312,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 523312,
+        "station_count": 100590
+      },
+      "same_period_shortage_rate_computed": false,
+      "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
+      "sources": {
+        "chargers": {
+          "file": "charger_info_clean.csv",
+          "region_system": "2026_16_provinces",
+          "snapshot_date": "2026-10-15",
+          "snapshot_end_at": "2026-10-15T04:19:04+09:00",
+          "snapshot_start_at": "2026-10-15T04:16:31+09:00",
+          "source": "한국환경공단 getChargerInfo",
+          "source_url": "https://www.data.go.kr/data/15076352/openapi.do",
+          "unit": "기 / 곳 / kW"
+        }
+      },
+      "units": {
+        "charger_count": "기",
+        "ev_registration_count": "대",
+        "output_kw": "kW",
+        "share_pct": "%",
+        "station_count": "곳"
+      },
+      "warnings": [
+        "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+        "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
+        "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
+        "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
+      ]
+    }
+  },
+  "charger-output": {
+    "data": [
+      {
+        "charger_count": 46148,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 46148,
+        "output_kw": 3.0,
+        "output_raw": "3",
+        "share_pct": 8.818448650136057,
+        "station_count": 3177,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 1,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 1,
+        "output_kw": 4.0,
+        "output_raw": "4",
+        "share_pct": 0.000191090592228,
+        "station_count": 1,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 1,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 1,
+        "output_kw": 5.0,
+        "output_raw": "5",
+        "share_pct": 0.000191090592228,
+        "station_count": 1,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 1,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 1,
+        "output_kw": 6.0,
+        "output_raw": "6",
+        "share_pct": 0.000191090592228,
+        "station_count": 1,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 402997,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 402997,
+        "output_kw": 7.0,
+        "output_raw": "7",
+        "share_pct": 77.00893539609258,
+        "station_count": 76426,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 64,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 64,
+        "output_kw": 10.0,
+        "output_raw": "10",
+        "share_pct": 0.01222979790259,
+        "station_count": 12,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 9408,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 9408,
+        "output_kw": 11.0,
+        "output_raw": "11",
+        "share_pct": 1.79778029168068,
+        "station_count": 2129,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 1,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 1,
+        "output_kw": 12.0,
+        "output_raw": "12",
+        "share_pct": 0.000191090592228,
+        "station_count": 1,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 678,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 678,
+        "output_kw": 13.0,
+        "output_raw": "13",
+        "share_pct": 0.129559421530559,
+        "station_count": 91,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 6164,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 6164,
+        "output_kw": 14.0,
+        "output_raw": "14",
+        "share_pct": 1.177882410493167,
+        "station_count": 1289,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 18,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 18,
+        "output_kw": 17.0,
+        "output_raw": "17",
+        "share_pct": 0.003439630660103,
+        "station_count": 7,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 14,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 14,
+        "output_kw": 20.0,
+        "output_raw": "20",
+        "share_pct": 0.002675268291191,
+        "station_count": 2,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 121,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 121,
+        "output_kw": 22.0,
+        "output_raw": "22",
+        "share_pct": 0.023121961659584,
+        "station_count": 25,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 261,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 261,
+        "output_kw": 25.0,
+        "output_raw": "25",
+        "share_pct": 0.049874644571498,
+        "station_count": 32,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 2095,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 2095,
+        "output_kw": 30.0,
+        "output_raw": "30",
+        "share_pct": 0.400334790717583,
+        "station_count": 423,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 1,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 1,
+        "output_kw": 32.0,
+        "output_raw": "32",
+        "share_pct": 0.000191090592228,
+        "station_count": 1,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 4,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 4,
+        "output_kw": 35.0,
+        "output_raw": "35",
+        "share_pct": 0.000764362368912,
+        "station_count": 3,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 46,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 46,
+        "output_kw": 40.0,
+        "output_raw": "40",
+        "share_pct": 0.008790167242486,
+        "station_count": 29,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 12721,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 12721,
+        "output_kw": 50.0,
+        "output_raw": "50",
+        "share_pct": 2.430863423731923,
+        "station_count": 9090,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 10,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 10,
+        "output_kw": 60.0,
+        "output_raw": "60",
+        "share_pct": 0.00191090592228,
+        "station_count": 3,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 7,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 7,
+        "output_kw": 90.0,
+        "output_raw": "90",
+        "share_pct": 0.001337634145596,
+        "station_count": 2,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 24293,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 24293,
+        "output_kw": 100.0,
+        "output_raw": "100",
+        "share_pct": 4.642163756993916,
+        "station_count": 11181,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 128,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 128,
+        "output_kw": 105.0,
+        "output_raw": "105",
+        "share_pct": 0.024459595805179,
+        "station_count": 39,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 127,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 127,
+        "output_kw": 110.0,
+        "output_raw": "110",
+        "share_pct": 0.024268505212951,
+        "station_count": 18,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 5077,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 5077,
+        "output_kw": 120.0,
+        "output_raw": "120",
+        "share_pct": 0.97016693674137,
+        "station_count": 489,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 115,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 115,
+        "output_kw": 150.0,
+        "output_raw": "150",
+        "share_pct": 0.021975418106216,
+        "station_count": 35,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 18,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 18,
+        "output_kw": 160.0,
+        "output_raw": "160",
+        "share_pct": 0.003439630660103,
+        "station_count": 2,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 22,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 22,
+        "output_kw": 180.0,
+        "output_raw": "180",
+        "share_pct": 0.004203993029015,
+        "station_count": 9,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 15,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 15,
+        "output_kw": 196.0,
+        "output_raw": "196",
+        "share_pct": 0.002866358883419,
+        "station_count": 2,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 8585,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 8585,
+        "output_kw": 200.0,
+        "output_raw": "200",
+        "share_pct": 1.640512734277066,
+        "station_count": 3347,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 12,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 12,
+        "output_kw": 222.0,
+        "output_raw": "222",
+        "share_pct": 0.002293087106736,
+        "station_count": 4,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 2393,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 2393,
+        "output_kw": 240.0,
+        "output_raw": "240",
+        "share_pct": 0.457279787201516,
+        "station_count": 308,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 320,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 320,
+        "output_kw": 260.0,
+        "output_raw": "260",
+        "share_pct": 0.061148989512948,
+        "station_count": 74,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 16,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 16,
+        "output_kw": 270.0,
+        "output_raw": "270",
+        "share_pct": 0.003057449475647,
+        "station_count": 3,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 389,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 389,
+        "output_kw": 300.0,
+        "output_raw": "300",
+        "share_pct": 0.074334240376678,
+        "station_count": 182,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 113,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 113,
+        "output_kw": 320.0,
+        "output_raw": "320",
+        "share_pct": 0.02159323692176,
+        "station_count": 40,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 644,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 644,
+        "output_kw": 350.0,
+        "output_raw": "350",
+        "share_pct": 0.123062341394808,
+        "station_count": 238,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 19,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 19,
+        "output_kw": 360.0,
+        "output_raw": "360",
+        "share_pct": 0.003630721252331,
+        "station_count": 6,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 96,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 96,
+        "output_kw": 400.0,
+        "output_raw": "400",
+        "share_pct": 0.018344696853884,
+        "station_count": 13,
+        "value_status": "positive_numeric"
+      },
+      {
+        "charger_count": 169,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 169,
+        "output_kw": null,
+        "output_raw": "",
+        "share_pct": 0.032294310086526,
+        "station_count": 95,
+        "value_status": "missing"
+      }
+    ],
+    "meta": {
+      "api_version": "1.0",
+      "count": 40,
+      "filters": {
+        "charger_type": null,
+        "deletion": "not_deleted",
+        "operator_id": null,
+        "region_code": null
+      },
+      "matched": {
+        "charger_count": 523312,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 523312,
+        "station_count": 100590
+      },
+      "output_note": "output(kW)을 수치화했습니다. powerType은 전체 결측이며 실제 동시 공급전력/실측 충전속도를 뜻하지 않습니다.",
+      "output_statistics": {
+        "invalid_or_missing_count": 169,
+        "max_kw": 400.0,
+        "median_kw": 7.0,
+        "min_kw": 3.0,
+        "valid_positive_count": 523143
+      },
+      "same_period_shortage_rate_computed": false,
+      "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
+      "sources": {
+        "chargers": {
+          "file": "charger_info_clean.csv",
+          "region_system": "2026_16_provinces",
+          "snapshot_date": "2026-10-15",
+          "snapshot_end_at": "2026-10-15T04:19:04+09:00",
+          "snapshot_start_at": "2026-10-15T04:16:31+09:00",
+          "source": "한국환경공단 getChargerInfo",
+          "source_url": "https://www.data.go.kr/data/15076352/openapi.do",
+          "unit": "기 / 곳 / kW"
+        }
+      },
+      "units": {
+        "charger_count": "기",
+        "ev_registration_count": "대",
+        "output_kw": "kW",
+        "share_pct": "%",
+        "station_count": "곳"
+      },
+      "warnings": [
+        "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+        "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
+        "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
+        "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
+      ]
+    }
+  },
+  "operators": {
+    "data": [
+      {
+        "charger_count": 83132,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 83132,
+        "operator_id": "PI",
+        "operator_name": "GS차지비",
+        "share_pct": 15.885743113095055,
+        "station_count": 13866
+      },
+      {
+        "charger_count": 51319,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 51319,
+        "operator_id": "PL",
+        "operator_name": "플러그링크",
+        "share_pct": 9.806578102546855,
+        "station_count": 4741
+      },
+      {
+        "charger_count": 47638,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 47638,
+        "operator_id": "EV",
+        "operator_name": "에버온",
+        "share_pct": 9.103173632555722,
+        "station_count": 14213
+      },
+      {
+        "charger_count": 36192,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 36192,
+        "operator_id": "PW",
+        "operator_name": "파워큐브",
+        "share_pct": 6.915950713914452,
+        "station_count": 3696
+      },
+      {
+        "charger_count": 27030,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 27030,
+        "operator_id": "LU",
+        "operator_name": "LG유플러스볼트업",
+        "share_pct": 5.165178707921852,
+        "station_count": 2687
+      },
+      {
+        "charger_count": 24456,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 24456,
+        "operator_id": "PW",
+        "operator_name": "파워큐브코리아",
+        "share_pct": 4.673311523527074,
+        "station_count": 2186
+      },
+      {
+        "charger_count": 14805,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 14805,
+        "operator_id": "HM",
+        "operator_name": "휴맥스이브이",
+        "share_pct": 2.829096217934999,
+        "station_count": 2184
+      },
+      {
+        "charger_count": 14388,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 14388,
+        "operator_id": "CV",
+        "operator_name": "채비",
+        "share_pct": 2.749411440975938,
+        "station_count": 4205
+      },
+      {
+        "charger_count": 12409,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 12409,
+        "operator_id": "HY",
+        "operator_name": "현대엔지니어링",
+        "share_pct": 2.371243158956799,
+        "station_count": 1815
+      },
+      {
+        "charger_count": 12262,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 12262,
+        "operator_id": "SF",
+        "operator_name": "(주)스타코프",
+        "share_pct": 2.343152841899288,
+        "station_count": 1242
+      },
+      {
+        "charger_count": 10958,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 10958,
+        "operator_id": "NT",
+        "operator_name": "한국전자금융",
+        "share_pct": 2.093970709634023,
+        "station_count": 1819
+      },
+      {
+        "charger_count": 10649,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 10649,
+        "operator_id": "ST",
+        "operator_name": "SK일렉링크",
+        "share_pct": 2.034923716635583,
+        "station_count": 3136
+      },
+      {
+        "charger_count": 9594,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 9594,
+        "operator_id": "NT",
+        "operator_name": "NICE인프라",
+        "share_pct": 1.833323141835081,
+        "station_count": 938
+      },
+      {
+        "charger_count": 8568,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 8568,
+        "operator_id": "PW",
+        "operator_name": "파워큐브(SP)",
+        "share_pct": 1.637264194209191,
+        "station_count": 1791
+      },
+      {
+        "charger_count": 8280,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 8280,
+        "operator_id": "ME",
+        "operator_name": "기후에너지환경부",
+        "share_pct": 1.582230103647537,
+        "station_count": 4764
+      },
+      {
+        "charger_count": 8078,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 8078,
+        "operator_id": "JA",
+        "operator_name": "이브이시스",
+        "share_pct": 1.543629804017488,
+        "station_count": 1330
+      },
+      {
+        "charger_count": 7814,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 7814,
+        "operator_id": "LU",
+        "operator_name": "엘지유플러스",
+        "share_pct": 1.493181887669306,
+        "station_count": 1462
+      },
+      {
+        "charger_count": 7724,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 7724,
+        "operator_id": "EC",
+        "operator_name": "이지차저",
+        "share_pct": 1.47598373436879,
+        "station_count": 2410
+      },
+      {
+        "charger_count": 7454,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 7454,
+        "operator_id": "EV",
+        "operator_name": "주식회사 에버온",
+        "share_pct": 1.42438927446724,
+        "station_count": 2145
+      },
+      {
+        "charger_count": 6989,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 6989,
+        "operator_id": "KP",
+        "operator_name": "한국전력",
+        "share_pct": 1.335532149081236,
+        "station_count": 3508
+      },
+      {
+        "charger_count": 5582,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 5582,
+        "operator_id": "CG",
+        "operator_name": "서울씨엔지(서울이브이)",
+        "share_pct": 1.066667685816492,
+        "station_count": 1197
+      },
+      {
+        "charger_count": 5501,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 5501,
+        "operator_id": "LU",
+        "operator_name": "LG유플러스",
+        "share_pct": 1.051189347846027,
+        "station_count": 847
+      },
+      {
+        "charger_count": 5469,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 5469,
+        "operator_id": "PC",
+        "operator_name": "아이파킹",
+        "share_pct": 1.045074448894732,
+        "station_count": 1002
+      },
+      {
+        "charger_count": 5091,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 5091,
+        "operator_id": "KE",
+        "operator_name": "한국전기차인프라기술",
+        "share_pct": 0.972842205032562,
+        "station_count": 1528
+      },
+      {
+        "charger_count": 5090,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 5090,
+        "operator_id": "PC",
+        "operator_name": "파킹클라우드",
+        "share_pct": 0.972651114440334,
+        "station_count": 803
+      },
+      {
+        "charger_count": 5059,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 5059,
+        "operator_id": "PI",
+        "operator_name": "차지비",
+        "share_pct": 0.966727306081267,
+        "station_count": 1193
+      },
+      {
+        "charger_count": 4929,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 4929,
+        "operator_id": "SF",
+        "operator_name": "스타코프",
+        "share_pct": 0.941885529091632,
+        "station_count": 526
+      },
+      {
+        "charger_count": 3768,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 3768,
+        "operator_id": "HM",
+        "operator_name": "HUMAX EV",
+        "share_pct": 0.720029351514966,
+        "station_count": 375
+      },
+      {
+        "charger_count": 3716,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 3716,
+        "operator_id": "HE",
+        "operator_name": "한국전기차충전서비스",
+        "share_pct": 0.710092640719112,
+        "station_count": 1311
+      },
+      {
+        "charger_count": 3708,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 3708,
+        "operator_id": "EP",
+        "operator_name": "이카플러그",
+        "share_pct": 0.708563915981288,
+        "station_count": 1407
+      },
+      {
+        "charger_count": 3467,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 3467,
+        "operator_id": "LU",
+        "operator_name": "LG유플러스 볼트업",
+        "share_pct": 0.662511083254349,
+        "station_count": 402
+      },
+      {
+        "charger_count": 3367,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 3367,
+        "operator_id": "PK",
+        "operator_name": "펌프킨",
+        "share_pct": 0.643402024031553,
+        "station_count": 338
+      },
+      {
+        "charger_count": 3046,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 3046,
+        "operator_id": "HU",
+        "operator_name": "한솔엠에스",
+        "share_pct": 0.582061943926376,
+        "station_count": 392
+      },
+      {
+        "charger_count": 2801,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 2801,
+        "operator_id": "ER",
+        "operator_name": "위브이",
+        "share_pct": 0.535244748830526,
+        "station_count": 268
+      },
+      {
+        "charger_count": 2325,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 2325,
+        "operator_id": "EZ",
+        "operator_name": "(주)차지인",
+        "share_pct": 0.444285626930015,
+        "station_count": 1106
+      },
+      {
+        "charger_count": 2294,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 2294,
+        "operator_id": "BN",
+        "operator_name": "블루네트웍스",
+        "share_pct": 0.438361818570948,
+        "station_count": 783
+      },
+      {
+        "charger_count": 2152,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 2152,
+        "operator_id": "RE",
+        "operator_name": "레드이엔지",
+        "share_pct": 0.411226954474577,
+        "station_count": 232
+      },
+      {
+        "charger_count": 1961,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 1961,
+        "operator_id": "KL",
+        "operator_name": "클린일렉스",
+        "share_pct": 0.374728651359036,
+        "station_count": 518
+      },
+      {
+        "charger_count": 1808,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 1808,
+        "operator_id": "JE",
+        "operator_name": "제주전기자동차서비스",
+        "share_pct": 0.345491790748158,
+        "station_count": 784
+      },
+      {
+        "charger_count": 1709,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 1709,
+        "operator_id": "TS",
+        "operator_name": "주식회사 태성콘텍",
+        "share_pct": 0.32657382211759,
+        "station_count": 373
+      },
+      {
+        "charger_count": 1645,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 1645,
+        "operator_id": "SF",
+        "operator_name": "스타코프(주)스타코프",
+        "share_pct": 0.314344024215,
+        "station_count": 206
+      },
+      {
+        "charger_count": 1570,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 1570,
+        "operator_id": "KP",
+        "operator_name": "한국전기차충전서비스",
+        "share_pct": 0.300012229797903,
+        "station_count": 610
+      },
+      {
+        "charger_count": 1461,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 1461,
+        "operator_id": "KL",
+        "operator_name": "(주)클린일렉스",
+        "share_pct": 0.279183355245055,
+        "station_count": 440
+      },
+      {
+        "charger_count": 1401,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 1401,
+        "operator_id": "ER",
+        "operator_name": "이엘일렉트릭",
+        "share_pct": 0.267717919711377,
+        "station_count": 299
+      },
+      {
+        "charger_count": 1194,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 1194,
+        "operator_id": "IM",
+        "operator_name": "아이마켓코리아",
+        "share_pct": 0.228162167120188,
+        "station_count": 278
+      },
+      {
+        "charger_count": 1193,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 1193,
+        "operator_id": "CU",
+        "operator_name": "씨어스",
+        "share_pct": 0.22797107652796,
+        "station_count": 299
+      },
+      {
+        "charger_count": 1116,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 1116,
+        "operator_id": "TD",
+        "operator_name": "타디스테크놀로지",
+        "share_pct": 0.213257100926407,
+        "station_count": 387
+      },
+      {
+        "charger_count": 1098,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 1098,
+        "operator_id": "SZ",
+        "operator_name": "SG생활안전",
+        "share_pct": 0.209817470266304,
+        "station_count": 144
+      },
+      {
+        "charger_count": 942,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 942,
+        "operator_id": "ME",
+        "operator_name": "기후부",
+        "share_pct": 0.180007337878742,
+        "station_count": 421
+      },
+      {
+        "charger_count": 940,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 940,
+        "operator_id": "LI",
+        "operator_name": "엘에스이링크(주)",
+        "share_pct": 0.179625156694286,
+        "station_count": 180
+      },
+      {
+        "charger_count": 909,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 909,
+        "operator_id": "IC",
+        "operator_name": "인천국제공항공사",
+        "share_pct": 0.173701348335219,
+        "station_count": 74
+      },
+      {
+        "charger_count": 894,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 894,
+        "operator_id": "DY",
+        "operator_name": "동양이엔피",
+        "share_pct": 0.170834989451799,
+        "station_count": 67
+      },
+      {
+        "charger_count": 847,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 847,
+        "operator_id": "PK",
+        "operator_name": "주식회사 펌프킨",
+        "share_pct": 0.161853731617085,
+        "station_count": 85
+      },
+      {
+        "charger_count": 843,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 843,
+        "operator_id": "SF",
+        "operator_name": "스타코프스타코프",
+        "share_pct": 0.161089369248173,
+        "station_count": 57
+      },
+      {
+        "charger_count": 817,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 817,
+        "operator_id": "BE",
+        "operator_name": "브라이트에너지파트너스",
+        "share_pct": 0.156121013850246,
+        "station_count": 178
+      },
+      {
+        "charger_count": 802,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 802,
+        "operator_id": "ST",
+        "operator_name": "SK 일렉링크",
+        "share_pct": 0.153254654966827,
+        "station_count": 208
+      },
+      {
+        "charger_count": 725,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 725,
+        "operator_id": "MO",
+        "operator_name": "매니지온",
+        "share_pct": 0.138540679365274,
+        "station_count": 195
+      },
+      {
+        "charger_count": 697,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 697,
+        "operator_id": "UN",
+        "operator_name": "유니이브이",
+        "share_pct": 0.133190142782891,
+        "station_count": 157
+      },
+      {
+        "charger_count": 660,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 660,
+        "operator_id": "CI",
+        "operator_name": "쿨사인 주식회사",
+        "share_pct": 0.126119790870456,
+        "station_count": 359
+      },
+      {
+        "charger_count": 658,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 658,
+        "operator_id": "NS",
+        "operator_name": "뉴텍솔루션(주)",
+        "share_pct": 0.125737609686,
+        "station_count": 231
+      },
+      {
+        "charger_count": 595,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 595,
+        "operator_id": "IN",
+        "operator_name": "신세계아이앤씨",
+        "share_pct": 0.113698902375638,
+        "station_count": 34
+      },
+      {
+        "charger_count": 559,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 559,
+        "operator_id": "EP",
+        "operator_name": "(주)이카플러그",
+        "share_pct": 0.106819641055432,
+        "station_count": 229
+      },
+      {
+        "charger_count": 529,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 529,
+        "operator_id": "EZ",
+        "operator_name": "차지인",
+        "share_pct": 0.101086923288593,
+        "station_count": 272
+      },
+      {
+        "charger_count": 498,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 498,
+        "operator_id": "HD",
+        "operator_name": "현대자동차",
+        "share_pct": 0.095163114929526,
+        "station_count": 105
+      },
+      {
+        "charger_count": 485,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 485,
+        "operator_id": "EO",
+        "operator_name": "E1",
+        "share_pct": 0.092678937230562,
+        "station_count": 155
+      },
+      {
+        "charger_count": 426,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 426,
+        "operator_id": "HE",
+        "operator_name": "한국전기차충전서비스(주)",
+        "share_pct": 0.081404592289112,
+        "station_count": 49
+      },
+      {
+        "charger_count": 421,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 421,
+        "operator_id": "LI",
+        "operator_name": "엘에스이링크",
+        "share_pct": 0.080449139327973,
+        "station_count": 26
+      },
+      {
+        "charger_count": 407,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 407,
+        "operator_id": "SF",
+        "operator_name": "㈜스타코프",
+        "share_pct": 0.077773871036781,
+        "station_count": 59
+      },
+      {
+        "charger_count": 390,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 390,
+        "operator_id": "NU",
+        "operator_name": "뉴로모빌리티",
+        "share_pct": 0.074525330968906,
+        "station_count": 44
+      },
+      {
+        "charger_count": 357,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 357,
+        "operator_id": "JD",
+        "operator_name": "제주도청",
+        "share_pct": 0.068219341425383,
+        "station_count": 173
+      },
+      {
+        "charger_count": 356,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 356,
+        "operator_id": "BT",
+        "operator_name": "보타리에너지(주)",
+        "share_pct": 0.068028250833155,
+        "station_count": 117
+      },
+      {
+        "charger_count": 347,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 347,
+        "operator_id": "ME",
+        "operator_name": "환경부",
+        "share_pct": 0.066308435503103,
+        "station_count": 199
+      },
+      {
+        "charger_count": 345,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 345,
+        "operator_id": "DC",
+        "operator_name": "대성물류건설(주)",
+        "share_pct": 0.065926254318647,
+        "station_count": 52
+      },
+      {
+        "charger_count": 342,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 342,
+        "operator_id": "SO",
+        "operator_name": "㈜선광시스템",
+        "share_pct": 0.065352982541963,
+        "station_count": 151
+      },
+      {
+        "charger_count": 338,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 338,
+        "operator_id": "SG",
+        "operator_name": "SK시그넷",
+        "share_pct": 0.064588620173052,
+        "station_count": 76
+      },
+      {
+        "charger_count": 332,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 332,
+        "operator_id": "AM",
+        "operator_name": "아마노코리아",
+        "share_pct": 0.063442076619684,
+        "station_count": 90
+      },
+      {
+        "charger_count": 318,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 318,
+        "operator_id": "NT",
+        "operator_name": "한국전자금융(주)",
+        "share_pct": 0.060766808328492,
+        "station_count": 75
+      },
+      {
+        "charger_count": 315,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 315,
+        "operator_id": "IV",
+        "operator_name": "인큐버스",
+        "share_pct": 0.060193536551808,
+        "station_count": 116
+      },
+      {
+        "charger_count": 315,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 315,
+        "operator_id": "ST",
+        "operator_name": "에스트래픽",
+        "share_pct": 0.060193536551808,
+        "station_count": 131
+      },
+      {
+        "charger_count": 304,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 304,
+        "operator_id": "JD",
+        "operator_name": "제주특별자치도",
+        "share_pct": 0.058091540037301,
+        "station_count": 197
+      },
+      {
+        "charger_count": 298,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 298,
+        "operator_id": "GS",
+        "operator_name": "GS칼텍스",
+        "share_pct": 0.056944996483933,
+        "station_count": 136
+      },
+      {
+        "charger_count": 295,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 295,
+        "operator_id": "RS",
+        "operator_name": "리셀파워",
+        "share_pct": 0.056371724707249,
+        "station_count": 46
+      },
+      {
+        "charger_count": 295,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 295,
+        "operator_id": "SE",
+        "operator_name": "서울에너지공사",
+        "share_pct": 0.056371724707249,
+        "station_count": 154
+      },
+      {
+        "charger_count": 294,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 294,
+        "operator_id": "PC",
+        "operator_name": "아이파킹 주식회사",
+        "share_pct": 0.056180634115021,
+        "station_count": 69
+      },
+      {
+        "charger_count": 292,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 292,
+        "operator_id": "PI",
+        "operator_name": "포스코ICT",
+        "share_pct": 0.055798452930565,
+        "station_count": 135
+      },
+      {
+        "charger_count": 287,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 287,
+        "operator_id": "BN",
+        "operator_name": "(주)블루네트웍스",
+        "share_pct": 0.054842999969426,
+        "station_count": 92
+      },
+      {
+        "charger_count": 271,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 271,
+        "operator_id": "NE",
+        "operator_name": "인큐버스",
+        "share_pct": 0.051785550493778,
+        "station_count": 94
+      },
+      {
+        "charger_count": 251,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 251,
+        "operator_id": "AH",
+        "operator_name": "(주)아하",
+        "share_pct": 0.047963738649219,
+        "station_count": 68
+      },
+      {
+        "charger_count": 247,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 247,
+        "operator_id": "KE",
+        "operator_name": "한국전기차인프라기술(주)",
+        "share_pct": 0.047199376280307,
+        "station_count": 77
+      },
+      {
+        "charger_count": 246,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 246,
+        "operator_id": "CP",
+        "operator_name": "캐스트프로",
+        "share_pct": 0.047008285688079,
+        "station_count": 84
+      },
+      {
+        "charger_count": 245,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 245,
+        "operator_id": "KE",
+        "operator_name": "(주)한국전기차인프라기술",
+        "share_pct": 0.046817195095851,
+        "station_count": 35
+      },
+      {
+        "charger_count": 240,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 240,
+        "operator_id": "PM",
+        "operator_name": "피라인모터스",
+        "share_pct": 0.045861742134711,
+        "station_count": 26
+      },
+      {
+        "charger_count": 237,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 237,
+        "operator_id": "KR",
+        "operator_name": "이브이씨원",
+        "share_pct": 0.045288470358027,
+        "station_count": 118
+      },
+      {
+        "charger_count": 227,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 227,
+        "operator_id": "GR",
+        "operator_name": "그리드위즈",
+        "share_pct": 0.043377564435748,
+        "station_count": 63
+      },
+      {
+        "charger_count": 227,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 227,
+        "operator_id": "SO",
+        "operator_name": "선광시스템",
+        "share_pct": 0.043377564435748,
+        "station_count": 152
+      },
+      {
+        "charger_count": 226,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 226,
+        "operator_id": "CP",
+        "operator_name": "(주)캐스트프로",
+        "share_pct": 0.04318647384352,
+        "station_count": 74
+      },
+      {
+        "charger_count": 212,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 212,
+        "operator_id": "CU",
+        "operator_name": "(주)씨어스",
+        "share_pct": 0.040511205552328,
+        "station_count": 35
+      },
+      {
+        "charger_count": 206,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 206,
+        "operator_id": "JE",
+        "operator_name": "(주)제주전기자동차서비스",
+        "share_pct": 0.03936466199896,
+        "station_count": 79
+      },
+      {
+        "charger_count": 198,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 198,
+        "operator_id": "SE",
+        "operator_name": "서울시",
+        "share_pct": 0.037835937261137,
+        "station_count": 66
+      },
+      {
+        "charger_count": 193,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 193,
+        "operator_id": "CU",
+        "operator_name": "주식회사 씨어스",
+        "share_pct": 0.036880484299997,
+        "station_count": 77
+      },
+      {
+        "charger_count": 192,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 192,
+        "operator_id": "VT",
+        "operator_name": "볼타",
+        "share_pct": 0.036689393707769,
+        "station_count": 85
+      },
+      {
+        "charger_count": 187,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 187,
+        "operator_id": "MT",
+        "operator_name": "모던텍",
+        "share_pct": 0.035733940746629,
+        "station_count": 57
+      },
+      {
+        "charger_count": 172,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 172,
+        "operator_id": "NH",
+        "operator_name": "농협경제지주 신재생에너지센터",
+        "share_pct": 0.03286758186321,
+        "station_count": 60
+      },
+      {
+        "charger_count": 168,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 168,
+        "operator_id": "CS",
+        "operator_name": "SGIT",
+        "share_pct": 0.032103219494298,
+        "station_count": 57
+      },
+      {
+        "charger_count": 153,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 153,
+        "operator_id": "CS",
+        "operator_name": "한국EV충전서비스센터",
+        "share_pct": 0.029236860610878,
+        "station_count": 86
+      },
+      {
+        "charger_count": 152,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 152,
+        "operator_id": "AH",
+        "operator_name": "아하(주)",
+        "share_pct": 0.02904577001865,
+        "station_count": 48
+      },
+      {
+        "charger_count": 150,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 150,
+        "operator_id": "CI",
+        "operator_name": "쿨사인",
+        "share_pct": 0.028663588834195,
+        "station_count": 86
+      },
+      {
+        "charger_count": 149,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 149,
+        "operator_id": "CC",
+        "operator_name": "코콤",
+        "share_pct": 0.028472498241967,
+        "station_count": 20
+      },
+      {
+        "charger_count": 143,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 143,
+        "operator_id": "BP",
+        "operator_name": "차밥스",
+        "share_pct": 0.027325954688599,
+        "station_count": 33
+      },
+      {
+        "charger_count": 143,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 143,
+        "operator_id": "PA",
+        "operator_name": "이브이페이",
+        "share_pct": 0.027325954688599,
+        "station_count": 44
+      },
+      {
+        "charger_count": 140,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 140,
+        "operator_id": "TR",
+        "operator_name": "한마음장애인복지회",
+        "share_pct": 0.026752682911915,
+        "station_count": 90
+      },
+      {
+        "charger_count": 139,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 139,
+        "operator_id": "CA",
+        "operator_name": "이웨이브(주)",
+        "share_pct": 0.026561592319687,
+        "station_count": 29
+      },
+      {
+        "charger_count": 139,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 139,
+        "operator_id": "SB",
+        "operator_name": "소프트베리",
+        "share_pct": 0.026561592319687,
+        "station_count": 51
+      },
+      {
+        "charger_count": 135,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 135,
+        "operator_id": "DC",
+        "operator_name": "대성물류건설",
+        "share_pct": 0.025797229950775,
+        "station_count": 29
+      },
+      {
+        "charger_count": 133,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 133,
+        "operator_id": "GO",
+        "operator_name": "유한회사 골드에너지",
+        "share_pct": 0.025415048766319,
+        "station_count": 32
+      },
+      {
+        "charger_count": 127,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 127,
+        "operator_id": "HR",
+        "operator_name": "한국홈충전기렌탈",
+        "share_pct": 0.024268505212951,
+        "station_count": 75
+      },
+      {
+        "charger_count": 126,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 126,
+        "operator_id": "EH",
+        "operator_name": "이앤에이치에너지",
+        "share_pct": 0.024077414620723,
+        "station_count": 76
+      },
+      {
+        "charger_count": 123,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 123,
+        "operator_id": "PC",
+        "operator_name": "파킹클라우드 주식회사",
+        "share_pct": 0.02350414284404,
+        "station_count": 13
+      },
+      {
+        "charger_count": 122,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 122,
+        "operator_id": "WJ",
+        "operator_name": "우진산전",
+        "share_pct": 0.023313052251812,
+        "station_count": 19
+      },
+      {
+        "charger_count": 113,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 113,
+        "operator_id": "CR",
+        "operator_name": "크로커스",
+        "share_pct": 0.02159323692176,
+        "station_count": 33
+      },
+      {
+        "charger_count": 113,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 113,
+        "operator_id": "L3",
+        "operator_name": "이지차저",
+        "share_pct": 0.02159323692176,
+        "station_count": 44
+      },
+      {
+        "charger_count": 112,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 112,
+        "operator_id": "PE",
+        "operator_name": "피앤이시스템즈",
+        "share_pct": 0.021402146329532,
+        "station_count": 12
+      },
+      {
+        "charger_count": 111,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 111,
+        "operator_id": "WB",
+        "operator_name": "(주)이브이루씨",
+        "share_pct": 0.021211055737304,
+        "station_count": 67
+      },
+      {
+        "charger_count": 109,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 109,
+        "operator_id": "EB",
+        "operator_name": "일렉트리",
+        "share_pct": 0.020828874552848,
+        "station_count": 39
+      },
+      {
+        "charger_count": 107,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 107,
+        "operator_id": "TD",
+        "operator_name": "타디스테크놀로지(evPlug)",
+        "share_pct": 0.020446693368392,
+        "station_count": 69
+      },
+      {
+        "charger_count": 100,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 100,
+        "operator_id": "SD",
+        "operator_name": "스칼라데이터",
+        "share_pct": 0.019109059222796,
+        "station_count": 33
+      },
+      {
+        "charger_count": 98,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 98,
+        "operator_id": "CO",
+        "operator_name": "한전KDN",
+        "share_pct": 0.01872687803834,
+        "station_count": 19
+      },
+      {
+        "charger_count": 96,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 96,
+        "operator_id": "DO",
+        "operator_name": "대한송유관공사",
+        "share_pct": 0.018344696853884,
+        "station_count": 82
+      },
+      {
+        "charger_count": 94,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 94,
+        "operator_id": "TD",
+        "operator_name": "evPlug",
+        "share_pct": 0.017962515669429,
+        "station_count": 38
+      },
+      {
+        "charger_count": 92,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 92,
+        "operator_id": "HP",
+        "operator_name": "주식회사 해피차지",
+        "share_pct": 0.017580334484973,
+        "station_count": 34
+      },
+      {
+        "charger_count": 88,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 88,
+        "operator_id": "NX",
+        "operator_name": "넥씽",
+        "share_pct": 0.016815972116061,
+        "station_count": 25
+      },
+      {
+        "charger_count": 85,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 85,
+        "operator_id": "AL",
+        "operator_name": "아론",
+        "share_pct": 0.016242700339377,
+        "station_count": 22
+      },
+      {
+        "charger_count": 85,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 85,
+        "operator_id": "SM",
+        "operator_name": "성민기업",
+        "share_pct": 0.016242700339377,
+        "station_count": 55
+      },
+      {
+        "charger_count": 84,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 84,
+        "operator_id": "EA",
+        "operator_name": "에바",
+        "share_pct": 0.016051609747149,
+        "station_count": 18
+      },
+      {
+        "charger_count": 82,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 82,
+        "operator_id": "EK",
+        "operator_name": "이노케이텍",
+        "share_pct": 0.015669428562693,
+        "station_count": 27
+      },
+      {
+        "charger_count": 81,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 81,
+        "operator_id": "PE",
+        "operator_name": "원익피앤이",
+        "share_pct": 0.015478337970465,
+        "station_count": 15
+      },
+      {
+        "charger_count": 78,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 78,
+        "operator_id": "UP",
+        "operator_name": "제이에스솔루션",
+        "share_pct": 0.014905066193781,
+        "station_count": 43
+      },
+      {
+        "charger_count": 75,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 75,
+        "operator_id": "UP",
+        "operator_name": "유플러스아이티",
+        "share_pct": 0.014331794417097,
+        "station_count": 23
+      },
+      {
+        "charger_count": 74,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 74,
+        "operator_id": "BT",
+        "operator_name": "보타리에너지",
+        "share_pct": 0.014140703824869,
+        "station_count": 47
+      },
+      {
+        "charger_count": 71,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 71,
+        "operator_id": "LI",
+        "operator_name": "엘에스이링크㈜",
+        "share_pct": 0.013567432048185,
+        "station_count": 15
+      },
+      {
+        "charger_count": 68,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 68,
+        "operator_id": "DS",
+        "operator_name": "대선",
+        "share_pct": 0.012994160271502,
+        "station_count": 21
+      },
+      {
+        "charger_count": 67,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 67,
+        "operator_id": "EC",
+        "operator_name": "1544-3332",
+        "share_pct": 0.012803069679274,
+        "station_count": 9
+      },
+      {
+        "charger_count": 65,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 65,
+        "operator_id": "EH",
+        "operator_name": "(주)이앤에이치에너지",
+        "share_pct": 0.012420888494818,
+        "station_count": 23
+      },
+      {
+        "charger_count": 65,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 65,
+        "operator_id": "TS",
+        "operator_name": "태성콘텍",
+        "share_pct": 0.012420888494818,
+        "station_count": 24
+      },
+      {
+        "charger_count": 63,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 63,
+        "operator_id": "NH",
+        "operator_name": "농협경제지주(주) 신재생에너지센터",
+        "share_pct": 0.012038707310362,
+        "station_count": 27
+      },
+      {
+        "charger_count": 63,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 63,
+        "operator_id": "S1",
+        "operator_name": "(주)이브이에스이피",
+        "share_pct": 0.012038707310362,
+        "station_count": 10
+      },
+      {
+        "charger_count": 56,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 56,
+        "operator_id": "AZ",
+        "operator_name": "이에스앤에이치",
+        "share_pct": 0.010701073164766,
+        "station_count": 22
+      },
+      {
+        "charger_count": 56,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 56,
+        "operator_id": "LU",
+        "operator_name": "앨지유플러스",
+        "share_pct": 0.010701073164766,
+        "station_count": 11
+      },
+      {
+        "charger_count": 56,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 56,
+        "operator_id": "YC",
+        "operator_name": "(주)차지인",
+        "share_pct": 0.010701073164766,
+        "station_count": 13
+      },
+      {
+        "charger_count": 54,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 54,
+        "operator_id": "ST",
+        "operator_name": "에스에스차저",
+        "share_pct": 0.01031889198031,
+        "station_count": 21
+      },
+      {
+        "charger_count": 53,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 53,
+        "operator_id": "PI",
+        "operator_name": "GS커넥트",
+        "share_pct": 0.010127801388082,
+        "station_count": 4
+      },
+      {
+        "charger_count": 52,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 52,
+        "operator_id": "PT",
+        "operator_name": "현승(주)",
+        "share_pct": 0.009936710795854,
+        "station_count": 3
+      },
+      {
+        "charger_count": 51,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 51,
+        "operator_id": "DD",
+        "operator_name": "대도엘앤씨",
+        "share_pct": 0.009745620203626,
+        "station_count": 7
+      },
+      {
+        "charger_count": 44,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 44,
+        "operator_id": "HU",
+        "operator_name": "이지차저",
+        "share_pct": 0.00840798605803,
+        "station_count": 9
+      },
+      {
+        "charger_count": 44,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 44,
+        "operator_id": "LD",
+        "operator_name": "롯데이노베이트",
+        "share_pct": 0.00840798605803,
+        "station_count": 15
+      },
+      {
+        "charger_count": 43,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 43,
+        "operator_id": "MT",
+        "operator_name": "(주)모던텍",
+        "share_pct": 0.008216895465802,
+        "station_count": 11
+      },
+      {
+        "charger_count": 43,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 43,
+        "operator_id": "OS",
+        "operator_name": "온스테이션",
+        "share_pct": 0.008216895465802,
+        "station_count": 19
+      },
+      {
+        "charger_count": 42,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 42,
+        "operator_id": "MI",
+        "operator_name": "㈜모니트",
+        "share_pct": 0.008025804873574,
+        "station_count": 5
+      },
+      {
+        "charger_count": 40,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 40,
+        "operator_id": "OB",
+        "operator_name": "HD현대오일뱅크",
+        "share_pct": 0.007643623689119,
+        "station_count": 39
+      },
+      {
+        "charger_count": 39,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 39,
+        "operator_id": "KO",
+        "operator_name": "(주)이브이파트너스",
+        "share_pct": 0.007452533096891,
+        "station_count": 15
+      },
+      {
+        "charger_count": 38,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 38,
+        "operator_id": "UP",
+        "operator_name": "늘찬차저",
+        "share_pct": 0.007261442504663,
+        "station_count": 27
+      },
+      {
+        "charger_count": 36,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 36,
+        "operator_id": "ER",
+        "operator_name": "(주)이엘일렉트릭",
+        "share_pct": 0.006879261320207,
+        "station_count": 4
+      },
+      {
+        "charger_count": 33,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 33,
+        "operator_id": "HJ",
+        "operator_name": "㈜한진",
+        "share_pct": 0.006305989543523,
+        "station_count": 15
+      },
+      {
+        "charger_count": 33,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 33,
+        "operator_id": "HU",
+        "operator_name": "주식회사 한솔엠에스",
+        "share_pct": 0.006305989543523,
+        "station_count": 2
+      },
+      {
+        "charger_count": 33,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 33,
+        "operator_id": "KP",
+        "operator_name": "한국전력공사",
+        "share_pct": 0.006305989543523,
+        "station_count": 17
+      },
+      {
+        "charger_count": 32,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 32,
+        "operator_id": "WS",
+        "operator_name": "관공서",
+        "share_pct": 0.006114898951295,
+        "station_count": 18
+      },
+      {
+        "charger_count": 30,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 30,
+        "operator_id": "SG",
+        "operator_name": "sk시그넷",
+        "share_pct": 0.005732717766839,
+        "station_count": 12
+      },
+      {
+        "charger_count": 29,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 29,
+        "operator_id": "CH",
+        "operator_name": "채움모빌리티",
+        "share_pct": 0.005541627174611,
+        "station_count": 16
+      },
+      {
+        "charger_count": 29,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 29,
+        "operator_id": "MX",
+        "operator_name": "모트렉스이브이",
+        "share_pct": 0.005541627174611,
+        "station_count": 7
+      },
+      {
+        "charger_count": 28,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 28,
+        "operator_id": "AC",
+        "operator_name": "아우토크립트",
+        "share_pct": 0.005350536582383,
+        "station_count": 14
+      },
+      {
+        "charger_count": 28,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 28,
+        "operator_id": "HJ",
+        "operator_name": "(주)한진",
+        "share_pct": 0.005350536582383,
+        "station_count": 7
+      },
+      {
+        "charger_count": 28,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 28,
+        "operator_id": "SZ",
+        "operator_name": "에스지생활안전",
+        "share_pct": 0.005350536582383,
+        "station_count": 2
+      },
+      {
+        "charger_count": 28,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 28,
+        "operator_id": "US",
+        "operator_name": "환경부",
+        "share_pct": 0.005350536582383,
+        "station_count": 21
+      },
+      {
+        "charger_count": 26,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 26,
+        "operator_id": "PW",
+        "operator_name": "주차장",
+        "share_pct": 0.004968355397927,
+        "station_count": 1
+      },
+      {
+        "charger_count": 24,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 24,
+        "operator_id": "LC",
+        "operator_name": "롯데건설",
+        "share_pct": 0.004586174213471,
+        "station_count": 1
+      },
+      {
+        "charger_count": 24,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 24,
+        "operator_id": "UP",
+        "operator_name": "JS솔루션",
+        "share_pct": 0.004586174213471,
+        "station_count": 14
+      },
+      {
+        "charger_count": 23,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 23,
+        "operator_id": "HP",
+        "operator_name": "해피차지",
+        "share_pct": 0.004395083621243,
+        "station_count": 5
+      },
+      {
+        "charger_count": 22,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 22,
+        "operator_id": "EA",
+        "operator_name": "(주)에바",
+        "share_pct": 0.004203993029015,
+        "station_count": 5
+      },
+      {
+        "charger_count": 22,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 22,
+        "operator_id": "NT",
+        "operator_name": "NICE인프라(주)",
+        "share_pct": 0.004203993029015,
+        "station_count": 1
+      },
+      {
+        "charger_count": 21,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 21,
+        "operator_id": "HR",
+        "operator_name": "한국홈충전",
+        "share_pct": 0.004012902436787,
+        "station_count": 9
+      },
+      {
+        "charger_count": 21,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 21,
+        "operator_id": "KE",
+        "operator_name": "한국전기차인프라기",
+        "share_pct": 0.004012902436787,
+        "station_count": 7
+      },
+      {
+        "charger_count": 21,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 21,
+        "operator_id": "KK",
+        "operator_name": "(주)서현에너지",
+        "share_pct": 0.004012902436787,
+        "station_count": 10
+      },
+      {
+        "charger_count": 20,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 20,
+        "operator_id": "EW",
+        "operator_name": "한국동서발전",
+        "share_pct": 0.003821811844559,
+        "station_count": 2
+      },
+      {
+        "charger_count": 20,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 20,
+        "operator_id": "JU",
+        "operator_name": "정읍시",
+        "share_pct": 0.003821811844559,
+        "station_count": 12
+      },
+      {
+        "charger_count": 20,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 20,
+        "operator_id": "LT",
+        "operator_name": "광성계측기",
+        "share_pct": 0.003821811844559,
+        "station_count": 6
+      },
+      {
+        "charger_count": 20,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 20,
+        "operator_id": "NN",
+        "operator_name": "이브이네스트",
+        "share_pct": 0.003821811844559,
+        "station_count": 1
+      },
+      {
+        "charger_count": 19,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 19,
+        "operator_id": "EC",
+        "operator_name": "(주)이지차저",
+        "share_pct": 0.003630721252331,
+        "station_count": 11
+      },
+      {
+        "charger_count": 18,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 18,
+        "operator_id": "NB",
+        "operator_name": "엔비플러스",
+        "share_pct": 0.003439630660103,
+        "station_count": 7
+      },
+      {
+        "charger_count": 18,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 18,
+        "operator_id": "SF",
+        "operator_name": "스타코프(주) 스타코프",
+        "share_pct": 0.003439630660103,
+        "station_count": 3
+      },
+      {
+        "charger_count": 18,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 18,
+        "operator_id": "SN",
+        "operator_name": "서울에너지공사",
+        "share_pct": 0.003439630660103,
+        "station_count": 6
+      },
+      {
+        "charger_count": 17,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 17,
+        "operator_id": "EM",
+        "operator_name": "evmost",
+        "share_pct": 0.003248540067875,
+        "station_count": 15
+      },
+      {
+        "charger_count": 16,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 16,
+        "operator_id": "L3",
+        "operator_name": "L3일렉트릭파워",
+        "share_pct": 0.003057449475647,
+        "station_count": 4
+      },
+      {
+        "charger_count": 16,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 16,
+        "operator_id": "MR",
+        "operator_name": "미래씨앤엘",
+        "share_pct": 0.003057449475647,
+        "station_count": 7
+      },
+      {
+        "charger_count": 16,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 16,
+        "operator_id": "MV",
+        "operator_name": "주식회사메가볼트",
+        "share_pct": 0.003057449475647,
+        "station_count": 16
+      },
+      {
+        "charger_count": 16,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 16,
+        "operator_id": "SH",
+        "operator_name": "SH ENERGY",
+        "share_pct": 0.003057449475647,
+        "station_count": 9
+      },
+      {
+        "charger_count": 16,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 16,
+        "operator_id": "SZ",
+        "operator_name": "에스지생활안전 주식회사",
+        "share_pct": 0.003057449475647,
+        "station_count": 1
+      },
+      {
+        "charger_count": 16,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 16,
+        "operator_id": "UP",
+        "operator_name": "HB컴퍼니",
+        "share_pct": 0.003057449475647,
+        "station_count": 10
+      },
+      {
+        "charger_count": 15,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 15,
+        "operator_id": "PA",
+        "operator_name": "이브이페",
+        "share_pct": 0.002866358883419,
+        "station_count": 1
+      },
+      {
+        "charger_count": 14,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 14,
+        "operator_id": "PE",
+        "operator_name": "viveEV",
+        "share_pct": 0.002675268291191,
+        "station_count": 4
+      },
+      {
+        "charger_count": 14,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 14,
+        "operator_id": "ZE",
+        "operator_name": "이브이모드코리아",
+        "share_pct": 0.002675268291191,
+        "station_count": 5
+      }
+    ],
+    "meta": {
+      "api_version": "1.0",
+      "filters": {
+        "charger_type": null,
+        "deletion": "not_deleted",
+        "operator_id": null,
+        "region_code": null
+      },
+      "grouping": "앞뒤 공백을 정리한 (busiId,busiNm) 조합. 다른 명칭은 자동 통합하지 않습니다.",
+      "matched": {
+        "charger_count": 523312,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 523312,
+        "station_count": 100590
+      },
+      "pagination": {
+        "has_next": true,
+        "limit": 200,
+        "next_page": 2,
+        "page": 1,
+        "total_items": 342,
+        "total_pages": 2
+      },
+      "same_period_shortage_rate_computed": false,
+      "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
+      "sources": {
+        "chargers": {
+          "file": "charger_info_clean.csv",
+          "region_system": "2026_16_provinces",
+          "snapshot_date": "2026-10-15",
+          "snapshot_end_at": "2026-10-15T04:19:04+09:00",
+          "snapshot_start_at": "2026-10-15T04:16:31+09:00",
+          "source": "한국환경공단 getChargerInfo",
+          "source_url": "https://www.data.go.kr/data/15076352/openapi.do",
+          "unit": "기 / 곳 / kW"
+        }
+      },
+      "station_count_additivity": "운영기관별 고유 충전소 수를 합산하면 같은 충전소가 중복될 수 있습니다.",
+      "units": {
+        "charger_count": "기",
+        "ev_registration_count": "대",
+        "output_kw": "kW",
+        "share_pct": "%",
+        "station_count": "곳"
+      },
+      "warnings": [
+        "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+        "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
+        "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
+        "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
+      ]
+    }
+  },
+  "growth": {
+    "data": [
+      {
+        "annual_installed_count": 4,
+        "completed_calendar_year": true,
+        "cumulative_count": 4,
+        "is_partial_year": false,
+        "measurement_cutoff_date": null,
+        "year": 2011
+      },
+      {
+        "annual_installed_count": 9,
+        "completed_calendar_year": true,
+        "cumulative_count": 13,
+        "is_partial_year": false,
+        "measurement_cutoff_date": null,
+        "year": 2012
+      },
+      {
+        "annual_installed_count": 3,
+        "completed_calendar_year": true,
+        "cumulative_count": 16,
+        "is_partial_year": false,
+        "measurement_cutoff_date": null,
+        "year": 2013
+      },
+      {
+        "annual_installed_count": 35,
+        "completed_calendar_year": true,
+        "cumulative_count": 51,
+        "is_partial_year": false,
+        "measurement_cutoff_date": null,
+        "year": 2014
+      },
+      {
+        "annual_installed_count": 126,
+        "completed_calendar_year": true,
+        "cumulative_count": 177,
+        "is_partial_year": false,
+        "measurement_cutoff_date": null,
+        "year": 2015
+      },
+      {
+        "annual_installed_count": 614,
+        "completed_calendar_year": true,
+        "cumulative_count": 791,
+        "is_partial_year": false,
+        "measurement_cutoff_date": null,
+        "year": 2016
+      },
+      {
+        "annual_installed_count": 5723,
+        "completed_calendar_year": true,
+        "cumulative_count": 6514,
+        "is_partial_year": false,
+        "measurement_cutoff_date": null,
+        "year": 2017
+      },
+      {
+        "annual_installed_count": 11581,
+        "completed_calendar_year": true,
+        "cumulative_count": 18095,
+        "is_partial_year": false,
+        "measurement_cutoff_date": null,
+        "year": 2018
+      },
+      {
+        "annual_installed_count": 16524,
+        "completed_calendar_year": true,
+        "cumulative_count": 34619,
+        "is_partial_year": false,
+        "measurement_cutoff_date": null,
+        "year": 2019
+      },
+      {
+        "annual_installed_count": 9990,
+        "completed_calendar_year": true,
+        "cumulative_count": 44609,
+        "is_partial_year": false,
+        "measurement_cutoff_date": null,
+        "year": 2020
+      },
+      {
+        "annual_installed_count": 31512,
+        "completed_calendar_year": true,
+        "cumulative_count": 76121,
+        "is_partial_year": false,
+        "measurement_cutoff_date": null,
+        "year": 2021
+      },
+      {
+        "annual_installed_count": 92460,
+        "completed_calendar_year": true,
+        "cumulative_count": 168581,
+        "is_partial_year": false,
+        "measurement_cutoff_date": null,
+        "year": 2022
+      },
+      {
+        "annual_installed_count": 111981,
+        "completed_calendar_year": true,
+        "cumulative_count": 280562,
+        "is_partial_year": false,
+        "measurement_cutoff_date": null,
+        "year": 2023
+      },
+      {
+        "annual_installed_count": 108435,
+        "completed_calendar_year": true,
+        "cumulative_count": 388997,
+        "is_partial_year": false,
+        "measurement_cutoff_date": null,
+        "year": 2024
+      },
+      {
+        "annual_installed_count": 89805,
+        "completed_calendar_year": true,
+        "cumulative_count": 478802,
+        "is_partial_year": false,
+        "measurement_cutoff_date": null,
+        "year": 2025
+      },
+      {
+        "annual_installed_count": 61408,
+        "completed_calendar_year": false,
+        "cumulative_count": 540210,
+        "is_partial_year": true,
+        "measurement_cutoff_date": null,
+        "year": 2026
+      }
+    ],
+    "meta": {
+      "api_version": "1.0",
+      "count": 16,
+      "filters": {
+        "year_from": 2011,
+        "year_to": 2026
+      },
+      "growth_warning": "2026년은 부분 연도이며 정확한 집계 마감일 미기재. API 현황과 모집단이 달라 합치거나 과거 API 재고로 간주하지 않습니다.",
+      "same_period_shortage_rate_computed": false,
+      "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
+      "sources": {
+        "growth": {
+          "file": "charger_installation_trend.csv",
+          "geography": "전국 (지역 세분 없음)",
+          "measurement_cutoff_date": null,
+          "partial_year": 2026,
+          "period": "2011–2026",
+          "source": "충전기 설치 성장 추세_2026-10-15.xlsx",
+          "source_filename_date": "2026-10-15",
+          "unit": "기"
+        }
+      },
+      "units": {
+        "charger_count": "기",
+        "ev_registration_count": "대",
+        "output_kw": "kW",
+        "share_pct": "%",
+        "station_count": "곳"
+      },
+      "warnings": [
+        "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+        "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
+        "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
+        "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
+      ]
+    }
+  },
+  "station-size-distribution": {
+    "data": [
+      {
+        "charger_count": 75506,
+        "fence_high": 12.0,
+        "fence_low": -4.0,
+        "iqr": 4.0,
+        "max": 100,
+        "mean": 5.836889301175016,
+        "median": 3.0,
+        "min": 1,
+        "outlier_count": 1149,
+        "outlier_distribution": [
+          {
+            "charger_count": 13,
+            "station_count": 75
+          },
+          {
+            "charger_count": 14,
+            "station_count": 84
+          },
+          {
+            "charger_count": 15,
+            "station_count": 83
+          },
+          {
+            "charger_count": 16,
+            "station_count": 73
+          },
+          {
+            "charger_count": 17,
+            "station_count": 42
+          },
+          {
+            "charger_count": 18,
+            "station_count": 63
+          },
+          {
+            "charger_count": 19,
+            "station_count": 32
+          },
+          {
+            "charger_count": 20,
+            "station_count": 96
+          },
+          {
+            "charger_count": 21,
+            "station_count": 44
+          },
+          {
+            "charger_count": 22,
+            "station_count": 41
+          },
+          {
+            "charger_count": 23,
+            "station_count": 25
+          },
+          {
+            "charger_count": 24,
+            "station_count": 37
+          },
+          {
+            "charger_count": 25,
+            "station_count": 23
+          },
+          {
+            "charger_count": 26,
+            "station_count": 21
+          },
+          {
+            "charger_count": 27,
+            "station_count": 14
+          },
+          {
+            "charger_count": 28,
+            "station_count": 25
+          },
+          {
+            "charger_count": 29,
+            "station_count": 11
+          },
+          {
+            "charger_count": 30,
+            "station_count": 44
+          },
+          {
+            "charger_count": 31,
+            "station_count": 12
+          },
+          {
+            "charger_count": 32,
+            "station_count": 16
+          },
+          {
+            "charger_count": 33,
+            "station_count": 11
+          },
+          {
+            "charger_count": 34,
+            "station_count": 6
+          },
+          {
+            "charger_count": 35,
+            "station_count": 8
+          },
+          {
+            "charger_count": 36,
+            "station_count": 10
+          },
+          {
+            "charger_count": 37,
+            "station_count": 7
+          },
+          {
+            "charger_count": 38,
+            "station_count": 6
+          },
+          {
+            "charger_count": 39,
+            "station_count": 8
+          },
+          {
+            "charger_count": 40,
+            "station_count": 40
+          },
+          {
+            "charger_count": 41,
+            "station_count": 11
+          },
+          {
+            "charger_count": 42,
+            "station_count": 8
+          },
+          {
+            "charger_count": 43,
+            "station_count": 3
+          },
+          {
+            "charger_count": 44,
+            "station_count": 7
+          },
+          {
+            "charger_count": 45,
+            "station_count": 4
+          },
+          {
+            "charger_count": 46,
+            "station_count": 7
+          },
+          {
+            "charger_count": 47,
+            "station_count": 2
+          },
+          {
+            "charger_count": 48,
+            "station_count": 6
+          },
+          {
+            "charger_count": 49,
+            "station_count": 4
+          },
+          {
+            "charger_count": 50,
+            "station_count": 27
+          },
+          {
+            "charger_count": 51,
+            "station_count": 8
+          },
+          {
+            "charger_count": 52,
+            "station_count": 5
+          },
+          {
+            "charger_count": 53,
+            "station_count": 3
+          },
+          {
+            "charger_count": 54,
+            "station_count": 2
+          },
+          {
+            "charger_count": 55,
+            "station_count": 2
+          },
+          {
+            "charger_count": 56,
+            "station_count": 2
+          },
+          {
+            "charger_count": 57,
+            "station_count": 1
+          },
+          {
+            "charger_count": 59,
+            "station_count": 1
+          },
+          {
+            "charger_count": 60,
+            "station_count": 4
+          },
+          {
+            "charger_count": 61,
+            "station_count": 2
+          },
+          {
+            "charger_count": 62,
+            "station_count": 4
+          },
+          {
+            "charger_count": 63,
+            "station_count": 2
+          },
+          {
+            "charger_count": 65,
+            "station_count": 1
+          },
+          {
+            "charger_count": 66,
+            "station_count": 3
+          },
+          {
+            "charger_count": 67,
+            "station_count": 2
+          },
+          {
+            "charger_count": 69,
+            "station_count": 2
+          },
+          {
+            "charger_count": 70,
+            "station_count": 17
+          },
+          {
+            "charger_count": 71,
+            "station_count": 3
+          },
+          {
+            "charger_count": 72,
+            "station_count": 3
+          },
+          {
+            "charger_count": 73,
+            "station_count": 2
+          },
+          {
+            "charger_count": 74,
+            "station_count": 2
+          },
+          {
+            "charger_count": 75,
+            "station_count": 2
+          },
+          {
+            "charger_count": 77,
+            "station_count": 5
+          },
+          {
+            "charger_count": 78,
+            "station_count": 1
+          },
+          {
+            "charger_count": 80,
+            "station_count": 2
+          },
+          {
+            "charger_count": 83,
+            "station_count": 2
+          },
+          {
+            "charger_count": 84,
+            "station_count": 2
+          },
+          {
+            "charger_count": 86,
+            "station_count": 1
+          },
+          {
+            "charger_count": 88,
+            "station_count": 1
+          },
+          {
+            "charger_count": 89,
+            "station_count": 3
+          },
+          {
+            "charger_count": 90,
+            "station_count": 2
+          },
+          {
+            "charger_count": 92,
+            "station_count": 1
+          },
+          {
+            "charger_count": 96,
+            "station_count": 3
+          },
+          {
+            "charger_count": 97,
+            "station_count": 2
+          },
+          {
+            "charger_count": 98,
+            "station_count": 2
+          },
+          {
+            "charger_count": 99,
+            "station_count": 5
+          },
+          {
+            "charger_count": 100,
+            "station_count": 8
+          }
+        ],
+        "q1": 2.0,
+        "q3": 6.0,
+        "region_code": "11",
+        "region_name": "서울",
+        "sample_count": 12936,
+        "station_count": 12936,
+        "whisker_high": 12,
+        "whisker_low": 1
+      },
+      {
+        "charger_count": 32546,
+        "fence_high": 11.0,
+        "fence_low": -5.0,
+        "iqr": 4.0,
+        "max": 99,
+        "mean": 4.031962338949455,
+        "median": 2.0,
+        "min": 1,
+        "outlier_count": 449,
+        "outlier_distribution": [
+          {
+            "charger_count": 12,
+            "station_count": 65
+          },
+          {
+            "charger_count": 13,
+            "station_count": 37
+          },
+          {
+            "charger_count": 14,
+            "station_count": 48
+          },
+          {
+            "charger_count": 15,
+            "station_count": 43
+          },
+          {
+            "charger_count": 16,
+            "station_count": 30
+          },
+          {
+            "charger_count": 17,
+            "station_count": 16
+          },
+          {
+            "charger_count": 18,
+            "station_count": 25
+          },
+          {
+            "charger_count": 19,
+            "station_count": 12
+          },
+          {
+            "charger_count": 20,
+            "station_count": 33
+          },
+          {
+            "charger_count": 21,
+            "station_count": 13
+          },
+          {
+            "charger_count": 22,
+            "station_count": 10
+          },
+          {
+            "charger_count": 23,
+            "station_count": 13
+          },
+          {
+            "charger_count": 24,
+            "station_count": 13
+          },
+          {
+            "charger_count": 25,
+            "station_count": 6
+          },
+          {
+            "charger_count": 26,
+            "station_count": 7
+          },
+          {
+            "charger_count": 27,
+            "station_count": 7
+          },
+          {
+            "charger_count": 28,
+            "station_count": 5
+          },
+          {
+            "charger_count": 29,
+            "station_count": 2
+          },
+          {
+            "charger_count": 30,
+            "station_count": 12
+          },
+          {
+            "charger_count": 31,
+            "station_count": 3
+          },
+          {
+            "charger_count": 32,
+            "station_count": 5
+          },
+          {
+            "charger_count": 33,
+            "station_count": 7
+          },
+          {
+            "charger_count": 34,
+            "station_count": 2
+          },
+          {
+            "charger_count": 35,
+            "station_count": 3
+          },
+          {
+            "charger_count": 36,
+            "station_count": 3
+          },
+          {
+            "charger_count": 37,
+            "station_count": 1
+          },
+          {
+            "charger_count": 38,
+            "station_count": 2
+          },
+          {
+            "charger_count": 40,
+            "station_count": 2
+          },
+          {
+            "charger_count": 41,
+            "station_count": 2
+          },
+          {
+            "charger_count": 42,
+            "station_count": 1
+          },
+          {
+            "charger_count": 43,
+            "station_count": 1
+          },
+          {
+            "charger_count": 44,
+            "station_count": 1
+          },
+          {
+            "charger_count": 45,
+            "station_count": 2
+          },
+          {
+            "charger_count": 46,
+            "station_count": 2
+          },
+          {
+            "charger_count": 49,
+            "station_count": 2
+          },
+          {
+            "charger_count": 50,
+            "station_count": 1
+          },
+          {
+            "charger_count": 52,
+            "station_count": 1
+          },
+          {
+            "charger_count": 53,
+            "station_count": 2
+          },
+          {
+            "charger_count": 56,
+            "station_count": 1
+          },
+          {
+            "charger_count": 60,
+            "station_count": 1
+          },
+          {
+            "charger_count": 64,
+            "station_count": 1
+          },
+          {
+            "charger_count": 67,
+            "station_count": 1
+          },
+          {
+            "charger_count": 71,
+            "station_count": 1
+          },
+          {
+            "charger_count": 74,
+            "station_count": 2
+          },
+          {
+            "charger_count": 87,
+            "station_count": 1
+          },
+          {
+            "charger_count": 99,
+            "station_count": 1
+          }
+        ],
+        "q1": 1.0,
+        "q3": 5.0,
+        "region_code": "12",
+        "region_name": "전남광주통합특별시",
+        "sample_count": 8072,
+        "station_count": 8072,
+        "whisker_high": 11,
+        "whisker_low": 1
+      },
+      {
+        "charger_count": 32475,
+        "fence_high": 12.0,
+        "fence_low": -4.0,
+        "iqr": 4.0,
+        "max": 99,
+        "mean": 6.313180404354588,
+        "median": 3.0,
+        "min": 1,
+        "outlier_count": 551,
+        "outlier_distribution": [
+          {
+            "charger_count": 13,
+            "station_count": 36
+          },
+          {
+            "charger_count": 14,
+            "station_count": 61
+          },
+          {
+            "charger_count": 15,
+            "station_count": 45
+          },
+          {
+            "charger_count": 16,
+            "station_count": 27
+          },
+          {
+            "charger_count": 17,
+            "station_count": 18
+          },
+          {
+            "charger_count": 18,
+            "station_count": 27
+          },
+          {
+            "charger_count": 19,
+            "station_count": 23
+          },
+          {
+            "charger_count": 20,
+            "station_count": 33
+          },
+          {
+            "charger_count": 21,
+            "station_count": 30
+          },
+          {
+            "charger_count": 22,
+            "station_count": 20
+          },
+          {
+            "charger_count": 23,
+            "station_count": 12
+          },
+          {
+            "charger_count": 24,
+            "station_count": 11
+          },
+          {
+            "charger_count": 25,
+            "station_count": 9
+          },
+          {
+            "charger_count": 26,
+            "station_count": 11
+          },
+          {
+            "charger_count": 27,
+            "station_count": 13
+          },
+          {
+            "charger_count": 28,
+            "station_count": 11
+          },
+          {
+            "charger_count": 29,
+            "station_count": 5
+          },
+          {
+            "charger_count": 30,
+            "station_count": 19
+          },
+          {
+            "charger_count": 31,
+            "station_count": 4
+          },
+          {
+            "charger_count": 32,
+            "station_count": 7
+          },
+          {
+            "charger_count": 33,
+            "station_count": 2
+          },
+          {
+            "charger_count": 34,
+            "station_count": 8
+          },
+          {
+            "charger_count": 35,
+            "station_count": 8
+          },
+          {
+            "charger_count": 36,
+            "station_count": 6
+          },
+          {
+            "charger_count": 37,
+            "station_count": 6
+          },
+          {
+            "charger_count": 38,
+            "station_count": 3
+          },
+          {
+            "charger_count": 39,
+            "station_count": 7
+          },
+          {
+            "charger_count": 40,
+            "station_count": 5
+          },
+          {
+            "charger_count": 41,
+            "station_count": 3
+          },
+          {
+            "charger_count": 42,
+            "station_count": 2
+          },
+          {
+            "charger_count": 43,
+            "station_count": 2
+          },
+          {
+            "charger_count": 45,
+            "station_count": 3
+          },
+          {
+            "charger_count": 46,
+            "station_count": 5
+          },
+          {
+            "charger_count": 48,
+            "station_count": 3
+          },
+          {
+            "charger_count": 49,
+            "station_count": 2
+          },
+          {
+            "charger_count": 50,
+            "station_count": 3
+          },
+          {
+            "charger_count": 51,
+            "station_count": 1
+          },
+          {
+            "charger_count": 52,
+            "station_count": 3
+          },
+          {
+            "charger_count": 55,
+            "station_count": 2
+          },
+          {
+            "charger_count": 56,
+            "station_count": 1
+          },
+          {
+            "charger_count": 58,
+            "station_count": 1
+          },
+          {
+            "charger_count": 59,
+            "station_count": 3
+          },
+          {
+            "charger_count": 60,
+            "station_count": 1
+          },
+          {
+            "charger_count": 61,
+            "station_count": 2
+          },
+          {
+            "charger_count": 65,
+            "station_count": 1
+          },
+          {
+            "charger_count": 66,
+            "station_count": 2
+          },
+          {
+            "charger_count": 67,
+            "station_count": 1
+          },
+          {
+            "charger_count": 68,
+            "station_count": 4
+          },
+          {
+            "charger_count": 69,
+            "station_count": 3
+          },
+          {
+            "charger_count": 72,
+            "station_count": 3
+          },
+          {
+            "charger_count": 74,
+            "station_count": 1
+          },
+          {
+            "charger_count": 78,
+            "station_count": 1
+          },
+          {
+            "charger_count": 79,
+            "station_count": 1
+          },
+          {
+            "charger_count": 80,
+            "station_count": 1
+          },
+          {
+            "charger_count": 81,
+            "station_count": 2
+          },
+          {
+            "charger_count": 84,
+            "station_count": 1
+          },
+          {
+            "charger_count": 85,
+            "station_count": 2
+          },
+          {
+            "charger_count": 88,
+            "station_count": 2
+          },
+          {
+            "charger_count": 91,
+            "station_count": 3
+          },
+          {
+            "charger_count": 92,
+            "station_count": 1
+          },
+          {
+            "charger_count": 93,
+            "station_count": 1
+          },
+          {
+            "charger_count": 95,
+            "station_count": 1
+          },
+          {
+            "charger_count": 96,
+            "station_count": 1
+          },
+          {
+            "charger_count": 97,
+            "station_count": 3
+          },
+          {
+            "charger_count": 98,
+            "station_count": 1
+          },
+          {
+            "charger_count": 99,
+            "station_count": 11
+          }
+        ],
+        "q1": 2.0,
+        "q3": 6.0,
+        "region_code": "26",
+        "region_name": "부산",
+        "sample_count": 5144,
+        "station_count": 5144,
+        "whisker_high": 12,
+        "whisker_low": 1
+      },
+      {
+        "charger_count": 24414,
+        "fence_high": 14.5,
+        "fence_low": -5.5,
+        "iqr": 5.0,
+        "max": 99,
+        "mean": 6.0311264822134385,
+        "median": 3.0,
+        "min": 1,
+        "outlier_count": 389,
+        "outlier_distribution": [
+          {
+            "charger_count": 15,
+            "station_count": 36
+          },
+          {
+            "charger_count": 16,
+            "station_count": 44
+          },
+          {
+            "charger_count": 17,
+            "station_count": 30
+          },
+          {
+            "charger_count": 18,
+            "station_count": 30
+          },
+          {
+            "charger_count": 19,
+            "station_count": 20
+          },
+          {
+            "charger_count": 20,
+            "station_count": 30
+          },
+          {
+            "charger_count": 21,
+            "station_count": 30
+          },
+          {
+            "charger_count": 22,
+            "station_count": 13
+          },
+          {
+            "charger_count": 23,
+            "station_count": 15
+          },
+          {
+            "charger_count": 24,
+            "station_count": 13
+          },
+          {
+            "charger_count": 25,
+            "station_count": 11
+          },
+          {
+            "charger_count": 26,
+            "station_count": 7
+          },
+          {
+            "charger_count": 27,
+            "station_count": 5
+          },
+          {
+            "charger_count": 28,
+            "station_count": 10
+          },
+          {
+            "charger_count": 29,
+            "station_count": 9
+          },
+          {
+            "charger_count": 30,
+            "station_count": 13
+          },
+          {
+            "charger_count": 31,
+            "station_count": 6
+          },
+          {
+            "charger_count": 32,
+            "station_count": 6
+          },
+          {
+            "charger_count": 33,
+            "station_count": 4
+          },
+          {
+            "charger_count": 34,
+            "station_count": 1
+          },
+          {
+            "charger_count": 35,
+            "station_count": 3
+          },
+          {
+            "charger_count": 36,
+            "station_count": 6
+          },
+          {
+            "charger_count": 37,
+            "station_count": 2
+          },
+          {
+            "charger_count": 38,
+            "station_count": 2
+          },
+          {
+            "charger_count": 39,
+            "station_count": 2
+          },
+          {
+            "charger_count": 40,
+            "station_count": 4
+          },
+          {
+            "charger_count": 41,
+            "station_count": 2
+          },
+          {
+            "charger_count": 42,
+            "station_count": 2
+          },
+          {
+            "charger_count": 43,
+            "station_count": 1
+          },
+          {
+            "charger_count": 44,
+            "station_count": 2
+          },
+          {
+            "charger_count": 45,
+            "station_count": 4
+          },
+          {
+            "charger_count": 46,
+            "station_count": 3
+          },
+          {
+            "charger_count": 47,
+            "station_count": 2
+          },
+          {
+            "charger_count": 48,
+            "station_count": 1
+          },
+          {
+            "charger_count": 49,
+            "station_count": 1
+          },
+          {
+            "charger_count": 53,
+            "station_count": 3
+          },
+          {
+            "charger_count": 54,
+            "station_count": 2
+          },
+          {
+            "charger_count": 55,
+            "station_count": 1
+          },
+          {
+            "charger_count": 60,
+            "station_count": 1
+          },
+          {
+            "charger_count": 65,
+            "station_count": 1
+          },
+          {
+            "charger_count": 66,
+            "station_count": 1
+          },
+          {
+            "charger_count": 67,
+            "station_count": 2
+          },
+          {
+            "charger_count": 71,
+            "station_count": 1
+          },
+          {
+            "charger_count": 74,
+            "station_count": 1
+          },
+          {
+            "charger_count": 75,
+            "station_count": 1
+          },
+          {
+            "charger_count": 77,
+            "station_count": 1
+          },
+          {
+            "charger_count": 79,
+            "station_count": 1
+          },
+          {
+            "charger_count": 80,
+            "station_count": 1
+          },
+          {
+            "charger_count": 99,
+            "station_count": 2
+          }
+        ],
+        "q1": 2.0,
+        "q3": 7.0,
+        "region_code": "27",
+        "region_name": "대구",
+        "sample_count": 4048,
+        "station_count": 4048,
+        "whisker_high": 14,
+        "whisker_low": 1
+      },
+      {
+        "charger_count": 33434,
+        "fence_high": 12.0,
+        "fence_low": -4.0,
+        "iqr": 4.0,
+        "max": 100,
+        "mean": 6.391512139170331,
+        "median": 3.0,
+        "min": 1,
+        "outlier_count": 548,
+        "outlier_distribution": [
+          {
+            "charger_count": 13,
+            "station_count": 26
+          },
+          {
+            "charger_count": 14,
+            "station_count": 43
+          },
+          {
+            "charger_count": 15,
+            "station_count": 43
+          },
+          {
+            "charger_count": 16,
+            "station_count": 27
+          },
+          {
+            "charger_count": 17,
+            "station_count": 20
+          },
+          {
+            "charger_count": 18,
+            "station_count": 31
+          },
+          {
+            "charger_count": 19,
+            "station_count": 24
+          },
+          {
+            "charger_count": 20,
+            "station_count": 41
+          },
+          {
+            "charger_count": 21,
+            "station_count": 22
+          },
+          {
+            "charger_count": 22,
+            "station_count": 18
+          },
+          {
+            "charger_count": 23,
+            "station_count": 8
+          },
+          {
+            "charger_count": 24,
+            "station_count": 25
+          },
+          {
+            "charger_count": 25,
+            "station_count": 11
+          },
+          {
+            "charger_count": 26,
+            "station_count": 14
+          },
+          {
+            "charger_count": 27,
+            "station_count": 13
+          },
+          {
+            "charger_count": 28,
+            "station_count": 9
+          },
+          {
+            "charger_count": 29,
+            "station_count": 3
+          },
+          {
+            "charger_count": 30,
+            "station_count": 11
+          },
+          {
+            "charger_count": 31,
+            "station_count": 9
+          },
+          {
+            "charger_count": 32,
+            "station_count": 7
+          },
+          {
+            "charger_count": 33,
+            "station_count": 8
+          },
+          {
+            "charger_count": 34,
+            "station_count": 11
+          },
+          {
+            "charger_count": 35,
+            "station_count": 9
+          },
+          {
+            "charger_count": 36,
+            "station_count": 5
+          },
+          {
+            "charger_count": 37,
+            "station_count": 3
+          },
+          {
+            "charger_count": 38,
+            "station_count": 3
+          },
+          {
+            "charger_count": 39,
+            "station_count": 4
+          },
+          {
+            "charger_count": 40,
+            "station_count": 4
+          },
+          {
+            "charger_count": 41,
+            "station_count": 2
+          },
+          {
+            "charger_count": 42,
+            "station_count": 5
+          },
+          {
+            "charger_count": 43,
+            "station_count": 3
+          },
+          {
+            "charger_count": 44,
+            "station_count": 1
+          },
+          {
+            "charger_count": 45,
+            "station_count": 2
+          },
+          {
+            "charger_count": 46,
+            "station_count": 1
+          },
+          {
+            "charger_count": 47,
+            "station_count": 2
+          },
+          {
+            "charger_count": 48,
+            "station_count": 3
+          },
+          {
+            "charger_count": 49,
+            "station_count": 4
+          },
+          {
+            "charger_count": 50,
+            "station_count": 4
+          },
+          {
+            "charger_count": 51,
+            "station_count": 1
+          },
+          {
+            "charger_count": 52,
+            "station_count": 3
+          },
+          {
+            "charger_count": 53,
+            "station_count": 2
+          },
+          {
+            "charger_count": 54,
+            "station_count": 2
+          },
+          {
+            "charger_count": 55,
+            "station_count": 2
+          },
+          {
+            "charger_count": 56,
+            "station_count": 3
+          },
+          {
+            "charger_count": 57,
+            "station_count": 2
+          },
+          {
+            "charger_count": 58,
+            "station_count": 2
+          },
+          {
+            "charger_count": 59,
+            "station_count": 1
+          },
+          {
+            "charger_count": 60,
+            "station_count": 5
+          },
+          {
+            "charger_count": 61,
+            "station_count": 1
+          },
+          {
+            "charger_count": 63,
+            "station_count": 2
+          },
+          {
+            "charger_count": 64,
+            "station_count": 2
+          },
+          {
+            "charger_count": 65,
+            "station_count": 1
+          },
+          {
+            "charger_count": 66,
+            "station_count": 3
+          },
+          {
+            "charger_count": 69,
+            "station_count": 2
+          },
+          {
+            "charger_count": 70,
+            "station_count": 2
+          },
+          {
+            "charger_count": 71,
+            "station_count": 1
+          },
+          {
+            "charger_count": 73,
+            "station_count": 2
+          },
+          {
+            "charger_count": 74,
+            "station_count": 1
+          },
+          {
+            "charger_count": 75,
+            "station_count": 1
+          },
+          {
+            "charger_count": 76,
+            "station_count": 3
+          },
+          {
+            "charger_count": 77,
+            "station_count": 1
+          },
+          {
+            "charger_count": 78,
+            "station_count": 2
+          },
+          {
+            "charger_count": 80,
+            "station_count": 3
+          },
+          {
+            "charger_count": 81,
+            "station_count": 3
+          },
+          {
+            "charger_count": 84,
+            "station_count": 1
+          },
+          {
+            "charger_count": 85,
+            "station_count": 2
+          },
+          {
+            "charger_count": 87,
+            "station_count": 1
+          },
+          {
+            "charger_count": 89,
+            "station_count": 1
+          },
+          {
+            "charger_count": 90,
+            "station_count": 2
+          },
+          {
+            "charger_count": 92,
+            "station_count": 1
+          },
+          {
+            "charger_count": 97,
+            "station_count": 1
+          },
+          {
+            "charger_count": 98,
+            "station_count": 1
+          },
+          {
+            "charger_count": 99,
+            "station_count": 4
+          },
+          {
+            "charger_count": 100,
+            "station_count": 2
+          }
+        ],
+        "q1": 2.0,
+        "q3": 6.0,
+        "region_code": "28",
+        "region_name": "인천",
+        "sample_count": 5231,
+        "station_count": 5231,
+        "whisker_high": 12,
+        "whisker_low": 1
+      },
+      {
+        "charger_count": 14967,
+        "fence_high": 9.5,
+        "fence_low": -2.5,
+        "iqr": 3.0,
+        "max": 99,
+        "mean": 5.395457822638789,
+        "median": 3.0,
+        "min": 1,
+        "outlier_count": 370,
+        "outlier_distribution": [
+          {
+            "charger_count": 10,
+            "station_count": 64
+          },
+          {
+            "charger_count": 11,
+            "station_count": 22
+          },
+          {
+            "charger_count": 12,
+            "station_count": 34
+          },
+          {
+            "charger_count": 13,
+            "station_count": 23
+          },
+          {
+            "charger_count": 14,
+            "station_count": 21
+          },
+          {
+            "charger_count": 15,
+            "station_count": 20
+          },
+          {
+            "charger_count": 16,
+            "station_count": 17
+          },
+          {
+            "charger_count": 17,
+            "station_count": 13
+          },
+          {
+            "charger_count": 18,
+            "station_count": 16
+          },
+          {
+            "charger_count": 19,
+            "station_count": 17
+          },
+          {
+            "charger_count": 20,
+            "station_count": 19
+          },
+          {
+            "charger_count": 21,
+            "station_count": 14
+          },
+          {
+            "charger_count": 22,
+            "station_count": 5
+          },
+          {
+            "charger_count": 23,
+            "station_count": 4
+          },
+          {
+            "charger_count": 24,
+            "station_count": 3
+          },
+          {
+            "charger_count": 25,
+            "station_count": 4
+          },
+          {
+            "charger_count": 26,
+            "station_count": 6
+          },
+          {
+            "charger_count": 27,
+            "station_count": 4
+          },
+          {
+            "charger_count": 28,
+            "station_count": 6
+          },
+          {
+            "charger_count": 29,
+            "station_count": 2
+          },
+          {
+            "charger_count": 30,
+            "station_count": 4
+          },
+          {
+            "charger_count": 31,
+            "station_count": 1
+          },
+          {
+            "charger_count": 32,
+            "station_count": 2
+          },
+          {
+            "charger_count": 33,
+            "station_count": 1
+          },
+          {
+            "charger_count": 34,
+            "station_count": 1
+          },
+          {
+            "charger_count": 35,
+            "station_count": 3
+          },
+          {
+            "charger_count": 36,
+            "station_count": 6
+          },
+          {
+            "charger_count": 37,
+            "station_count": 1
+          },
+          {
+            "charger_count": 40,
+            "station_count": 2
+          },
+          {
+            "charger_count": 41,
+            "station_count": 4
+          },
+          {
+            "charger_count": 42,
+            "station_count": 4
+          },
+          {
+            "charger_count": 43,
+            "station_count": 1
+          },
+          {
+            "charger_count": 45,
+            "station_count": 4
+          },
+          {
+            "charger_count": 46,
+            "station_count": 1
+          },
+          {
+            "charger_count": 47,
+            "station_count": 1
+          },
+          {
+            "charger_count": 48,
+            "station_count": 3
+          },
+          {
+            "charger_count": 50,
+            "station_count": 1
+          },
+          {
+            "charger_count": 55,
+            "station_count": 3
+          },
+          {
+            "charger_count": 57,
+            "station_count": 1
+          },
+          {
+            "charger_count": 60,
+            "station_count": 1
+          },
+          {
+            "charger_count": 68,
+            "station_count": 1
+          },
+          {
+            "charger_count": 72,
+            "station_count": 1
+          },
+          {
+            "charger_count": 73,
+            "station_count": 2
+          },
+          {
+            "charger_count": 74,
+            "station_count": 2
+          },
+          {
+            "charger_count": 78,
+            "station_count": 2
+          },
+          {
+            "charger_count": 81,
+            "station_count": 1
+          },
+          {
+            "charger_count": 85,
+            "station_count": 1
+          },
+          {
+            "charger_count": 99,
+            "station_count": 1
+          }
+        ],
+        "q1": 2.0,
+        "q3": 5.0,
+        "region_code": "30",
+        "region_name": "대전",
+        "sample_count": 2774,
+        "station_count": 2774,
+        "whisker_high": 9,
+        "whisker_low": 1
+      },
+      {
+        "charger_count": 10587,
+        "fence_high": 11.375,
+        "fence_low": -3.625,
+        "iqr": 3.75,
+        "max": 99,
+        "mean": 5.085014409221902,
+        "median": 3.0,
+        "min": 1,
+        "outlier_count": 206,
+        "outlier_distribution": [
+          {
+            "charger_count": 12,
+            "station_count": 18
+          },
+          {
+            "charger_count": 13,
+            "station_count": 15
+          },
+          {
+            "charger_count": 14,
+            "station_count": 19
+          },
+          {
+            "charger_count": 15,
+            "station_count": 15
+          },
+          {
+            "charger_count": 16,
+            "station_count": 19
+          },
+          {
+            "charger_count": 17,
+            "station_count": 14
+          },
+          {
+            "charger_count": 18,
+            "station_count": 14
+          },
+          {
+            "charger_count": 19,
+            "station_count": 7
+          },
+          {
+            "charger_count": 20,
+            "station_count": 15
+          },
+          {
+            "charger_count": 21,
+            "station_count": 5
+          },
+          {
+            "charger_count": 22,
+            "station_count": 9
+          },
+          {
+            "charger_count": 23,
+            "station_count": 1
+          },
+          {
+            "charger_count": 24,
+            "station_count": 6
+          },
+          {
+            "charger_count": 25,
+            "station_count": 7
+          },
+          {
+            "charger_count": 27,
+            "station_count": 4
+          },
+          {
+            "charger_count": 28,
+            "station_count": 3
+          },
+          {
+            "charger_count": 29,
+            "station_count": 4
+          },
+          {
+            "charger_count": 30,
+            "station_count": 5
+          },
+          {
+            "charger_count": 32,
+            "station_count": 4
+          },
+          {
+            "charger_count": 34,
+            "station_count": 3
+          },
+          {
+            "charger_count": 35,
+            "station_count": 1
+          },
+          {
+            "charger_count": 37,
+            "station_count": 2
+          },
+          {
+            "charger_count": 38,
+            "station_count": 1
+          },
+          {
+            "charger_count": 39,
+            "station_count": 4
+          },
+          {
+            "charger_count": 40,
+            "station_count": 1
+          },
+          {
+            "charger_count": 41,
+            "station_count": 1
+          },
+          {
+            "charger_count": 42,
+            "station_count": 1
+          },
+          {
+            "charger_count": 47,
+            "station_count": 2
+          },
+          {
+            "charger_count": 50,
+            "station_count": 1
+          },
+          {
+            "charger_count": 54,
+            "station_count": 1
+          },
+          {
+            "charger_count": 58,
+            "station_count": 1
+          },
+          {
+            "charger_count": 60,
+            "station_count": 1
+          },
+          {
+            "charger_count": 86,
+            "station_count": 1
+          },
+          {
+            "charger_count": 99,
+            "station_count": 1
+          }
+        ],
+        "q1": 2.0,
+        "q3": 5.75,
+        "region_code": "31",
+        "region_name": "울산",
+        "sample_count": 2082,
+        "station_count": 2082,
+        "whisker_high": 11,
+        "whisker_low": 1
+      },
+      {
+        "charger_count": 6534,
+        "fence_high": 14.5,
+        "fence_low": -5.5,
+        "iqr": 5.0,
+        "max": 86,
+        "mean": 6.294797687861272,
+        "median": 3.0,
+        "min": 1,
+        "outlier_count": 107,
+        "outlier_distribution": [
+          {
+            "charger_count": 15,
+            "station_count": 12
+          },
+          {
+            "charger_count": 16,
+            "station_count": 6
+          },
+          {
+            "charger_count": 17,
+            "station_count": 5
+          },
+          {
+            "charger_count": 18,
+            "station_count": 9
+          },
+          {
+            "charger_count": 19,
+            "station_count": 4
+          },
+          {
+            "charger_count": 20,
+            "station_count": 9
+          },
+          {
+            "charger_count": 21,
+            "station_count": 3
+          },
+          {
+            "charger_count": 22,
+            "station_count": 5
+          },
+          {
+            "charger_count": 23,
+            "station_count": 4
+          },
+          {
+            "charger_count": 24,
+            "station_count": 3
+          },
+          {
+            "charger_count": 25,
+            "station_count": 4
+          },
+          {
+            "charger_count": 26,
+            "station_count": 2
+          },
+          {
+            "charger_count": 27,
+            "station_count": 4
+          },
+          {
+            "charger_count": 28,
+            "station_count": 3
+          },
+          {
+            "charger_count": 29,
+            "station_count": 2
+          },
+          {
+            "charger_count": 30,
+            "station_count": 3
+          },
+          {
+            "charger_count": 31,
+            "station_count": 2
+          },
+          {
+            "charger_count": 32,
+            "station_count": 5
+          },
+          {
+            "charger_count": 33,
+            "station_count": 1
+          },
+          {
+            "charger_count": 34,
+            "station_count": 1
+          },
+          {
+            "charger_count": 35,
+            "station_count": 2
+          },
+          {
+            "charger_count": 36,
+            "station_count": 4
+          },
+          {
+            "charger_count": 37,
+            "station_count": 1
+          },
+          {
+            "charger_count": 39,
+            "station_count": 2
+          },
+          {
+            "charger_count": 40,
+            "station_count": 3
+          },
+          {
+            "charger_count": 44,
+            "station_count": 1
+          },
+          {
+            "charger_count": 47,
+            "station_count": 2
+          },
+          {
+            "charger_count": 49,
+            "station_count": 1
+          },
+          {
+            "charger_count": 57,
+            "station_count": 1
+          },
+          {
+            "charger_count": 67,
+            "station_count": 1
+          },
+          {
+            "charger_count": 81,
+            "station_count": 1
+          },
+          {
+            "charger_count": 86,
+            "station_count": 1
+          }
+        ],
+        "q1": 2.0,
+        "q3": 7.0,
+        "region_code": "36",
+        "region_name": "세종",
+        "sample_count": 1038,
+        "station_count": 1038,
+        "whisker_high": 14,
+        "whisker_low": 1
+      },
+      {
+        "charger_count": 154877,
+        "fence_high": 12.0,
+        "fence_low": -4.0,
+        "iqr": 4.0,
+        "max": 100,
+        "mean": 6.1943366795984485,
+        "median": 3.0,
+        "min": 1,
+        "outlier_count": 2617,
+        "outlier_distribution": [
+          {
+            "charger_count": 13,
+            "station_count": 189
+          },
+          {
+            "charger_count": 14,
+            "station_count": 176
+          },
+          {
+            "charger_count": 15,
+            "station_count": 208
+          },
+          {
+            "charger_count": 16,
+            "station_count": 205
+          },
+          {
+            "charger_count": 17,
+            "station_count": 122
+          },
+          {
+            "charger_count": 18,
+            "station_count": 149
+          },
+          {
+            "charger_count": 19,
+            "station_count": 98
+          },
+          {
+            "charger_count": 20,
+            "station_count": 195
+          },
+          {
+            "charger_count": 21,
+            "station_count": 96
+          },
+          {
+            "charger_count": 22,
+            "station_count": 78
+          },
+          {
+            "charger_count": 23,
+            "station_count": 53
+          },
+          {
+            "charger_count": 24,
+            "station_count": 84
+          },
+          {
+            "charger_count": 25,
+            "station_count": 61
+          },
+          {
+            "charger_count": 26,
+            "station_count": 55
+          },
+          {
+            "charger_count": 27,
+            "station_count": 47
+          },
+          {
+            "charger_count": 28,
+            "station_count": 43
+          },
+          {
+            "charger_count": 29,
+            "station_count": 29
+          },
+          {
+            "charger_count": 30,
+            "station_count": 60
+          },
+          {
+            "charger_count": 31,
+            "station_count": 34
+          },
+          {
+            "charger_count": 32,
+            "station_count": 43
+          },
+          {
+            "charger_count": 33,
+            "station_count": 40
+          },
+          {
+            "charger_count": 34,
+            "station_count": 29
+          },
+          {
+            "charger_count": 35,
+            "station_count": 23
+          },
+          {
+            "charger_count": 36,
+            "station_count": 24
+          },
+          {
+            "charger_count": 37,
+            "station_count": 18
+          },
+          {
+            "charger_count": 38,
+            "station_count": 30
+          },
+          {
+            "charger_count": 39,
+            "station_count": 21
+          },
+          {
+            "charger_count": 40,
+            "station_count": 25
+          },
+          {
+            "charger_count": 41,
+            "station_count": 14
+          },
+          {
+            "charger_count": 42,
+            "station_count": 20
+          },
+          {
+            "charger_count": 43,
+            "station_count": 21
+          },
+          {
+            "charger_count": 44,
+            "station_count": 8
+          },
+          {
+            "charger_count": 45,
+            "station_count": 14
+          },
+          {
+            "charger_count": 46,
+            "station_count": 18
+          },
+          {
+            "charger_count": 47,
+            "station_count": 8
+          },
+          {
+            "charger_count": 48,
+            "station_count": 17
+          },
+          {
+            "charger_count": 49,
+            "station_count": 8
+          },
+          {
+            "charger_count": 50,
+            "station_count": 20
+          },
+          {
+            "charger_count": 51,
+            "station_count": 7
+          },
+          {
+            "charger_count": 52,
+            "station_count": 12
+          },
+          {
+            "charger_count": 53,
+            "station_count": 11
+          },
+          {
+            "charger_count": 54,
+            "station_count": 15
+          },
+          {
+            "charger_count": 55,
+            "station_count": 7
+          },
+          {
+            "charger_count": 56,
+            "station_count": 11
+          },
+          {
+            "charger_count": 57,
+            "station_count": 5
+          },
+          {
+            "charger_count": 58,
+            "station_count": 5
+          },
+          {
+            "charger_count": 59,
+            "station_count": 3
+          },
+          {
+            "charger_count": 60,
+            "station_count": 10
+          },
+          {
+            "charger_count": 61,
+            "station_count": 1
+          },
+          {
+            "charger_count": 62,
+            "station_count": 4
+          },
+          {
+            "charger_count": 63,
+            "station_count": 5
+          },
+          {
+            "charger_count": 64,
+            "station_count": 4
+          },
+          {
+            "charger_count": 65,
+            "station_count": 6
+          },
+          {
+            "charger_count": 66,
+            "station_count": 8
+          },
+          {
+            "charger_count": 67,
+            "station_count": 3
+          },
+          {
+            "charger_count": 68,
+            "station_count": 8
+          },
+          {
+            "charger_count": 69,
+            "station_count": 5
+          },
+          {
+            "charger_count": 70,
+            "station_count": 6
+          },
+          {
+            "charger_count": 71,
+            "station_count": 1
+          },
+          {
+            "charger_count": 72,
+            "station_count": 5
+          },
+          {
+            "charger_count": 74,
+            "station_count": 3
+          },
+          {
+            "charger_count": 75,
+            "station_count": 3
+          },
+          {
+            "charger_count": 76,
+            "station_count": 4
+          },
+          {
+            "charger_count": 77,
+            "station_count": 2
+          },
+          {
+            "charger_count": 78,
+            "station_count": 7
+          },
+          {
+            "charger_count": 79,
+            "station_count": 3
+          },
+          {
+            "charger_count": 80,
+            "station_count": 4
+          },
+          {
+            "charger_count": 81,
+            "station_count": 3
+          },
+          {
+            "charger_count": 82,
+            "station_count": 1
+          },
+          {
+            "charger_count": 83,
+            "station_count": 1
+          },
+          {
+            "charger_count": 84,
+            "station_count": 4
+          },
+          {
+            "charger_count": 86,
+            "station_count": 3
+          },
+          {
+            "charger_count": 87,
+            "station_count": 2
+          },
+          {
+            "charger_count": 88,
+            "station_count": 3
+          },
+          {
+            "charger_count": 89,
+            "station_count": 2
+          },
+          {
+            "charger_count": 90,
+            "station_count": 3
+          },
+          {
+            "charger_count": 91,
+            "station_count": 3
+          },
+          {
+            "charger_count": 92,
+            "station_count": 2
+          },
+          {
+            "charger_count": 93,
+            "station_count": 3
+          },
+          {
+            "charger_count": 94,
+            "station_count": 2
+          },
+          {
+            "charger_count": 95,
+            "station_count": 1
+          },
+          {
+            "charger_count": 96,
+            "station_count": 2
+          },
+          {
+            "charger_count": 97,
+            "station_count": 3
+          },
+          {
+            "charger_count": 98,
+            "station_count": 1
+          },
+          {
+            "charger_count": 99,
+            "station_count": 17
+          },
+          {
+            "charger_count": 100,
+            "station_count": 10
+          }
+        ],
+        "q1": 2.0,
+        "q3": 6.0,
+        "region_code": "41",
+        "region_name": "경기",
+        "sample_count": 25003,
+        "station_count": 25003,
+        "whisker_high": 12,
+        "whisker_low": 1
+      },
+      {
+        "charger_count": 17774,
+        "fence_high": 9.5,
+        "fence_low": -2.5,
+        "iqr": 3.0,
+        "max": 100,
+        "mean": 4.640731070496083,
+        "median": 3.0,
+        "min": 1,
+        "outlier_count": 378,
+        "outlier_distribution": [
+          {
+            "charger_count": 10,
+            "station_count": 71
+          },
+          {
+            "charger_count": 11,
+            "station_count": 32
+          },
+          {
+            "charger_count": 12,
+            "station_count": 37
+          },
+          {
+            "charger_count": 13,
+            "station_count": 22
+          },
+          {
+            "charger_count": 14,
+            "station_count": 14
+          },
+          {
+            "charger_count": 15,
+            "station_count": 22
+          },
+          {
+            "charger_count": 16,
+            "station_count": 17
+          },
+          {
+            "charger_count": 17,
+            "station_count": 14
+          },
+          {
+            "charger_count": 18,
+            "station_count": 17
+          },
+          {
+            "charger_count": 19,
+            "station_count": 12
+          },
+          {
+            "charger_count": 20,
+            "station_count": 17
+          },
+          {
+            "charger_count": 21,
+            "station_count": 11
+          },
+          {
+            "charger_count": 22,
+            "station_count": 7
+          },
+          {
+            "charger_count": 23,
+            "station_count": 4
+          },
+          {
+            "charger_count": 24,
+            "station_count": 9
+          },
+          {
+            "charger_count": 25,
+            "station_count": 4
+          },
+          {
+            "charger_count": 26,
+            "station_count": 4
+          },
+          {
+            "charger_count": 27,
+            "station_count": 8
+          },
+          {
+            "charger_count": 28,
+            "station_count": 1
+          },
+          {
+            "charger_count": 29,
+            "station_count": 1
+          },
+          {
+            "charger_count": 30,
+            "station_count": 6
+          },
+          {
+            "charger_count": 31,
+            "station_count": 2
+          },
+          {
+            "charger_count": 32,
+            "station_count": 1
+          },
+          {
+            "charger_count": 33,
+            "station_count": 3
+          },
+          {
+            "charger_count": 34,
+            "station_count": 1
+          },
+          {
+            "charger_count": 35,
+            "station_count": 1
+          },
+          {
+            "charger_count": 36,
+            "station_count": 1
+          },
+          {
+            "charger_count": 37,
+            "station_count": 1
+          },
+          {
+            "charger_count": 38,
+            "station_count": 1
+          },
+          {
+            "charger_count": 40,
+            "station_count": 3
+          },
+          {
+            "charger_count": 41,
+            "station_count": 1
+          },
+          {
+            "charger_count": 42,
+            "station_count": 2
+          },
+          {
+            "charger_count": 44,
+            "station_count": 3
+          },
+          {
+            "charger_count": 45,
+            "station_count": 1
+          },
+          {
+            "charger_count": 46,
+            "station_count": 2
+          },
+          {
+            "charger_count": 47,
+            "station_count": 1
+          },
+          {
+            "charger_count": 48,
+            "station_count": 2
+          },
+          {
+            "charger_count": 50,
+            "station_count": 1
+          },
+          {
+            "charger_count": 51,
+            "station_count": 1
+          },
+          {
+            "charger_count": 52,
+            "station_count": 5
+          },
+          {
+            "charger_count": 56,
+            "station_count": 1
+          },
+          {
+            "charger_count": 57,
+            "station_count": 1
+          },
+          {
+            "charger_count": 59,
+            "station_count": 1
+          },
+          {
+            "charger_count": 63,
+            "station_count": 3
+          },
+          {
+            "charger_count": 66,
+            "station_count": 1
+          },
+          {
+            "charger_count": 70,
+            "station_count": 1
+          },
+          {
+            "charger_count": 74,
+            "station_count": 1
+          },
+          {
+            "charger_count": 77,
+            "station_count": 1
+          },
+          {
+            "charger_count": 78,
+            "station_count": 2
+          },
+          {
+            "charger_count": 83,
+            "station_count": 1
+          },
+          {
+            "charger_count": 85,
+            "station_count": 1
+          },
+          {
+            "charger_count": 100,
+            "station_count": 1
+          }
+        ],
+        "q1": 2.0,
+        "q3": 5.0,
+        "region_code": "43",
+        "region_name": "충북",
+        "sample_count": 3830,
+        "station_count": 3830,
+        "whisker_high": 9,
+        "whisker_low": 1
+      },
+      {
+        "charger_count": 22276,
+        "fence_high": 9.5,
+        "fence_low": -2.5,
+        "iqr": 3.0,
+        "max": 99,
+        "mean": 4.42950884867767,
+        "median": 3.0,
+        "min": 1,
+        "outlier_count": 486,
+        "outlier_distribution": [
+          {
+            "charger_count": 10,
+            "station_count": 84
+          },
+          {
+            "charger_count": 11,
+            "station_count": 34
+          },
+          {
+            "charger_count": 12,
+            "station_count": 62
+          },
+          {
+            "charger_count": 13,
+            "station_count": 28
+          },
+          {
+            "charger_count": 14,
+            "station_count": 33
+          },
+          {
+            "charger_count": 15,
+            "station_count": 30
+          },
+          {
+            "charger_count": 16,
+            "station_count": 25
+          },
+          {
+            "charger_count": 17,
+            "station_count": 15
+          },
+          {
+            "charger_count": 18,
+            "station_count": 25
+          },
+          {
+            "charger_count": 19,
+            "station_count": 5
+          },
+          {
+            "charger_count": 20,
+            "station_count": 25
+          },
+          {
+            "charger_count": 21,
+            "station_count": 12
+          },
+          {
+            "charger_count": 22,
+            "station_count": 10
+          },
+          {
+            "charger_count": 23,
+            "station_count": 8
+          },
+          {
+            "charger_count": 24,
+            "station_count": 14
+          },
+          {
+            "charger_count": 25,
+            "station_count": 7
+          },
+          {
+            "charger_count": 26,
+            "station_count": 5
+          },
+          {
+            "charger_count": 27,
+            "station_count": 8
+          },
+          {
+            "charger_count": 28,
+            "station_count": 1
+          },
+          {
+            "charger_count": 29,
+            "station_count": 2
+          },
+          {
+            "charger_count": 30,
+            "station_count": 4
+          },
+          {
+            "charger_count": 31,
+            "station_count": 2
+          },
+          {
+            "charger_count": 32,
+            "station_count": 3
+          },
+          {
+            "charger_count": 33,
+            "station_count": 4
+          },
+          {
+            "charger_count": 35,
+            "station_count": 2
+          },
+          {
+            "charger_count": 36,
+            "station_count": 2
+          },
+          {
+            "charger_count": 37,
+            "station_count": 1
+          },
+          {
+            "charger_count": 38,
+            "station_count": 2
+          },
+          {
+            "charger_count": 39,
+            "station_count": 2
+          },
+          {
+            "charger_count": 40,
+            "station_count": 1
+          },
+          {
+            "charger_count": 42,
+            "station_count": 3
+          },
+          {
+            "charger_count": 43,
+            "station_count": 2
+          },
+          {
+            "charger_count": 44,
+            "station_count": 4
+          },
+          {
+            "charger_count": 45,
+            "station_count": 1
+          },
+          {
+            "charger_count": 49,
+            "station_count": 1
+          },
+          {
+            "charger_count": 53,
+            "station_count": 1
+          },
+          {
+            "charger_count": 54,
+            "station_count": 1
+          },
+          {
+            "charger_count": 55,
+            "station_count": 3
+          },
+          {
+            "charger_count": 56,
+            "station_count": 2
+          },
+          {
+            "charger_count": 57,
+            "station_count": 1
+          },
+          {
+            "charger_count": 59,
+            "station_count": 1
+          },
+          {
+            "charger_count": 60,
+            "station_count": 2
+          },
+          {
+            "charger_count": 62,
+            "station_count": 1
+          },
+          {
+            "charger_count": 63,
+            "station_count": 1
+          },
+          {
+            "charger_count": 76,
+            "station_count": 1
+          },
+          {
+            "charger_count": 79,
+            "station_count": 1
+          },
+          {
+            "charger_count": 80,
+            "station_count": 1
+          },
+          {
+            "charger_count": 96,
+            "station_count": 1
+          },
+          {
+            "charger_count": 98,
+            "station_count": 1
+          },
+          {
+            "charger_count": 99,
+            "station_count": 1
+          }
+        ],
+        "q1": 2.0,
+        "q3": 5.0,
+        "region_code": "44",
+        "region_name": "충남",
+        "sample_count": 5029,
+        "station_count": 5029,
+        "whisker_high": 9,
+        "whisker_low": 1
+      },
+      {
+        "charger_count": 22933,
+        "fence_high": 8.5,
+        "fence_low": -3.5,
+        "iqr": 3.0,
+        "max": 62,
+        "mean": 3.930248500428449,
+        "median": 2.0,
+        "min": 1,
+        "outlier_count": 593,
+        "outlier_distribution": [
+          {
+            "charger_count": 9,
+            "station_count": 81
+          },
+          {
+            "charger_count": 10,
+            "station_count": 113
+          },
+          {
+            "charger_count": 11,
+            "station_count": 43
+          },
+          {
+            "charger_count": 12,
+            "station_count": 59
+          },
+          {
+            "charger_count": 13,
+            "station_count": 30
+          },
+          {
+            "charger_count": 14,
+            "station_count": 18
+          },
+          {
+            "charger_count": 15,
+            "station_count": 29
+          },
+          {
+            "charger_count": 16,
+            "station_count": 32
+          },
+          {
+            "charger_count": 17,
+            "station_count": 28
+          },
+          {
+            "charger_count": 18,
+            "station_count": 14
+          },
+          {
+            "charger_count": 19,
+            "station_count": 15
+          },
+          {
+            "charger_count": 20,
+            "station_count": 11
+          },
+          {
+            "charger_count": 21,
+            "station_count": 13
+          },
+          {
+            "charger_count": 22,
+            "station_count": 10
+          },
+          {
+            "charger_count": 23,
+            "station_count": 8
+          },
+          {
+            "charger_count": 24,
+            "station_count": 8
+          },
+          {
+            "charger_count": 25,
+            "station_count": 11
+          },
+          {
+            "charger_count": 26,
+            "station_count": 4
+          },
+          {
+            "charger_count": 27,
+            "station_count": 5
+          },
+          {
+            "charger_count": 28,
+            "station_count": 1
+          },
+          {
+            "charger_count": 29,
+            "station_count": 4
+          },
+          {
+            "charger_count": 30,
+            "station_count": 8
+          },
+          {
+            "charger_count": 31,
+            "station_count": 9
+          },
+          {
+            "charger_count": 32,
+            "station_count": 5
+          },
+          {
+            "charger_count": 34,
+            "station_count": 3
+          },
+          {
+            "charger_count": 35,
+            "station_count": 2
+          },
+          {
+            "charger_count": 36,
+            "station_count": 3
+          },
+          {
+            "charger_count": 37,
+            "station_count": 2
+          },
+          {
+            "charger_count": 38,
+            "station_count": 1
+          },
+          {
+            "charger_count": 39,
+            "station_count": 1
+          },
+          {
+            "charger_count": 40,
+            "station_count": 3
+          },
+          {
+            "charger_count": 41,
+            "station_count": 1
+          },
+          {
+            "charger_count": 42,
+            "station_count": 3
+          },
+          {
+            "charger_count": 43,
+            "station_count": 1
+          },
+          {
+            "charger_count": 44,
+            "station_count": 2
+          },
+          {
+            "charger_count": 45,
+            "station_count": 3
+          },
+          {
+            "charger_count": 46,
+            "station_count": 2
+          },
+          {
+            "charger_count": 47,
+            "station_count": 1
+          },
+          {
+            "charger_count": 48,
+            "station_count": 1
+          },
+          {
+            "charger_count": 53,
+            "station_count": 1
+          },
+          {
+            "charger_count": 54,
+            "station_count": 2
+          },
+          {
+            "charger_count": 62,
+            "station_count": 2
+          }
+        ],
+        "q1": 1.0,
+        "q3": 4.0,
+        "region_code": "47",
+        "region_name": "경북",
+        "sample_count": 5835,
+        "station_count": 5835,
+        "whisker_high": 8,
+        "whisker_low": 1
+      },
+      {
+        "charger_count": 30857,
+        "fence_high": 11.0,
+        "fence_low": -5.0,
+        "iqr": 4.0,
+        "max": 90,
+        "mean": 4.4258462421113025,
+        "median": 2.0,
+        "min": 1,
+        "outlier_count": 543,
+        "outlier_distribution": [
+          {
+            "charger_count": 12,
+            "station_count": 75
+          },
+          {
+            "charger_count": 13,
+            "station_count": 43
+          },
+          {
+            "charger_count": 14,
+            "station_count": 33
+          },
+          {
+            "charger_count": 15,
+            "station_count": 63
+          },
+          {
+            "charger_count": 16,
+            "station_count": 36
+          },
+          {
+            "charger_count": 17,
+            "station_count": 27
+          },
+          {
+            "charger_count": 18,
+            "station_count": 32
+          },
+          {
+            "charger_count": 19,
+            "station_count": 10
+          },
+          {
+            "charger_count": 20,
+            "station_count": 30
+          },
+          {
+            "charger_count": 21,
+            "station_count": 24
+          },
+          {
+            "charger_count": 22,
+            "station_count": 14
+          },
+          {
+            "charger_count": 23,
+            "station_count": 19
+          },
+          {
+            "charger_count": 24,
+            "station_count": 10
+          },
+          {
+            "charger_count": 25,
+            "station_count": 6
+          },
+          {
+            "charger_count": 26,
+            "station_count": 12
+          },
+          {
+            "charger_count": 27,
+            "station_count": 6
+          },
+          {
+            "charger_count": 28,
+            "station_count": 6
+          },
+          {
+            "charger_count": 29,
+            "station_count": 4
+          },
+          {
+            "charger_count": 30,
+            "station_count": 11
+          },
+          {
+            "charger_count": 31,
+            "station_count": 5
+          },
+          {
+            "charger_count": 32,
+            "station_count": 5
+          },
+          {
+            "charger_count": 33,
+            "station_count": 5
+          },
+          {
+            "charger_count": 34,
+            "station_count": 4
+          },
+          {
+            "charger_count": 35,
+            "station_count": 2
+          },
+          {
+            "charger_count": 36,
+            "station_count": 4
+          },
+          {
+            "charger_count": 37,
+            "station_count": 9
+          },
+          {
+            "charger_count": 38,
+            "station_count": 2
+          },
+          {
+            "charger_count": 39,
+            "station_count": 3
+          },
+          {
+            "charger_count": 40,
+            "station_count": 3
+          },
+          {
+            "charger_count": 41,
+            "station_count": 4
+          },
+          {
+            "charger_count": 42,
+            "station_count": 1
+          },
+          {
+            "charger_count": 43,
+            "station_count": 1
+          },
+          {
+            "charger_count": 44,
+            "station_count": 3
+          },
+          {
+            "charger_count": 45,
+            "station_count": 2
+          },
+          {
+            "charger_count": 48,
+            "station_count": 1
+          },
+          {
+            "charger_count": 50,
+            "station_count": 3
+          },
+          {
+            "charger_count": 52,
+            "station_count": 2
+          },
+          {
+            "charger_count": 53,
+            "station_count": 3
+          },
+          {
+            "charger_count": 55,
+            "station_count": 1
+          },
+          {
+            "charger_count": 57,
+            "station_count": 2
+          },
+          {
+            "charger_count": 58,
+            "station_count": 1
+          },
+          {
+            "charger_count": 59,
+            "station_count": 1
+          },
+          {
+            "charger_count": 60,
+            "station_count": 1
+          },
+          {
+            "charger_count": 61,
+            "station_count": 1
+          },
+          {
+            "charger_count": 62,
+            "station_count": 1
+          },
+          {
+            "charger_count": 66,
+            "station_count": 1
+          },
+          {
+            "charger_count": 70,
+            "station_count": 3
+          },
+          {
+            "charger_count": 72,
+            "station_count": 1
+          },
+          {
+            "charger_count": 77,
+            "station_count": 1
+          },
+          {
+            "charger_count": 78,
+            "station_count": 2
+          },
+          {
+            "charger_count": 80,
+            "station_count": 1
+          },
+          {
+            "charger_count": 82,
+            "station_count": 1
+          },
+          {
+            "charger_count": 87,
+            "station_count": 1
+          },
+          {
+            "charger_count": 90,
+            "station_count": 1
+          }
+        ],
+        "q1": 1.0,
+        "q3": 5.0,
+        "region_code": "48",
+        "region_name": "경남",
+        "sample_count": 6972,
+        "station_count": 6972,
+        "whisker_high": 11,
+        "whisker_low": 1
+      },
+      {
+        "charger_count": 8749,
+        "fence_high": 3.5,
+        "fence_low": -0.5,
+        "iqr": 1.0,
+        "max": 91,
+        "mean": 2.7221530802738023,
+        "median": 2.0,
+        "min": 1,
+        "outlier_count": 534,
+        "outlier_distribution": [
+          {
+            "charger_count": 4,
+            "station_count": 181
+          },
+          {
+            "charger_count": 5,
+            "station_count": 75
+          },
+          {
+            "charger_count": 6,
+            "station_count": 64
+          },
+          {
+            "charger_count": 7,
+            "station_count": 19
+          },
+          {
+            "charger_count": 8,
+            "station_count": 37
+          },
+          {
+            "charger_count": 9,
+            "station_count": 15
+          },
+          {
+            "charger_count": 10,
+            "station_count": 37
+          },
+          {
+            "charger_count": 11,
+            "station_count": 9
+          },
+          {
+            "charger_count": 12,
+            "station_count": 25
+          },
+          {
+            "charger_count": 13,
+            "station_count": 10
+          },
+          {
+            "charger_count": 14,
+            "station_count": 7
+          },
+          {
+            "charger_count": 15,
+            "station_count": 3
+          },
+          {
+            "charger_count": 16,
+            "station_count": 10
+          },
+          {
+            "charger_count": 17,
+            "station_count": 2
+          },
+          {
+            "charger_count": 18,
+            "station_count": 3
+          },
+          {
+            "charger_count": 19,
+            "station_count": 1
+          },
+          {
+            "charger_count": 20,
+            "station_count": 4
+          },
+          {
+            "charger_count": 21,
+            "station_count": 5
+          },
+          {
+            "charger_count": 22,
+            "station_count": 4
+          },
+          {
+            "charger_count": 23,
+            "station_count": 2
+          },
+          {
+            "charger_count": 24,
+            "station_count": 2
+          },
+          {
+            "charger_count": 27,
+            "station_count": 1
+          },
+          {
+            "charger_count": 29,
+            "station_count": 1
+          },
+          {
+            "charger_count": 30,
+            "station_count": 1
+          },
+          {
+            "charger_count": 32,
+            "station_count": 1
+          },
+          {
+            "charger_count": 33,
+            "station_count": 1
+          },
+          {
+            "charger_count": 34,
+            "station_count": 2
+          },
+          {
+            "charger_count": 36,
+            "station_count": 1
+          },
+          {
+            "charger_count": 37,
+            "station_count": 1
+          },
+          {
+            "charger_count": 40,
+            "station_count": 2
+          },
+          {
+            "charger_count": 43,
+            "station_count": 1
+          },
+          {
+            "charger_count": 48,
+            "station_count": 1
+          },
+          {
+            "charger_count": 50,
+            "station_count": 2
+          },
+          {
+            "charger_count": 51,
+            "station_count": 1
+          },
+          {
+            "charger_count": 65,
+            "station_count": 1
+          },
+          {
+            "charger_count": 73,
+            "station_count": 1
+          },
+          {
+            "charger_count": 91,
+            "station_count": 1
+          }
+        ],
+        "q1": 1.0,
+        "q3": 2.0,
+        "region_code": "50",
+        "region_name": "제주",
+        "sample_count": 3214,
+        "station_count": 3214,
+        "whisker_high": 3,
+        "whisker_low": 1
+      },
+      {
+        "charger_count": 17680,
+        "fence_high": 8.5,
+        "fence_low": -3.5,
+        "iqr": 3.0,
+        "max": 89,
+        "mean": 3.947309667336459,
+        "median": 2.0,
+        "min": 1,
+        "outlier_count": 442,
+        "outlier_distribution": [
+          {
+            "charger_count": 9,
+            "station_count": 80
+          },
+          {
+            "charger_count": 10,
+            "station_count": 81
+          },
+          {
+            "charger_count": 11,
+            "station_count": 26
+          },
+          {
+            "charger_count": 12,
+            "station_count": 41
+          },
+          {
+            "charger_count": 13,
+            "station_count": 22
+          },
+          {
+            "charger_count": 14,
+            "station_count": 32
+          },
+          {
+            "charger_count": 15,
+            "station_count": 19
+          },
+          {
+            "charger_count": 16,
+            "station_count": 16
+          },
+          {
+            "charger_count": 17,
+            "station_count": 10
+          },
+          {
+            "charger_count": 18,
+            "station_count": 12
+          },
+          {
+            "charger_count": 19,
+            "station_count": 6
+          },
+          {
+            "charger_count": 20,
+            "station_count": 23
+          },
+          {
+            "charger_count": 21,
+            "station_count": 8
+          },
+          {
+            "charger_count": 22,
+            "station_count": 7
+          },
+          {
+            "charger_count": 23,
+            "station_count": 10
+          },
+          {
+            "charger_count": 24,
+            "station_count": 11
+          },
+          {
+            "charger_count": 25,
+            "station_count": 4
+          },
+          {
+            "charger_count": 26,
+            "station_count": 2
+          },
+          {
+            "charger_count": 27,
+            "station_count": 4
+          },
+          {
+            "charger_count": 28,
+            "station_count": 2
+          },
+          {
+            "charger_count": 30,
+            "station_count": 4
+          },
+          {
+            "charger_count": 31,
+            "station_count": 1
+          },
+          {
+            "charger_count": 32,
+            "station_count": 4
+          },
+          {
+            "charger_count": 33,
+            "station_count": 1
+          },
+          {
+            "charger_count": 34,
+            "station_count": 1
+          },
+          {
+            "charger_count": 35,
+            "station_count": 3
+          },
+          {
+            "charger_count": 40,
+            "station_count": 1
+          },
+          {
+            "charger_count": 44,
+            "station_count": 1
+          },
+          {
+            "charger_count": 47,
+            "station_count": 1
+          },
+          {
+            "charger_count": 50,
+            "station_count": 2
+          },
+          {
+            "charger_count": 55,
+            "station_count": 1
+          },
+          {
+            "charger_count": 61,
+            "station_count": 1
+          },
+          {
+            "charger_count": 62,
+            "station_count": 1
+          },
+          {
+            "charger_count": 72,
+            "station_count": 1
+          },
+          {
+            "charger_count": 75,
+            "station_count": 1
+          },
+          {
+            "charger_count": 87,
+            "station_count": 1
+          },
+          {
+            "charger_count": 89,
+            "station_count": 1
+          }
+        ],
+        "q1": 1.0,
+        "q3": 4.0,
+        "region_code": "51",
+        "region_name": "강원",
+        "sample_count": 4479,
+        "station_count": 4479,
+        "whisker_high": 8,
+        "whisker_low": 1
+      },
+      {
+        "charger_count": 17703,
+        "fence_high": 8.5,
+        "fence_low": -3.5,
+        "iqr": 3.0,
+        "max": 99,
+        "mean": 3.610646542932898,
+        "median": 2.0,
+        "min": 1,
+        "outlier_count": 386,
+        "outlier_distribution": [
+          {
+            "charger_count": 9,
+            "station_count": 72
+          },
+          {
+            "charger_count": 10,
+            "station_count": 64
+          },
+          {
+            "charger_count": 11,
+            "station_count": 23
+          },
+          {
+            "charger_count": 12,
+            "station_count": 49
+          },
+          {
+            "charger_count": 13,
+            "station_count": 20
+          },
+          {
+            "charger_count": 14,
+            "station_count": 20
+          },
+          {
+            "charger_count": 15,
+            "station_count": 29
+          },
+          {
+            "charger_count": 16,
+            "station_count": 21
+          },
+          {
+            "charger_count": 17,
+            "station_count": 9
+          },
+          {
+            "charger_count": 18,
+            "station_count": 10
+          },
+          {
+            "charger_count": 19,
+            "station_count": 5
+          },
+          {
+            "charger_count": 20,
+            "station_count": 17
+          },
+          {
+            "charger_count": 21,
+            "station_count": 10
+          },
+          {
+            "charger_count": 22,
+            "station_count": 4
+          },
+          {
+            "charger_count": 23,
+            "station_count": 5
+          },
+          {
+            "charger_count": 24,
+            "station_count": 4
+          },
+          {
+            "charger_count": 25,
+            "station_count": 1
+          },
+          {
+            "charger_count": 26,
+            "station_count": 4
+          },
+          {
+            "charger_count": 28,
+            "station_count": 1
+          },
+          {
+            "charger_count": 29,
+            "station_count": 1
+          },
+          {
+            "charger_count": 30,
+            "station_count": 3
+          },
+          {
+            "charger_count": 32,
+            "station_count": 2
+          },
+          {
+            "charger_count": 34,
+            "station_count": 1
+          },
+          {
+            "charger_count": 36,
+            "station_count": 2
+          },
+          {
+            "charger_count": 37,
+            "station_count": 1
+          },
+          {
+            "charger_count": 44,
+            "station_count": 1
+          },
+          {
+            "charger_count": 45,
+            "station_count": 1
+          },
+          {
+            "charger_count": 48,
+            "station_count": 2
+          },
+          {
+            "charger_count": 55,
+            "station_count": 1
+          },
+          {
+            "charger_count": 57,
+            "station_count": 1
+          },
+          {
+            "charger_count": 70,
+            "station_count": 1
+          },
+          {
+            "charger_count": 99,
+            "station_count": 1
+          }
+        ],
+        "q1": 1.0,
+        "q3": 4.0,
+        "region_code": "52",
+        "region_name": "전북",
+        "sample_count": 4903,
+        "station_count": 4903,
+        "whisker_high": 8,
+        "whisker_low": 1
+      }
+    ],
+    "meta": {
+      "api_version": "1.0",
+      "count": 16,
+      "deletion_policy": "all includes N and Y; not_deleted includes N; deleted includes Y. Filter before station aggregation. N does not imply availability.",
+      "empty_policy": "Only regions with observations appear; no observations returns data=[] and sample_count=0.",
+      "filters": {
+        "charger_type": null,
+        "deletion": "not_deleted",
+        "operator_id": null,
+        "region_code": null
+      },
+      "matched": {
+        "charger_count": 523312,
+        "deleted_charger_count": 0,
+        "not_deleted_charger_count": 523312,
+        "station_count": 100590
+      },
+      "quantile_method": "linear",
+      "same_period_shortage_rate_computed": false,
+      "sample_count": 100590,
+      "sample_unit": "One (zcode, statId) after filters; count distinct chgerId within that station.",
+      "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
+      "sources": {
+        "chargers": {
+          "file": "charger_info_clean.csv",
+          "region_system": "2026_16_provinces",
+          "snapshot_date": "2026-10-15",
+          "snapshot_end_at": "2026-10-15T04:19:04+09:00",
+          "snapshot_start_at": "2026-10-15T04:16:31+09:00",
+          "source": "한국환경공단 getChargerInfo",
+          "source_url": "https://www.data.go.kr/data/15076352/openapi.do",
+          "unit": "기 / 곳 / kW"
+        }
+      },
+      "station_count_additivity": "Regional samples use (zcode, statId); national matched.station_count uses distinct statId.",
+      "units": {
+        "charger_count": "기",
+        "ev_registration_count": "대",
+        "output_kw": "kW",
+        "share_pct": "%",
+        "station_count": "곳"
+      },
+      "warnings": [
+        "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+        "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
+        "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
+        "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
+      ],
+      "whisker_iqr_multiplier": 1.5,
+      "whisker_rule": "Observed minimum/maximum within inclusive [Q1 - 1.5*IQR, Q3 + 1.5*IQR]; outliers strictly outside."
+    }
+  }
+}

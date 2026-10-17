@@ -1,0 +1,149 @@
+{
+  "data": [
+    {
+      "charger_count": 40,
+      "charger_type_code": "01",
+      "definition_verified": true,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 40,
+      "official_definition": "DC차데모",
+      "share_pct": 0.007583901651963,
+      "station_count": 26
+    },
+    {
+      "charger_count": 469049,
+      "charger_type_code": "02",
+      "definition_verified": true,
+      "deleted_charger_count": 4024,
+      "not_deleted_charger_count": 465025,
+      "official_definition": "AC완속",
+      "share_pct": 88.93053714879426,
+      "station_count": 82388
+    },
+    {
+      "charger_count": 3,
+      "charger_type_code": "03",
+      "definition_verified": true,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 3,
+      "official_definition": "DC차데모+AC3상",
+      "share_pct": 0.000568792623897,
+      "station_count": 3
+    },
+    {
+      "charger_count": 43676,
+      "charger_type_code": "04",
+      "definition_verified": true,
+      "deleted_charger_count": 94,
+      "not_deleted_charger_count": 43582,
+      "official_definition": "DC콤보",
+      "share_pct": 8.28086221377881,
+      "station_count": 18289
+    },
+    {
+      "charger_count": 1476,
+      "charger_type_code": "05",
+      "definition_verified": true,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 1476,
+      "official_definition": "DC차데모+DC콤보",
+      "share_pct": 0.279845970957449,
+      "station_count": 793
+    },
+    {
+      "charger_count": 6449,
+      "charger_type_code": "06",
+      "definition_verified": true,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 6449,
+      "official_definition": "DC차데모+AC3상+DC콤보",
+      "share_pct": 1.222714543837796,
+      "station_count": 5124
+    },
+    {
+      "charger_count": 287,
+      "charger_type_code": "07",
+      "definition_verified": true,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 287,
+      "official_definition": "AC3상",
+      "share_pct": 0.054414494352837,
+      "station_count": 124
+    },
+    {
+      "charger_count": 600,
+      "charger_type_code": "08",
+      "definition_verified": true,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 600,
+      "official_definition": "DC콤보(완속)",
+      "share_pct": 0.113758524779451,
+      "station_count": 158
+    },
+    {
+      "charger_count": 266,
+      "charger_type_code": "10",
+      "definition_verified": true,
+      "deleted_charger_count": 0,
+      "not_deleted_charger_count": 266,
+      "official_definition": "DC콤보+NACS",
+      "share_pct": 0.050432945985556,
+      "station_count": 107
+    },
+    {
+      "charger_count": 5587,
+      "charger_type_code": "11",
+      "definition_verified": true,
+      "deleted_charger_count": 3,
+      "not_deleted_charger_count": 5584,
+      "official_definition": "DC콤보2(버스전용)",
+      "share_pct": 1.059281463237985,
+      "station_count": 567
+    }
+  ],
+  "meta": {
+    "api_version": "1.0",
+    "classification_note": "커넥터 유형을 출력/급속 분류로 임의 변환하지 않습니다. 관측 0건인 유형은 data에 나타나지 않습니다.",
+    "count": 10,
+    "definition_source": "한국환경공단 활용가이드 v1.25 §3.3",
+    "filters": {
+      "charger_type": null,
+      "deletion": "all",
+      "operator_id": null,
+      "region_code": null
+    },
+    "matched": {
+      "charger_count": 527433,
+      "deleted_charger_count": 4121,
+      "not_deleted_charger_count": 523312,
+      "station_count": 101091
+    },
+    "same_period_shortage_rate_computed": false,
+    "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
+    "sources": {
+      "chargers": {
+        "file": "charger_info_clean.csv",
+        "region_system": "2026_16_provinces",
+        "snapshot_date": "2026-10-15",
+        "snapshot_end_at": "2026-10-15T04:19:04+09:00",
+        "snapshot_start_at": "2026-10-15T04:16:31+09:00",
+        "source": "한국환경공단 getChargerInfo",
+        "source_url": "https://www.data.go.kr/data/15076352/openapi.do",
+        "unit": "기 / 곳 / kW"
+      }
+    },
+    "units": {
+      "charger_count": "기",
+      "ev_registration_count": "대",
+      "output_kw": "kW",
+      "share_pct": "%",
+      "station_count": "곳"
+    },
+    "warnings": [
+      "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+      "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
+      "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
+      "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
+    ]
+  }
+}

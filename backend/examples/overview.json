@@ -1,0 +1,280 @@
+{
+  "data": {
+    "chargers": {
+      "charger_count": 527433,
+      "deleted_charger_count": 4121,
+      "not_deleted_charger_count": 523312,
+      "station_count": 101091
+    },
+    "ev_registration": {
+      "ev_registration_count": 899101,
+      "reference_month": "2025-12",
+      "region_count": 17
+    },
+    "national_snapshot_totals": {
+      "charger_count": 527433,
+      "deleted_charger_count": 4121,
+      "ev_registration_count": 899101,
+      "not_deleted_charger_count": 523312,
+      "station_count": 101091
+    }
+  },
+  "meta": {
+    "api_version": "1.0",
+    "filter_options": {
+      "charger_regions": [
+        {
+          "code": "11",
+          "name": "서울"
+        },
+        {
+          "code": "12",
+          "name": "전남광주통합특별시"
+        },
+        {
+          "code": "26",
+          "name": "부산"
+        },
+        {
+          "code": "27",
+          "name": "대구"
+        },
+        {
+          "code": "28",
+          "name": "인천"
+        },
+        {
+          "code": "30",
+          "name": "대전"
+        },
+        {
+          "code": "31",
+          "name": "울산"
+        },
+        {
+          "code": "36",
+          "name": "세종"
+        },
+        {
+          "code": "41",
+          "name": "경기"
+        },
+        {
+          "code": "43",
+          "name": "충북"
+        },
+        {
+          "code": "44",
+          "name": "충남"
+        },
+        {
+          "code": "47",
+          "name": "경북"
+        },
+        {
+          "code": "48",
+          "name": "경남"
+        },
+        {
+          "code": "50",
+          "name": "제주"
+        },
+        {
+          "code": "51",
+          "name": "강원"
+        },
+        {
+          "code": "52",
+          "name": "전북"
+        }
+      ],
+      "charger_types": [
+        {
+          "code": "01",
+          "name": "DC차데모",
+          "observed_charger_count": 40
+        },
+        {
+          "code": "02",
+          "name": "AC완속",
+          "observed_charger_count": 469049
+        },
+        {
+          "code": "03",
+          "name": "DC차데모+AC3상",
+          "observed_charger_count": 3
+        },
+        {
+          "code": "04",
+          "name": "DC콤보",
+          "observed_charger_count": 43676
+        },
+        {
+          "code": "05",
+          "name": "DC차데모+DC콤보",
+          "observed_charger_count": 1476
+        },
+        {
+          "code": "06",
+          "name": "DC차데모+AC3상+DC콤보",
+          "observed_charger_count": 6449
+        },
+        {
+          "code": "07",
+          "name": "AC3상",
+          "observed_charger_count": 287
+        },
+        {
+          "code": "08",
+          "name": "DC콤보(완속)",
+          "observed_charger_count": 600
+        },
+        {
+          "code": "09",
+          "name": "NACS",
+          "observed_charger_count": 0
+        },
+        {
+          "code": "10",
+          "name": "DC콤보+NACS",
+          "observed_charger_count": 266
+        },
+        {
+          "code": "11",
+          "name": "DC콤보2(버스전용)",
+          "observed_charger_count": 5587
+        }
+      ],
+      "deletion": [
+        "all",
+        "not_deleted",
+        "deleted"
+      ],
+      "ev_regions": [
+        {
+          "code": "11",
+          "name": "서울"
+        },
+        {
+          "code": "26",
+          "name": "부산"
+        },
+        {
+          "code": "27",
+          "name": "대구"
+        },
+        {
+          "code": "28",
+          "name": "인천"
+        },
+        {
+          "code": "29",
+          "name": "광주"
+        },
+        {
+          "code": "30",
+          "name": "대전"
+        },
+        {
+          "code": "31",
+          "name": "울산"
+        },
+        {
+          "code": "36",
+          "name": "세종"
+        },
+        {
+          "code": "41",
+          "name": "경기"
+        },
+        {
+          "code": "51",
+          "name": "강원"
+        },
+        {
+          "code": "43",
+          "name": "충북"
+        },
+        {
+          "code": "44",
+          "name": "충남"
+        },
+        {
+          "code": "52",
+          "name": "전북"
+        },
+        {
+          "code": "46",
+          "name": "전남"
+        },
+        {
+          "code": "47",
+          "name": "경북"
+        },
+        {
+          "code": "48",
+          "name": "경남"
+        },
+        {
+          "code": "50",
+          "name": "제주"
+        }
+      ]
+    },
+    "filter_scopes": {
+      "charger_type": "chargers_only",
+      "deletion": "chargers_only",
+      "ev_region_code": "ev_registration_only",
+      "operator_id": "chargers_only",
+      "region_code": "chargers_only"
+    },
+    "filters": {
+      "charger_type": null,
+      "deletion": "all",
+      "ev_region_code": null,
+      "operator_id": null,
+      "region_code": null
+    },
+    "matched": {
+      "charger_count": 527433,
+      "deleted_charger_count": 4121,
+      "not_deleted_charger_count": 523312,
+      "station_count": 101091
+    },
+    "same_period_shortage_rate_computed": false,
+    "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
+    "sources": {
+      "chargers": {
+        "file": "charger_info_clean.csv",
+        "region_system": "2026_16_provinces",
+        "snapshot_date": "2026-10-15",
+        "snapshot_end_at": "2026-10-15T04:19:04+09:00",
+        "snapshot_start_at": "2026-10-15T04:16:31+09:00",
+        "source": "한국환경공단 getChargerInfo",
+        "source_url": "https://www.data.go.kr/data/15076352/openapi.do",
+        "unit": "기 / 곳 / kW"
+      },
+      "ev_registration": {
+        "file": "ev_registration_by_region_2025.csv",
+        "fuel": "전기 (하이브리드·수소전기 제외)",
+        "reference_month": "2025-12",
+        "region_system": "2025_17_provinces",
+        "source": "2025년 12월 자동차 등록자료 / 10.연료별_등록현황",
+        "unit": "대"
+      }
+    },
+    "units": {
+      "charger_count": "기",
+      "ev_registration_count": "대",
+      "output_kw": "kW",
+      "share_pct": "%",
+      "station_count": "곳"
+    },
+    "warnings": [
+      "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+      "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
+      "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
+      "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
+    ]
+  }
+}

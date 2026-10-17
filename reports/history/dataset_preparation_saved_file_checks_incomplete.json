@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "check_count": 64,
+  "checks": {
+    "original_unchanged_2025년_12월_자동차_등록자료_통계.xlsx": true,
+    "original_unchanged_charger_info_raw.csv": true,
+    "original_unchanged_우리 지역 급속 충전 여건_2026-10-15.xlsx": true,
+    "original_unchanged_충전기 설치 성장 추세_2026-10-15.xlsx": true,
+    "registration_17_source_cell_values": true,
+    "registration_national_source_cell": 

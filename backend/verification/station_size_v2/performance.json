@@ -1,0 +1,73 @@
+{
+  "original_api_response_contracts_unchanged": 9,
+  "startup_seconds": 3.6016666000068653,
+  "memory_units": "MiB",
+  "process_before_load": {
+    "WorkingSetSize": 73.75,
+    "PeakWorkingSetSize": 73.75,
+    "PrivateUsage": 407.96
+  },
+  "before_requests": {
+    "WorkingSetSize": 215.54,
+    "PeakWorkingSetSize": 461.66,
+    "PrivateUsage": 549.94
+  },
+  "after_requests": {
+    "WorkingSetSize": 214.71,
+    "PeakWorkingSetSize": 461.66,
+    "PrivateUsage": 547.96
+  },
+  "measurement_method": "Flask test client, includes filtering, aggregation and JSON serialization; excludes network/proxy latency",
+  "requests_count": 20,
+  "latencies_ms": [
+    293.7916000082623,
+    288.2811000163201,
+    292.37100001773797,
+    297.4553000240121,
+    291.8745999922976,
+    302.58709998452105,
+    308.07470000581816,
+    306.11860001226887,
+    348.32509999978356,
+    299.68510000617243,
+    74.68709998647682,
+    73.88330000685528,
+    72.67699998919852,
+    73.30319998436607,
+    72.8854000044521,
+    16.90960000269115,
+    17.835199978435412,
+    17.907300003571436,
+    16.83519998914562,
+    15.687999984947965
+  ],
+  "min_ms": 15.687999984947965,
+  "max_ms": 348.32509999978356,
+  "mean_ms": 174.05877499986673,
+  "requests": [
+    {
+      "query": "",
+      "status": 200,
+      "response_bytes": 38768,
+      "last_ms": 291.8745999922976
+    },
+    {
+      "query": "?deletion=not_deleted",
+      "status": 200,
+      "response_bytes": 38817,
+      "last_ms": 299.68510000617243
+    },
+    {
+      "query": "?region_code=41&charger_type=02&deletion=not_deleted&operator_id=PI",
+      "status": 200,
+      "response_bytes": 4431,
+      "last_ms": 72.8854000044521
+    },
+    {
+      "query": "?charger_type=09",
+      "status": 200,
+      "response_bytes": 1912,
+      "last_ms": 15.687999984947965
+    }
+  ]
+}
