@@ -49,6 +49,18 @@ manifest는 현재 스냅샷의 내용 고정 장치다. 데이터가 바뀌면 
 | CHARGE_GAP_S3_SECRET_ACCESS_KEY | 같은 자격증명의 비밀키 |
 | CHARGE_GAP_S3_SESSION_TOKEN | 임시 자격증명 방식일 때만 추가. 기본 Blueprint에서는 사용하지 않음 |
 
+### 시작 실패 진단
+
+`CHARGE_GAP_CORS_ORIGINS`가 없으면 다운로드 전에 시작이 중단된다. Render 환경 설정에 **실제 프론트엔드 Static Site의 HTTPS origin**을 입력한다. 예를 들어 프론트엔드 주소가 `https://your-frontend.example`일 때 값도 동일하며, 끝 `/`, `/api`, 경로, 와일드카드를 붙이지 않는다. 예시 주소를 실제 주소로 오인해 입력하지 않는다. CORS는 브라우저의 교차 출처 읽기 정책이며 API 인증 수단은 아니다. `/api/charts` Health Check에는 Origin 헤더가 필요하지 않다.
+
+이전 진입점의 `Deployment startup failed: ValueError`는 오류 종류만 표시했다. 보완된 진입점은 실패 단계와 고정 진단 문구를 표시한다. CORS 누락 시 `runtime_configuration` 및 변수명을, R2 설정 오류 시 `storage_configuration` 및 `S3_ENDPOINT_INVALID` 등의 코드를 확인한다. `artifact_download`에서 `S3_HTTP_ERROR; HTTP 403`이면 읽기 권한·토큰 만료·서명 설정 등을 점검하고, HTTP 404이면 bucket/prefix/manifest 객체 경로를 확인한다. 상태 코드만으로 원인을 확정하지 않는다. timeout/network/hash 오류는 별도 코드로 표시한다. 환경변수 값, 비공개 URL, 공급자 응답 본문과 traceback은 출력하지 않는다.
+
+R2의 region은 `auto`, 현재 prefix는 미설정 또는 빈 값이다. endpoint는 R2 콘솔의 **S3 API endpoint**를 버킷 경로 없이 입력하고, Access Key ID와 Secret Access Key는 읽기 전용 자격증명의 두 값을 각각 입력한다. Cloudflare 관리 API bearer token을 S3 Secret Access Key 대신 넣지 않는다. 설정 검증은 형식·필수값만 확인하며 실제 권한은 다운로드 응답으로 확인한다. `CHARGE_GAP_S3_SESSION_TOKEN`은 이 프로젝트의 일반 R2 키 방식에서는 생략한다.
+
+다운로드 오류에는 HTTP 숫자 상태와 허용 목록에 있는 S3 오류 코드만 추가로 표시한다. 공급자 XML은 최대 4KiB만 검사하며 메시지·URL·알 수 없는 코드는 출력하지 않는다. `artifact_index=1`은 manifest의 첫 파일이며 파일 본문을 뜻하지 않는다. `AccessDenied`, `InvalidAccessKeyId`, `SignatureDoesNotMatch`, `NoSuchKey` 등을 구분해 권한·키 쌍·서명·객체 경로를 점검한다. `MEMORY_ALLOCATION_FAILED`는 Python MemoryError이며, 부모 로그의 `child_exit=-9`는 자식이 SIGKILL로 종료됐다는 뜻이다. SIGKILL만으로 OOM이라고 단정하지 말고 Render 메모리 지표/이벤트와 대조한다. 부모의 최종 종료 1은 자식 종료 원인을 대신하지 않는다.
+
+설정 누락만 해결하려면 기존 커밋에서도 올바른 CORS 값을 저장한 뒤 재배포할 수 있다. 보완 로그를 사용하려면 검토·승인 후 해당 코드가 반영된 커밋을 배포해야 한다. 환경 저장 시 Render가 자동 재배포하는 옵션이 있는지 확인하고, 승인 전에는 저장·재배포를 실행하지 않는다.
+
 Waitress `--threads=1`, OPENBLAS/OMP/MKL/NUMEXPR/VECLIB/BLIS 스레드 1은 진입점에서 강제한다. 기존 Dockerfile의 로컬 기본 4스레드와 구분한다. 저장소 자격증명은 다운로드 subprocess 종료 뒤 Flask 실행 환경에서 제거한다. public API가 따로 이를 반환하는 경로도 추가하지 않았다. 공공데이터포털 수집 인증키는 배포에 필요 없다.
 
 수동 Web Service 설정은 Runtime Docker, Plan **Free**, Root Directory 비움, Docker Context `.`, Dockerfile `deploy/render/Dockerfile`, Health Check `/api/charts`, Auto Deploy Off다. Start Command를 별도로 덮어쓰지 않고 Docker CMD를 사용한다. Blueprint를 나중에 적용해도 같은 구성을 사용한다.

@@ -164,6 +164,145 @@ def test_failed_download_never_starts_public_app(monkeypatch,capsys):
     assert 'PRIVATE_DOWNLOAD_URL' not in capsys.readouterr().out
 
 
+def test_missing_cors_reports_setting_before_any_download(monkeypatch,capsys):
+    monkeypatch.delenv('CHARGE_GAP_CORS_ORIGINS',raising=False)
+    monkeypatch.setenv('PORT','10000')
+    monkeypatch.setattr(start.subprocess,'run',lambda *a,**k:pytest.fail('Download must not start'))
+    with pytest.raises(SystemExit) as exc:start.main()
+    assert exc.value.code==1
+    output=capsys.readouterr().out
+    assert '[runtime_configuration]' in output and 'CHARGE_GAP_CORS_ORIGINS is required' in output
+
+
+@pytest.mark.parametrize('settings',[
+    {'PORT':'PRIVATE_SENTINEL'},
+    {'PORT':'0'},
+    {'CHARGE_GAP_CORS_ORIGINS':'https://[PRIVATE_SENTINEL'},
+    {'CHARGE_GAP_CORS_ORIGINS':'https://frontend.example:PRIVATE_SENTINEL'},
+    {'CHARGE_GAP_CORS_ORIGINS':'https://user:PRIVATE_SENTINEL@frontend.example'},
+])
+def test_runtime_validation_never_echoes_invalid_values(settings,monkeypatch,capsys):
+    monkeypatch.setenv('PORT','10000')
+    monkeypatch.setenv('CHARGE_GAP_CORS_ORIGINS','https://frontend.example')
+    for key,value in settings.items():monkeypatch.setenv(key,value)
+    with pytest.raises(SystemExit):start.main()
+    assert 'PRIVATE_SENTINEL' not in capsys.readouterr().out
+
+
+@pytest.mark.parametrize('key,value,code',[
+    ('CHARGE_GAP_S3_ENDPOINT','https://storage.example/path?token=PRIVATE_SENTINEL','S3_ENDPOINT_INVALID'),
+    ('CHARGE_GAP_S3_ENDPOINT','https://[PRIVATE_SENTINEL','S3_ENDPOINT_INVALID'),
+    ('CHARGE_GAP_S3_ENDPOINT','https://storage.example:PRIVATE_SENTINEL','S3_ENDPOINT_INVALID'),
+    ('CHARGE_GAP_S3_BUCKET','INVALID_PRIVATE_SENTINEL','S3_BUCKET_INVALID'),
+    ('CHARGE_GAP_S3_REGION','','S3_REGION_INVALID'),
+    ('CHARGE_GAP_S3_PREFIX','../PRIVATE_SENTINEL','S3_PREFIX_INVALID'),
+    ('CHARGE_GAP_S3_ACCESS_KEY_ID','','S3_CREDENTIALS_MISSING'),
+    ('CHARGE_GAP_S3_SECRET_ACCESS_KEY','  ','S3_CREDENTIALS_MISSING'),
+])
+def test_storage_configuration_diagnostics_are_safe(source,key,value,code,monkeypatch,capsys):
+    env={'CHARGE_GAP_S3_ENDPOINT':source.endpoint,'CHARGE_GAP_S3_BUCKET':source.bucket,
+         'CHARGE_GAP_S3_REGION':'auto','CHARGE_GAP_S3_ACCESS_KEY_ID':'PRIVATE_SENTINEL',
+         'CHARGE_GAP_S3_SECRET_ACCESS_KEY':'PRIVATE_SENTINEL'}
+    env[key]=value
+    monkeypatch.setattr(download_data.os,'environ',env)
+    monkeypatch.setattr(sys,'argv',['download_data.py'])
+    monkeypatch.setattr(download_data,'sync_data',lambda *a,**k:pytest.fail('Invalid config must not download'))
+    with pytest.raises(SystemExit):download_data.main()
+    output=capsys.readouterr().out
+    assert code in output and '[storage_configuration]' in output
+    assert 'PRIVATE_SENTINEL' not in output
+
+
+def test_r2_root_prefix_defaults_to_empty(source):
+    root_source=S3Source({'CHARGE_GAP_S3_ENDPOINT':source.endpoint,
+        'CHARGE_GAP_S3_BUCKET':'charge-gap-data','CHARGE_GAP_S3_ACCESS_KEY_ID':source.access,
+        'CHARGE_GAP_S3_SECRET_ACCESS_KEY':source.secret})
+    assert root_source.region=='auto' and root_source.prefix==''
+    assert root_source.request(artifact()).full_url.endswith('/charge-gap-data/'+artifact()['path'])
+
+
+@pytest.mark.parametrize('kind,code,status',[
+    ('http','S3_HTTP_ERROR',403),('timeout','DOWNLOAD_TIMEOUT',None),
+    ('network','S3_NETWORK_ERROR',None),('unknown','DOWNLOAD_FAILED',None),
+])
+def test_bootstrap_errors_keep_safe_category_and_status(tmp_path,source,kind,code,status,monkeypatch,capsys):
+    from urllib.error import HTTPError,URLError
+    calls=[]
+    def fail(request):
+        calls.append(1)
+        if kind=='http':raise HTTPError('https://PRIVATE_SENTINEL',403,'PRIVATE_SENTINEL',{},io.BytesIO(b'PRIVATE_SENTINEL'))
+        if kind=='timeout':raise TimeoutError('PRIVATE_SENTINEL')
+        if kind=='network':raise URLError('PRIVATE_SENTINEL')
+        raise ValueError('PRIVATE_SENTINEL')
+    with pytest.raises(DownloadError) as captured:
+        sync_data(tmp_path,[artifact()],source,fail,lambda _:None)
+    failure=captured.value
+    assert failure.code==code and failure.http_status==status and len(calls)==3
+    assert not list(tmp_path.rglob('.download-*'))
+    monkeypatch.setattr(sys,'argv',['download_data.py'])
+    monkeypatch.setattr(download_data,'S3Source',lambda env:source)
+    def failed_sync(*args):raise failure
+    monkeypatch.setattr(download_data,'sync_data',failed_sync)
+    with pytest.raises(SystemExit):download_data.main()
+    output=capsys.readouterr().out
+    assert code in output and 'PRIVATE_SENTINEL' not in output
+    assert ('HTTP 403' in output)==(status==403)
+
+
+@pytest.mark.parametrize('provider_code',['AccessDenied','SignatureDoesNotMatch','NoSuchKey','PRIVATE_SENTINEL'])
+def test_provider_error_allowlist_and_bounded_body(tmp_path,source,provider_code):
+    from urllib.error import HTTPError
+    reads=[]
+    class ErrorBody(io.BytesIO):
+        def read(self,size=-1):
+            reads.append(size)
+            assert size==4096
+            return super().read(size)
+    def fail(request):
+        body=ErrorBody(f'<Error><Code>{provider_code}</Code><Message>PRIVATE_SENTINEL</Message></Error>'.encode())
+        raise HTTPError('https://PRIVATE_SENTINEL',403,'PRIVATE_SENTINEL',{},body)
+    with pytest.raises(DownloadError) as captured:
+        sync_data(tmp_path,[artifact()],source,fail,lambda _:None)
+    failure=captured.value
+    assert failure.provider_code==(provider_code if provider_code in download_data.S3_ERROR_CODES else None)
+    assert failure.artifact_index==1 and failure.http_status==403
+    assert reads==[4096]*3
+    assert 'PRIVATE_SENTINEL' not in str(failure)
+
+
+def test_memory_failure_category(tmp_path,source):
+    def fail(request):raise MemoryError('PRIVATE_SENTINEL')
+    with pytest.raises(DownloadError) as captured:
+        sync_data(tmp_path,[artifact()],source,fail,lambda _:None)
+    assert captured.value.code=='MEMORY_ALLOCATION_FAILED'
+
+
+@pytest.mark.parametrize('returncode',[1,-9])
+def test_child_exit_logged_without_command_or_environment(monkeypatch,capsys,returncode):
+    monkeypatch.setenv('PORT','10000')
+    monkeypatch.setenv('CHARGE_GAP_CORS_ORIGINS','https://charge-gap.onrender.com')
+    def fail(*args,**kwargs):
+        raise start.subprocess.CalledProcessError(returncode,['PRIVATE_SENTINEL'],output='PRIVATE_SENTINEL')
+    monkeypatch.setattr(start.subprocess,'run',fail)
+    with pytest.raises(SystemExit):start.main()
+    output=capsys.readouterr().out
+    assert f'child_exit={returncode}' in output and '[data_bootstrap]' in output
+    assert 'PRIVATE_SENTINEL' not in output
+
+
+def test_main_rejects_unknown_provider_code_in_log(monkeypatch,capsys):
+    monkeypatch.setattr(sys,'argv',['download_data.py'])
+    monkeypatch.setattr(download_data,'S3Source',lambda env:None)
+    def fail(*args):
+        raise DownloadError('PRIVATE_SENTINEL',code='S3_HTTP_ERROR',http_status=403,
+            provider_code='PRIVATE_SENTINEL',artifact_index=1)
+    monkeypatch.setattr(download_data,'sync_data',fail)
+    with pytest.raises(SystemExit):download_data.main()
+    output=capsys.readouterr().out
+    assert 'HTTP 403' in output and 'artifact_index=1' in output
+    assert 'PRIVATE_SENTINEL' not in output
+
+
 @pytest.fixture(scope='module')
 def deployed_app():
     sys.path.insert(0,str(DEPLOY.parents[1]/'backend'))

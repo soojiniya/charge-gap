@@ -11,14 +11,70 @@ import tempfile
 import time
 from urllib.parse import quote, urlsplit
 from urllib.request import Request, HTTPRedirectHandler, build_opener
+from urllib.error import HTTPError, URLError
 
 
 class ConfigurationError(ValueError):
-    pass
+    def __init__(self, message, code='MANIFEST_INVALID'):
+        super().__init__(message)
+        self.code=code
 
 
 class DownloadError(RuntimeError):
-    pass
+    def __init__(self, message, code='DOWNLOAD_FAILED', http_status=None, provider_code=None, artifact_index=None):
+        super().__init__(message)
+        self.code=code
+        self.http_status=http_status
+        self.provider_code=provider_code
+        self.artifact_index=artifact_index
+
+
+S3_ERROR_CODES = frozenset({'AccessDenied','InvalidAccessKeyId','SignatureDoesNotMatch',
+    'ExpiredToken','InvalidToken','NoSuchBucket','NoSuchKey','RequestTimeTooSkewed',
+    'RequestExpired','AuthorizationHeaderMalformed','SlowDown','InternalError',
+    'ServiceUnavailable'})
+
+
+def s3_error_code(exc):
+    """Inspect at most 4 KiB; expose only known provider error identifiers."""
+    if not isinstance(exc,HTTPError):
+        return None
+    try:
+        body=exc.read(4096)
+        match=re.search(rb'<Code>\s*([A-Za-z0-9]+)\s*</Code>',body)
+        code=match.group(1).decode('ascii') if match else None
+        return code if code in S3_ERROR_CODES else None
+    except Exception:
+        return None  # Never print response bodies, parser errors or unknown identifiers.
+
+
+CONFIG_DIAGNOSTICS = {
+    'MANIFEST_INVALID': 'Check the bundled data-manifest.json',
+    'S3_ENDPOINT_INVALID': 'Check CHARGE_GAP_S3_ENDPOINT: HTTPS origin only, no bucket path, query or credentials',
+    'S3_BUCKET_INVALID': 'Check CHARGE_GAP_S3_BUCKET',
+    'S3_PREFIX_INVALID': 'Check CHARGE_GAP_S3_PREFIX; root objects require an empty prefix',
+    'S3_REGION_INVALID': 'Check CHARGE_GAP_S3_REGION; Cloudflare R2 uses auto',
+    'S3_CREDENTIALS_MISSING': 'Set CHARGE_GAP_S3_ACCESS_KEY_ID and CHARGE_GAP_S3_SECRET_ACCESS_KEY',
+}
+
+
+def download_failure(exc):
+    """Return fixed categories and numeric status, never provider text or URLs."""
+    if isinstance(exc,HTTPError):
+        status=exc.code if type(exc.code) is int and 100 <= exc.code <= 599 else None
+        exc.close()
+        return 'S3_HTTP_ERROR',status
+    if isinstance(exc,TimeoutError):
+        return 'DOWNLOAD_TIMEOUT',None
+    if isinstance(exc,MemoryError):
+        return 'MEMORY_ALLOCATION_FAILED',None
+    if isinstance(exc,URLError):
+        return ('DOWNLOAD_TIMEOUT' if isinstance(exc.reason,TimeoutError) else 'S3_NETWORK_ERROR'),None
+    if isinstance(exc,DownloadError) and exc.code in {'ARTIFACT_TOO_LARGE','ARTIFACT_VERIFICATION_FAILED'}:
+        return exc.code,None
+    if isinstance(exc,OSError):
+        return 'DOWNLOAD_IO_ERROR',None
+    return 'DOWNLOAD_FAILED',None
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -82,7 +138,11 @@ def valid_file(path,item):
 class S3Source:
     def __init__(self,env):
         self.endpoint = env.get('CHARGE_GAP_S3_ENDPOINT','').rstrip('/')
-        parts = urlsplit(self.endpoint)
+        try:
+            parts = urlsplit(self.endpoint)
+            endpoint_port = parts.port
+        except ValueError:
+            raise ConfigurationError('Invalid S3 endpoint',code='S3_ENDPOINT_INVALID') from None
         self.bucket = env.get('CHARGE_GAP_S3_BUCKET','')
         self.prefix = env.get('CHARGE_GAP_S3_PREFIX','').strip('/')
         self.access = env.get('CHARGE_GAP_S3_ACCESS_KEY_ID','')
@@ -90,14 +150,16 @@ class S3Source:
         self.token = env.get('CHARGE_GAP_S3_SESSION_TOKEN','')
         self.region = env.get('CHARGE_GAP_S3_REGION','auto')
         if (parts.scheme != 'https' or not parts.hostname or parts.username or parts.password
-                or parts.query or parts.fragment or parts.path or parts.port not in (None,443)):
-            raise ConfigurationError('Configure an HTTPS S3 endpoint without path or credentials')
+                or parts.query or parts.fragment or parts.path or endpoint_port not in (None,443)):
+            raise ConfigurationError('Configure an HTTPS S3 endpoint without path or credentials',code='S3_ENDPOINT_INVALID')
         if not re.fullmatch(r'[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]', self.bucket):
-            raise ConfigurationError('Configure an S3 bucket')
+            raise ConfigurationError('Configure an S3 bucket',code='S3_BUCKET_INVALID')
         if '..' in PurePosixPath(self.prefix).parts or '\\' in self.prefix:
-            raise ConfigurationError('Invalid object prefix')
-        if not self.access or not self.secret or not re.fullmatch('[a-z0-9-]+',self.region):
-            raise ConfigurationError('Configure S3 read credentials and region')
+            raise ConfigurationError('Invalid object prefix',code='S3_PREFIX_INVALID')
+        if not re.fullmatch('[a-z0-9-]+',self.region):
+            raise ConfigurationError('Configure S3 region',code='S3_REGION_INVALID')
+        if not self.access.strip() or not self.secret.strip():
+            raise ConfigurationError('Configure S3 read credentials',code='S3_CREDENTIALS_MISSING')
 
     def request(self,item,now=None):
         now = now or datetime.now(timezone.utc)
@@ -127,7 +189,7 @@ def sync_data(root,items,source,open_request=None,sleep=time.sleep):
     opener=build_opener(NoRedirect())
     open_request=open_request or (lambda req:opener.open(req,timeout=60))
     downloaded=0
-    for item in items:
+    for artifact_index,item in enumerate(items,1):
         target=(root/item['path']).resolve()
         if not target.is_relative_to(root):
             raise ConfigurationError('Artifact outside data root')
@@ -143,7 +205,7 @@ def sync_data(root,items,source,open_request=None,sleep=time.sleep):
                     while chunk := response.read(1024*1024):
                         size += len(chunk)
                         if size > item['bytes']:
-                            raise DownloadError('Artifact exceeds expected size')
+                            raise DownloadError('Artifact exceeds expected size',code='ARTIFACT_TOO_LARGE')
                         output.write(chunk); checksum.update(chunk)
                         if size-released>=8*1024*1024:
                             release_file_cache(output,released,size,written=True)
@@ -151,14 +213,17 @@ def sync_data(root,items,source,open_request=None,sleep=time.sleep):
                     if size>released:
                         release_file_cache(output,released,size,written=True)
                 if size != item['bytes'] or checksum.hexdigest()!=item['sha256']:
-                    raise DownloadError('Artifact verification failed')
+                    raise DownloadError('Artifact verification failed',code='ARTIFACT_VERIFICATION_FAILED')
                 os.replace(temporary,target)
                 downloaded+=1
                 break
-            except Exception:
+            except Exception as exc:
                 # Exceptions can contain private endpoints, credentials or provider XML.
+                provider_code=s3_error_code(exc)
+                code,status=download_failure(exc)
                 if attempt==2:
-                    raise DownloadError('Artifact download or verification failed') from None
+                    raise DownloadError('Artifact download or verification failed',code=code,
+                        http_status=status,provider_code=provider_code,artifact_index=artifact_index) from None
                 sleep(2**attempt)
             finally:
                 if temporary is not None:
@@ -170,6 +235,7 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--verify-local',type=Path)
     args=parser.parse_args()
+    stage='manifest_validation'
     try:
         items=load_manifest(Path(__file__).with_name('data-manifest.json'))
         if args.verify_local:
@@ -177,10 +243,26 @@ def main():
                 raise DownloadError('Local artifact verification failed')
             print(f'Verified {len(items)} files, {sum(i["bytes"] for i in items)} bytes')
         else:
-            count=sync_data('/app',items,S3Source(os.environ))
+            stage='storage_configuration'
+            source=S3Source(os.environ)
+            stage='artifact_download'
+            count=sync_data('/app',items,source)
             print(f'Data ready: {len(items)} verified, {count} downloaded',flush=True)
+    except ConfigurationError as exc:
+        code=exc.code if exc.code in CONFIG_DIAGNOSTICS else 'MANIFEST_INVALID'
+        print(f'Data bootstrap failed [{stage}]: {code}; {CONFIG_DIAGNOSTICS[code]}',flush=True)
+        raise SystemExit(1) from None
+    except DownloadError as exc:
+        allowed={'S3_HTTP_ERROR','DOWNLOAD_TIMEOUT','S3_NETWORK_ERROR','DOWNLOAD_IO_ERROR',
+                 'ARTIFACT_TOO_LARGE','ARTIFACT_VERIFICATION_FAILED','DOWNLOAD_FAILED','MEMORY_ALLOCATION_FAILED'}
+        code=exc.code if exc.code in allowed else 'DOWNLOAD_FAILED'
+        status=f'; HTTP {exc.http_status}' if type(exc.http_status) is int and 100 <= exc.http_status <= 599 else ''
+        provider=f'; S3 {exc.provider_code}' if exc.provider_code in S3_ERROR_CODES else ''
+        artifact=f'; artifact_index={exc.artifact_index}' if type(exc.artifact_index) is int and 1 <= exc.artifact_index <= 14 else ''
+        print(f'Data bootstrap failed [{stage}]: {code}{status}{provider}{artifact}',flush=True)
+        raise SystemExit(1) from None
     except Exception as exc:
-        print('Data bootstrap failed: '+type(exc).__name__,flush=True)
+        print(f'Data bootstrap failed [{stage}]: '+type(exc).__name__,flush=True)
         raise SystemExit(1) from None
 
 
