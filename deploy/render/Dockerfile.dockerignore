@@ -1,0 +1,23 @@
+# Dockerfile-specific context; root/local Compose .dockerignore stays unchanged.
+**
+!backend/
+!backend/requirements.docker.txt
+!backend/chargegap_api/
+!backend/chargegap_api/*.py
+!deploy/
+!deploy/render/
+!deploy/render/Dockerfile
+!deploy/render/Dockerfile.dockerignore
+!deploy/render/start.py
+!deploy/render/download_data.py
+!deploy/render/data-manifest.json
+**/__pycache__/**
+**/*.pyc
+**/.env*
+**/*.csv
+**/*.xls*
+**/*.png
+**/*.key
+**/*.pem
+**/*.log
+**/secrets/**

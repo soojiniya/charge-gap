@@ -1,0 +1,75 @@
+{
+  "snapshot": "chargers 2026-10-15; EV 2025-12; growth 2011-2026 partial",
+  "files": [
+    {
+      "path": "data/processed/charger_info_clean.csv",
+      "bytes": 240535251,
+      "sha256": "6cf8e89777a7720fdbb9f6800e555424896d870c4f45a6c5bde2f8012c5d00dd"
+    },
+    {
+      "path": "data/processed/ev_registration_by_region_2025.csv",
+      "bytes": 3158,
+      "sha256": "2be3140319d5cc20766e598cba8f356c577b986d4ce4d3134c9f4dad8bfef075"
+    },
+    {
+      "path": "data/processed/charger_installation_trend.csv",
+      "bytes": 2353,
+      "sha256": "7bf139ea609e6b4b7084e0a1aac65ed687f10b9094e4aee6b00697c8edd8e976"
+    },
+    {
+      "path": "reports/chart_verification.json",
+      "bytes": 48038,
+      "sha256": "f077acf5e2ac72db5fba7edd1a4d05c815dbb57f57d8f9ce4baa506a896ba50a"
+    },
+    {
+      "path": "outputs/charts/01_ev_registration_top10.png",
+      "bytes": 108203,
+      "sha256": "0e96ad7970496e425ed9a8488e719de3fdc77f370ced2042bbbdb8f825cde787"
+    },
+    {
+      "path": "outputs/charts/02_ev_vehicle_type_donut.png",
+      "bytes": 132110,
+      "sha256": "cfafa37c02d0743e8337f7c64922e7dc81eb443b1f1e2dee4cf551866cfea4a9"
+    },
+    {
+      "path": "outputs/charts/03_ev_commercial_stacked.png",
+      "bytes": 97846,
+      "sha256": "efd05bf2b5896aa24d2e18034071a9d3903480a72c6f8517569bfa5f829316c3"
+    },
+    {
+      "path": "outputs/charts/04_chargers_by_region.png",
+      "bytes": 143670,
+      "sha256": "d7b6121823427748218e42b23fedea289d48b2f54456e01ed21b7d8ffadf3144"
+    },
+    {
+      "path": "outputs/charts/05_station_location_scatter.png",
+      "bytes": 419475,
+      "sha256": "e0314e3bafcacc294fdbe15f07298d6b2080276ddda90b15d2a39719cdf6e151"
+    },
+    {
+      "path": "outputs/charts/06_charger_type_pie.png",
+      "bytes": 186761,
+      "sha256": "1915096a40fb0f3447f08d3494760449136c5eb7b1fada646d93eebf49a18f6f"
+    },
+    {
+      "path": "outputs/charts/07_charger_output_histogram.png",
+      "bytes": 102631,
+      "sha256": "7da76317a77cff919d8922e35fb6316c8db6e63ef60a0c64f4fdc05f5bb2c2b7"
+    },
+    {
+      "path": "outputs/charts/08_operator_chargers_top10.png",
+      "bytes": 146636,
+      "sha256": "637a4fdaaa344f1cebd5687020afffa1b82ce6b9a06a443d9f3e24a1f573d319"
+    },
+    {
+      "path": "outputs/charts/09_annual_charger_installation_trend.png",
+      "bytes": 161346,
+      "sha256": "687dd3cb95079dfba3e622783f9c19b8c46843eebcb3cfe79111a90b9a86507e"
+    },
+    {
+      "path": "outputs/charts/10_regional_output_heatmap.png",
+      "bytes": 434230,
+      "sha256": "a6d622b0d61516e42c3954fb48d5f98b4dbd6718b6b296ac020ce013ccd3d424"
+    }
+  ]
+}

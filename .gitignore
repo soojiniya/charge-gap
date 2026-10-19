@@ -6,6 +6,7 @@
 *.pem
 *.key
 credentials*.json
+credentials*.env
 service-account*.json
 service-key*
 service_key*

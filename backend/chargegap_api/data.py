@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 import json
 import pandas as pd
+from .file_cache import open_snapshot
 
 REGIONS_2026 = dict(zip('11 12 26 27 28 30 31 36 41 43 44 47 48 50 51 52'.split(),
     '서울 전남광주통합특별시 부산 대구 인천 대전 울산 세종 경기 충북 충남 경북 경남 제주 강원 전북'.split()))
@@ -40,9 +41,18 @@ class DataStore:
         directory = self.root/'data/processed'
         columns = ['statId','chgerId','statNm','chgerType','addr','lat','lng','zcode','delYn',
             'busiId','busiNm','stat','statUpdDt','output','_fetched_at']
-        self.chargers = pd.read_csv(directory/'charger_info_clean.csv',usecols=columns,dtype=str,keep_default_na=False)
+        # Repeated IDs/text use shared dictionaries rather than one object array
+        # per column. Keep numeric source text and timestamps unchanged.
+        categorical = {'statId','chgerId','statNm','addr','chgerType','zcode',
+                       'delYn','busiId','busiNm','stat','output'}
+        with open_snapshot(directory/'charger_info_clean.csv') as source:
+            self.chargers = pd.read_csv(source,usecols=columns,
+                dtype={col:'category' if col in categorical else str for col in columns},keep_default_na=False)
         for col in columns:
-            self.chargers[col] = self.chargers[col].str.strip()
+            normalized = self.chargers[col].str.strip()
+            # Rebuild categories after normalization: whitespace variants may
+            # merge, and lexicographic category order must match string sorting.
+            self.chargers[col] = normalized.astype('category') if col in categorical else normalized
         self.chargers['_lat'] = pd.to_numeric(self.chargers.lat,errors='coerce')
         self.chargers['_lng'] = pd.to_numeric(self.chargers.lng,errors='coerce')
         self.chargers['_output_kw'] = pd.to_numeric(self.chargers.output,errors='coerce')
@@ -75,23 +85,29 @@ class DataStore:
 
     def select(self, filters):
         frame = self.chargers
-        mask = pd.Series(True,index=frame.index)
+        mask = None
         for parameter,column in [('region_code','zcode'),('charger_type','chgerType'),('operator_id','busiId')]:
             if filters.get(parameter) is not None:
-                mask &= frame[column].eq(filters[parameter])
+                condition = frame[column].eq(filters[parameter])
+                mask = condition if mask is None else mask & condition
         if filters['deletion'] != 'all':
-            mask &= frame.delYn.eq('N' if filters['deletion']=='not_deleted' else 'Y')
-        return frame.loc[mask]
+            condition = frame.delYn.eq('N' if filters['deletion']=='not_deleted' else 'Y')
+            mask = condition if mask is None else mask & condition
+        # Callers only read this snapshot; derived columns belong to new frames.
+        return frame if mask is None else frame.loc[mask]
 
     def grouped(self, frame, columns):
         group_columns = [columns] if isinstance(columns,str) else columns
         subset = frame[list(dict.fromkeys(group_columns+['chgerId','statId','delYn']))].assign(
-            _not_deleted=frame.delYn.eq('N').astype('int64'),_deleted=frame.delYn.eq('Y').astype('int64'))
-        result = subset.groupby(group_columns,dropna=False,sort=True).agg(
+            _not_deleted=frame.delYn.eq('N'),_deleted=frame.delYn.eq('Y'))
+        result = subset.groupby(group_columns,dropna=False,sort=True,observed=True).agg(
             charger_count=('chgerId','size'),station_count=('statId','nunique'),
             not_deleted_charger_count=('_not_deleted','sum'),
             deleted_charger_count=('_deleted','sum')).reset_index()
         total = len(frame)
+        # Routes can map/fill these keys with values outside a category dictionary.
+        for col in group_columns:
+            result[col] = result[col].astype(object)
         result['share_pct'] = result.charger_count/total*100 if total else None
         return result
 
@@ -104,9 +120,9 @@ class DataStore:
     @staticmethod
     def station_size_distribution(frame):
         """Filter first; one observation per (region, station), unique charger IDs."""
-        sizes = frame.groupby(['zcode','statId'],sort=True).chgerId.nunique()
+        sizes = frame.groupby(['zcode','statId'],sort=True,observed=True).chgerId.nunique()
         rows = []
-        for region, values in sizes.groupby(level='zcode',sort=True):
+        for region, values in sizes.groupby(level='zcode',sort=True,observed=True):
             q1, median, q3 = (float(v) for v in values.quantile([.25,.5,.75],interpolation='linear'))
             iqr = q3-q1
             low, high = q1-1.5*iqr, q3+1.5*iqr
@@ -124,10 +140,15 @@ class DataStore:
 
     def locations(self, frame):
         valid = frame._lat.between(33,39.5)&frame._lng.between(124,132)
-        valid_frame = frame.loc[valid]
+        # Sort only dictionary-encoded selection keys, then fetch response fields
+        # for one representative per station. Never copy/sort all 18 columns.
+        keys = frame.loc[valid,['statId','delYn','chgerId']]
+        representative_index = keys.sort_values(['delYn','chgerId'],kind='stable').drop_duplicates('statId').index
+        preferred = frame.loc[representative_index,['statId','statNm','addr','zcode','_lat','_lng']].copy()
+        preferred['statId'] = preferred.statId.astype(object)
+        preferred = preferred.set_index('statId')
         # All matching chargers count, including invalid-coordinate siblings.
         totals = self.grouped(frame,'statId').set_index('statId')
-        preferred = valid_frame.sort_values(['delYn','chgerId'],kind='stable').drop_duplicates('statId').set_index('statId')
         selected = preferred[['statNm','addr','zcode','_lat','_lng']].join(totals)
         selected = selected.reset_index().rename(columns={'statId':'station_id','statNm':'station_name',
             'addr':'address','zcode':'region_code','_lat':'latitude','_lng':'longitude'})
