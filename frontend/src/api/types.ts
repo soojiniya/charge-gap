@@ -99,8 +99,8 @@ export interface OverviewMeta extends BaseMeta {
 export interface EvRegistrationRow {
   reference_month: string;
   region_system: string;
-  region_code_2025: string;
-  region_name_2025: string;
+  region_code: string;
+  region_name: string;
   ev_registration_count: number;
   ev_passenger_count: number;
   ev_bus_count: number;

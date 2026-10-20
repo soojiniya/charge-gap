@@ -57,13 +57,13 @@ const short = (code: string, name: string) => (code === '12' ? '전남광주' : 
 export function EvTable({ rows, selected }: { rows: EvRegistrationRow[]; selected?: string }) {
   return (
     <DataTable
-      caption="지역별 전기차 등록 현황 (2025년 12월)"
+      caption="지역별 전기차 등록 현황 (2026년 9월)"
       rows={[...rows].sort((a, b) => b.ev_registration_count - a.ev_registration_count)}
-      rowKey={(r) => r.region_code_2025}
-      isSelected={(r) => r.region_code_2025 === selected}
+      rowKey={(r) => r.region_code}
+      isSelected={(r) => r.region_code === selected}
       columns={[
-        { key: 'code', header: '코드', render: (r) => <span className="num">{r.region_code_2025}</span> },
-        { key: 'name', header: '지역 (2025 체계)', render: (r) => r.region_name_2025 },
+        { key: 'code', header: '코드', render: (r) => <span className="num">{r.region_code}</span> },
+        { key: 'name', header: '지역 (2026 체계)', render: (r) => r.region_name },
         { key: 'total', header: '등록 합계(대)', numeric: true, render: (r) => fmtInt(r.ev_registration_count) },
         { key: 'p', header: '승용', numeric: true, render: (r) => fmtInt(r.ev_passenger_count) },
         { key: 'b', header: '승합', numeric: true, render: (r) => fmtInt(r.ev_bus_count) },
@@ -169,8 +169,8 @@ export function EvRegionsCard({ span = 7, rowHeight = 26 }: { span?: Span; rowHe
       [...rows]
         .sort((a, b) => b.ev_registration_count - a.ev_registration_count)
         .map((r) => ({
-          key: r.region_code_2025,
-          label: r.region_name_2025,
+          key: r.region_code,
+          label: r.region_code === '12' ? '전남광주' : r.region_name,
           value: r.ev_registration_count,
           tip: [
             { label: '등록', value: `${fmtInt(r.ev_registration_count)}대`, color: C.s1 },
@@ -195,8 +195,8 @@ export function EvRegionsCard({ span = 7, rowHeight = 26 }: { span?: Span; rowHe
       no={1}
       span={span}
       title="지역별 전기차 등록 대수"
-      sub="2025년 12월, 17개 시도. 막대를 누르면 그 지역을 선택합니다."
-      scope={{ kind: 'fixed', label: '전국 17개 지역' }}
+      sub="2026년 9월, 16개 시도. 막대를 누르면 그 지역을 선택합니다."
+      scope={{ kind: 'fixed', label: '전국 16개 지역' }}
       isFetching={q.isFetching && !q.isLoading}
       detail={{ chart: chart(30), table: <EvTable rows={rows} selected={state.evRegion} />, meta: q.data?.meta, staticChartIds: [1] }}
       insight={rows.length ? <Insight {...insightEvRegions(rows, state.evRegion)} stack={span < 7} /> : undefined}
@@ -229,7 +229,7 @@ export function EvTypesCard({ span = 5 }: { span?: Span }) {
     { key: 'b', label: '승합', value: s.bus, color: C.s3 },
     { key: 's', label: '특수', value: s.special, color: C.s4 },
   ];
-  const name = state.evRegion ? rows[0]?.region_name_2025 ?? state.evRegion : '전국';
+  const name = state.evRegion ? rows[0]?.region_name ?? state.evRegion : '전국';
   return (
     <Card
       no={2}
@@ -290,9 +290,9 @@ export function EvCommercialCard({ span = 12 }: { span?: Span }) {
       />
     ) : (
       <StackedHBar
-        data={sorted}
-        labelKey="region_name_2025"
-        idKey="region_code_2025"
+        data={sorted.map(r => ({ ...r, display_region_name: r.region_code === '12' ? '전남광주' : r.region_name }))}
+        labelKey="display_region_name"
+        idKey="region_code"
         series={[
           { key: 'ev_commercial_count', label: '사업용', color: C.s2 },
           { key: 'ev_noncommercial_count', label: '비사업용', color: C.s1 },
@@ -319,7 +319,7 @@ export function EvCommercialCard({ span = 12 }: { span?: Span }) {
       span={span}
       title={view === 'dot' ? '지역별 사업용 전기차 비율' : '지역별 사업용·비사업용 구성'}
       sub={`${current.sub}. 점이나 막대를 누르면 그 지역을 선택합니다.`}
-      scope={{ kind: 'fixed', label: '전국 17개 지역' }}
+      scope={{ kind: 'fixed', label: '전국 16개 지역' }}
       isFetching={q.isFetching && !q.isLoading}
       actions={
         <div className="segmented" role="group" aria-label="그래프 형태" style={{ height: 30 }}>

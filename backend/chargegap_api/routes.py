@@ -36,10 +36,10 @@ def create_blueprint(store):
     def overview():
         filters,frame=charger_request({'ev_region_code'})
         ev_region=choice('ev_region_code',store.ev_regions)
-        ev=store.ev if ev_region is None else store.ev.loc[store.ev.region_code_2025.eq(ev_region)]
+        ev=store.ev if ev_region is None else store.ev.loc[store.ev.region_code.eq(ev_region)]
         count=store.counts(frame)
         return reply({'ev_registration':{'ev_registration_count':int(ev.ev_registration_count.sum()),
-            'region_count':len(ev),'reference_month':'2025-12'},
+            'region_count':len(ev),'reference_month':EV_SOURCE['reference_month']},
             'chargers':count,'national_snapshot_totals':{'ev_registration_count':int(store.ev.ev_registration_count.sum()),**store.baseline}},
             {'ev_registration':EV_SOURCE,'chargers':API_SOURCE},
             {**filters,'ev_region_code':ev_region},frame,
@@ -51,8 +51,8 @@ def create_blueprint(store):
     def ev_registration():
         allowed_parameters({'region_code'})
         region=choice('region_code',store.ev_regions)
-        frame=store.ev if region is None else store.ev.loc[store.ev.region_code_2025.eq(region)]
-        columns=['reference_month','region_system','region_code_2025','region_name_2025','ev_registration_count',
+        frame=store.ev if region is None else store.ev.loc[store.ev.region_code.eq(region)]
+        columns=['reference_month','region_system','region_code','region_name','region_code_2025','region_name_2025','ev_registration_count',
             'ev_passenger_count','ev_bus_count','ev_truck_count','ev_special_count','ev_noncommercial_count','ev_commercial_count']
         return reply(records(frame[columns]),{'ev_registration':EV_SOURCE},{'region_code':region},
             extra={'totals':{'ev_registration_count':int(frame.ev_registration_count.sum())},'count':len(frame)})
@@ -161,7 +161,7 @@ def create_blueprint(store):
         chart_id=integer('chart_id',1,1,10) if 'chart_id' in request.args else None
         rows=[chart_record(i) for i in store.chart_metadata if chart_id is None or i['number']==chart_id]
         return reply(rows,{'chart_metadata':{'file':'chart_verification.json','source':'기존 검증된 그래프 메타데이터','reference':'각 그래프 period 필드 참조'}},
-            {'chart_id':chart_id},extra={'count':len(rows),'static_chart_warning':'PNG는 제작 당시의 고정 그래프이며 API 필터로 다시 생성하지 않습니다.'})
+            {'chart_id':chart_id},extra={'count':len(rows),'static_chart_warning':'PNG는 제작 당시의 고정 그래프이며 API 필터로 다시 생성하지 않습니다. 등록 PNG는 2025-12 기록이며 현재 인터랙티브 등록자료(2026-09)와 다릅니다.'})
 
     @bp.get('/charts/<int:chart_id>/image')
     def chart_image(chart_id):

@@ -18,8 +18,8 @@ services:
         bind:
           create_host_path: false
       - type: bind
-        source: ./data/processed/ev_registration_by_region_2025.csv
-        target: /app/data/processed/ev_registration_by_region_2025.csv
+        source: ./data/processed/ev_registration_by_region_2026_09.csv
+        target: /app/data/processed/ev_registration_by_region_2026_09.csv
         read_only: true
         bind:
           create_host_path: false

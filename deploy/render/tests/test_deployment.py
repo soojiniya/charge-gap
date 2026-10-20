@@ -30,7 +30,7 @@ def artifact(body=b'approved test snapshot'):
 def test_manifest_includes_exact_runtime_artifacts():
     items=load_manifest(DEPLOY/'data-manifest.json')
     assert len(items)==14
-    assert sum(p['bytes'] for p in items)==242521708
+    assert sum(p['bytes'] for p in items)==242523813
     assert sum(p['path'].endswith('.png') for p in items)==10
 
 

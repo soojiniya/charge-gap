@@ -85,7 +85,7 @@ class NoRedirect(HTTPRedirectHandler):
 def load_manifest(path):
     items = json.loads(Path(path).read_text(encoding='utf-8'))['files']
     required = {'data/processed/charger_info_clean.csv',
-                'data/processed/ev_registration_by_region_2025.csv',
+                'data/processed/ev_registration_by_region_2026_09.csv',
                 'data/processed/charger_installation_trend.csv', 'reports/chart_verification.json'}
     seen = set()
     for item in items:

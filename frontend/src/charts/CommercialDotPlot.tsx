@@ -37,8 +37,8 @@ export interface CommercialDatum {
 export function toCommercialData(rows: EvRegistrationRow[]): CommercialDatum[] {
   return rows
     .map((r) => ({
-      code: r.region_code_2025,
-      name: r.region_name_2025,
+      code: r.region_code,
+      name: r.region_code === '12' ? '전남광주' : r.region_name,
       commercial: r.ev_commercial_count,
       noncommercial: r.ev_noncommercial_count,
       total: r.ev_registration_count,

@@ -13,13 +13,15 @@ TYPE_DEFINITIONS = {'01':'DC차데모','02':'AC완속','03':'DC차데모+AC3상'
 COMMON_PARAMETERS = {'region_code','charger_type','deletion','operator_id'}
 UNITS = {'ev_registration_count':'대','charger_count':'기','station_count':'곳','output_kw':'kW','share_pct':'%'}
 WARNINGS = [
-    '전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.',
+    '전기차 등록은 2026-09, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.',
     '비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.',
     'statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.',
     '전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다.',
 ]
-EV_SOURCE = {'file':'ev_registration_by_region_2025.csv','reference_month':'2025-12',
-    'region_system':'2025_17_provinces','source':'2025년 12월 자동차 등록자료 / 10.연료별_등록현황',
+EV_SOURCE = {'file':'ev_registration_by_region_2026_09.csv','reference_month':'2026-09',
+    'region_system':'2026_16_provinces','source':'2026년 9월 자동차 등록자료 / 10.연료별_등록현황',
+    'region_code_basis':'원본 지역명 전남광주를 기존 충전기 지역코드 12에 대응; 원본 Excel에 숫자 코드 없음',
+    'legacy_field_aliases':'region_code_2025 / region_name_2025 are deprecated aliases of current region_code / region_name; not historical values',
     'unit':'대','fuel':'전기 (하이브리드·수소전기 제외)'}
 API_SOURCE = {'file':'charger_info_clean.csv','snapshot_date':'2026-10-15',
     'region_system':'2026_16_provinces','source':'한국환경공단 getChargerInfo',
@@ -56,10 +58,13 @@ class DataStore:
         self.chargers['_lat'] = pd.to_numeric(self.chargers.lat,errors='coerce')
         self.chargers['_lng'] = pd.to_numeric(self.chargers.lng,errors='coerce')
         self.chargers['_output_kw'] = pd.to_numeric(self.chargers.output,errors='coerce')
-        self.ev = pd.read_csv(directory/'ev_registration_by_region_2025.csv',dtype={'region_code_2025':str},keep_default_na=False)
+        self.ev = pd.read_csv(directory/EV_SOURCE['file'],dtype={'region_code':str},keep_default_na=False)
+        # Additive compatibility for older clients; frontend uses the canonical keys.
+        self.ev['region_code_2025']=self.ev.region_code
+        self.ev['region_name_2025']=self.ev.region_name
         self.growth = pd.read_csv(directory/'charger_installation_trend.csv',keep_default_na=False)
         self.chart_metadata = json.loads((self.root/'reports/chart_verification.json').read_text(encoding='utf-8'))['charts']
-        self.ev_regions = dict(zip(self.ev.region_code_2025,self.ev.region_name_2025))
+        self.ev_regions = dict(zip(self.ev.region_code,self.ev.region_name))
         self.operator_ids = set(self.chargers.busiId)
         self.snapshot_start = self.chargers._fetched_at.min()
         self.snapshot_end = self.chargers._fetched_at.max()
@@ -69,13 +74,14 @@ class DataStore:
             raise ValueError('지원하지 않는 현재 지역코드')
         if set(self.chargers.delYn) - {'N','Y'}:
             raise ValueError('삭제 표시 값 확인 필요')
-        if set(self.ev.reference_month) != {'2025-12'} or self.ev.region_code_2025.duplicated().any():
+        if (set(self.ev.reference_month) != {EV_SOURCE['reference_month']}
+                or self.ev.region_code.duplicated().any() or self.ev_regions != REGIONS_2026):
             raise ValueError('등록자료 기준월/지역키 확인 필요')
         self.baseline = self.counts(self.chargers)
         if verify_counts:
             expected = {'charger_count':527433,'station_count':101091,'not_deleted_charger_count':523312,'deleted_charger_count':4121}
-            if any(self.baseline[k] != v for k,v in expected.items()) or int(self.ev.ev_registration_count.sum()) != 899101:
-                raise ValueError('기대한 2025/2026 스냅샷 총수와 다릅니다. 새 기준일을 명시적으로 구성하세요.')
+            if any(self.baseline[k] != v for k,v in expected.items()) or int(self.ev.ev_registration_count.sum()) != 1191873:
+                raise ValueError('기대한 2026-09 등록 / 2026-10-15 충전기 스냅샷 총수와 다릅니다.')
 
     @staticmethod
     def counts(frame):

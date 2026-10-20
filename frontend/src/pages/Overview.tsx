@@ -19,11 +19,11 @@ function TimeStrip() {
   return (
     <div className="timestrip span-12" aria-label="자료 기준 시점">
       <div className="timestrip-end">
-        전기차 등록 자료 (17개 시도)
+        전기차 등록 자료 (16개 시도)
         <b>{src?.ev_registration?.reference_month ?? '—'}</b>
       </div>
       <div className="timestrip-gap" aria-hidden="true">
-        <span>기준 시점이 약 10개월 달라 두 자료를 서로 나누지 않습니다</span>
+        <span>등록 기준월과 충전기 조회일이 달라 두 자료를 서로 나누지 않습니다</span>
       </div>
       <div className="timestrip-end right">
         충전기 정보 조회 (16개 시도)
@@ -61,7 +61,7 @@ function Kpis() {
               <small>대</small>
             </div>
             <div className="kpi-meta">
-              {evName ? `전국 ${fmtInt(nat.ev_registration_count)}대의 ${fmtPct((d.ev_registration.ev_registration_count / nat.ev_registration_count) * 100)}` : '2025년 12월 기준'}
+              {evName ? `전국 ${fmtInt(nat.ev_registration_count)}대의 ${fmtPct((d.ev_registration.ev_registration_count / nat.ev_registration_count) * 100)}` : '2026년 9월 기준'}
             </div>
           </div>
         ),
@@ -137,7 +137,7 @@ function NotesCard() {
           <div className="notice">
             <Icon name="info" />
             <div>
-              <strong>등록 대수와 충전기 수는 서로 나누지 않습니다.</strong> 기준 시점(2025-12와 2026-10-15)과 지역 체계가 달라 충전기 1기당 차량 수나
+              <strong>등록 대수와 충전기 수는 서로 나누지 않습니다.</strong> 지역 체계는 대응하지만 기준 시점(2026-09와 2026-10-15)이 달라 충전기 1기당 차량 수나
               충전 부족률을 계산하지 않습니다.
             </div>
           </div>

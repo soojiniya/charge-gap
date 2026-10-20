@@ -90,8 +90,8 @@ export function FilterBar({ charger = true, children }: { charger?: boolean; chi
   );
 }
 
-/** 2025년 등록자료 지역 선택(17개, 광주 29·전남 46 분리) */
-export function EvRegionSelect({ label = '등록 지역 (2025 기준 17개)' }: { label?: string }) {
+/** 2026-09 등록자료의 16개 지역 선택, 전남광주=12. */
+export function EvRegionSelect({ label = '등록 지역 (2026-09 기준 16개)' }: { label?: string }) {
   const { state, update } = useFilters();
   const opts = useFilterOptions();
   return (

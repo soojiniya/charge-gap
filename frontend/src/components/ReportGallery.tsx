@@ -17,7 +17,7 @@ export function ReportGallery({ ids, span = 12 }: { ids?: number[]; span?: 12 | 
     <Card
       span={span}
       title="보고서용 원본 그래프"
-      sub="Matplotlib·Seaborn으로 제작해 검증한 PNG. 필터와 무관한 고정 이미지입니다."
+      sub="Matplotlib·Seaborn 고정 PNG입니다. 등록 그래프는 2025-12 기록이며 현재 인터랙티브 그래프(2026-09)와 기준월이 다릅니다."
       scope={{ kind: 'fixed', label: '고정 PNG' }}
     >
       <QueryState isLoading={q.isLoading} error={q.error} onRetry={() => q.refetch()} isEmpty={!charts.length} height={180}>

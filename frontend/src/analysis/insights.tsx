@@ -28,7 +28,7 @@ const shortRegion = (code: string, name: string) =>
   code === "12" ? "전남광주" : name;
 
 const EV_SRC =
-  "2025년 12월 자동차 등록자료(연료별 등록현황), /api/ev-registration";
+  "2026년 9월 자동차 등록자료(연료별 등록현황), /api/ev-registration";
 const CH_SRC = "한국환경공단 충전기 정보 2026-10-15 조회";
 const CAPITAL = ["11", "41", "28"];
 
@@ -46,17 +46,17 @@ export function insightEvRegions(
   const top3 = sum(sorted.slice(0, 3).map((r) => r.ev_registration_count));
   const capital = sum(
     rows
-      .filter((r) => CAPITAL.includes(r.region_code_2025))
+      .filter((r) => CAPITAL.includes(r.region_code))
       .map((r) => r.ev_registration_count),
   );
-  const sel = rows.find((r) => r.region_code_2025 === selected);
+  const sel = rows.find((r) => r.region_code === selected);
   const findings: ReactNode[] = top
     ? [
         <>
-          1위 {top.region_name_2025}{" "}
+          1위 {top.region_name}{" "}
           <B>{fmtInt(top.ev_registration_count)}대</B>(전국의{" "}
           {pct(top.ev_registration_count, total)}), 최하위{" "}
-          {bottom.region_name_2025}{" "}
+          {bottom.region_name}{" "}
           <B>{fmtInt(bottom.ev_registration_count)}대</B>로 약{" "}
           <B>
             {(top.ev_registration_count / bottom.ev_registration_count).toFixed(
@@ -70,7 +70,7 @@ export function insightEvRegions(
           상위 3개 지역(
           {sorted
             .slice(0, 3)
-            .map((r) => r.region_name_2025)
+            .map((r) => r.region_name)
             .join(", ")}
           )이 <B>{pct(top3, total)}</B>, 수도권(서울·경기·인천)이{" "}
           <B>{pct(capital, total)}</B>를 차지합니다.
@@ -79,11 +79,11 @@ export function insightEvRegions(
     : [];
   if (sel) {
     const rank =
-      sorted.findIndex((r) => r.region_code_2025 === sel.region_code_2025) + 1;
+      sorted.findIndex((r) => r.region_code === sel.region_code) + 1;
     findings.push(
       <>
-        선택한 {sel.region_name_2025}:{" "}
-        <B>{fmtInt(sel.ev_registration_count)}대</B>, 17개 지역 중{" "}
+        선택한 {sel.region_name}:{" "}
+        <B>{fmtInt(sel.ev_registration_count)}대</B>, 16개 지역 중{" "}
         <B>{rank}위</B>, 전국의 {pct(sel.ev_registration_count, total)}.
       </>,
     );
@@ -91,11 +91,11 @@ export function insightEvRegions(
   return {
     mode: "fixed",
     modeNote: selected
-      ? "전국 17개 지역 기준 고정 분석 (선택 지역 순위 표시)"
+      ? "전국 16개 지역 기준 고정 분석 (선택 지역 순위 표시)"
       : undefined,
     purpose: "전기차 등록이 어느 지역에 얼마나 집중되어 있는지 비교합니다.",
     reason:
-      "17개 지역의 크기를 순위대로 비교하므로 지역명이 잘 읽히는 가로 막대(barh, countplot y축)를 사용했습니다.",
+      "16개 지역의 크기를 순위대로 비교하므로 지역명이 잘 읽히는 가로 막대(barh, countplot y축)를 사용했습니다.",
     findings,
     interpretation: top ? (
       <>
@@ -107,9 +107,9 @@ export function insightEvRegions(
       "—"
     ),
     caution:
-      "2025년 12월 기준. 광주(29)와 전남(46)을 분리한 17개 시도 체계로, 충전기 자료의 지역 체계와 다릅니다.",
+      "2026년 9월 기준 16개 지역. 전남광주는 충전기 자료의 코드 12에 대응하며 두 자료의 기준 시점은 다릅니다.",
     source: EV_SRC,
-    variables: ["region_name_2025", "ev_registration_count"],
+    variables: ["region_name", "ev_registration_count"],
   };
 }
 
@@ -163,7 +163,7 @@ export function insightEvTypes(
     ) : (
       "—"
     ),
-    caution: "2025년 12월 기준. 하이브리드·수소전기차는 포함하지 않습니다.",
+    caution: "2026년 9월 기준. 하이브리드·수소전기차는 포함하지 않습니다.",
     source: EV_SRC,
     variables: [
       "ev_passenger_count",
@@ -191,15 +191,15 @@ export function insightEvCommercial(
   const comm = sum(rows.map((r) => r.ev_commercial_count));
   const hi = withShare[0];
   const lo = withShare[withShare.length - 1];
-  const sel = withShare.find((w) => w.r.region_code_2025 === selected);
+  const sel = withShare.find((w) => w.r.region_code === selected);
   const findings: ReactNode[] = hi
     ? [
         <>
           전국 사업용 비중 <B>{pct(comm, total)}</B> ({fmtInt(comm)}대).
         </>,
         <>
-          사업용 비중이 가장 높은 지역은 {hi.r.region_name_2025}{" "}
-          <B>{fmtPct(hi.share)}</B>, 가장 낮은 지역은 {lo.r.region_name_2025}{" "}
+          사업용 비중이 가장 높은 지역은 {hi.r.region_name}{" "}
+          <B>{fmtPct(hi.share)}</B>, 가장 낮은 지역은 {lo.r.region_name}{" "}
           <B>{fmtPct(lo.share)}</B>입니다.
         </>,
       ]
@@ -207,7 +207,7 @@ export function insightEvCommercial(
   if (sel)
     findings.push(
       <>
-        선택한 {sel.r.region_name_2025}의 사업용 비중:{" "}
+        선택한 {sel.r.region_name}의 사업용 비중:{" "}
         <B>{fmtPct(sel.share)}</B>.
       </>,
     );
@@ -228,7 +228,7 @@ export function insightEvCommercial(
       "—"
     ),
     caution:
-      "2025년 12월 기준. 사업용 여부는 등록 용도 구분이며 실제 운행 용도와 다를 수 있습니다.",
+      "2026년 9월 기준. 사업용 여부는 등록 용도 구분이며 실제 운행 용도와 다를 수 있습니다.",
     source: EV_SRC,
     variables: [
       "ev_commercial_count",
@@ -257,32 +257,31 @@ export function insightCommercialDot(
   const hi = d[0];
   const lo = d[d.length - 1];
   const above = d.filter((x) => x.share > nat);
-  const sel = d.find((x) => x.r.region_code_2025 === selected);
-  const mid = d.length ? d[Math.floor(d.length / 2)] : undefined;
+  const sel = d.find((x) => x.r.region_code === selected);
+  const medianShare = d.length ? (d[Math.floor((d.length - 1) / 2)].share + d[Math.floor(d.length / 2)].share) / 2 : undefined;
   const findings: ReactNode[] = hi
     ? [
         <>
           사업용 비율 1위{" "}
           <B>
-            {hi.r.region_name_2025} {fmtPct(hi.share)}
+            {hi.r.region_name} {fmtPct(hi.share)}
           </B>
           , 최하위{" "}
           <B>
-            {lo.r.region_name_2025} {fmtPct(lo.share)}
+            {lo.r.region_name} {fmtPct(lo.share)}
           </B>
           로 <B>{(hi.share - lo.share).toFixed(1)}%p</B> 차이(약{" "}
           {(hi.share / lo.share).toFixed(1)}배)입니다.
         </>,
         <>
           전국 사업용 비율 <B>{fmtPct(nat)}</B>보다 높은 지역은 {above.length}
-          곳({above.map((x) => x.r.region_name_2025).join("·")}), 나머지{" "}
+          곳({above.map((x) => x.r.region_name).join("·")}), 나머지{" "}
           {d.length - above.length}곳은 전국보다 낮습니다.
         </>,
-        ...(mid
+        ...(medianShare !== undefined
           ? [
               <>
-                17개 지역의 가운데(9번째) 값은 {mid.r.region_name_2025}{" "}
-                {fmtPct(mid.share)}입니다.
+                {d.length}개 지역 사업용 비율의 중앙값은 {fmtPct(medianShare)}입니다.
               </>,
             ]
           : []),
@@ -292,7 +291,7 @@ export function insightCommercialDot(
     const rank = d.findIndex((x) => x === sel) + 1;
     findings.push(
       <>
-        선택한 {sel.r.region_name_2025}: <B>{fmtPct(sel.share)}</B>, 17개 지역
+        선택한 {sel.r.region_name}: <B>{fmtPct(sel.share)}</B>, 16개 지역
         중 {rank}위 (전국 대비{" "}
         {(sel.share - nat >= 0 ? "+" : "") + (sel.share - nat).toFixed(1)}%p).
       </>,
@@ -301,7 +300,7 @@ export function insightCommercialDot(
   return {
     mode: "fixed",
     modeNote: selected
-      ? "전국 17개 지역 기준 고정 분석 (선택 지역 순위 표시)"
+      ? "전국 16개 지역 기준 고정 분석 (선택 지역 순위 표시)"
       : undefined,
     purpose:
       "지역마다 전기차 중 사업용(영업용) 등록이 차지하는 비율을 비교해, 사업용 비중이 높은 지역과 낮은 지역의 차이를 확인합니다.",
@@ -312,7 +311,7 @@ export function insightCommercialDot(
       <>
         점들이 {fmtPct(lo.share)}에서 {fmtPct(hi.share)}까지 넓게 퍼져 있어,
         같은 전기차라도 지역에 따라 사업용 비중이 크게 다릅니다.{" "}
-        {hi.r.region_name_2025}은 전국 평균의 {(hi.share / nat).toFixed(1)}배
+        {hi.r.region_name}은 전국 평균의 {(hi.share / nat).toFixed(1)}배
         수준으로 두드러집니다.{" "}
         {above.length < d.length / 2
           ? `전국선보다 높은 지역은 ${above.length}곳뿐이라 소수 지역이 전국 사업용 비율을 끌어올리는 구조입니다.`
@@ -324,7 +323,7 @@ export function insightCommercialDot(
       "—"
     ),
     caution:
-      "2025년 12월 기준, 17개 시도(광주·전남 분리). 사업용 여부는 등록 용도 구분이며 실제 운행 용도와 다를 수 있습니다. 전국선은 17개 지역 합계로 계산한 비율입니다.",
+      "2026년 9월 기준, 전남광주를 포함한 16개 지역. 사업용 여부는 등록 용도 구분이며 실제 운행 용도와 다를 수 있습니다. 전국선은 16개 지역 합계로 계산한 비율입니다.",
     source: EV_SRC,
     variables: [
       "ev_commercial_count",
@@ -347,24 +346,24 @@ export function insightCommercialCount(
   );
   const comm = sum(rows.map((r) => r.ev_commercial_count));
   const top3 = sum(byComm.slice(0, 3).map((r) => r.ev_commercial_count));
-  const sel = rows.find((r) => r.region_code_2025 === selected);
+  const sel = rows.find((r) => r.region_code === selected);
   const findings: ReactNode[] = byComm.length
     ? [
         <>
           사업용 대수 1위{" "}
           <B>
-            {byComm[0].region_name_2025} {fmtInt(byComm[0].ev_commercial_count)}
+            {byComm[0].region_name} {fmtInt(byComm[0].ev_commercial_count)}
             대
           </B>
           , 상위 3개 지역(
           {byComm
             .slice(0, 3)
-            .map((r) => r.region_name_2025)
+            .map((r) => r.region_name)
             .join("·")}
           )이 전국 사업용 {fmtInt(comm)}대의 <B>{pct(top3, comm)}</B>.
         </>,
         <>
-          전체 등록 1위 {byTotal[0].region_name_2025}(
+          전체 등록 1위 {byTotal[0].region_name}(
           {fmtInt(byTotal[0].ev_registration_count)}대)의 사업용은{" "}
           {fmtInt(byTotal[0].ev_commercial_count)}대(
           {pct(
@@ -378,7 +377,7 @@ export function insightCommercialCount(
   if (sel)
     findings.push(
       <>
-        선택한 {sel.region_name_2025}: 사업용{" "}
+        선택한 {sel.region_name}: 사업용{" "}
         <B>{fmtInt(sel.ev_commercial_count)}대</B>, 비사업용{" "}
         {fmtInt(sel.ev_noncommercial_count)}대.
       </>,
@@ -399,7 +398,7 @@ export function insightCommercialCount(
       "—"
     ),
     caution:
-      "2025년 12월 기준. 지역 규모(인구·전체 차량 수)를 반영하지 않은 절대 대수입니다.",
+      "2026년 9월 기준. 지역 규모(인구·전체 차량 수)를 반영하지 않은 절대 대수입니다.",
     source: EV_SRC,
     variables: [
       "ev_commercial_count",

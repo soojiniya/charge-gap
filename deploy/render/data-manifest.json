@@ -1,5 +1,5 @@
 {
-  "snapshot": "chargers 2026-10-15; EV 2025-12; growth 2011-2026 partial",
+  "snapshot": "chargers 2026-10-15; EV 2026-09; growth 2011-2026 partial",
   "files": [
     {
       "path": "data/processed/charger_info_clean.csv",
@@ -7,9 +7,9 @@
       "sha256": "6cf8e89777a7720fdbb9f6800e555424896d870c4f45a6c5bde2f8012c5d00dd"
     },
     {
-      "path": "data/processed/ev_registration_by_region_2025.csv",
-      "bytes": 3158,
-      "sha256": "2be3140319d5cc20766e598cba8f356c577b986d4ce4d3134c9f4dad8bfef075"
+      "path": "data/processed/ev_registration_by_region_2026_09.csv",
+      "bytes": 5263,
+      "sha256": "178124223410a5f4c143f7970bf362b13b8b793e022fba8ab3c4e29ce12cfc07"
     },
     {
       "path": "data/processed/charger_installation_trend.csv",

@@ -23,16 +23,16 @@
 
 | 자료 | 시점 | 지역 체계 |
 |---|---|---|
-| 전기차 등록 | 2025-12 | 원래 17개 시도, 광주=29·전남=46 유지 |
+| 전기차 등록 | 2026-09 | 원본 16개 지역, 전남광주=12로 명칭 매핑 |
 | 충전기·위치·유형·출력·운영기관 | 2026-10-15 04:16~04:19 KST 조회 | 현재 16개 시도, 전남광주통합특별시=12 |
 | 연도별 설치 통계 | 2011~2026 | 전국. 2026 부분 연도, 정확한 마감일 미기재 |
 | 기존 그래프 | 각 항목의 period | 고정 PNG. API 필터가 적용되지 않음 |
 
-2025년 12월 등록 899,101대, 충전기 527,433기, 충전소 101,091곳, 삭제 표시 4,121기, 비삭제 523,312기입니다. 서로 다른 시점의 비율·부족률을 계산하지 않습니다. 비삭제는 실제 이용 가능 상태가 아닙니다. statUpdDt는 설치일이 아닙니다.
+2026년 9월 등록 1,191,873대, 2026-10-15 충전기 527,433기, 충전소 101,091곳, 삭제 표시 4,121기, 비삭제 523,312기입니다. 두 자료의 16개 지역은 대응하지만 서로 다른 기준일의 비율·부족률은 계산하지 않습니다. 비삭제는 실제 이용 가능 상태가 아닙니다. statUpdDt는 설치일이 아닙니다.
 
 현재 충전기 `region_code`: 11 서울, 12 전남광주통합특별시, 26 부산, 27 대구, 28 인천, 30 대전, 31 울산, 36 세종, 41 경기, 43 충북, 44 충남, 47 경북, 48 경남, 50 제주, 51 강원, 52 전북.
 
-등록자료는 위 목록에서 12 대신 29 광주·46 전남을 사용합니다. 현재 12 데이터를 29·46으로 분리하지 않습니다. `/api/overview`의 `meta.filter_options`에서 두 자료의 지역 선택지와 공식 유형 정의를 각각 받을 수 있습니다.
+등록자료도 위 16개 코드를 사용하며 원본의 전남광주를 12에 대응합니다. 현재 12 데이터를 과거 29·46으로 분리하지 않습니다. `/api/overview`의 `meta.filter_options`에서 두 자료의 지역 선택지와 공식 유형 정의를 각각 받을 수 있습니다.
 
 ## 요청변수 규칙
 
@@ -54,7 +54,7 @@
 | 경로 | 요청변수 | data |
 |---|---|---|
 | `/api/overview` | 충전기 공통 필터 + `ev_region_code` | 등록 총수, 필터 일치 충전기/충전소 수, 필터와 무관한 전국 스냅샷 총수 |
-| `/api/ev-registration` | `region_code` — **2025의 17개 코드** | 지역별 등록 합계·차종 4종·사업/비사업용 대수 |
+| `/api/ev-registration` | `region_code` — **2026-09의 16개 코드, 전남광주=12** | 지역별 등록 합계·차종 4종·사업/비사업용 대수. 과거 29/46은 400 |
 | `/api/charger-regions` | 충전기 공통 필터 | 지역별 충전기·충전소·N/Y 건수·구성비 |
 | `/api/charger-types` | 충전기 공통 필터 | 유형별 건수·공식 정의·정의 확인 여부·구성비 |
 | `/api/charger-output` | 충전기 공통 필터 | output 원문별 건수·수치 kW·검증상태·구성비 |
@@ -70,7 +70,8 @@
 
 ### 주요 행 스키마
 
-- 등록: `reference_month`, `region_system`, `region_code_2025`, `region_name_2025`, `ev_registration_count`, `ev_passenger_count`, `ev_bus_count`, `ev_truck_count`, `ev_special_count`, `ev_noncommercial_count`, `ev_commercial_count`.
+- 등록: `reference_month`, `region_system`, `region_code`, `region_name`, `ev_registration_count`, `ev_passenger_count`, `ev_bus_count`, `ev_truck_count`, `ev_special_count`, `ev_noncommercial_count`, `ev_commercial_count`.
+- 호환 필드 `region_code_2025`, `region_name_2025`는 deprecated 별칭으로 현재 지역 값을 반환합니다. 과거 2025년 수치가 아닙니다. 신규 클라이언트는 일반 필드명을 사용하세요. 현재 응답 예시는 `examples/overview-current-2026-09.json`, `examples/ev-registration-current-2026-09.json`입니다. 과거 예시와 PNG는 당시 기준의 기록으로 보존합니다.
 - 지역: `region_code`, `region_name` + 충전기 공통 건수와 `share_pct`.
 - 유형: `charger_type_code`, `official_definition`, `definition_verified` + 공통 건수와 `share_pct`.
 - 출력: `output_raw`, `output_kw`(숫자 또는 null), `value_status`(`positive_numeric/missing/nonpositive/nonnumeric`) + 공통 건수와 `share_pct`. `meta.output_statistics`에는 양수 유효값의 개수·결측/무효값 수·최소·중앙·최대 kW가 있습니다. 빈 집합의 통계 수치는 null입니다.
@@ -206,4 +207,4 @@ $env:CHARGE_GAP_CORS_ORIGINS='http://localhost:5173,http://localhost:3000'
 }
 ```
 
-위 예시는 data와 핵심 meta만 발췌했습니다. 전체 실제 응답은 `examples/station-size-distribution-filtered.json`, 전국 비삭제 응답은 `examples/station-size-distribution.json`입니다. 등록자료 2025-12와 이 API의 충전기 조회 2026-10-15는 다른 기준일입니다. 이 API는 설치일·부족률을 계산하지 않습니다. 신규 PNG는 `outputs/charts_v2_report/`에 따로 보관하며 기존 `/api/charts`의 10개 고정 PNG 목록은 유지됩니다.
+위 예시는 data와 핵심 meta만 발췌했습니다. 당시 실제 응답은 `examples/station-size-distribution-filtered.json`, 전국 비삭제 응답은 `examples/station-size-distribution.json`에 보존했습니다. 현재 등록자료 2026-09와 이 API의 충전기 조회 2026-10-15는 다른 기준일입니다. 이 API는 설치일·부족률을 계산하지 않습니다. 신규 PNG는 `outputs/charts_v2_report/`에 따로 보관하며 기존 `/api/charts`의 10개 고정 PNG 목록은 유지됩니다.

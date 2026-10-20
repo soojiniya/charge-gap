@@ -3,7 +3,7 @@
   "info": {
     "title": "CHARGE GAP API",
     "version": "1.0.0",
-    "description": "저장된 CSV와 고정 PNG 조회 전용. 등록 2025-12 / 충전기 2026-10-15 / 2026 설치 통계는 부분 연도."
+    "description": "저장된 CSV와 고정 PNG 조회. 등록 2026-09(16개 지역) / 충전기 2026-10-15 / 기존 등록 PNG는 2025-12 기록."
   },
   "servers": [
     {
@@ -93,15 +93,15 @@
             "name": "ev_region_code",
             "in": "query",
             "required": false,
-            "description": "2025년 등록자료만 필터하는 지역 코드",
+            "description": "2026-09 등록자료의 16개 지역 코드, 전남광주=12. 과거 29/46은 허용하지 않습니다.",
             "schema": {
               "type": "string",
               "enum": [
                 "11",
+                "12",
                 "26",
                 "27",
                 "28",
-                "29",
                 "30",
                 "31",
                 "36",
@@ -110,7 +110,6 @@
                 "43",
                 "44",
                 "52",
-                "46",
                 "47",
                 "48",
                 "50"
@@ -136,14 +135,14 @@
                       "station_count": 101091
                     },
                     "ev_registration": {
-                      "ev_registration_count": 899101,
-                      "reference_month": "2025-12",
-                      "region_count": 17
+                      "ev_registration_count": 1191873,
+                      "reference_month": "2026-09",
+                      "region_count": 16
                     },
                     "national_snapshot_totals": {
                       "charger_count": 527433,
                       "deleted_charger_count": 4121,
-                      "ev_registration_count": 899101,
+                      "ev_registration_count": 1191873,
                       "not_deleted_charger_count": 523312,
                       "station_count": 101091
                     }
@@ -285,6 +284,10 @@
                           "name": "서울"
                         },
                         {
+                          "code": "12",
+                          "name": "전남광주통합특별시"
+                        },
+                        {
                           "code": "26",
                           "name": "부산"
                         },
@@ -295,10 +298,6 @@
                         {
                           "code": "28",
                           "name": "인천"
-                        },
-                        {
-                          "code": "29",
-                          "name": "광주"
                         },
                         {
                           "code": "30",
@@ -331,10 +330,6 @@
                         {
                           "code": "52",
                           "name": "전북"
-                        },
-                        {
-                          "code": "46",
-                          "name": "전남"
                         },
                         {
                           "code": "47",
@@ -384,11 +379,13 @@
                         "unit": "기 / 곳 / kW"
                       },
                       "ev_registration": {
-                        "file": "ev_registration_by_region_2025.csv",
+                        "file": "ev_registration_by_region_2026_09.csv",
                         "fuel": "전기 (하이브리드·수소전기 제외)",
-                        "reference_month": "2025-12",
-                        "region_system": "2025_17_provinces",
-                        "source": "2025년 12월 자동차 등록자료 / 10.연료별_등록현황",
+                        "legacy_field_aliases": "region_code_2025 / region_name_2025 are deprecated aliases of current region_code / region_name; not historical values",
+                        "reference_month": "2026-09",
+                        "region_code_basis": "원본 지역명 전남광주를 기존 충전기 지역코드 12에 대응; 원본 Excel에 숫자 코드 없음",
+                        "region_system": "2026_16_provinces",
+                        "source": "2026년 9월 자동차 등록자료 / 10.연료별_등록현황",
                         "unit": "대"
                       }
                     },
@@ -400,7 +397,7 @@
                       "station_count": "곳"
                     },
                     "warnings": [
-                      "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+                      "전기차 등록은 2026-09, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
                       "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
                       "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
                       "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
@@ -436,21 +433,21 @@
     "/api/ev-registration": {
       "get": {
         "operationId": "ev_registration",
-        "summary": "2025-12 원래 17개 시도 순수 전기차 등록. 현재 12 코드는 허용하지 않습니다.",
+        "summary": "2026-09 순수 전기차 등록 16개 지역. 일반 지역 키와 deprecated 호환 별칭 제공.",
         "parameters": [
           {
             "name": "region_code",
             "in": "query",
             "required": false,
-            "description": "2025년 17개 지역 코드",
+            "description": "2026-09 등록자료의 16개 지역 코드, 전남광주=12. 과거 29/46은 허용하지 않습니다.",
             "schema": {
               "type": "string",
               "enum": [
                 "11",
+                "12",
                 "26",
                 "27",
                 "28",
-                "29",
                 "30",
                 "31",
                 "36",
@@ -459,7 +456,6 @@
                 "43",
                 "44",
                 "52",
-                "46",
                 "47",
                 "48",
                 "50"
@@ -479,230 +475,249 @@
                 "example": {
                   "data": [
                     {
-                      "ev_bus_count": 2596,
-                      "ev_commercial_count": 23383,
-                      "ev_noncommercial_count": 77948,
-                      "ev_passenger_count": 86969,
-                      "ev_registration_count": 101331,
-                      "ev_special_count": 95,
-                      "ev_truck_count": 11671,
-                      "reference_month": "2025-12",
+                      "ev_bus_count": 2947,
+                      "ev_commercial_count": 24203,
+                      "ev_noncommercial_count": 103547,
+                      "ev_passenger_count": 110169,
+                      "ev_registration_count": 127750,
+                      "ev_special_count": 175,
+                      "ev_truck_count": 14459,
+                      "reference_month": "2026-09",
+                      "region_code": "11",
                       "region_code_2025": "11",
+                      "region_name": "서울",
                       "region_name_2025": "서울",
-                      "region_system": "2025_17_provinces"
+                      "region_system": "2026_16_provinces"
                     },
                     {
-                      "ev_bus_count": 948,
-                      "ev_commercial_count": 12944,
-                      "ev_noncommercial_count": 47743,
-                      "ev_passenger_count": 50973,
-                      "ev_registration_count": 60687,
-                      "ev_special_count": 24,
-                      "ev_truck_count": 8742,
-                      "reference_month": "2025-12",
+                      "ev_bus_count": 619,
+                      "ev_commercial_count": 20070,
+                      "ev_noncommercial_count": 59301,
+                      "ev_passenger_count": 64445,
+                      "ev_registration_count": 79371,
+                      "ev_special_count": 84,
+                      "ev_truck_count": 14223,
+                      "reference_month": "2026-09",
+                      "region_code": "12",
+                      "region_code_2025": "12",
+                      "region_name": "전남광주통합특별시",
+                      "region_name_2025": "전남광주통합특별시",
+                      "region_system": "2026_16_provinces"
+                    },
+                    {
+                      "ev_bus_count": 1181,
+                      "ev_commercial_count": 18763,
+                      "ev_noncommercial_count": 64659,
+                      "ev_passenger_count": 71710,
+                      "ev_registration_count": 83422,
+                      "ev_special_count": 55,
+                      "ev_truck_count": 10476,
+                      "reference_month": "2026-09",
+                      "region_code": "26",
                       "region_code_2025": "26",
+                      "region_name": "부산",
                       "region_name_2025": "부산",
-                      "region_system": "2025_17_provinces"
+                      "region_system": "2026_16_provinces"
                     },
                     {
-                      "ev_bus_count": 143,
-                      "ev_commercial_count": 6529,
-                      "ev_noncommercial_count": 36063,
-                      "ev_passenger_count": 34976,
-                      "ev_registration_count": 42592,
-                      "ev_special_count": 23,
-                      "ev_truck_count": 7450,
-                      "reference_month": "2025-12",
+                      "ev_bus_count": 176,
+                      "ev_commercial_count": 8105,
+                      "ev_noncommercial_count": 47605,
+                      "ev_passenger_count": 46538,
+                      "ev_registration_count": 55710,
+                      "ev_special_count": 46,
+                      "ev_truck_count": 8950,
+                      "reference_month": "2026-09",
+                      "region_code": "27",
                       "region_code_2025": "27",
+                      "region_name": "대구",
                       "region_name_2025": "대구",
-                      "region_system": "2025_17_provinces"
+                      "region_system": "2026_16_provinces"
                     },
                     {
-                      "ev_bus_count": 631,
-                      "ev_commercial_count": 32030,
-                      "ev_noncommercial_count": 47830,
-                      "ev_passenger_count": 70052,
-                      "ev_registration_count": 79860,
-                      "ev_special_count": 38,
-                      "ev_truck_count": 9139,
-                      "reference_month": "2025-12",
+                      "ev_bus_count": 835,
+                      "ev_commercial_count": 40524,
+                      "ev_noncommercial_count": 63623,
+                      "ev_passenger_count": 92580,
+                      "ev_registration_count": 104147,
+                      "ev_special_count": 76,
+                      "ev_truck_count": 10656,
+                      "reference_month": "2026-09",
+                      "region_code": "28",
                       "region_code_2025": "28",
+                      "region_name": "인천",
                       "region_name_2025": "인천",
-                      "region_system": "2025_17_provinces"
+                      "region_system": "2026_16_provinces"
                     },
                     {
-                      "ev_bus_count": 85,
-                      "ev_commercial_count": 2677,
-                      "ev_noncommercial_count": 16438,
-                      "ev_passenger_count": 15274,
-                      "ev_registration_count": 19115,
-                      "ev_special_count": 6,
-                      "ev_truck_count": 3750,
-                      "reference_month": "2025-12",
-                      "region_code_2025": "29",
-                      "region_name_2025": "광주",
-                      "region_system": "2025_17_provinces"
-                    },
-                    {
-                      "ev_bus_count": 181,
-                      "ev_commercial_count": 5179,
-                      "ev_noncommercial_count": 20253,
-                      "ev_passenger_count": 20891,
-                      "ev_registration_count": 25432,
-                      "ev_special_count": 7,
-                      "ev_truck_count": 4353,
-                      "reference_month": "2025-12",
+                      "ev_bus_count": 251,
+                      "ev_commercial_count": 5698,
+                      "ev_noncommercial_count": 25755,
+                      "ev_passenger_count": 26272,
+                      "ev_registration_count": 31453,
+                      "ev_special_count": 21,
+                      "ev_truck_count": 4909,
+                      "reference_month": "2026-09",
+                      "region_code": "30",
                       "region_code_2025": "30",
+                      "region_name": "대전",
                       "region_name_2025": "대전",
-                      "region_system": "2025_17_provinces"
+                      "region_system": "2026_16_provinces"
                     },
                     {
-                      "ev_bus_count": 170,
-                      "ev_commercial_count": 1898,
-                      "ev_noncommercial_count": 11442,
-                      "ev_passenger_count": 9994,
-                      "ev_registration_count": 13340,
-                      "ev_special_count": 17,
-                      "ev_truck_count": 3159,
-                      "reference_month": "2025-12",
+                      "ev_bus_count": 300,
+                      "ev_commercial_count": 2201,
+                      "ev_noncommercial_count": 16322,
+                      "ev_passenger_count": 14292,
+                      "ev_registration_count": 18523,
+                      "ev_special_count": 42,
+                      "ev_truck_count": 3889,
+                      "reference_month": "2026-09",
+                      "region_code": "31",
                       "region_code_2025": "31",
+                      "region_name": "울산",
                       "region_name_2025": "울산",
-                      "region_system": "2025_17_provinces"
+                      "region_system": "2026_16_provinces"
                     },
                     {
-                      "ev_bus_count": 169,
-                      "ev_commercial_count": 558,
-                      "ev_noncommercial_count": 6772,
-                      "ev_passenger_count": 6526,
-                      "ev_registration_count": 7330,
-                      "ev_special_count": 4,
-                      "ev_truck_count": 631,
-                      "reference_month": "2025-12",
+                      "ev_bus_count": 179,
+                      "ev_commercial_count": 595,
+                      "ev_noncommercial_count": 9467,
+                      "ev_passenger_count": 8941,
+                      "ev_registration_count": 10062,
+                      "ev_special_count": 158,
+                      "ev_truck_count": 784,
+                      "reference_month": "2026-09",
+                      "region_code": "36",
                       "region_code_2025": "36",
+                      "region_name": "세종",
                       "region_name_2025": "세종",
-                      "region_system": "2025_17_provinces"
+                      "region_system": "2026_16_provinces"
                     },
                     {
-                      "ev_bus_count": 6105,
-                      "ev_commercial_count": 26287,
-                      "ev_noncommercial_count": 180788,
-                      "ev_passenger_count": 164383,
-                      "ev_registration_count": 207075,
-                      "ev_special_count": 214,
-                      "ev_truck_count": 36373,
-                      "reference_month": "2025-12",
+                      "ev_bus_count": 7131,
+                      "ev_commercial_count": 31041,
+                      "ev_noncommercial_count": 249210,
+                      "ev_passenger_count": 228906,
+                      "ev_registration_count": 280251,
+                      "ev_special_count": 403,
+                      "ev_truck_count": 43811,
+                      "reference_month": "2026-09",
+                      "region_code": "41",
                       "region_code_2025": "41",
+                      "region_name": "경기",
                       "region_name_2025": "경기",
-                      "region_system": "2025_17_provinces"
+                      "region_system": "2026_16_provinces"
                     },
                     {
-                      "ev_bus_count": 408,
-                      "ev_commercial_count": 3165,
-                      "ev_noncommercial_count": 22514,
-                      "ev_passenger_count": 18111,
-                      "ev_registration_count": 25679,
-                      "ev_special_count": 44,
-                      "ev_truck_count": 7116,
-                      "reference_month": "2025-12",
+                      "ev_bus_count": 510,
+                      "ev_commercial_count": 3361,
+                      "ev_noncommercial_count": 29986,
+                      "ev_passenger_count": 24530,
+                      "ev_registration_count": 33347,
+                      "ev_special_count": 75,
+                      "ev_truck_count": 8232,
+                      "reference_month": "2026-09",
+                      "region_code": "51",
                       "region_code_2025": "51",
+                      "region_name": "강원",
                       "region_name_2025": "강원",
-                      "region_system": "2025_17_provinces"
+                      "region_system": "2026_16_provinces"
                     },
                     {
-                      "ev_bus_count": 337,
-                      "ev_commercial_count": 3138,
-                      "ev_noncommercial_count": 29763,
-                      "ev_passenger_count": 23911,
-                      "ev_registration_count": 32901,
-                      "ev_special_count": 26,
-                      "ev_truck_count": 8627,
-                      "reference_month": "2025-12",
+                      "ev_bus_count": 462,
+                      "ev_commercial_count": 3306,
+                      "ev_noncommercial_count": 39850,
+                      "ev_passenger_count": 32712,
+                      "ev_registration_count": 43156,
+                      "ev_special_count": 63,
+                      "ev_truck_count": 9919,
+                      "reference_month": "2026-09",
+                      "region_code": "43",
                       "region_code_2025": "43",
+                      "region_name": "충북",
                       "region_name_2025": "충북",
-                      "region_system": "2025_17_provinces"
+                      "region_system": "2026_16_provinces"
                     },
                     {
-                      "ev_bus_count": 455,
-                      "ev_commercial_count": 2845,
-                      "ev_noncommercial_count": 36994,
-                      "ev_passenger_count": 27843,
-                      "ev_registration_count": 39839,
-                      "ev_special_count": 52,
-                      "ev_truck_count": 11489,
-                      "reference_month": "2025-12",
+                      "ev_bus_count": 696,
+                      "ev_commercial_count": 3400,
+                      "ev_noncommercial_count": 48876,
+                      "ev_passenger_count": 38103,
+                      "ev_registration_count": 52276,
+                      "ev_special_count": 97,
+                      "ev_truck_count": 13380,
+                      "reference_month": "2026-09",
+                      "region_code": "44",
                       "region_code_2025": "44",
+                      "region_name": "충남",
                       "region_name_2025": "충남",
-                      "region_system": "2025_17_provinces"
+                      "region_system": "2026_16_provinces"
                     },
                     {
-                      "ev_bus_count": 306,
-                      "ev_commercial_count": 3036,
-                      "ev_noncommercial_count": 27475,
-                      "ev_passenger_count": 20664,
-                      "ev_registration_count": 30511,
-                      "ev_special_count": 34,
-                      "ev_truck_count": 9507,
-                      "reference_month": "2025-12",
+                      "ev_bus_count": 437,
+                      "ev_commercial_count": 3327,
+                      "ev_noncommercial_count": 35099,
+                      "ev_passenger_count": 27178,
+                      "ev_registration_count": 38426,
+                      "ev_special_count": 55,
+                      "ev_truck_count": 10756,
+                      "reference_month": "2026-09",
+                      "region_code": "52",
                       "region_code_2025": "52",
+                      "region_name": "전북",
                       "region_name_2025": "전북",
-                      "region_system": "2025_17_provinces"
+                      "region_system": "2026_16_provinces"
                     },
                     {
-                      "ev_bus_count": 379,
-                      "ev_commercial_count": 12437,
-                      "ev_noncommercial_count": 28885,
-                      "ev_passenger_count": 32508,
-                      "ev_registration_count": 41322,
-                      "ev_special_count": 41,
-                      "ev_truck_count": 8394,
-                      "reference_month": "2025-12",
-                      "region_code_2025": "46",
-                      "region_name_2025": "전남",
-                      "region_system": "2025_17_provinces"
-                    },
-                    {
-                      "ev_bus_count": 423,
-                      "ev_commercial_count": 3573,
-                      "ev_noncommercial_count": 41517,
-                      "ev_passenger_count": 30355,
-                      "ev_registration_count": 45090,
-                      "ev_special_count": 43,
-                      "ev_truck_count": 14269,
-                      "reference_month": "2025-12",
+                      "ev_bus_count": 668,
+                      "ev_commercial_count": 4133,
+                      "ev_noncommercial_count": 57418,
+                      "ev_passenger_count": 43394,
+                      "ev_registration_count": 61551,
+                      "ev_special_count": 92,
+                      "ev_truck_count": 17397,
+                      "reference_month": "2026-09",
+                      "region_code": "47",
                       "region_code_2025": "47",
+                      "region_name": "경북",
                       "region_name_2025": "경북",
-                      "region_system": "2025_17_provinces"
+                      "region_system": "2026_16_provinces"
                     },
                     {
-                      "ev_bus_count": 1038,
-                      "ev_commercial_count": 12514,
-                      "ev_noncommercial_count": 53420,
-                      "ev_passenger_count": 51091,
-                      "ev_registration_count": 65934,
-                      "ev_special_count": 36,
-                      "ev_truck_count": 13769,
-                      "reference_month": "2025-12",
+                      "ev_bus_count": 1292,
+                      "ev_commercial_count": 21858,
+                      "ev_noncommercial_count": 72061,
+                      "ev_passenger_count": 75477,
+                      "ev_registration_count": 93919,
+                      "ev_special_count": 67,
+                      "ev_truck_count": 17083,
+                      "reference_month": "2026-09",
+                      "region_code": "48",
                       "region_code_2025": "48",
+                      "region_name": "경남",
                       "region_name_2025": "경남",
-                      "region_system": "2025_17_provinces"
+                      "region_system": "2026_16_provinces"
                     },
                     {
-                      "ev_bus_count": 405,
-                      "ev_commercial_count": 16599,
-                      "ev_noncommercial_count": 44464,
-                      "ev_passenger_count": 49314,
-                      "ev_registration_count": 61063,
-                      "ev_special_count": 39,
-                      "ev_truck_count": 11305,
-                      "reference_month": "2025-12",
+                      "ev_bus_count": 574,
+                      "ev_commercial_count": 26389,
+                      "ev_noncommercial_count": 52120,
+                      "ev_passenger_count": 64380,
+                      "ev_registration_count": 78509,
+                      "ev_special_count": 50,
+                      "ev_truck_count": 13505,
+                      "reference_month": "2026-09",
+                      "region_code": "50",
                       "region_code_2025": "50",
+                      "region_name": "제주",
                       "region_name_2025": "제주",
-                      "region_system": "2025_17_provinces"
+                      "region_system": "2026_16_provinces"
                     }
                   ],
                   "meta": {
                     "api_version": "1.0",
-                    "count": 17,
+                    "count": 16,
                     "filters": {
                       "region_code": null
                     },
@@ -710,16 +725,18 @@
                     "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
                     "sources": {
                       "ev_registration": {
-                        "file": "ev_registration_by_region_2025.csv",
+                        "file": "ev_registration_by_region_2026_09.csv",
                         "fuel": "전기 (하이브리드·수소전기 제외)",
-                        "reference_month": "2025-12",
-                        "region_system": "2025_17_provinces",
-                        "source": "2025년 12월 자동차 등록자료 / 10.연료별_등록현황",
+                        "legacy_field_aliases": "region_code_2025 / region_name_2025 are deprecated aliases of current region_code / region_name; not historical values",
+                        "reference_month": "2026-09",
+                        "region_code_basis": "원본 지역명 전남광주를 기존 충전기 지역코드 12에 대응; 원본 Excel에 숫자 코드 없음",
+                        "region_system": "2026_16_provinces",
+                        "source": "2026년 9월 자동차 등록자료 / 10.연료별_등록현황",
                         "unit": "대"
                       }
                     },
                     "totals": {
-                      "ev_registration_count": 899101
+                      "ev_registration_count": 1191873
                     },
                     "units": {
                       "charger_count": "기",
@@ -729,7 +746,7 @@
                       "station_count": "곳"
                     },
                     "warnings": [
-                      "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+                      "전기차 등록은 2026-09, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
                       "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
                       "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
                       "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
@@ -1035,7 +1052,7 @@
                       "station_count": "곳"
                     },
                     "warnings": [
-                      "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+                      "전기차 등록은 2026-09, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
                       "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
                       "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
                       "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
@@ -1298,7 +1315,7 @@
                       "station_count": "곳"
                     },
                     "warnings": [
-                      "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+                      "전기차 등록은 2026-09, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
                       "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
                       "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
                       "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
@@ -1867,7 +1884,7 @@
                       "station_count": "곳"
                     },
                     "warnings": [
-                      "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+                      "전기차 등록은 2026-09, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
                       "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
                       "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
                       "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
@@ -2088,7 +2105,7 @@
                       "station_count": "곳"
                     },
                     "warnings": [
-                      "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+                      "전기차 등록은 2026-09, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
                       "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
                       "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
                       "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
@@ -2209,7 +2226,7 @@
                       "station_count": "곳"
                     },
                     "warnings": [
-                      "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+                      "전기차 등록은 2026-09, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
                       "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
                       "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
                       "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
@@ -2442,7 +2459,7 @@
                       "station_count": "곳"
                     },
                     "warnings": [
-                      "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+                      "전기차 등록은 2026-09, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
                       "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
                       "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
                       "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
@@ -2646,7 +2663,7 @@
                       "station_count": "곳"
                     },
                     "warnings": [
-                      "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+                      "전기차 등록은 2026-09, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
                       "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
                       "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
                       "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
@@ -2879,7 +2896,7 @@
                       "station_count": "곳"
                     },
                     "warnings": [
-                      "전기차 등록은 2025-12, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+                      "전기차 등록은 2026-09, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
                       "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
                       "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
                       "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."

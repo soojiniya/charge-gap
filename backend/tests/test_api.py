@@ -20,35 +20,35 @@ def test_json_contract(client,endpoint):
 
 def test_overview_expected_snapshot(client):
     body=client.get('/api/overview').get_json()
-    assert body['data']['ev_registration']['ev_registration_count']==899101
+    assert body['data']['ev_registration']['ev_registration_count']==1191873
     assert body['data']['chargers']=={'charger_count':527433,'station_count':101091,
         'not_deleted_charger_count':523312,'deleted_charger_count':4121}
-    assert body['meta']['sources']['ev_registration']['reference_month']=='2025-12'
+    assert body['meta']['sources']['ev_registration']['reference_month']=='2026-09'
     assert body['meta']['sources']['chargers']['snapshot_date']=='2026-10-15'
     options=body['meta']['filter_options']
-    assert len(options['ev_regions'])==17 and len(options['charger_regions'])==16
+    assert len(options['ev_regions'])==16 and len(options['charger_regions'])==16
     assert any(r['code']=='09' and r['observed_charger_count']==0 for r in options['charger_types'])
 
 
 def test_overview_separate_scopes(client):
-    body=client.get('/api/overview?region_code=12&ev_region_code=29&deletion=not_deleted').get_json()
-    assert body['data']['ev_registration']['ev_registration_count']==19115
+    body=client.get('/api/overview?region_code=12&ev_region_code=12&deletion=not_deleted').get_json()
+    assert body['data']['ev_registration']['ev_registration_count']==79371
     assert body['data']['chargers']['charger_count']==32546
     assert body['data']['national_snapshot_totals']['charger_count']==527433
     assert body['meta']['filter_scopes']['ev_region_code']=='ev_registration_only'
 
 
-def test_ev_17_regions_and_reconciliation(client):
+def test_ev_16_regions_and_reconciliation(client):
     body=client.get('/api/ev-registration').get_json()
     rows=body['data']
-    assert len(rows)==17 and sum(r['ev_registration_count'] for r in rows)==899101
+    assert len(rows)==16 and sum(r['ev_registration_count'] for r in rows)==1191873
     for row in rows:
         assert row['ev_registration_count']==sum(row[k] for k in ['ev_passenger_count','ev_bus_count','ev_truck_count','ev_special_count'])
         assert row['ev_registration_count']==row['ev_commercial_count']+row['ev_noncommercial_count']
-    by_code={r['region_code_2025']:r for r in rows}
-    assert by_code['29']['ev_registration_count']==19115
-    assert by_code['46']['ev_registration_count']==41322
-    assert client.get('/api/ev-registration?region_code=12').status_code==400
+    by_code={r['region_code']:r for r in rows}
+    assert by_code['12']['ev_registration_count']==79371
+    assert '29' not in by_code and '46' not in by_code
+    assert client.get('/api/ev-registration?region_code=12').status_code==200
     assert client.get('/api/charger-regions?region_code=29').status_code==400
 
 
@@ -159,10 +159,10 @@ def test_charts_and_png(client):
     '/api/locations?bbox=NaN,0,1,1','/api/locations?bbox=0,0,Infinity,1','/api/locations?bbox=1,0,0,1',
     '/api/locations?bbox=0,0,1','/api/locations?bbox=0,-91,1,1','/api/locations?bbox=0,0,181,1',
     '/api/charger-types?charger_type=99','/api/charger-types?charger_type=2',
-    '/api/charger-regions?region_code=29','/api/ev-registration?region_code=12',
+    '/api/charger-regions?region_code=29','/api/ev-registration?region_code=29',
     '/api/ev-registration?charger_type=02','/api/charger-regions?deletion=available',
     '/api/charger-regions?region_code=','/api/charger-regions?region_code=11&region_code=12',
-    '/api/charger-regions?operator_id=NOT_FOUND','/api/overview?ev_region_code=12',
+    '/api/charger-regions?operator_id=NOT_FOUND','/api/overview?ev_region_code=46',
     '/api/growth?region_code=11','/api/growth?charger_type=02','/api/growth?year_from=2026&year_to=2025',
     '/api/growth?year_from=2030','/api/charts?region_code=11','/api/charts?chart_id=11',
     '/api/overview?ServiceKey=do-not-echo-this-value'])

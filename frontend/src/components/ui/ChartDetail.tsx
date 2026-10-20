@@ -93,6 +93,7 @@ const SOURCE_LABEL: Record<string, string> = {
   source_filename_date: '원본 파일명 날짜',
   geography: '지역 범위',
   source_url: '출처 URL',
+  region_code_basis: '지역코드 대응 근거',
 };
 
 function SourcePanel({ meta }: { meta: BaseMeta }) {
@@ -134,7 +135,7 @@ function SourcePanel({ meta }: { meta: BaseMeta }) {
             {key === 'ev_registration' ? '전기차 등록 자료' : key === 'chargers' ? '충전기 자료' : key === 'growth' ? '연도별 설치 통계' : '그래프 메타데이터'}
           </h3>
           <dl className="meta-grid">
-            {Object.entries(src).map(([k, v]) => (
+            {Object.entries(src).filter(([k]) => k !== 'legacy_field_aliases').map(([k, v]) => (
               <div key={k}>
                 <dt>{SOURCE_LABEL[k] ?? k}</dt>
                 <dd>

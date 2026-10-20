@@ -1,5 +1,7 @@
 # CHARGE GAP 인터넷 공개 배포 준비
 
+> 2026-10-20 로컬 등록자료 교체: 런타임과 manifest는 `data/processed/ev_registration_by_region_2026_09.csv`를 요구합니다. 이 새 객체는 아직 R2에 업로드하지 않았으며 원격 서비스도 변경하지 않았습니다. 아래 과거 R2 14개 검증 기록이 새 CSV 업로드·권리 확인을 대신하지 않습니다. 새 파일 승인·업로드·해시 검증과 코드 반영 전에는 재배포하지 마세요. 현재 manifest 총량은 242,523,813 bytes입니다.
+
 확인일: 2026-10-19. **Linux 자원·기능 검증 PASS / 실제 공개 배포 준비 CONDITIONAL PASS**. 사용자에 의해 private R2 저장과 읽기 전용 토큰 설정이 완료됐고 실제 R2 다운로드 포함 512MiB·0.1 CPU 시험도 통과했다. Render 서비스는 아직 생성하지 않았으며 최종 최적화·배포 준비 변경은 Git commit/push 전이다.
 
 ## 구조
@@ -80,7 +82,7 @@ S3 객체 key는 `<PREFIX>/<아래 상대 경로>`다. 컨테이너에서는 `/a
 | 상대 경로 | 바이트 | 접근 용도 |
 |---|---:|---|
 | data/processed/charger_info_clean.csv | 240,535,251 | Flask 내부 로딩만. CSV 다운로드 라우트 없음 |
-| data/processed/ev_registration_by_region_2025.csv | 3,158 | 내부 로딩 |
+| data/processed/ev_registration_by_region_2026_09.csv | 5,263 | 내부 로딩 |
 | data/processed/charger_installation_trend.csv | 2,353 | 내부 로딩 |
 | reports/chart_verification.json | 48,038 | /api/charts 메타데이터 원본 |
 | outputs/charts/01_ev_registration_top10.png | 108,203 | /api/charts/1/image |

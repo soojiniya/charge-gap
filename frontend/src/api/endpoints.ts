@@ -37,7 +37,7 @@ export const api = {
   overview: (f: ChargerFilterParams & { ev_region_code?: string }, signal?: AbortSignal) =>
     apiGet<OverviewData, OverviewMeta>('/api/overview', { ...chargerParams(f), ev_region_code: f.ev_region_code }, signal),
 
-  /** region_code는 2025년 17개 시도 코드(광주 29, 전남 46) */
+  /** region_code는 2026-09의 16개 지역 코드, 전남광주=12. */
   evRegistration: (regionCode: string | undefined, signal?: AbortSignal) =>
     apiGet<EvRegistrationRow[], EvRegistrationMeta>('/api/ev-registration', { region_code: regionCode }, signal),
 
