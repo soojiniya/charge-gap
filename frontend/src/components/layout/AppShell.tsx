@@ -2,8 +2,10 @@ import { Suspense, useEffect, useState, type ReactNode } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { Icon, type IconName } from '../ui/Icon';
 import { useBaseOverview } from '../../api/hooks';
-import { API_BASE_URL } from '../../api/client';
+import { API_BASE_URL, serverReadiness } from '../../api/client';
+import { ServerWakeNotice, useServerReadiness } from '../ServerWakeNotice';
 import { fmtClock } from '../../lib/format';
+import { filterSearch, useFilters, type FilterState } from '../../state/filters';
 
 const NAV: { to: string; label: string; ko: string; icon: IconName }[] = [
   { to: '/', label: 'Overview', ko: '한눈에 보기', icon: 'overview' },
@@ -32,10 +34,13 @@ function BrandMark() {
 
 function Sidebar({ open, onNavigate }: { open: boolean; onNavigate: () => void }) {
   const base = useBaseOverview();
+  // 페이지를 옮겨도 공통 필터(지역·유형·삭제 표시·운영기관·등록 지역)를 유지합니다.
+  const search = filterSearch(useLocation().search);
+  const wake = useServerReadiness();
   const src = base.data?.meta.sources;
   return (
     <aside className={`sidebar ${open ? 'open' : ''}`} aria-label="주 메뉴">
-      <NavLink to="/" className="brand" onClick={onNavigate}>
+      <NavLink to={{ pathname: '/', search }} className="brand" onClick={onNavigate}>
         <BrandMark />
         <span>
           <span className="brand-name">CHARGE GAP</span>
@@ -44,7 +49,7 @@ function Sidebar({ open, onNavigate }: { open: boolean; onNavigate: () => void }
       </NavLink>
       <nav className="nav">
         {NAV.map((n) => (
-          <NavLink key={n.to} to={n.to} end={n.to === '/'} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={onNavigate}>
+          <NavLink key={n.to} to={{ pathname: n.to, search }} end={n.to === '/'} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={onNavigate}>
             <Icon name={n.icon} />
             <span>
               {n.label}
@@ -55,8 +60,18 @@ function Sidebar({ open, onNavigate }: { open: boolean; onNavigate: () => void }
       </nav>
       <div className="sidebar-foot" aria-live="polite">
         <div>
-          <span className={`api-dot ${base.isSuccess ? 'ok' : base.isError ? 'err' : ''}`} />
-          <strong>{base.isSuccess ? 'API 연결됨' : base.isError ? 'API 연결 실패' : 'API 확인 중'}</strong>
+          <span className={`api-dot ${base.isSuccess && wake.phase === 'ready' ? 'ok' : base.isError || wake.phase === 'unavailable' ? 'err' : ''}`} />
+          <strong>
+            {wake.phase === 'waking'
+              ? '서버 준비 중'
+              : wake.phase === 'unavailable'
+                ? 'API 연결 실패'
+                : base.isSuccess
+                  ? 'API 연결됨'
+                  : base.isError
+                    ? 'API 연결 실패'
+                    : 'API 확인 중'}
+          </strong>
         </div>
         <div className="num" style={{ wordBreak: 'break-all' }}>{API_BASE_URL}</div>
         {src?.chargers && (
@@ -64,8 +79,13 @@ function Sidebar({ open, onNavigate }: { open: boolean; onNavigate: () => void }
             충전기 스냅샷 {src.chargers.snapshot_date} {fmtClock(src.chargers.snapshot_start_at)}–{fmtClock(src.chargers.snapshot_end_at)} KST
           </div>
         )}
-        {base.isError && (
-          <button type="button" className="btn btn-sm" style={{ marginTop: 8 }} onClick={() => base.refetch()}>
+        {(base.isError || wake.phase === 'unavailable') && (
+          <button
+            type="button"
+            className="btn btn-sm"
+            style={{ marginTop: 8 }}
+            onClick={() => (wake.phase === 'unavailable' ? serverReadiness.checkNow() : base.refetch())}
+          >
             <Icon name="refresh" /> 다시 연결
           </button>
         )}
@@ -77,6 +97,13 @@ function Sidebar({ open, onNavigate }: { open: boolean; onNavigate: () => void }
 export function AppShell({ fallback }: { fallback?: ReactNode }) {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  // 잘못된 URL 필터 값(예: ?region=99)은 화면에서 무시하고, 기록을 늘리지 않도록 URL에서도 지웁니다.
+  const { invalid, update } = useFilters();
+  const invalidKeys = invalid.join(',');
+  useEffect(() => {
+    if (!invalidKeys) return;
+    update(Object.fromEntries(invalidKeys.split(',').map((key) => [key, undefined])) as Partial<FilterState>);
+  }, [invalidKeys, update]);
   useEffect(() => {
     setOpen(false);
     window.scrollTo({ top: 0 });
@@ -98,6 +125,7 @@ export function AppShell({ fallback }: { fallback?: ReactNode }) {
             <span className="brand-name">CHARGE GAP</span>
           </div>
           <main id="main" className="main" tabIndex={-1}>
+            <ServerWakeNotice />
             <Suspense fallback={fallback}>
               <Outlet />
             </Suspense>

@@ -13,37 +13,60 @@ interface Props {
 /** 접근성: role=dialog, Esc로 닫기, 열릴 때 포커스 이동, 닫힐 때 원래 위치로 복귀, Tab 순환 */
 export function Modal({ title, subtitle, onClose, children, tabs }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
 
   useEffect(() => {
+    const dialog = ref.current;
+    if (!dialog) return;
     const previous = document.activeElement as HTMLElement | null;
-    ref.current?.focus();
+    const background = Array.from(document.body.children)
+      .filter((el): el is HTMLElement => el instanceof HTMLElement && el !== dialog.parentElement)
+      .map((el) => ({ el, inert: el.inert }));
+    background.forEach(({ el }) => { el.inert = true; });
+    const focusable = () => Array.from(dialog.querySelectorAll<HTMLElement>(
+      'a[href], button, input, select, textarea, [tabindex], [contenteditable="true"]',
+    )).filter(el => el.tabIndex >= 0 && !el.matches(':disabled, input[type="hidden"]')
+      && !el.closest('[hidden], [inert]') && el.getClientRects().length > 0
+      && getComputedStyle(el).visibility === 'visible');
+    const focusFirst = () => (focusable()[0] ?? dialog).focus();
+    focusFirst();
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-      if (e.key === 'Tab' && ref.current) {
-        const nodes = ref.current.querySelectorAll<HTMLElement>(
-          'button, [href], input, select, [tabindex]:not([tabindex="-1"])',
-        );
-        if (!nodes.length) return;
+      if (dialog.closest('[inert]')) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeRef.current();
+      }
+      if (e.key === 'Tab') {
+        const nodes = focusable();
+        if (!nodes.length) { e.preventDefault(); dialog.focus(); return; }
         const first = nodes[0];
         const last = nodes[nodes.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
+        const outside = !nodes.includes(document.activeElement as HTMLElement);
+        if (e.shiftKey && (document.activeElement === first || outside)) {
           e.preventDefault();
           last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
+        } else if (!e.shiftKey && (document.activeElement === last || outside)) {
           e.preventDefault();
           first.focus();
         }
       }
     };
+    const onFocus = (e: FocusEvent) => {
+      if (!dialog.closest('[inert]') && !dialog.contains(e.target as Node)) focusFirst();
+    };
     document.addEventListener('keydown', onKey);
+    document.addEventListener('focusin', onFocus);
     const overflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => {
       document.removeEventListener('keydown', onKey);
+      document.removeEventListener('focusin', onFocus);
       document.body.style.overflow = overflow;
-      previous?.focus();
+      background.forEach(({ el, inert }) => { el.inert = inert; });
+      if (previous?.isConnected) previous.focus();
     };
-  }, [onClose]);
+  }, []);
 
   return createPortal(
     <div className="modal-backdrop" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>

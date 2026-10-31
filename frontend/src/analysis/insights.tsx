@@ -717,12 +717,16 @@ export function insightOutput(
   const ge200 = sum(
     valid.filter((r) => (r.output_kw ?? 0) >= 200).map((r) => r.charger_count),
   );
+  const outputKinds = new Set(valid.map((r) => r.output_kw)).size;
+  const highOutputKinds = new Set(
+    valid.filter((r) => (r.output_kw ?? 0) >= 100).map((r) => r.output_kw),
+  ).size;
   return {
     mode: filtered ? "dynamic" : "fixed",
     purpose:
       "개별 충전기의 정격 출력(kW)이 어떤 값에 몰려 있고 고출력 충전기가 얼마나 되는지 분포로 확인합니다.",
     reason:
-      "연속 수치의 분포이므로 히스토그램을 쓰고, 3~400kW의 넓은 범위를 보기 위해 x축을 로그 눈금으로 했습니다. 분포의 모양을 매끄럽게 보도록 KDE 곡선(Seaborn histplot kde=True)을 겹쳤습니다.",
+      "정격 출력의 분포를 히스토그램으로 표시하고, 출력 크기의 차이를 비교하기 위해 x축을 로그 눈금으로 했습니다. 분포의 모양을 매끄럽게 보도록 KDE 곡선(Seaborn histplot kde=True)을 겹쳤습니다.",
     findings:
       vTotal && stats
         ? [
@@ -743,11 +747,22 @@ export function insightOutput(
         : [],
     interpretation: vTotal ? (
       <>
-        분포는 {mode?.output_kw}kW 한 값에{" "}
-        {pct(mode?.charger_count ?? 0, vTotal)}가 몰린 오른쪽 꼬리형입니다.
-        100kW 이상 고출력은 {pct(ge100, vTotal)}이지만 서로 다른 정격값{" "}
-        {valid.filter((r) => (r.output_kw ?? 0) >= 100).length}종에 나뉘어 있어,
-        고출력 충전기의 출력 사양은 다양합니다.
+        {outputKinds === 1 ? (
+          <>이 조건의 유효 출력은 {mode?.output_kw}kW 한 가지로 동일합니다.</>
+        ) : (
+          <>
+            관측 정격 출력은 {outputKinds}종이며, 최빈값 {mode?.output_kw}kW가{" "}
+            {pct(mode?.charger_count ?? 0, vTotal)}를 차지합니다.
+          </>
+        )}{" "}
+        {highOutputKinds === 0 ? (
+          <>100kW 이상 출력은 없습니다.</>
+        ) : (
+          <>
+            100kW 이상 출력은 {fmtInt(ge100)}기({pct(ge100, vTotal)})이며,
+            관측 정격값은 {highOutputKinds}종입니다.
+          </>
+        )}
       </>
     ) : (
       "—"

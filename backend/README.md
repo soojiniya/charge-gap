@@ -54,9 +54,11 @@ backend/
     data.py           # CSV 로드·집계·출처 및 유형 정의
     validation.py     # 파라미터·코드·숫자·bbox 검증
     routes.py         # REST API와 기존 PNG 제공
+    cache.py          # 바이트 상한 LRU 캐시(응답·/locations 대표 좌표)
   tests/
     conftest.py
     test_api.py
+    test_cache.py     # 캐시 적중·미적중·제거, 캐시 유무 응답 동일성, 열 정리 검증
   examples/           # 실제 HTTP 응답 JSON
   verification/       # 테스트·HTTP·원본 보존 검증 결과
   API_SPEC.md         # Claude 프론트엔드 연동 명세
@@ -71,6 +73,8 @@ backend/
 기본 프로젝트 경로는 `backend`의 상위 디렉터리입니다. `data/processed/charger_info_clean.csv`, `ev_registration_by_region_2025.csv`, `charger_installation_trend.csv`, `reports/chart_verification.json`을 프로세스 시작 시 한 번 읽습니다. API별로 필터를 적용한 상세 충전기 행에서 다시 집계하므로 지역·유형·삭제·운영기관 필터를 조합할 수 있습니다. CSV나 PNG를 수정하는 기능은 없습니다.
 
 데이터 로딩 후에는 메모리 스냅샷으로 처리합니다. 파일을 갱신해도 실행 중 자동 재로딩되지 않습니다. 새 스냅샷의 기준일·기대 건수를 코드/명세에 함께 반영한 후 서버를 재시작하세요. 시작 시 현재 작업의 기대 총수를 검사해 다른 스냅샷을 조용히 잘못 제공하지 않습니다.
+
+같은 프로세스 안에서는 스냅샷이 바뀌지 않으므로 두 가지 캐시를 둡니다. (1) 응답 캐시: `/locations`·PNG를 제외한 GET 200 JSON 본문을 경로와 모든 요청변수(순서 무관)를 키로 최대 16MiB까지 저장합니다. 오류 응답은 저장하지 않고, CORS 헤더는 요청마다 새로 붙입니다. (2) `/locations` 대표 좌표 표: 검증된 충전기 필터(지역·유형·삭제 표시·운영기관)별 충전소 대표 좌표·건수 표를 최대 48MiB까지 저장하고, bbox·정렬·페이지네이션은 요청마다 그 표에 그대로 적용합니다. 두 캐시 모두 상한을 넘으면 가장 오래 쓰지 않은 항목부터 지우며, 상한보다 큰 항목은 저장하지 않습니다. 앱 설정 `RESPONSE_CACHE_BYTES`·`LOCATIONS_CACHE_BYTES`(0이면 끔)로 조정합니다. 메모리 절약을 위해 어떤 API에도 쓰이지 않는 `stat`·`statUpdDt` 열은 읽지 않고, 원문 `lat`·`lng`·`_fetched_at`은 수치 좌표와 스냅샷 시각을 만든 뒤 버립니다.
 
 실제 위치 반환은 요청당 최대 1,000개 충전소입니다. 필터 → 충전소 집계 → 대표 좌표에 bbox → 정렬/페이지네이션 순서입니다. 최초 로딩과 큰 범위 위치 집계에는 시간이 들 수 있으므로 프론트엔드에서는 지도 영역 bbox와 제한된 limit를 사용하세요. 빈 결과는 HTTP 200과 빈 배열입니다.
 

@@ -41,12 +41,15 @@ class DataStore:
     def __init__(self, project_root, verify_counts=True):
         self.root = Path(project_root).resolve()
         directory = self.root/'data/processed'
+        # Only columns that an API response, filter, validation or snapshot metadata uses.
+        # stat/statUpdDt are never read; raw lat/lng text and _fetched_at are dropped
+        # below once the numeric coordinates and snapshot times are derived from them.
         columns = ['statId','chgerId','statNm','chgerType','addr','lat','lng','zcode','delYn',
-            'busiId','busiNm','stat','statUpdDt','output','_fetched_at']
+            'busiId','busiNm','output','_fetched_at']
         # Repeated IDs/text use shared dictionaries rather than one object array
         # per column. Keep numeric source text and timestamps unchanged.
         categorical = {'statId','chgerId','statNm','addr','chgerType','zcode',
-                       'delYn','busiId','busiNm','stat','output'}
+                       'delYn','busiId','busiNm','output'}
         with open_snapshot(directory/'charger_info_clean.csv') as source:
             self.chargers = pd.read_csv(source,usecols=columns,
                 dtype={col:'category' if col in categorical else str for col in columns},keep_default_na=False)
@@ -68,6 +71,8 @@ class DataStore:
         self.operator_ids = set(self.chargers.busiId)
         self.snapshot_start = self.chargers._fetched_at.min()
         self.snapshot_end = self.chargers._fetched_at.max()
+        # Source text kept only to derive _lat/_lng and the snapshot window above.
+        self.chargers.drop(columns=['lat','lng','_fetched_at'],inplace=True)
         if self.chargers[['statId','chgerId']].eq('').any().any() or self.chargers.duplicated(['statId','chgerId']).any():
             raise ValueError('충전기 식별자 결측/중복: 스냅샷 확인 필요')
         if not set(self.chargers.zcode) <= set(REGIONS_2026):

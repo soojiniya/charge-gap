@@ -619,7 +619,13 @@ export function RegionOutputHeatmapCard({ span = 12 }: { span?: Span }) {
       detail={{ table, staticChartIds: [10] }}
       insight={rows.length ? <Insight {...insightHeatmap(rows, OUTPUT_BANDS, filtered, state.region)} /> : undefined}
     >
-      <QueryState isLoading={m.isLoading || !opts.data} error={m.error ?? opts.error} onRetry={() => m.refetch()} isEmpty={!rows.length} height={420}>
+      <QueryState
+        isLoading={!opts.error && !m.error && (opts.isLoading || m.isLoading)}
+        error={opts.error ?? m.error}
+        onRetry={() => { if (opts.error) void opts.refetch(); m.refetch(); }}
+        isEmpty={!rows.length}
+        height={420}
+      >
         <Heatmap
           rows={rows}
           columns={OUTPUT_BANDS}

@@ -2,6 +2,7 @@ from pathlib import Path
 import os
 from flask import Flask, jsonify, request
 from werkzeug.exceptions import HTTPException
+from .cache import ByteLRU
 from .data import DataStore
 from .routes import create_blueprint
 from .validation import APIError
@@ -13,10 +14,16 @@ def create_app(config=None):
     app.config.from_mapping(PROJECT_ROOT=Path(__file__).resolve().parents[2],VERIFY_SNAPSHOT_COUNTS=True,
         CORS_ORIGINS=[s.strip() for s in os.environ.get('CHARGE_GAP_CORS_ORIGINS',
             'http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000,http://127.0.0.1:3000').split(',') if s.strip()])
+    # Byte budgets for the per-process caches (0 disables). Sized for Render Free's 512 MiB.
+    app.config.update(RESPONSE_CACHE_BYTES=16*1024*1024,LOCATIONS_CACHE_BYTES=48*1024*1024)
     if config:app.config.update(config)
     store=app.config.get('DATA_STORE') or DataStore(app.config['PROJECT_ROOT'],app.config['VERIFY_SNAPSHOT_COUNTS'])
     app.extensions['chargegap_data']=store
-    app.register_blueprint(create_blueprint(store))
+    response_cache=ByteLRU(app.config['RESPONSE_CACHE_BYTES'],'responses')
+    locations_cache=ByteLRU(app.config['LOCATIONS_CACHE_BYTES'],'locations')
+    app.extensions['chargegap_caches']={'responses':response_cache,'locations':locations_cache}
+    app.extensions['chargegap_cache_stats']=lambda:[response_cache.stats(),locations_cache.stats()]
+    app.register_blueprint(create_blueprint(store,response_cache,locations_cache))
 
     @app.errorhandler(APIError)
     def api_error(error):

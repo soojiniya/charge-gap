@@ -1,4 +1,4 @@
-import { useId, useMemo, useRef, useState, type KeyboardEvent } from 'react';
+import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import { useAllOperators } from '../../api/hooks';
 import { fmtInt } from '../../lib/format';
 
@@ -37,6 +37,12 @@ export function OperatorPicker({ value, onChange }: { value?: string; onChange: 
     if (!t) return options;
     return options.filter((o) => o.id.toLowerCase().includes(t) || o.names.some((n) => n.toLowerCase().includes(t)));
   }, [options, query]);
+  const visible = filtered.slice(0, 120);
+  const activeIndex = Math.min(active, visible.length);
+
+  useEffect(() => {
+    if (open && q.data) document.getElementById(`${listId}-${activeIndex}`)?.scrollIntoView({ block: 'nearest' });
+  }, [open, activeIndex, listId, q.data]);
 
   const choose = (id?: string) => {
     onChange(id);
@@ -49,13 +55,14 @@ export function OperatorPicker({ value, onChange }: { value?: string; onChange: 
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       setOpen(true);
-      setActive((a) => Math.min(a + 1, filtered.length));
+      setActive((a) => Math.min(a + 1, visible.length));
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      setActive((a) => Math.max(a - 1, 0));
+      setActive((a) => Math.max(Math.min(a, visible.length) - 1, 0));
     } else if (e.key === 'Enter' && open) {
       e.preventDefault();
-      choose(active === 0 ? undefined : filtered[active - 1]?.id);
+      if (activeIndex === 0) choose(undefined);
+      else if (visible[activeIndex - 1]) choose(visible[activeIndex - 1].id);
     } else if (e.key === 'Escape') {
       setOpen(false);
     }
@@ -73,7 +80,7 @@ export function OperatorPicker({ value, onChange }: { value?: string; onChange: 
         aria-expanded={open}
         aria-controls={listId}
         aria-autocomplete="list"
-        aria-activedescendant={open ? `${listId}-${active}` : undefined}
+        aria-activedescendant={open && q.data ? `${listId}-${activeIndex}` : undefined}
         aria-label="운영기관 검색 및 선택"
         placeholder={placeholder}
         disabled={!!q.error}
@@ -96,7 +103,7 @@ export function OperatorPicker({ value, onChange }: { value?: string; onChange: 
             id={`${listId}-0`}
             role="option"
             aria-selected={!value}
-            className={`combo-option ${active === 0 ? 'active' : ''}`}
+            className={`combo-option ${activeIndex === 0 ? 'active' : ''}`}
             onMouseDown={(e) => {
               e.preventDefault();
               choose(undefined);
@@ -104,13 +111,13 @@ export function OperatorPicker({ value, onChange }: { value?: string; onChange: 
           >
             전체 기관
           </li>
-          {filtered.slice(0, 120).map((o, i) => (
+          {visible.map((o, i) => (
             <li
               key={o.id}
               id={`${listId}-${i + 1}`}
               role="option"
               aria-selected={o.id === value}
-              className={`combo-option ${active === i + 1 ? 'active' : ''}`}
+              className={`combo-option ${activeIndex === i + 1 ? 'active' : ''}`}
               onMouseDown={(e) => {
                 e.preventDefault();
                 choose(o.id);

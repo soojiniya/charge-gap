@@ -30,9 +30,15 @@ Vite 포트는 5173으로 고정했습니다. 백엔드의 기본 CORS 허용 or
 **배포용 빌드**
 
 ```powershell
-npm run build      # dist/ 생성 (타입 검사 포함)
+npm run build      # dist/ 생성 (타입 검사 포함). VITE_API_BASE_URL 필요
 npm run preview    # http://localhost:5173 에서 빌드 결과 확인
 ```
+
+production 빌드는 `VITE_API_BASE_URL`이 비어 있거나 localhost(`127.0.0.1`, `localhost` 등)를 가리키면 실패합니다. 배포 사이트에서 모든 API 요청이 방문자 PC의 localhost로 가는 것을 막기 위해서입니다. 로컬 미리보기용 빌드만 `$env:CHARGE_GAP_ALLOW_LOCAL_API_BUILD='1'; npm run build`처럼 명시적으로 허용합니다. 이 변수는 `VITE_` 접두사가 아니어서 번들에 들어가지 않습니다.
+
+**테스트**: `npm test`는 `tests/*.test.cjs`(API 주소 검사, API 연결 오류 안내, 서버 절전 복귀 대기, URL 필터 검증, 사이드바 필터 유지, 줄바꿈, 히트맵·출력 해석 회귀, 폰트 자산)를 Node 내장 테스트 러너로 실행합니다. `tests/*.browser.cjs`는 실행 중인 로컬 서버와 Playwright `page`가 필요한 브라우저 회귀 모듈입니다.
+
+**서버 절전 복귀**: 연결 실패나 JSON이 아닌 응답이 오면 요청마다 오류를 띄우지 않고 `src/api/readiness.ts`의 공용 대기열에서 기다립니다. 상태 확인 요청 하나만 2·4·8초 뒤, 이후 10초마다 최대 3분 보내고, 화면 위에 안내 하나(`src/components/ServerWakeNotice.tsx`)를 보여 줍니다. 서버가 응답하면 현재 화면·필터 그대로 다시 불러오고, 3분이 지나면 '다시 시도'를 안내합니다. 400·404·500처럼 API가 JSON으로 보낸 오류는 기존 카드 오류로 표시합니다.
 
 `dist/`를 다른 주소에서 서비스한다면, 그 origin을 백엔드 실행 전에 `CHARGE_GAP_CORS_ORIGINS`에 추가해야 합니다(API_SPEC.md 참고).
 이때 SPA 라우팅을 위해 모든 경로가 `index.html`로 가도록 설정해야 합니다.
@@ -58,7 +64,7 @@ npm run preview    # http://localhost:5173 에서 빌드 결과 확인
 
 ## 필터와 API 요청변수
 
-필터 상태는 URL 쿼리에 저장됩니다. 페이지를 옮겨도 유지되고, 링크로 같은 화면을 공유할 수 있습니다.
+필터 상태는 URL 쿼리에 저장됩니다. 사이드바로 페이지를 옮겨도 공통 필터(`region`, `type`, `deletion`, `operator`, `ev_region`)는 유지되고, 링크로 같은 화면을 공유할 수 있습니다. 연도 구간(`from`, `to`)은 Growth Trends 전용이라 다른 페이지로 넘기지 않습니다. 허용 목록에 없는 값(예: `?region=99`, 없는 운영기관 ID)은 무시하고 전국·전체 기준으로 표시하며, 기록을 늘리지 않고 URL에서도 지웁니다. 운영기관 ID는 운영기관 목록을 받은 뒤 확인합니다.
 
 | 화면 필터 | URL | API 요청변수 | 적용 엔드포인트 |
 |---|---|---|---|
@@ -66,7 +72,7 @@ npm run preview    # http://localhost:5173 에서 빌드 결과 확인
 | 충전기 유형 (01~11) | `type` | `charger_type` | 〃 |
 | 삭제 표시 상태 | `deletion` | `deletion` (`all`이면 생략) | 〃 |
 | 운영기관 | `operator` | `operator_id` | 〃 |
-| 등록 지역 (17개) | `ev_region` | overview는 `ev_region_code`, ev-registration은 `region_code` | overview, ev-registration |
+| 등록 지역 (16개, 2026-09 기준 · 전남광주 포함) | `ev_region` | overview는 `ev_region_code`, ev-registration은 `region_code` | overview, ev-registration |
 | 연도 구간 | `from`, `to` | `year_from`, `year_to` | growth |
 | 페이지, 표시 개수 | 컴포넌트 상태 | `page`, `limit` | operators, locations |
 | (박스플롯) | 위 충전기 필터 | `region_code`, `charger_type`, `operator_id`, `deletion`(전체 선택 시 `not_deleted`) | station-size-distribution |
@@ -98,7 +104,7 @@ npm run preview    # http://localhost:5173 에서 빌드 결과 확인
 frontend/
   index.html
   package.json            # 버전 고정
-  vite.config.ts          # 포트 5173 고정, 공통 라이브러리 청크 분리
+  vite.config.ts          # 포트 5173 고정, 공통 라이브러리 청크 분리, production API 주소 검사
   tsconfig.json
   .env.example            # VITE_API_BASE_URL
   public/favicon.svg

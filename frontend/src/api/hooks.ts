@@ -81,25 +81,45 @@ export function useOperators(f: ChargerFilterParams, page: number, limit: number
   });
 }
 
+const allOperatorsKey = ['operators-all'] as const;
+
+async function fetchAllOperators({ signal }: { signal: AbortSignal }) {
+  const rows = [];
+  let page: number | null = 1;
+  while (page !== null) {
+    const res = await api.operators({ page, limit: 200 }, signal);
+    rows.push(...res.data);
+    page = res.meta.pagination?.next_page ?? null;
+  }
+  return rows;
+}
+
 /**
  * 운영기관 선택지: 필터 없이 전체 (기관 ID, 명칭) 조합을 limit=200으로 모두 받습니다.
  * 현재 342개 조합 → 2회 요청. next_page가 null이 될 때까지 이어서 받습니다.
  */
 export function useAllOperators() {
   return useQuery({
-    queryKey: ['operators-all'],
+    queryKey: allOperatorsKey,
     staleTime: Infinity,
-    queryFn: async ({ signal }) => {
-      const rows = [];
-      let page: number | null = 1;
-      while (page !== null) {
-        const res = await api.operators({ page, limit: 200 }, signal);
-        rows.push(...res.data);
-        page = res.meta.pagination?.next_page ?? null;
-      }
-      return rows;
-    },
+    queryFn: fetchAllOperators,
   });
+}
+
+const toOperatorIds = (rows: Awaited<ReturnType<typeof fetchAllOperators>>) => new Set(rows.map((r) => r.operator_id));
+
+/**
+ * URL의 운영기관 ID 검증용: useAllOperators와 같은 캐시를 씁니다.
+ * enabled가 false이면 요청하지 않고, 이미 받은 목록이 있으면 그대로 돌려줍니다.
+ */
+export function useOperatorIds(enabled: boolean) {
+  return useQuery({
+    queryKey: allOperatorsKey,
+    staleTime: Infinity,
+    queryFn: fetchAllOperators,
+    enabled,
+    select: toOperatorIds,
+  }).data;
 }
 
 export function useGrowth(yearFrom?: number, yearTo?: number) {
@@ -148,13 +168,13 @@ export function useRegionOutputMatrix(f: ChargerFilterParams, regionCodes: strin
     queries: regionCodes.map((code) => ({
       queryKey: ['charger-output', norm({ ...base, region_code: code })],
       queryFn: ({ signal }: { signal: AbortSignal }) => api.chargerOutput({ ...base, region_code: code }, signal),
-      placeholderData: keepPreviousData,
+      // Never mix previous-filter regions with completed current-filter regions.
     })),
     combine: (results) => ({
-      data: results.every((r) => r.data)
+      data: results.length > 0 && results.every((r) => r.data && !r.isPlaceholderData)
         ? results.map((r, i) => ({ code: regionCodes[i], res: r.data as Awaited<ReturnType<typeof api.chargerOutput>> }))
         : undefined,
-      isLoading: results.some((r) => r.isLoading),
+      isLoading: results.some((r) => r.isLoading || r.isPlaceholderData),
       isFetching: results.some((r) => r.isFetching),
       error: results.find((r) => r.error)?.error ?? null,
       refetch: () => results.forEach((r) => r.error && r.refetch()),

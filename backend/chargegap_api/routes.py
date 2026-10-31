@@ -1,14 +1,58 @@
 from copy import deepcopy
+from functools import wraps
 import math
 from pathlib import Path
-from flask import Blueprint, jsonify, request, send_file
+from flask import Blueprint, current_app, jsonify, request, send_file
 import pandas as pd
+from .cache import ByteLRU, request_key
 from .data import COMMON_PARAMETERS, EV_SOURCE, API_SOURCE, GROWTH_SOURCE, UNITS, WARNINGS, REGIONS_2026, TYPE_DEFINITIONS, records
 from .validation import APIError, allowed_parameters, bounding_box, charger_filters, choice, integer
 
 
-def create_blueprint(store):
+# Rough per-entry bookkeeping (key tuple, dict slot, bytes object header) added to body size.
+RESPONSE_ENTRY_OVERHEAD=512
+# pandas' deep memory estimate under-counts object columns by up to ~25% in practice
+# (measured RSS); budget conservatively so the 48 MiB limit holds for real memory.
+TABLE_SAFETY_FACTOR=1.3
+TABLE_ENTRY_OVERHEAD=64*1024
+
+
+def table_bytes(frame,shared_dictionaries):
+    """Approximate memory a cached table adds. Category dictionaries that are the very
+    same objects as the snapshot's (station names, addresses...) are shared, not copied."""
+    total=int(frame.memory_usage(index=True,deep=True).sum())
+    for column in frame.select_dtypes('category'):
+        categories=frame[column].cat.categories
+        if id(categories) in shared_dictionaries:
+            total-=int(categories.memory_usage(deep=True))
+    return int(total*TABLE_SAFETY_FACTOR)+TABLE_ENTRY_OVERHEAD
+
+
+def create_blueprint(store,response_cache=None,locations_cache=None):
     bp=Blueprint('api',__name__,url_prefix='/api')
+    response_cache=response_cache or ByteLRU(0,'responses')
+    locations_cache=locations_cache or ByteLRU(0,'locations')
+    # The snapshot is immutable for the process lifetime, so these objects (and ids) stay alive.
+    shared_dictionaries={id(store.chargers[c].cat.categories) for c in store.chargers.select_dtypes('category')}
+
+    def cached(view):
+        """Reuse the exact JSON body of a successful GET for an identical request.
+        Errors (raised before a response exists) and non-200 responses are never stored.
+        Per-request headers such as CORS are added afterwards by the app, never cached."""
+        @wraps(view)
+        def wrapper(*args,**kwargs):
+            if not response_cache.enabled:
+                return view(*args,**kwargs)
+            key=request_key(request.path,request.args)
+            body=response_cache.get(key)
+            if body is not None:
+                return current_app.response_class(body,status=200,mimetype='application/json')
+            response=view(*args,**kwargs)
+            if response.status_code==200 and response.mimetype=='application/json' and not response.direct_passthrough:
+                data=response.get_data()
+                response_cache.put(key,data,len(data)+RESPONSE_ENTRY_OVERHEAD)
+            return response
+        return wrapper
 
     def reply(data,sources,filters=None,frame=None,extra=None):
         sources=deepcopy(sources)
@@ -33,6 +77,7 @@ def create_blueprint(store):
             'next_page':page+1 if start+limit<total else None}
 
     @bp.get('/overview')
+    @cached
     def overview():
         filters,frame=charger_request({'ev_region_code'})
         ev_region=choice('ev_region_code',store.ev_regions)
@@ -48,6 +93,7 @@ def create_blueprint(store):
              'filter_options':store.filter_options()})
 
     @bp.get('/ev-registration')
+    @cached
     def ev_registration():
         allowed_parameters({'region_code'})
         region=choice('region_code',store.ev_regions)
@@ -58,6 +104,7 @@ def create_blueprint(store):
             extra={'totals':{'ev_registration_count':int(frame.ev_registration_count.sum())},'count':len(frame)})
 
     @bp.get('/charger-regions')
+    @cached
     def charger_regions():
         filters,frame=charger_request()
         result=store.grouped(frame,'zcode').rename(columns={'zcode':'region_code'})
@@ -66,6 +113,7 @@ def create_blueprint(store):
             {'count':len(result),'station_count_additivity':'각 지역 안의 고유 충전소 수. 분류별 충전소 수는 중복 가능성이 있어 전국 값은 matched.station_count를 사용하세요.'})
 
     @bp.get('/station-size-distribution')
+    @cached
     def station_size_distribution():
         filters,frame=charger_request()
         rows=store.station_size_distribution(frame)
@@ -79,6 +127,7 @@ def create_blueprint(store):
             'station_count_additivity':'Regional samples use (zcode, statId); national matched.station_count uses distinct statId.'})
 
     @bp.get('/charger-types')
+    @cached
     def charger_types():
         filters,frame=charger_request()
         result=store.grouped(frame,'chgerType').rename(columns={'chgerType':'charger_type_code'})
@@ -89,6 +138,7 @@ def create_blueprint(store):
              'classification_note':'커넥터 유형을 출력/급속 분류로 임의 변환하지 않습니다. 관측 0건인 유형은 data에 나타나지 않습니다.'})
 
     @bp.get('/charger-output')
+    @cached
     def charger_output():
         filters,frame=charger_request()
         result=store.grouped(frame,'output').rename(columns={'output':'output_raw'})
@@ -106,6 +156,7 @@ def create_blueprint(store):
             'output_note':'output(kW)을 수치화했습니다. powerType은 전체 결측이며 실제 동시 공급전력/실측 충전속도를 뜻하지 않습니다.'})
 
     @bp.get('/operators')
+    @cached
     def operators():
         filters,frame=charger_request({'page','limit'})
         page=integer('page',1,1,1000000);limit=integer('limit',50,1,200)
@@ -117,6 +168,7 @@ def create_blueprint(store):
             'station_count_additivity':'운영기관별 고유 충전소 수를 합산하면 같은 충전소가 중복될 수 있습니다.'})
 
     @bp.get('/growth')
+    @cached
     def growth():
         allowed_parameters({'year_from','year_to'})
         low=int(store.growth.year.min());high=int(store.growth.year.max())
@@ -133,8 +185,17 @@ def create_blueprint(store):
     def locations():
         filters,frame=charger_request({'page','limit','bbox'})
         page=integer('page',1,1,1000000);limit=integer('limit',200,1,1000);bbox=bounding_box()
-        result,invalid_rows=store.locations(frame)
-        excluded_stations=int(frame.statId.nunique())-len(result)
+        # The per-station representative table depends only on the validated charger
+        # filters; bbox and pagination are applied to it below on every request, exactly
+        # as before. Cached tables are only read (filtered copies/slices), never modified.
+        key=tuple(sorted(filters.items()))
+        entry=locations_cache.get(key)
+        if entry is None:
+            result,invalid_rows=store.locations(frame)
+            excluded_stations=int(frame.statId.nunique())-len(result)
+            entry=(result,invalid_rows,excluded_stations)
+            locations_cache.put(key,entry,table_bytes(result,shared_dictionaries))
+        result,invalid_rows,excluded_stations=entry
         if bbox:
             west,south,east,north=bbox
             result=result.loc[result.longitude.between(west,east)&result.latitude.between(south,north)]
@@ -156,6 +217,7 @@ def create_blueprint(store):
             'image_url':f"/api/charts/{item['number']}/image",'filters_apply':False}
 
     @bp.get('/charts')
+    @cached
     def charts():
         allowed_parameters({'chart_id'})
         chart_id=integer('chart_id',1,1,10) if 'chart_id' in request.args else None

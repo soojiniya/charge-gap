@@ -94,6 +94,31 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(summary.iloc[0].deleted_flag_charger_count, 1)
         self.assertEqual(metrics['not_deleted_flag_charger_count'], 1)
 
+    def test_official_type_11_is_known_without_changing_counts(self):
+        rows = [dict(statId='s1', chgerId='01', chgerType='11', zcode='11', delYn='N'),
+                dict(statId='s1', chgerId='02', chgerType='11', zcode='11', delYn='Y')]
+        clean, summary, metrics = clean_and_summarize(frame_from(rows))
+        self.assertTrue(clean.charger_type_known.all())
+        self.assertEqual(metrics['unknown_nonmissing_chgerType'], 0)
+        self.assertEqual(metrics['charger_count'], 2)
+        self.assertEqual(metrics['station_count'], 1)
+        self.assertEqual(metrics['deleted_flag_charger_count'], 1)
+        self.assertEqual(summary.charger_count.sum(), 2)
+
+    def test_collector_type_validation_matches_api_definitions(self):
+        # Read the literal constant without importing Flask into the collector environment.
+        import ast
+        from pathlib import Path
+        tree = ast.parse((Path(__file__).parent/'backend/chargegap_api/data.py').read_text(encoding='utf-8'))
+        codes = next(ast.literal_eval(node.value) for node in tree.body
+                     if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == 'TYPE_DEFINITIONS' for t in node.targets))
+        rows = [dict(statId='s1', chgerId=str(i), chgerType=code, zcode='11')
+                for i, code in enumerate([*codes, '00', '12', ''])]
+        clean, _, metrics = clean_and_summarize(frame_from(rows))
+        self.assertTrue(clean.iloc[:len(codes)].charger_type_known.all())
+        self.assertFalse(clean.iloc[len(codes):].charger_type_known.any())
+        self.assertEqual(metrics['unknown_nonmissing_chgerType'], 2)
+
     def test_atomic_csv_write_preserves_existing_file(self):
         import tempfile
         from pathlib import Path

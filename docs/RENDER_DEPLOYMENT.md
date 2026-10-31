@@ -2,7 +2,9 @@
 
 > 2026-10-20 로컬 등록자료 교체: 런타임과 manifest는 `data/processed/ev_registration_by_region_2026_09.csv`를 요구합니다. 이 새 객체는 아직 R2에 업로드하지 않았으며 원격 서비스도 변경하지 않았습니다. 아래 과거 R2 14개 검증 기록이 새 CSV 업로드·권리 확인을 대신하지 않습니다. 새 파일 승인·업로드·해시 검증과 코드 반영 전에는 재배포하지 마세요. 현재 manifest 총량은 242,523,813 bytes입니다.
 
-확인일: 2026-10-19. **Linux 자원·기능 검증 PASS / 실제 공개 배포 준비 CONDITIONAL PASS**. 사용자에 의해 private R2 저장과 읽기 전용 토큰 설정이 완료됐고 실제 R2 다운로드 포함 512MiB·0.1 CPU 시험도 통과했다. Render 서비스는 아직 생성하지 않았으며 최종 최적화·배포 준비 변경은 Git commit/push 전이다.
+확인일: 2026-10-19. **Linux 자원·기능 검증 PASS / 실제 공개 배포 준비 CONDITIONAL PASS**. 사용자에 의해 private R2 저장과 읽기 전용 토큰 설정이 완료됐고 실제 R2 다운로드 포함 512MiB·0.1 CPU 시험도 통과했다. 당시에는 Render 서비스를 생성하기 전이었고 최종 최적화·배포 준비 변경은 Git commit/push 전이었다.
+
+> 2026-10-31 상태 정리: 이 문서의 배포 단계 기록은 2026-10-19 기준이다. 이후 README 상단에 배포 주소(https://charge-gap.onrender.com)가 기재되었지만, 실제 Render 서비스 생성·공개·접속 상태는 저장소 안에서 확인되지 않았다. 현재 상태는 Render 대시보드와 실제 접속으로 확인한다. 커밋되지 않은 로컬 변경은 `git status`로 확인한다.
 
 ## 구조
 
@@ -142,11 +144,13 @@ Free API는 workspace 750시간/월을 공유하고 저장소를 대량 호출�
 
 ## 로컬 검증과 미검증
 
-- 2026-10-19 최종 재확인: **118 passed in 16.54s**. 캐시 반환 구간·fallback과 기존 회귀 테스트를 포함한다. bounded read, 실패 재시도, 크기/해시, 기존 파일 보존, credential redaction, 경로 검증, HTTPS CORS, PORT/1 thread exec, 실패 시 기동 중단, PNG 10개 접근 경로/내용 등을 확인했다.
+- 2026-10-31 로컬 재검증(현재 기준): `backend/tests deploy/render/tests` **178 passed**(응답·`/locations` 캐시와 열 정리 검증 포함), 수집기 `python -m unittest test_collector` **12 passed**, 프론트엔드 `npm test` **35개 통과**(줄바꿈 검사 1개는 Git 저장소 안에서만 실행), `npm run typecheck`·production build 통과. production build는 `VITE_API_BASE_URL`이 비어 있거나 localhost이면 실패하도록 바뀌었다. 테스트 실행 방법은 README의 "테스트 실행 방법"을 따른다.
+- 2026-10-31 응답·`/locations` 캐시와 미사용 열 제거 적용 후 로컬 측정(512MiB·CPU 0.1·1스레드, R2 다운로드 제외): 기동 45초, 기동 직후 프로세스 RSS 251MiB, 부하 후 최고 318MiB(이전 370MiB), 메모리 제한 도달 0회. 두 번째 방문자 5개 페이지+지도 합계 21.1초→0.8초, 동시 3명 65.5초→2.3초. 캐시를 상한까지 채운 시험에서도 RSS 277MiB. 캐시 유무와 무관하게 4,920개 요청의 응답이 변경 전과 바이트 단위로 같았다.
+- 2026-10-19 최종 재확인(당시 기록): **118 passed in 16.54s**. 캐시 반환 구간·fallback과 기존 회귀 테스트를 포함한다. bounded read, 실패 재시도, 크기/해시, 기존 파일 보존, credential redaction, 경로 검증, HTTPS CORS, PORT/1 thread exec, 실패 시 기동 중단, PNG 10개 접근 경로/내용 등을 확인했다.
 - 실제 14개 파일 크기·SHA-256 검증 통과.
-- 외부 HTTPS API origin을 넣은 TypeScript 검사/production build 통과. 최종 출력은 Git 제외 경로 `work/github-render-final-prep/frontend-dist`에 저장해 기존 dist를 교체하지 않았다. package.json과 lock의 의존성·engines 일치도 확인했다. React 단위/E2E 테스트 스크립트는 현재 없어 별도로 실행한 것으로 기록하지 않는다.
+- 외부 HTTPS API origin을 넣은 TypeScript 검사/production build 통과. 최종 출력은 Git 제외 경로 `work/github-render-final-prep/frontend-dist`에 저장해 기존 dist를 교체하지 않았다. package.json과 lock의 의존성·engines 일치도 확인했다. React 단위/E2E 테스트 스크립트는 당시(2026-10-19)에는 없어 별도로 실행한 것으로 기록하지 않았다. 이후 `frontend/tests`의 `npm test`와 Playwright용 브라우저 회귀 모듈이 추가되었다.
 - 기존 폰트 상대 경로 경고가 남아 있다. 디자인/폰트 소스는 변경하지 않았으며 실제 공개 페이지의 fallback/404를 확인해야 한다.
-- API 클라이언트에는 network/HTTP/응답 형식 오류 처리와 1회 retry가 있다. Render spin-up의 HTML 페이지는 JSON 형식 오류로 처리될 수 있어 기다린 뒤 수동 재시도가 필요할 수 있다. 기존 오류 안내에 로컬 run.py 설명이 포함되는 점은 공개 배포 UX의 개선 후보로 기록하고 UI는 변경하지 않았다.
+- 서버 절전 복귀 대기(2026-10-31 반영): API 요청이 연결 실패나 JSON이 아닌 응답(Render가 깨어나는 동안의 안내 페이지 등)으로 끝나면 요청마다 오류 카드를 띄우지 않고 공용 대기열에서 기다린다. 대기 중에는 가벼운 상태 확인 요청 하나(`/api/charts?chart_id=1`)만 2·4·8초 뒤, 이후 10초 간격으로 최대 3분 동안 보내며(약 20회), 새로 생긴 요청은 대기가 끝날 때까지 API로 보내지 않는다. 화면에는 "데이터 서버를 준비하는 중입니다" 안내 하나와 경과 시간, '지금 다시 확인' 버튼이 보이고 카드는 로딩 모양을 유지한다. 서버가 응답하면 기다리던 요청이 현재 화면·필터 그대로 한 번씩 다시 요청한다. 3분이 지나면 경고 안내와 '다시 시도' 버튼으로 바뀌고 카드는 빨간 오류 대신 같은 재시도로 이어지는 안내를 보여 준다. 앱이 보낸 JSON 오류(400·404·500)는 이 대기와 구분해 기존처럼 카드 오류로 표시한다. 공개 빌드에는 run.py 안내가 없고 로컬 개발 서버에서만 보인다. 실제 Render가 깨어나는 동안의 교차 출처 응답 형태와 복귀 시간은 배포 후 확인이 필요하다.
 - 사용자 PC에서 생성된 실제 R2 Docker 시험 결과를 확인했다: 파일·SHA 14/14, API 96/96, 최고 메모리 426.184MiB, 여유 85.816MiB, memory.events max/oom/oom_kill=0, OOMKilled=false, 재시작 0회. Linux 전후 응답 SHA-256 96개도 모두 동일하다. [최종 메모리 검증](../reports/r2_cache_memory_optimization_2026-10-19.md).
 - `backend/chargegap_api/file_cache.py`는 패키지 COPY와 전용 ignore의 *.py 허용에 포함된다. DataStore의 reader 및 배포용 download_data.py의 bounded writeback/hash 로직도 복사된다. 현재 빌드 경로는 확인했지만 Codex의 Docker 엔진 접근 거부로 이미지 내부 파일 해시를 다시 추출하지는 못했다. 시험 이미지 ID는 검증 보고서에 기록했다.
 - R2 실인증 GET/크기/해시는 확인했다. 실제 Render의 TLS/CORS/Router/지도 브라우저 접속과 Blueprint 서버측 검증은 남아 있다. YAML은 공식 필드에 맞춰 작성했으며 계정의 실제 적용 검증은 다음 단계다.
@@ -167,8 +171,8 @@ docker build -f deploy/render/Dockerfile -t charge-gap-backend:render-prep .
 2. 완료: R2 private Standard 저장 및 14개 업로드·SHA 검증. 현재 PREFIX는 빈 문자열이며 객체 경로는 manifest와 일치한다.
 3. 완료: 버킷 한정 읽기 전용 자격증명으로 교체, 기존 업로드 토큰 폐기. 다음 단계에서 Render 서버에만 입력하고 6개월 만료 전 교체한다.
 4. 완료: 실제 다운로드·기동·512MiB/0.1 CPU·96개 API 검증 PASS. 다음 단계에서 실제 HTTPS 두 origin을 결정한다.
-5. 변경 목록·비밀정보·데이터 제외를 검토한 뒤 **사용자 승인 후** Git commit/push. Private 저장소 유지. 현재 최적화 코드/배포 설정은 로컬 변경이므로 GitHub의 과거 커밋만 연결하면 적용되지 않는다.
-6. Render GitHub 연결 권한을 이 Private 저장소로 한정. Free API와 Static 설정을 수동 또는 준비된 Blueprint로 생성. 아직 생성하지 않는다.
+5. 변경 목록·비밀정보·데이터 제외를 검토한 뒤 **사용자 승인 후** Git commit/push. Private 저장소 유지. 커밋되지 않은 로컬 변경은 GitHub에 연결해도 적용되지 않으므로 `git status`로 먼저 확인한다.
+6. Render GitHub 연결 권한을 이 Private 저장소로 한정. Free API와 Static 설정을 수동 또는 준비된 Blueprint로 생성. (2026-10-19 기록 기준 미생성. 현재 생성 여부는 Render 대시보드에서 확인한다.)
 7. 실제 두 URL을 VITE_API_BASE_URL/CORS에 교차 설정하고 프론트엔드 재빌드. deep-link 새로고침, cold-start 오류, 10개 API·필터·지도·PNG를 확인한다.
 
 현재 남은 필수 항목은 **개별 EV/growth 공개 조건 확정, 승인 후 GitHub 반영, 실제 Render URL/환경변수 및 HTTPS 연동·cold start 검증**이다. 로컬 Compose는 계속 localhost:18080에서 독립적으로 사용한다.

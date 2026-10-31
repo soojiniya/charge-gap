@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { ApiError } from '../../api/client';
+import { ApiError, WAKE_TIMEOUT_CODE, serverReadiness } from '../../api/client';
 import { Icon } from './Icon';
 
 interface Props {
@@ -50,7 +50,22 @@ export function QueryState({
 
 export function ErrorState({ error, onRetry, height = 220 }: { error: unknown; onRetry?: () => void; height?: number }) {
   const apiErr = error instanceof ApiError ? error : null;
-  const title = apiErr?.isNetwork
+  // 서버 절전 복귀 대기 시간 초과: 카드마다 빨간 오류를 띄우지 않고, 화면 위 통합 안내와 같은 재시도를 연결합니다.
+  if (apiErr && apiErr.code === WAKE_TIMEOUT_CODE) {
+    return (
+      <div className="state" role="status" style={{ minHeight: height }}>
+        <Icon name="info" />
+        <div className="state-title">데이터 서버가 아직 응답하지 않습니다</div>
+        <div className="state-detail">화면 위 안내에서 다시 시도하거나 아래 버튼을 눌러 주세요.</div>
+        <button type="button" className="btn btn-sm" onClick={() => serverReadiness.checkNow()}>
+          <Icon name="refresh" /> 다시 시도
+        </button>
+      </div>
+    );
+  }
+  // 연결 실패·서버 준비 중(JSON이 아닌 응답)은 같은 안내로 묶고, 기술 코드는 표시하지 않습니다.
+  const unreachable = !!apiErr && (apiErr.isNetwork || apiErr.code === 'SERVER_UNAVAILABLE');
+  const title = unreachable
     ? 'API 서버에 연결하지 못했습니다'
     : apiErr?.status === 400
       ? '요청변수가 허용되지 않습니다'
@@ -61,7 +76,7 @@ export function ErrorState({ error, onRetry, height = 220 }: { error: unknown; o
       <div className="state-title">{title}</div>
       <div className="state-detail">
         {apiErr ? apiErr.message : String((error as Error)?.message ?? error)}
-        {apiErr && !apiErr.isNetwork && (
+        {apiErr && !unreachable && (
           <>
             <br />
             <span className="num">

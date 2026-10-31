@@ -3,9 +3,9 @@
 ## 프로젝트 배포 현황
 CHARGE GAP은 대한민국 전기차 보급 현황과 충전 인프라를 분석하는 데이터 시각화 웹 대시보드입니다.
 
-현재 GitHub를 통해 소스 코드를 관리하고 있으며, Render를 이용해 실제 웹사이트로 배포하였습니다.
+소스 코드는 GitHub에서 관리하며, Render 배포 설정(`render.yaml`, `deploy/render/`)이 준비되어 있습니다.
 
-웹사이트: https://charge-gap.onrender.com
+배포 주소: https://charge-gap.onrender.com — **실제 서비스 생성·접속 상태는 저장소 안에서 확인되지 않았습니다(2026-10-31 기준).** 공개 여부와 동작은 Render 대시보드와 실제 접속으로 확인하세요. 아래 [무료 인터넷 배포 준비](#무료-인터넷-배포-준비) 절의 확인 항목도 참고하세요.
 
 전기차 등록 데이터: 2026년 9월 기준
 
@@ -17,7 +17,7 @@ CHARGE GAP은 대한민국 전기차 보급 현황과 충전 인프라를 분석
 
 웹사이트는 총 5개의 분석 페이지로 구성되어 있으며, 다양한 그래프와 지도 기반 시각화를 제공합니다.
 
-※ Render 무료 서버를 사용하므로 일정 시간 접속이 없으면 서버가 절전 상태로 전환되어 최초 접속 시 데이터 로딩에 시간이 걸릴 수 있습니다.
+※ Render 무료 서버로 배포하면 일정 시간 접속이 없을 때 서버가 절전 상태로 전환되어 최초 접속 시 데이터 로딩에 시간이 걸릴 수 있습니다.
 
 ## 주요 기능과 기술
 
@@ -131,13 +131,28 @@ npm run dev
 
 개발 웹은 `http://localhost:5173`, API는 `http://127.0.0.1:5000`입니다. Linux/macOS는 backend에서 `python3 -m venv .venv`, `.venv/bin/python -m pip install -r requirements.lock.txt`, `.venv/bin/python run.py`를 사용하고, 다른 터미널의 frontend에서 `npm ci`·`npm run dev`를 실행합니다. 호스트 새 OS 설치와 Python PNG 재생성용 Windows 폰트 경로는 별도 확인 대상입니다.
 
-검증 명령(프로젝트 루트): backend venv Python의 `-m pytest backend/tests deploy/render/tests -q`, frontend의 `npm run typecheck`·`npm run build`. 2026-10-19 최종 확인에서 **118개 테스트**와 외부 HTTPS API 주소를 넣은 타입 검사·production build가 통과했습니다. React 단위/E2E 테스트 스크립트는 현재 별도로 제공하지 않습니다. 기존 폰트 자산 경고는 유지되며 실제 공개 호스팅의 HTTPS·CORS는 별도 실접속 검증 대상입니다. [최종 GitHub·Render 준비 결과와 전체 파일 목록](reports/github_render_final_readiness_2026-10-19.md).
+### 테스트 실행 방법
 
-## 무료 인터넷 배포 준비 (아직 미배포)
+데이터 파일(위 CSV 3개, `reports/chart_verification.json`, PNG 10개)이 있어야 백엔드 테스트가 실행됩니다. 2026-10-31 로컬 재검증 결과를 함께 적습니다.
+
+| 대상 | 실행 위치·명령 | 2026-10-31 결과 |
+|---|---|---|
+| 백엔드 API·Render 기동 스크립트 | 프로젝트 루트, backend venv Python으로 `python -m pytest backend/tests deploy/render/tests -q` | 178 passed (캐시 테스트 포함) |
+| 데이터 수집기 | 프로젝트 루트, 루트 `requirements.lock.txt`를 설치한 Python으로 `python -m unittest test_collector -v` | 12 passed |
+| 프론트엔드 단위·회귀 | `frontend`에서 `npm test` (Node 내장 테스트 러너, 추가 의존성 없음) | 46개 통과 (줄바꿈 검사 1개는 Git 저장소 안에서만 실행) |
+| 프론트엔드 타입·빌드 | `frontend`에서 `npm run typecheck`, `npm run build` | 통과 (외부 HTTPS API 주소 지정) |
+
+`npm run build`는 production 빌드라서 `VITE_API_BASE_URL`이 비어 있거나 localhost를 가리키면 **빌드가 실패**합니다. 배포용으로는 실제 백엔드 HTTPS origin(또는 Compose의 `/backend`)을 지정합니다. 로컬 미리보기용 빌드만 `CHARGE_GAP_ALLOW_LOCAL_API_BUILD=1`을 함께 지정합니다(PowerShell: `$env:CHARGE_GAP_ALLOW_LOCAL_API_BUILD='1'; npm run build`).
+
+브라우저 회귀 테스트 `frontend/tests/keyboard.browser.cjs`·`navigation.browser.cjs`·`url-filters.browser.cjs`·`api-errors.browser.cjs`·`server-wake.browser.cjs`(서버 절전 복귀, 실제 시간 약 3.5분)는 Playwright `page`를 받는 모듈입니다. 로컬 백엔드·프론트엔드를 실행한 뒤 별도 Playwright 스크립트에서 `await require('./frontend/tests/navigation.browser.cjs')(page, 'http://127.0.0.1:5173')`처럼 호출합니다. Playwright는 프로젝트 의존성에 포함하지 않았습니다. 기존 폰트 자산 경고는 유지되며, 실제 공개 호스팅의 HTTPS·CORS는 별도 실접속 검증 대상입니다. 2026-10-19 배포 준비 기록: [최종 GitHub·Render 준비 결과와 전체 파일 목록](reports/github_render_final_readiness_2026-10-19.md).
+
+## 무료 인터넷 배포 준비
+
+이 절은 2026-10-19 배포 준비 시점의 기록입니다. 이후 실제 Render 서비스 생성·공개 여부는 저장소에서 확인되지 않으므로 Render 대시보드에서 확인하세요.
 
 구조는 **Render Static Site(React) + Free Docker Web Service(Flask) + 승인된 private S3 호환 저장소**입니다. 로컬 Compose/18080 설정과 분리해 `render.yaml`, `deploy/render/Dockerfile` 및 시작 시 검증 다운로드를 준비했습니다. CSV·메타데이터·기존 PNG 10개 총 14파일(231.287MiB)은 이미지에 포함하지 않습니다.
 
-백엔드는 Render의 PORT로 0.0.0.0에 bind하고 Waitress/수치 라이브러리 스레드를 1로 제한합니다. 프론트엔드 `VITE_API_BASE_URL`에는 백엔드의 실제 HTTPS origin을, 백엔드 `CHARGE_GAP_CORS_ORIGINS`에는 프론트엔드의 정확한 HTTPS origin을 넣습니다. Static Site의 `/*` → `/index.html` rewrite로 React Router 새로고침을 지원합니다. private 저장소 endpoint·read credentials는 Render 환경 설정에만 넣고 VITE_*나 코드에 넣지 않습니다.
+백엔드는 Render의 PORT로 0.0.0.0에 bind하고 Waitress/수치 라이브러리 스레드를 1로 제한합니다. 프론트엔드 `VITE_API_BASE_URL`에는 백엔드의 실제 HTTPS origin을(비어 있거나 localhost이면 빌드 실패), 백엔드 `CHARGE_GAP_CORS_ORIGINS`에는 프론트엔드의 정확한 HTTPS origin을 넣습니다. Static Site의 `/*` → `/index.html` rewrite로 React Router 새로고침을 지원합니다. private 저장소 endpoint·read credentials는 Render 환경 설정에만 넣고 VITE_*나 코드에 넣지 않습니다.
 
 2026-10-19 실제 비공개 R2 다운로드 포함 Linux 시험에서 14개 파일의 크기·SHA-256, API 96/96, 메모리 512MiB·CPU 0.1 제한을 통과했습니다. 최고 메모리는 426.18MiB로 약 85.82MiB의 여유를 확보했고 메모리 제한 이벤트·OOM·재시작은 0회였습니다. 서버 준비 시간은 약 74초였습니다. 다운로드·해시 검증·CSV 파싱의 파일 캐시 반환 최적화를 Render Dockerfile이 복사하는 백엔드 코드에 반영했습니다. [측정 근거](reports/r2_cache_memory_optimization_2026-10-19.md).
 
@@ -145,7 +160,7 @@ R2 private 버킷에 14개 파일 업로드·검증과 읽기 전용 자격증�
 
 EV 자료의 공식 첨부 목록과 통계누리 이용정책, 충전기 설치 추이의 공식 대응 표를 확인했습니다. 개별 파일·표에 적용되는 공개 이용 조건의 최종 확인은 남아 있습니다. 데이터와 파생 그래프의 공개 허용을 확정하기 전에는 인터넷 공개 배포를 진행하지 않습니다. [출처·이용 조건 확인 기록](docs/DATA_SOURCE_RIGHTS.md).
 
-**Render 서비스는 아직 생성하지 않았으며 이번 변경은 Git commit/push 전입니다.** 실제 환경변수·실행 방법·단계별 사용자 작업은 [공개 배포 준비 안내](docs/RENDER_DEPLOYMENT.md)를 참고하세요. GitHub에는 CSV·Excel·자격증명을 올리지 않으며, clone만으로 데이터가 제공되지는 않습니다. 로컬 실행에는 별도 승인된 데이터 공급이, Render 실행에는 비공개 R2 읽기 권한이 필요합니다.
+**2026-10-19 기록 기준으로는 Render 서비스 생성 전이었습니다. 현재 배포 상태는 확인되지 않았습니다.** 실제 환경변수·실행 방법·단계별 사용자 작업은 [공개 배포 준비 안내](docs/RENDER_DEPLOYMENT.md)를 참고하세요. GitHub에는 CSV·Excel·자격증명을 올리지 않으며, clone만으로 데이터가 제공되지는 않습니다. 로컬 실행에는 별도 승인된 데이터 공급이, Render 실행에는 비공개 R2 읽기 권한이 필요합니다.
 
 ## 구조와 공개 준비
 
@@ -162,7 +177,7 @@ docs/                     GitHub 공개 후보·제외 목록
 compose.yaml              로컬 전체 실행, 포트 18080
 ```
 
-Git은 초기화되어 Private 저장소 업로드 이력이 있습니다. 이번 배포 준비 변경은 commit·push하지 않았습니다. `.gitignore`는 `.env`·인증키 파일·가상환경·node_modules·캐시·로그·임시 파일과 **모든 CSV·Excel**을 제외합니다. `.env.example`은 비밀값 없는 공개 설정 예시만 허용합니다. 로컬 `.dockerignore`는 유지하고 Render 빌드는 전용 Dockerfile.dockerignore로 제한합니다.
+Git은 초기화되어 Private 저장소 업로드 이력이 있습니다. 로컬에 커밋되지 않은 변경이 있을 수 있으므로 공개 전 `git status`로 확인하세요. `.gitignore`는 `.env`·인증키 파일·가상환경·node_modules·캐시·로그·임시 파일과 **모든 CSV·Excel**을 제외합니다. `.env.example`은 비밀값 없는 공개 설정 예시만 허용합니다. 로컬 `.dockerignore`는 유지하고 Render 빌드는 전용 Dockerfile.dockerignore로 제한합니다.
 
 후보 목록은 공개 권리 승인이나 실제 staging 목록이 아닙니다. 향후 staging 시 파일 목록과 비밀정보를 다시 검사해야 합니다. 이미 추적된 파일은 `.gitignore`만으로 제외되지 않습니다.
 

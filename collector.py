@@ -162,7 +162,9 @@ def clean_and_summarize(raw):
     clean['region_name'] = clean.region_code.map(REGIONS).fillna('미확인')
     parsed_time = pd.to_datetime(clean.statUpdDt, format='%Y%m%d%H%M%S', errors='coerce')
     clean['status_updated_at_valid'] = parsed_time.notna()
-    clean['charger_type_known'] = clean.chgerType.isin([f'{n:02d}' for n in range(1, 11)])
+    # 한국환경공단 활용가이드 v1.25 §3.3: 11 = DC콤보2(버스전용).
+    # https://www.data.go.kr/cmm/cmm/fileDownload.do?atchFileId=FILE_000000003680003&fileDetailSn=1
+    clean['charger_type_known'] = clean.chgerType.isin([f'{n:02d}' for n in range(1, 12)])
     clean['status_known'] = clean.stat.isin(['0', '1', '2', '3', '4', '5', '6', '9'])
     clean['power_kw'] = pd.to_numeric(clean.get('output', pd.Series(pd.NA, index=clean.index)), errors='coerce')
     # Preserve powerType; do not infer numeric capacity from an empty/type field.
