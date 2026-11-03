@@ -73,9 +73,47 @@ Waitress `--threads=1`, OPENBLAS/OMP/MKL/NUMEXPR/VECLIB/BLIS 스레드 1은 진�
 
 `VITE_API_BASE_URL` = **실제 백엔드 HTTPS origin**. `/api`를 붙이지 않는다. 기존 클라이언트가 `/api/...`를 이어 붙인다. 비어 있으면 기존 localhost fallback이 선택되므로 반드시 설정한다. Vite 값은 빌드 시 JS에 들어가는 공개 정보다. 비밀값을 VITE_*에 넣지 않는다. 변경 시 프론트엔드 재빌드가 필요하다.
 
-Render Static 설정: Root Directory `frontend`, Build `npm ci && npm run build`, Publish Directory `dist`, Node 24. React Router 직접 접근/새로고침을 위해 `/*` → `/index.html` **rewrite**를 설정한다. [Render rewrite 문서](https://render.com/docs/redirects-rewrites).
+Render Static 설정: Root Directory `frontend`, Build `npm ci && npm run build`, Publish Directory `dist`, Node 24. React Router 직접 접근/새로고침을 위해 아래 페이지 경로의 **rewrite**를 설정한다. [Render rewrite 문서](https://render.com/docs/redirects-rewrites).
+
+### 직접 URL·새로고침 404 (SPA rewrite)
+
+증상: `/`는 열리고 메뉴 이동도 되지만 `/regional-explorer` 등을 주소창에 직접 입력하거나 새로고침하면 404. 정적 호스트에는 `index.html`과 `assets/`만 있고 페이지 경로 파일은 없으므로, rewrite 규칙이 없으면 이렇게 된다. 코드나 빌드 문제가 아니라 Static Site 설정 문제다.
+
+규칙은 Render 대시보드 또는 Blueprint(`render.yaml`의 `routes`)로만 설정한다(Netlify식 `_redirects` 파일은 Render 문서에 없다). **Blueprint로 관리하지 않고 대시보드에서 만든 서비스에는 `render.yaml`이 자동 적용되지 않는다.** 이 저장소의 `render.yaml`은 "Preparation only" 초안이고 Static Site 이름은 `charge-gap-web`이다. 공개 주소(`charge-gap.onrender.com`)의 서비스가 이 Blueprint로 만들어졌는지는 저장소에서 확인되지 않는다. 대시보드에서 만든 서비스라면(또는 확인이 안 되면) 대시보드에서 Static Site → **Redirects/Rewrites**에 다음 4개를 **Rewrite**로 추가한다(`/`는 이미 `index.html`이 제공됨).
+
+| Source | Destination | Action |
+|---|---|---|
+| `/ev-registration` | `/index.html` | Rewrite |
+| `/charging-infrastructure` | `/index.html` | Rewrite |
+| `/regional-explorer` | `/index.html` | Rewrite |
+| `/growth-trends` | `/index.html` | Rewrite |
+
+- 페이지 경로만 지정하고 `/*` 전체 규칙은 쓰지 않는다. Render는 실제 파일이 있는 경로(`/assets/*.js` 등)에는 규칙을 적용하지 않지만, `/*`이면 **없는** 자산이나 이 정적 호스트로 잘못 온 `/api/...` 요청까지 `index.html`(200)로 바뀌어 오류 원인이 가려진다. 페이지 목록에 없는 주소는 Render 404가 된다.
+- API는 별도 Web Service origin(`VITE_API_BASE_URL`)으로 요청하므로 이 규칙의 영향을 받지 않는다.
+- 페이지를 추가하면 `frontend/src/App.tsx`, `render.yaml`, 대시보드 규칙을 함께 고친다. `tests/spa-fallback.test.cjs`가 App.tsx와 `render.yaml`의 일치를 확인한다.
+- 규칙을 추가한 뒤 실제 공개 주소에서 각 경로를 직접 입력·새로고침해 반영 여부를 확인한다.
+- 로컬 Compose(Nginx)는 `frontend/nginx.conf`의 `try_files $uri $uri/ /index.html`로 이미 처리한다. `/assets/` 누락 파일은 404, `/backend/`는 API 프록시다.
 
 별도 origin 간 HTTPS 연결이므로 Nginx `/backend` 프록시는 클라우드 구조에서 사용하지 않는다. 로컬 Compose에서는 계속 `/backend`를 사용한다. HTTPS는 Render가 TLS를 종료하며 컨테이너 자체는 PORT의 HTTP를 제공한다. [Render Web Services](https://render.com/docs/web-services).
+
+### 정적 사이트 보안 헤더
+
+`render.yaml` Static Site의 `headers`에 아래 5개를 둔다. Blueprint로 관리하지 않는(대시보드에서 만든) Static Site에는 자동 적용되지 않으므로 대시보드 Static Site → **Headers**에 Path `/*`로 같은 값을 넣는다.
+
+| Name | Value |
+|---|---|
+| `X-Content-Type-Options` | `nosniff` (기존) |
+| `Content-Security-Policy` | `default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://tile.openstreetmap.org https://charge-gap-api.onrender.com; font-src 'self' data:; connect-src 'self' https://charge-gap-api.onrender.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'` |
+| `X-Frame-Options` | `DENY` |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` |
+| `Strict-Transport-Security` | `max-age=31536000` |
+
+- CSP 출처는 빌드 결과가 실제로 불러오는 것만 넣었다: 자체 JS·CSS(폰트·Leaflet 이미지는 CSS 안의 data:), OSM 타일(img), API(fetch와 보고서 PNG). 인라인 스크립트·스타일과 eval은 허용하지 않는다.
+- **`VITE_API_BASE_URL`(현재 `https://charge-gap-api.onrender.com`)이나 `VITE_TILE_URL`을 바꾸면 CSP의 `connect-src`·`img-src`도 같이 바꾼다.** 그렇지 않으면 데이터나 타일이 차단된다.
+- `Referrer-Policy`는 다른 사이트에 출처(origin)만 보낸다. OSM 타일 이용 정책이 유효한 Referer를 요구하므로 `no-referrer`로 바꾸지 않는다.
+- HSTS는 `includeSubDomains`·`preload` 없이 이 호스트에만 적용한다(onrender.com 상위 도메인은 관리하지 않음).
+- 로컬 Compose Nginx(`frontend/nginx.conf`)는 API가 같은 출처(`/backend`)이므로 `connect-src 'self'`이고, HTTP이므로 HSTS를 보내지 않는다. Nginx `location` 블록에 `add_header`를 추가하면 상속된 보안 헤더가 사라지므로 추가하지 않는다.
+- `tests/security-headers.test.cjs`가 두 설정의 일치와 unsafe 지시어 부재를 확인한다. 적용 후 공개 사이트에서 지도 타일·그래프·보고서 PNG가 보이는지와 브라우저 콘솔의 CSP 오류를 확인한다.
 
 ## 필수 파일과 접근 경로
 

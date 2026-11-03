@@ -3,7 +3,7 @@
  * 주요 결과와 해석 문장의 수치는 모두 인자로 받은 실제 API 응답에서 계산합니다.
  * 고정 문구는 분석 목적·그래프 선택 이유·주의사항·출처뿐입니다.
  */
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import type {
   ChargerOutputRow,
   ChargerRegionRow,
@@ -49,6 +49,11 @@ export function insightEvRegions(
       .filter((r) => CAPITAL.includes(r.region_code))
       .map((r) => r.ev_registration_count),
   );
+  // 상위 3개 지역이 수도권 3개 시도와 같은 집합이면 같은 비중을 두 번 말하지 않습니다.
+  const top3Codes = sorted.slice(0, 3).map((r) => r.region_code);
+  const sameTop3Capital =
+    top3Codes.length === CAPITAL.length &&
+    CAPITAL.every((c) => top3Codes.includes(c));
   const sel = rows.find((r) => r.region_code === selected);
   const findings: ReactNode[] = top
     ? [
@@ -66,15 +71,26 @@ export function insightEvRegions(
           </B>{" "}
           차이입니다.
         </>,
-        <>
-          상위 3개 지역(
-          {sorted
-            .slice(0, 3)
-            .map((r) => r.region_name)
-            .join(", ")}
-          )이 <B>{pct(top3, total)}</B>, 수도권(서울·경기·인천)이{" "}
-          <B>{pct(capital, total)}</B>를 차지합니다.
-        </>,
+        sameTop3Capital ? (
+          <>
+            상위 3개 지역(
+            {sorted
+              .slice(0, 3)
+              .map((r) => r.region_name)
+              .join(", ")}
+            )이 <B>{pct(top3, total)}</B>를 차지하며, 이 세 지역이 곧 수도권(서울·경기·인천)입니다.
+          </>
+        ) : (
+          <>
+            상위 3개 지역(
+            {sorted
+              .slice(0, 3)
+              .map((r) => r.region_name)
+              .join(", ")}
+            )이 <B>{pct(top3, total)}</B>, 수도권(서울·경기·인천)이{" "}
+            <B>{pct(capital, total)}</B>를 차지합니다.
+          </>
+        ),
       ]
     : [];
   if (sel) {
@@ -518,7 +534,17 @@ export function insightBoxplot(
   const medLoNames = rows
     .filter((r) => loMed && r.median === loMed.median)
     .map((r) => shortRegion(r.region_code, r.region_name));
-  const wide = [...rows].sort((a, b) => b.iqr - a.iqr)[0];
+  // IQR 최댓값이 같은 지역(공동 1위)은 모두 표시합니다. 같은 Q1~Q3 범위끼리 묶습니다.
+  const maxIqr = rows.length ? Math.max(...rows.map((r) => r.iqr)) : 0;
+  const wideGroups: { q1: number; q3: number; names: string[] }[] = [];
+  rows
+    .filter((r) => r.iqr === maxIqr)
+    .forEach((r) => {
+      const g = wideGroups.find((x) => x.q1 === r.q1 && x.q3 === r.q3);
+      const name = shortRegion(r.region_code, r.region_name);
+      if (g) g.names.push(name);
+      else wideGroups.push({ q1: r.q1, q3: r.q3, names: [name] });
+    });
   const outliers = sum(rows.map((r) => r.outlier_count));
   const samples = sum(rows.map((r) => r.sample_count));
   const outShare = [...rows]
@@ -566,11 +592,16 @@ export function insightBoxplot(
       findings.push(
         <>
           상자 폭(IQR)이 가장 넓은 지역은{" "}
-          {shortRegion(wide.region_code, wide.region_name)}{" "}
-          <B>
-            {fmtNum(wide.q1)}~{fmtNum(wide.q3)}기
-          </B>
-          (IQR {fmtNum(wide.iqr)}기).
+          {wideGroups.map((g, i) => (
+            <Fragment key={i}>
+              {i > 0 && ", "}
+              {g.names.join("·")}{" "}
+              <B>
+                {fmtNum(g.q1)}~{fmtNum(g.q3)}기
+              </B>
+            </Fragment>
+          ))}
+          (IQR {fmtNum(maxIqr)}기{wideGroups.flatMap((g) => g.names).length > 1 ? ", 공동" : ""}).
         </>,
       );
     findings.push(
@@ -1045,10 +1076,17 @@ export function insightOperators(
   matchedTotal: number,
   combos: number,
   filtered: boolean,
+  operatorSelected = false,
 ): InsightProps {
   const s = (n: number) => sum(top.slice(0, n).map((r) => r.charger_count));
   return {
     mode: filtered ? "dynamic" : "fixed",
+    // 이 그래프는 운영기관 필터를 계산에서 제외하고(선택 기관은 강조만) 지역·유형·삭제 필터만 적용합니다.
+    modeNote: filtered
+      ? "지역·유형·삭제 필터 결과로 계산 (운영기관 필터는 계산에서 제외)"
+      : operatorSelected
+        ? "전국 기준 고정 분석 (운영기관 필터는 계산에서 제외)"
+        : undefined,
     purpose:
       "충전기 운영이 소수 기관에 집중되어 있는지, 여러 기관에 분산되어 있는지 확인합니다.",
     reason:
@@ -1080,7 +1118,7 @@ export function insightOperators(
         "—"
       ),
     caution:
-      "같은 기관도 명칭 표기가 다르면 별도 조합으로 집계됩니다(예: 파워큐브/파워큐브코리아). 운영기관별 충전소 수는 합산하지 않습니다.",
+      "같은 기관도 명칭 표기가 다르면 별도 조합으로 집계됩니다(예: 파워큐브/파워큐브코리아). 운영기관별 충전소 수는 합산하지 않습니다. 운영기관 필터를 선택해도 이 그래프의 계산에는 적용하지 않고 선택한 기관을 강조만 합니다(지역·유형·삭제 필터만 적용).",
     source: `${CH_SRC}, /api/operators (상위 20개) + meta.matched`,
     variables: ["operator_id", "operator_name", "charger_count", "share_pct"],
   };

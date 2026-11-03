@@ -36,11 +36,41 @@ services:
         value: '24'
       - key: VITE_API_BASE_URL
         sync: false
+    # React Router direct URL access and refresh: rewrite only the app's page paths (frontend/src/App.tsx).
+    # `/` is served by index.html already. Not a `/*` catch-all, so a missing /assets file or a stray /api request
+    # on this static host stays a real 404 instead of returning index.html. Existing files are never rewritten.
+    # Keep in sync with App.tsx (tests/spa-fallback.test.cjs checks this).
     routes:
       - type: rewrite
-        source: /*
+        source: /ev-registration
         destination: /index.html
+      - type: rewrite
+        source: /charging-infrastructure
+        destination: /index.html
+      - type: rewrite
+        source: /regional-explorer
+        destination: /index.html
+      - type: rewrite
+        source: /growth-trends
+        destination: /index.html
+    # Security headers (static site). Allowed origins = what the built app really loads:
+    #   own files (JS/CSS/fonts as data: in CSS), OSM tiles, and the API (fetch + report PNGs).
+    #   No inline scripts/styles or eval. If VITE_API_BASE_URL or VITE_TILE_URL changes, update CSP too
+    #   (tests/security-headers.test.cjs keeps this and frontend/nginx.conf in step).
+    # Referrer-Policy keeps the origin on cross-origin requests: OSM's tile policy expects a valid Referer.
     headers:
       - path: /*
         name: X-Content-Type-Options
         value: nosniff
+      - path: /*
+        name: Content-Security-Policy
+        value: "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://tile.openstreetmap.org https://charge-gap-api.onrender.com; font-src 'self' data:; connect-src 'self' https://charge-gap-api.onrender.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: Strict-Transport-Security
+        value: max-age=31536000

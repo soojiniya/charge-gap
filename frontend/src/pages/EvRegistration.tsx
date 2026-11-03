@@ -75,20 +75,23 @@ export function EvRegistrationPage() {
         </Card>
 
         <EvRegionsCard span={7} />
-        <EvTypesCard span={5} />
+        {/* 짧은 도넛 카드와 지역 체계 안내를 한 묶음으로 쌓아 왼쪽 막대 그래프 카드와 높이를 맞춥니다. */}
+        <div className="span-5 card-stack">
+          <EvTypesCard span={5} />
+          <Card title="지역 체계" sub="광주·전남 통합 기준">
+            <RegionSystemNote compact />
+            <p className="small" style={{ marginTop: 14, color: 'var(--ink-2)' }}>
+              이 페이지는 2026년 9월 원본의 16개 지역을 사용합니다. 원본 명칭 전남광주는 충전기 자료의
+              전남광주통합특별시(12)에 대응합니다. 등록 기준월과 충전기 조회일은 서로 다릅니다.
+            </p>
+          </Card>
+        </div>
         <EvCommercialCard span={12} />
 
-        <Card span={8} title="지역별 등록 현황 표" sub="/api/ev-registration 응답 전체" scope={{ kind: 'fixed', label: '전국 16개 지역' }}>
+        <Card span={12} title="지역별 등록 현황 표" sub="/api/ev-registration 응답 전체" scope={{ kind: 'fixed', label: '전국 16개 지역' }}>
           <QueryState isLoading={all.isLoading} error={all.error} onRetry={() => all.refetch()} isEmpty={!allRows.length} height={300}>
             <EvTable rows={allRows} selected={state.evRegion} />
           </QueryState>
-        </Card>
-        <Card span={4} title="지역 체계" sub="광주·전남 통합 기준">
-          <RegionSystemNote compact />
-          <p className="small" style={{ marginTop: 14, color: 'var(--ink-2)' }}>
-            이 페이지는 2026년 9월 원본의 16개 지역을 사용합니다. 원본 명칭 전남광주는 충전기 자료의
-            전남광주통합특별시(12)에 대응합니다. 등록 기준월과 충전기 조회일은 서로 다릅니다.
-          </p>
         </Card>
       </div>
     </>

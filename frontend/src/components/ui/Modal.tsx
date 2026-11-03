@@ -8,10 +8,14 @@ interface Props {
   onClose: () => void;
   children: ReactNode;
   tabs?: ReactNode;
+  /** dialog: 가운데 큰 창(차트 확대). panel: 오른쪽 상세 패널(모바일은 아래에서 올라오는 시트) */
+  variant?: 'dialog' | 'panel';
+  /** 제목 위 작은 분류 문구 (panel에서 사용) */
+  eyebrow?: ReactNode;
 }
 
 /** 접근성: role=dialog, Esc로 닫기, 열릴 때 포커스 이동, 닫힐 때 원래 위치로 복귀, Tab 순환 */
-export function Modal({ title, subtitle, onClose, children, tabs }: Props) {
+export function Modal({ title, subtitle, onClose, children, tabs, variant = 'dialog', eyebrow }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
@@ -69,10 +73,22 @@ export function Modal({ title, subtitle, onClose, children, tabs }: Props) {
   }, []);
 
   return createPortal(
-    <div className="modal-backdrop" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabIndex={-1} ref={ref}>
+    <div
+      className={`modal-backdrop${variant === 'panel' ? ' panel-backdrop' : ''}`}
+      onMouseDown={(e) => e.target === e.currentTarget && onClose()}
+    >
+      <div
+        className={`modal${variant === 'panel' ? ' side-panel' : ''}`}
+        data-variant={variant}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        tabIndex={-1}
+        ref={ref}
+      >
         <div className="modal-head">
           <div>
+            {eyebrow && <div className="modal-eyebrow">{eyebrow}</div>}
             <h2 className="modal-title" id="modal-title">
               {title}
             </h2>

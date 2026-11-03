@@ -127,7 +127,7 @@ function TypeShareTable() {
   const q = useChargerTypes(chargerParams);
   const rows = [...(q.data?.data ?? [])].sort((a, b) => b.charger_count - a.charger_count);
   return (
-    <Card span={7} title="유형별 상세" sub="코드를 누르면 유형 필터가 바뀝니다. 구성비 분모는 같은 요청의 필터 일치 충전기입니다." scope={{ kind: 'filtered' }} isFetching={q.isFetching && !q.isLoading}>
+    <Card span={7} className="card-table-fill" title="유형별 상세" sub="코드를 누르면 유형 필터가 바뀝니다. 구성비 분모는 같은 요청의 필터 일치 충전기입니다." scope={{ kind: 'filtered' }} isFetching={q.isFetching && !q.isLoading}>
       <QueryState isLoading={q.isLoading} error={q.error} onRetry={() => q.refetch()} isEmpty={!rows.length} height={300}>
         <DataTable
           caption="유형별 충전기 구성"

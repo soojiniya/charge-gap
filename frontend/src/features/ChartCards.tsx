@@ -750,7 +750,7 @@ export function OperatorTreemapCard({ span = 12, height = 380 }: { span?: Span; 
       scope={{ kind: 'filtered', label: '지역·유형·삭제 필터' }}
       isFetching={q.isFetching && !q.isLoading}
       detail={{ chart: <OperatorTreemap items={items} height={520} ariaLabel="운영기관별 충전기 트리맵" />, meta: q.data?.meta, staticChartIds: [8] }}
-      insight={rows.length ? <Insight {...insightOperators(rows, matched, combos, filtered)} /> : undefined}
+      insight={rows.length ? <Insight {...insightOperators(rows, matched, combos, filtered, !!state.operator)} /> : undefined}
     >
       <QueryState isLoading={q.isLoading} error={q.error} onRetry={() => q.refetch()} isEmpty={!rows.length} height={height}>
         <div className="legend" style={{ marginBottom: 8 }}>

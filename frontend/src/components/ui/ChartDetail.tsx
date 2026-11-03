@@ -3,6 +3,7 @@ import type { BaseMeta } from '../../api/types';
 import { useStaticCharts } from '../../api/hooks';
 import { assetUrl } from '../../api/client';
 import { Modal } from './Modal';
+import { InsightContext } from './Insight';
 import { QueryState } from './QueryState';
 import { Icon } from './Icon';
 import { DELETION_LABEL, fmtInt } from '../../lib/format';
@@ -55,7 +56,7 @@ export function ChartDetail({ title, sub, onClose, detail }: Props) {
       {tab === 'chart' && (
         <div>
           {detail.chart}
-          {detail.insight}
+          {detail.insight && <InsightContext.Provider value={{ title, inline: true }}>{detail.insight}</InsightContext.Provider>}
         </div>
       )}
       {tab === 'table' && detail.table}

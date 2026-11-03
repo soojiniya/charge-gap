@@ -210,7 +210,7 @@ export function RegionalExplorerPage() {
         <RegionOutputHeatmapCard span={12} />
         <StationChargerCard span={7} height={360} />
 
-        <div className="span-5" style={{ display: 'grid', gap: 18, alignContent: 'start' }}>
+        <div className="span-5 card-stack">
           <Card title="지역 표" sub="충전기 수 내림차순. 행 강조는 선택 지역입니다." scope={{ kind: 'filtered' }} isFetching={regions.isFetching && !regions.isLoading}>
             <QueryState isLoading={regions.isLoading} error={regions.error} onRetry={() => regions.refetch()} isEmpty={!rows.length} height={300}>
               <DataTable

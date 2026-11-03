@@ -3,6 +3,7 @@ import type { BaseMeta } from '../../api/types';
 import { Icon } from './Icon';
 import { ChartDetail } from './ChartDetail';
 import { Reveal } from '../../lib/motion';
+import { InsightContext } from './Insight';
 
 export type Scope = { kind: 'filtered'; label?: string } | { kind: 'fixed'; label?: string };
 
@@ -73,7 +74,7 @@ export function Card({ title, sub, scope, span, isFetching, actions, foot, class
       <div className="card-body">
         <Reveal enabled={reveal}>{children}</Reveal>
       </div>
-      {insight}
+      {insight && <InsightContext.Provider value={{ title, no }}>{insight}</InsightContext.Provider>}
       {foot && <footer className="card-foot">{foot}</footer>}
       {open && detail && (
         <ChartDetail title={title} sub={sub} detail={{ ...detail, insight: detail.insight ?? insight }} onClose={() => setOpen(false)} />

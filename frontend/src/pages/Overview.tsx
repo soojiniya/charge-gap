@@ -131,23 +131,41 @@ function Kpis() {
 function NotesCard() {
   const base = useBaseOverview();
   return (
-    <Card span={12} title="자료 해석 기준" sub="모든 페이지에 공통으로 적용됩니다">
-      <div className="grid" style={{ gap: 22 }}>
-        <div className="span-7" style={{ display: 'grid', gap: 12, alignContent: 'start' }}>
-          <div className="notice">
-            <Icon name="info" />
+    <Card span={12} className="notes-card" title="자료 해석 기준" sub="모든 페이지에 공통으로 적용됩니다">
+      <div className="notes-grid">
+        <section className="notes-block" aria-labelledby="notes-basis">
+          <h3 id="notes-basis" className="notes-block-title">
+            <Icon name="info" /> 기준 시점과 비교 원칙
+          </h3>
+          <dl className="notes-dates">
             <div>
-              <strong>등록 대수와 충전기 수는 서로 나누지 않습니다.</strong> 지역 체계는 대응하지만 기준 시점(2026-09와 2026-10-15)이 달라 충전기 1기당 차량 수나
-              충전 부족률을 계산하지 않습니다.
+              <dt>전기차 등록</dt>
+              <dd className="num">2026-09</dd>
             </div>
-          </div>
+            <div>
+              <dt>충전기 조회</dt>
+              <dd className="num">2026-10-15</dd>
+            </div>
+          </dl>
+          <p className="notes-text">
+            <strong>등록 대수와 충전기 수는 서로 나누지 않습니다.</strong> 지역 체계는 대응하지만 기준 시점(2026-09와 2026-10-15)이 달라 충전기 1기당 차량 수나
+            충전 부족률을 계산하지 않습니다.
+          </p>
+        </section>
+        <section className="notes-block" aria-labelledby="notes-regions">
+          <h3 id="notes-regions" className="notes-block-title">
+            <Icon name="map" /> 지역 체계
+          </h3>
+          <RegionSystemNote />
+        </section>
+        <section className="notes-block" aria-labelledby="notes-cautions">
+          <h3 id="notes-cautions" className="notes-block-title">
+            <Icon name="alert" /> 주의사항
+          </h3>
           <QueryState isLoading={base.isLoading} error={base.error} onRetry={() => base.refetch()} height={80}>
             <ul className="note-list">{base.data?.meta.warnings.slice(1).map((w) => <li key={w}>{w}</li>)}</ul>
           </QueryState>
-        </div>
-        <div className="span-5">
-          <RegionSystemNote />
-        </div>
+        </section>
       </div>
     </Card>
   );

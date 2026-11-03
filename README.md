@@ -152,7 +152,7 @@ npm run dev
 
 구조는 **Render Static Site(React) + Free Docker Web Service(Flask) + 승인된 private S3 호환 저장소**입니다. 로컬 Compose/18080 설정과 분리해 `render.yaml`, `deploy/render/Dockerfile` 및 시작 시 검증 다운로드를 준비했습니다. CSV·메타데이터·기존 PNG 10개 총 14파일(231.287MiB)은 이미지에 포함하지 않습니다.
 
-백엔드는 Render의 PORT로 0.0.0.0에 bind하고 Waitress/수치 라이브러리 스레드를 1로 제한합니다. 프론트엔드 `VITE_API_BASE_URL`에는 백엔드의 실제 HTTPS origin을(비어 있거나 localhost이면 빌드 실패), 백엔드 `CHARGE_GAP_CORS_ORIGINS`에는 프론트엔드의 정확한 HTTPS origin을 넣습니다. Static Site의 `/*` → `/index.html` rewrite로 React Router 새로고침을 지원합니다. private 저장소 endpoint·read credentials는 Render 환경 설정에만 넣고 VITE_*나 코드에 넣지 않습니다.
+백엔드는 Render의 PORT로 0.0.0.0에 bind하고 Waitress/수치 라이브러리 스레드를 1로 제한합니다. 프론트엔드 `VITE_API_BASE_URL`에는 백엔드의 실제 HTTPS origin을(비어 있거나 localhost이면 빌드 실패), 백엔드 `CHARGE_GAP_CORS_ORIGINS`에는 프론트엔드의 정확한 HTTPS origin을 넣습니다. React Router 직접 URL 접근·새로고침은 Static Site의 페이지 경로 rewrite(`/ev-registration`, `/charging-infrastructure`, `/regional-explorer`, `/growth-trends` → `/index.html`)로 지원합니다. Blueprint로 관리하지 않고 대시보드에서 만든 Static Site에는 `render.yaml` 규칙이 자동 적용되지 않으므로 대시보드 Redirects/Rewrites에 같은 규칙을 넣어야 합니다([설정 방법](docs/RENDER_DEPLOYMENT.md#직접-url새로고침-404-spa-rewrite)). private 저장소 endpoint·read credentials는 Render 환경 설정에만 넣고 VITE_*나 코드에 넣지 않습니다.
 
 2026-10-19 실제 비공개 R2 다운로드 포함 Linux 시험에서 14개 파일의 크기·SHA-256, API 96/96, 메모리 512MiB·CPU 0.1 제한을 통과했습니다. 최고 메모리는 426.18MiB로 약 85.82MiB의 여유를 확보했고 메모리 제한 이벤트·OOM·재시작은 0회였습니다. 서버 준비 시간은 약 74초였습니다. 다운로드·해시 검증·CSV 파싱의 파일 캐시 반환 최적화를 Render Dockerfile이 복사하는 백엔드 코드에 반영했습니다. [측정 근거](reports/r2_cache_memory_optimization_2026-10-19.md).
 
