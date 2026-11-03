@@ -866,8 +866,8 @@ export function insightAnnual(rows: GrowthRow[]): InsightProps {
       prev: complete[i],
       d: r.annual_installed_count - complete[i].annual_installed_count,
     }));
-  const up = [...changes].sort((a, b) => b.d - a.d)[0];
-  const down = [...changes].sort((a, b) => a.d - b.d)[0];
+  const up = changes.filter((c) => c.d > 0).sort((a, b) => b.d - a.d)[0];
+  const down = changes.filter((c) => c.d < 0).sort((a, b) => a.d - b.d)[0];
   const partial = rows.find((r) => r.is_partial_year);
   const lastC = complete[complete.length - 1];
   const findings: ReactNode[] = [];
@@ -911,10 +911,13 @@ export function insightAnnual(rows: GrowthRow[]): InsightProps {
       "연도라는 순서형 범주의 값 크기 비교이므로 세로 막대를 썼습니다. 부분 연도는 빗금으로 구분했습니다.",
     findings,
     interpretation:
-      peak && up ? (
+      peak && complete.length >= 2 ? (
         <>
-          설치량은 {up.r.year}년에 가장 크게 늘었고 {peak.year}년에 정점(
-          {fmtInt(peak.annual_installed_count)}기)이었습니다.
+          {up
+            ? `설치량은 ${up.r.year}년에 가장 크게 늘었습니다. `
+            : "선택 구간에서 증가한 해는 없습니다. "}
+          선택 구간의 최대 설치량은 {peak.year}년
+          {" "}{fmtInt(peak.annual_installed_count)}기였습니다.
           {lastC && lastC.year > peak.year
             ? ` 마지막 완료 연도 ${lastC.year}년은 정점의 ${pct(lastC.annual_installed_count, peak.annual_installed_count, 0)} 수준입니다.`
             : ""}{" "}

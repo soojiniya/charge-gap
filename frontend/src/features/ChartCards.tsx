@@ -571,7 +571,7 @@ export function OutputHistCard({ span = 12 }: { span?: Span }) {
 
 /* ======================= G8 지역 × 출력 구간 히트맵 ======================= */
 export const OUTPUT_BANDS = ['30kW 미만', '30–50', '50–100', '100–200', '200kW 이상', '미상'];
-function bandIndex(r: ChargerOutputRow) {
+export function bandIndex(r: ChargerOutputRow) {
   if (r.value_status !== 'positive_numeric' || r.output_kw === null) return 5;
   const k = r.output_kw;
   return k < 30 ? 0 : k < 50 ? 1 : k < 100 ? 2 : k < 200 ? 3 : 4;

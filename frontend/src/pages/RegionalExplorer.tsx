@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { PageHead } from '../components/layout/AppShell';
 import { FilterBar } from '../components/FilterBar';
 import { Card } from '../components/ui/Card';
@@ -6,13 +6,23 @@ import { QueryState } from '../components/ui/QueryState';
 import { DataTable, Pager } from '../components/ui/DataTable';
 import { StationMap, STATION_ZOOM, type MapView } from '../components/StationMap';
 import { ReportGallery } from '../components/ReportGallery';
+import { MapAnalysisPanel } from '../components/MapAnalysisPanel';
 import { RegionSystemNote } from '../components/DataNotes';
 import { useChargerRegions, useLocationsPage } from '../api/hooks';
 import { useFilters } from '../state/filters';
 import { fmtInt } from '../lib/format';
+import type { LocationRow } from '../api/types';
 import { RegionOutputHeatmapCard, StationChargerCard } from '../features/ChartCards';
 
-function StationList({ view }: { view: MapView | null }) {
+function StationList({
+  view,
+  selectedId,
+  onShowOnMap,
+}: {
+  view: MapView | null;
+  selectedId: string | null;
+  onShowOnMap: (row: LocationRow) => void;
+}) {
   const { chargerParams, state } = useFilters();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(20);
@@ -60,6 +70,7 @@ function StationList({ view }: { view: MapView | null }) {
           caption="충전소 목록"
           rows={rows}
           rowKey={(r) => r.station_id}
+          isSelected={(r) => r.station_id === selectedId}
           columns={[
             { key: 'id', header: '충전소 ID', render: (r) => <span className="num muted">{r.station_id}</span> },
             { key: 'name', header: '충전소명', render: (r) => r.station_name },
@@ -76,6 +87,22 @@ function StationList({ view }: { view: MapView | null }) {
                 <span className="muted">
                   {r.latitude.toFixed(5)}, {r.longitude.toFixed(5)}
                 </span>
+              ),
+            },
+            {
+              key: 'map',
+              header: <span className="sr-only">지도</span>,
+              render: (r) => (
+                <button
+                  type="button"
+                  className="btn btn-sm"
+                  aria-pressed={r.station_id === selectedId}
+                  aria-label={`${r.station_name} 지도에서 보기`}
+                  disabled={q.isFetching || q.isPlaceholderData}
+                  onClick={() => onShowOnMap(r)}
+                >
+                  지도
+                </button>
               ),
             },
           ]}
@@ -109,6 +136,37 @@ export function RegionalExplorerPage() {
   const regions = useChargerRegions(chargerParams);
   const rows = [...(regions.data?.data ?? [])].sort((a, b) => b.charger_count - a.charger_count);
   const [view, setView] = useState<MapView | null>(null);
+  const [selected, setSelected] = useState<LocationRow | null>(null);
+  const [group, setGroup] = useState<LocationRow[] | null>(null);
+  const [focusRequest, setFocusRequest] = useState(0);
+  const mapRef = useRef<HTMLDivElement>(null);
+
+  // 선택 충전소의 충전기 수는 필터 기준이므로, 충전기 필터가 바뀌면 선택을 해제합니다.
+  const filterKey = JSON.stringify(chargerParams);
+  useEffect(() => {
+    setSelected(null);
+    setGroup(null);
+  }, [filterKey]);
+  const selectOnMap = useCallback((row: LocationRow | null) => {
+    setSelected(row);
+    setGroup(null);
+  }, []);
+  const selectGroup = useCallback((rows: LocationRow[]) => {
+    setGroup(rows);
+    setSelected(null);
+  }, []);
+
+  const focusSelected = useCallback(() => setFocusRequest((n) => n + 1), []);
+  const showOnMap = useCallback((row: LocationRow) => {
+    setSelected(row);
+    setGroup(null);
+    setFocusRequest((n) => n + 1);
+    const el = mapRef.current;
+    if (el) {
+      const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    }
+  }, []);
 
   return (
     <>
@@ -122,10 +180,31 @@ export function RegionalExplorerPage() {
           span={12}
           title="전국 충전소 지도"
           reveal={false}
-          sub={`줌 ${STATION_ZOOM} 미만은 시도별 충전기 수 버블, 그 이상은 화면 영역(bbox)의 충전소 좌표를 1,000곳 단위로 불러옵니다.`}
+          sub={`줌 ${STATION_ZOOM} 미만은 시도별 충전소 수, 그 이상은 화면 영역(bbox)의 충전소 좌표를 1,000곳 단위로 불러와 묶음·개별 충전소로 표시합니다.`}
           scope={{ kind: 'filtered' }}
+          className="geo-card"
         >
-          <StationMap filters={chargerParams} onView={setView} onRegionSelect={(code) => update({ region: code })} />
+          <div className="geo-explorer" ref={mapRef}>
+            <StationMap
+              filters={chargerParams}
+              onView={setView}
+              onRegionSelect={(code) => update({ region: code })}
+              selected={selected}
+              onSelect={selectOnMap}
+              onSelectGroup={selectGroup}
+              focusRequest={focusRequest}
+            />
+            <MapAnalysisPanel
+              filters={chargerParams}
+              selected={selected}
+              group={group}
+              onPick={setSelected}
+              onClearGroup={() => setGroup(null)}
+              onClearSelection={() => setSelected(null)}
+              onFocusSelected={focusSelected}
+              onClearRegion={() => update({ region: undefined })}
+            />
+          </div>
         </Card>
 
         <RegionOutputHeatmapCard span={12} />
@@ -155,7 +234,7 @@ export function RegionalExplorerPage() {
           </Card>
         </div>
 
-        <StationList view={view} />
+        <StationList view={view} selectedId={selected?.station_id ?? null} onShowOnMap={showOnMap} />
         <ReportGallery ids={[4, 5, 10]} />
       </div>
     </>

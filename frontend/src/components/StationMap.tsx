@@ -1,43 +1,50 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { CircleMarker, MapContainer, Popup, TileLayer, Tooltip, useMap, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, ZoomControl, useMap, useMapEvents } from 'react-leaflet';
 import L, { type Map as LeafletMap } from 'leaflet';
 import { usePrefersReducedMotion } from '../lib/motion';
 import 'leaflet/dist/leaflet.css';
 import { useChargerRegions, useMapLocations } from '../api/hooks';
-import type { BBox, ChargerFilterParams, ChargerRegionRow, LocationRow } from '../api/types';
-import { fmtCompact, fmtInt } from '../lib/format';
+import type { BBox, ChargerFilterParams, LocationRow } from '../api/types';
+import { fmtInt } from '../lib/format';
 import { C } from '../charts/theme';
 import { ErrorState } from './ui/QueryState';
+import { MarkCanvasLayer, type Mark, type MarkLayerState, type RegionPoint } from './geo/MarkCanvasLayer';
+import { CLUSTER_OFF_ZOOM, REGION_SIZE_LEGEND } from './geo/cluster';
 
 /**
  * 배경 지도: OpenStreetMap 표준 타일 (인증키 불필요).
  * OSM 타일 이용 정책에 따라 출처 표시를 유지하고, 대량 다운로드·사전 캐싱을 하지 않습니다.
- * 어두운 화면에 맞추려고 CSS 필터로 색만 반전·감쇠합니다(타일 원본은 변경하지 않음).
+ * "어둡게"는 CSS 필터로 색만 반전·감쇠하고(타일 원본은 변경하지 않음), "원본"은 필터 없이 그대로 보여 줍니다.
  * 다른 타일 서버를 쓰려면 .env의 VITE_TILE_URL을 지정합니다.
  */
 const OSM_TILE_URL = (import.meta.env.VITE_TILE_URL as string | undefined) || 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+const OSM_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors';
 
 /** 이 줌 이상에서만 /api/locations로 충전소 좌표를 요청합니다 (요청당 최대 1,000곳). */
 export const STATION_ZOOM = 11;
 /** 지도 이동 한 번에 자동으로 이어 받는 최대 페이지 수 (1,000곳 × 3). 이후는 버튼으로 이어 받기. */
 const AUTO_PAGES = 3;
+/** 목록에서 고른 충전소로 이동할 때의 줌 (개별 충전소가 보이는 줌) */
+const FOCUS_ZOOM = CLUSTER_OFF_ZOOM;
 
 /**
- * 시도 버블을 놓을 화면 표시용 대표 지점(대략적인 행정 중심). 통계값이 아니며,
- * 버블 크기만 /api/charger-regions의 실제 충전기 수를 사용합니다.
+ * 시도 집계 원을 놓을 화면 표시용 대표 지점. 통계값이 아니며, 원 크기와 숫자만
+ * /api/charger-regions의 실제 충전소 수를 사용합니다. 전국 화면에서 원이 겹치지 않도록
+ * 수도권(서울·인천·경기)과 충청권(세종·대전·충남·충북)은 각 시도 관할 안에서 서로 떨어진 지점을 씁니다.
  */
 const REGION_ANCHORS: Record<string, [number, number]> = {
   '11': [37.5665, 126.978],
   '12': [34.95, 126.85],
   '26': [35.1796, 129.0756],
   '27': [35.8714, 128.6014],
-  '28': [37.4563, 126.7052],
-  '30': [36.3504, 127.3845],
+  '28': [37.45, 126.35],
+  '30': [36.3, 127.42],
   '31': [35.5384, 129.3114],
-  '36': [36.48, 127.289],
-  '41': [37.28, 127.45],
-  '43': [36.8, 127.7],
-  '44': [36.55, 126.8],
+  '36': [36.66, 127.25],
+  '41': [37.15, 127.55],
+  '43': [36.62, 127.85],
+  '44': [36.5, 126.62],
   '47': [36.4, 128.75],
   '48': [35.3, 128.25],
   '50': [33.38, 126.55],
@@ -49,6 +56,8 @@ export interface MapView {
   bbox: BBox;
   zoom: number;
 }
+
+type Basemap = 'dark' | 'light' | 'off';
 
 const roundBBox = (b: BBox): BBox => b.map((v) => Math.round(v * 1000) / 1000) as BBox;
 
@@ -87,41 +96,98 @@ const KOREA_BOUNDS: [[number, number], [number, number]] = [
   [38.65, 130.95],
 ];
 
-/** 오른쪽 위 안내 상자(HUD)에 가리지 않도록 그만큼 여백을 두고 대한민국 범위에 맞춥니다. */
+/** 지도 위 안내 줄·범례에 가리지 않도록 위아래 여백을 두고 대한민국 범위에 맞춥니다. */
 export function fitKorea(map: LeafletMap) {
-  const w = map.getContainer().clientWidth;
-  const hud = w >= 760 ? Math.min(380, w * 0.4) : 0;
-  map.fitBounds(KOREA_BOUNDS, { paddingTopLeft: [16, 16], paddingBottomRight: [hud + 16, 16], animate: false });
+  const bar = map.getContainer().parentElement?.querySelector<HTMLElement>('.geo-topbar');
+  const top = (bar ? bar.offsetTop + bar.offsetHeight : 0) + 12;
+  map.fitBounds(KOREA_BOUNDS, { paddingTopLeft: [16, top], paddingBottomRight: [16, 16], animate: false });
 }
 
+/** 지도 준비, 확대·축소 막대에 "전국 보기" 버튼 추가 */
 function MapRef({ onReady }: { onReady: (m: LeafletMap) => void }) {
   const map = useMap();
   useEffect(() => {
     fitKorea(map);
     onReady(map);
+    // 확대·축소 막대(ZoomControl, 앞 형제라 먼저 붙음)에 세 번째 버튼으로 붙입니다.
+    const bar = map.getContainer().querySelector<HTMLElement>('.leaflet-control-zoom');
+    if (!bar) return undefined;
+    const home = L.DomUtil.create('a', 'leaflet-control-zoom-home', bar);
+    home.href = '#';
+    home.setAttribute('role', 'button');
+    home.title = '전국 보기';
+    home.setAttribute('aria-label', '전국 보기');
+    home.innerHTML =
+      '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M2 8.5h2m8 0h2M8 2.5v2m0 8v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="8.5" r="3.2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>';
+    L.DomEvent.disableClickPropagation(home);
+    L.DomEvent.on(home, 'click', (e) => {
+      L.DomEvent.preventDefault(e);
+      fitKorea(map);
+    });
+    return () => {
+      home.remove();
+    };
   }, [map, onReady]);
   return null;
 }
 
-function stationColor(s: LocationRow) {
-  return s.not_deleted_charger_count > 0 ? C.s1 : C.s2;
+/** 캔버스 클러스터 레이어를 지도에 붙이고 상태를 전달합니다. */
+function MarkLayer({
+  state,
+  onMarkClick,
+  onHover,
+}: {
+  state: MarkLayerState;
+  onMarkClick: (m: Mark) => void;
+  onHover: (m: Mark | null, x: number, y: number) => void;
+}) {
+  const map = useMap();
+  const layer = useMemo(() => new MarkCanvasLayer({ onMarkClick, onHover }), []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    layer.addTo(map);
+    return () => {
+      layer.remove();
+    };
+  }, [layer, map]);
+  useEffect(() => layer.setHandlers({ onMarkClick, onHover }), [layer, onMarkClick, onHover]);
+  useEffect(() => layer.setState(state), [layer, state]);
+  return null;
 }
 
 interface Props {
   filters: ChargerFilterParams;
   onView: (v: MapView) => void;
   onRegionSelect: (code: string) => void;
+  /** 선택한 충전소 (페이지가 관리, 목록·패널과 공유) */
+  selected?: LocationRow | null;
+  onSelect?: (row: LocationRow | null) => void;
+  /** 같은 대표 좌표에 겹친 충전소 묶음을 누르면 그 목록을 전달 (더 확대해도 나뉘지 않으므로) */
+  onSelectGroup?: (rows: LocationRow[]) => void;
+  /** 값이 바뀔 때마다 선택한 충전소 위치로 이동 (목록의 "지도" 버튼) */
+  focusRequest?: number;
 }
 
-export function StationMap({ filters, onView, onRegionSelect }: Props) {
+interface Hover {
+  mark: Mark;
+  x: number;
+  y: number;
+  /** 지도 크기 (가장자리에서 말풍선을 반대쪽으로 뒤집기용) */
+  w: number;
+  h: number;
+}
+
+export function StationMap({ filters, onView, onRegionSelect, selected = null, onSelect, onSelectGroup, focusRequest = 0 }: Props) {
   const [view, setView] = useState<MapView | null>(null);
   const [map, setMap] = useState<LeafletMap | null>(null);
   const stationMode = (view?.zoom ?? 0) >= STATION_ZOOM;
-  const [basemap, setBasemap] = useState(true);
+  const [basemap, setBasemap] = useState<Basemap>('dark');
+  const [legendOpen, setLegendOpen] = useState(true);
+  // 좁은 지도(모바일)에서는 범례를 접어 두고 시작합니다.
+  useEffect(() => {
+    if (map && map.getSize().x < 640) setLegendOpen(false);
+  }, [map]);
+  const [hover, setHover] = useState<Hover | null>(null);
   const reduced = usePrefersReducedMotion();
-  // 시도 버블 16개만 SVG로 그려 호버·선택 상태를 CSS 전환(160ms)으로 부드럽게 표시. 충전소 점은 성능을 위해 캔버스 유지
-  const bubbleRenderer = useMemo(() => L.svg({ padding: 0.3 }), []);
-  const [hoverRegion, setHoverRegion] = useState<string | null>(null);
 
   const regions = useChargerRegions(filters);
   const locs = useMapLocations(filters, view?.bbox ?? null, stationMode);
@@ -139,14 +205,85 @@ export function StationMap({ filters, onView, onRegionSelect }: Props) {
     }
   }, [stationMode, locs.hasNextPage, locs.isFetchingNextPage, locs.isError, pages.length, locs]);
 
-  const maxRegion = Math.max(1, ...(regions.data?.data ?? []).map((r) => r.charger_count));
+  const regionPoints = useMemo<RegionPoint[]>(
+    () =>
+      (regions.data?.data ?? []).flatMap((row) => {
+        const a = REGION_ANCHORS[row.region_code];
+        return a ? [{ row, lat: a[0], lng: a[1] }] : [];
+      }),
+    [regions.data],
+  );
+
+  const layerState = useMemo(
+    () => ({
+      mode: stationMode ? ('stations' as const) : ('regions' as const),
+      regions: regionPoints,
+      stations: stationMode ? stations : [],
+      selectedRegion: filters.region_code ?? null,
+      selectedStation: selected,
+    }),
+    [stationMode, regionPoints, stations, filters.region_code, selected],
+  );
+
+  // 목록에서 "지도"를 누르면 선택한 충전소로 이동
+  useEffect(() => {
+    if (!focusRequest || !map || !selected) return;
+    const target: [number, number] = [selected.latitude, selected.longitude];
+    const zoom = Math.max(map.getZoom(), FOCUS_ZOOM);
+    if (reduced) map.setView(target, zoom, { animate: false });
+    else map.flyTo(target, zoom, { duration: 0.7 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusRequest, map]);
+
   const handleView = (v: MapView) => {
     setView(v);
     onView(v);
+    setHover(null);
   };
 
+  const onMarkClick = useMemo(
+    () => (m: Mark) => {
+      if (!map) return;
+      if (m.kind === 'region') {
+        onRegionSelect(m.row.region_code);
+        const zoom = Math.max(map.getZoom(), 9);
+        if (reduced) map.setView([m.lat, m.lng], zoom, { animate: false });
+        else map.flyTo([m.lat, m.lng], zoom, { duration: 0.6 });
+      } else if (m.kind === 'cluster') {
+        const c = m.cluster;
+        const nextZoom = Math.min(18, Math.max(map.getZoom() + 2, STATION_ZOOM));
+        if (m.stack) {
+          // 모두 같은 좌표: 확대해도 나뉘지 않으므로 목록을 패널에 보여 줍니다.
+          onSelectGroup?.(c.members);
+          if (map.getZoom() < CLUSTER_OFF_ZOOM) map.setView([c.lat, c.lng], CLUSTER_OFF_ZOOM, { animate: !reduced });
+        } else {
+          map.fitBounds(
+            [
+              [c.south, c.west],
+              [c.north, c.east],
+            ],
+            { padding: [48, 48], maxZoom: Math.max(nextZoom, CLUSTER_OFF_ZOOM), animate: !reduced },
+          );
+        }
+      } else {
+        onSelect?.(m.row);
+      }
+    },
+    [map, onRegionSelect, onSelect, onSelectGroup, reduced],
+  );
+  const onHover = useMemo(
+    () => (m: Mark | null, x: number, y: number) => {
+      const size = map?.getSize();
+      setHover(m && size ? { mark: m, x, y, w: size.x, h: size.y } : null);
+    },
+    [map],
+  );
+
+  const loadedRatio = totalInView ? Math.min(1, stations.length / totalInView) : 0;
+  const zoomLabel = view ? view.zoom.toFixed(view.zoom % 1 ? 2 : 0) : '—';
+
   return (
-    <div className="map-wrap">
+    <div className="geo-map map-wrap" data-map-mode={stationMode ? 'stations' : 'regions'} data-basemap={basemap}>
       <MapContainer
         bounds={KOREA_BOUNDS}
         boundsOptions={{ padding: [16, 16] }}
@@ -155,173 +292,200 @@ export function StationMap({ filters, onView, onRegionSelect }: Props) {
         maxZoom={18}
         preferCanvas
         scrollWheelZoom
+        // 좁은 화면에서 위쪽 안내 줄 아래로 전국을 맞출 수 있도록 여유를 둔 이동 한계
         maxBounds={[
-          [32, 123],
-          [39.8, 132.5],
+          [30.5, 121.5],
+          [41, 134],
         ]}
         attributionControl
+        zoomControl={false}
       >
+        <ZoomControl position="bottomright" zoomInTitle="확대" zoomOutTitle="축소" />
         <MapRef onReady={setMap} />
-        {basemap && (
+        {basemap !== 'off' && (
           <TileLayer
-            className="osm-dark"
+            key={basemap}
+            className={basemap === 'dark' ? 'osm-dark' : 'osm-light'}
             url={OSM_TILE_URL}
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors'
+            attribution={OSM_ATTRIBUTION}
             maxZoom={19}
           />
         )}
         <ViewWatcher onChange={handleView} />
-
-        {!stationMode &&
-          (regions.data?.data ?? []).map((r: ChargerRegionRow) => {
-            const anchor = REGION_ANCHORS[r.region_code];
-            if (!anchor) return null;
-            const radius = 8 + Math.sqrt(r.charger_count / maxRegion) * 34;
-            const selected = filters.region_code === r.region_code;
-            return (
-              <CircleMarker
-                key={r.region_code}
-                center={anchor}
-                radius={radius}
-                renderer={bubbleRenderer}
-                pathOptions={{
-                  className: 'region-bubble',
-                  color: selected ? C.compare : hoverRegion === r.region_code ? '#d8d3ee' : C.s1,
-                  weight: selected ? 2.2 : hoverRegion === r.region_code ? 1.6 : 1,
-                  fillColor: selected ? C.compare : C.s1,
-                  fillOpacity: selected ? 0.42 : hoverRegion === r.region_code ? 0.52 : 0.3,
-                }}
-                eventHandlers={{
-                  mouseover: () => setHoverRegion(r.region_code),
-                  mouseout: () => setHoverRegion((h) => (h === r.region_code ? null : h)),
-                  click: () => {
-                    onRegionSelect(r.region_code);
-                    if (reduced) map?.setView(anchor, Math.max(map.getZoom(), 9), { animate: false });
-                    else map?.flyTo(anchor, Math.max(map.getZoom(), 9), { duration: 0.6 });
-                  },
-                }}
-              >
-                <Tooltip direction="center" permanent className="region-bubble-label">
-                  {fmtCompact(r.charger_count)}
-                </Tooltip>
-                <Popup>
-                  <div className="pop-title">{r.region_code === '12' ? `${r.region_name} (광주+전남 통합)` : r.region_name}</div>
-                  <div className="pop-row">
-                    충전기 <b>{fmtInt(r.charger_count)}기</b>
-                  </div>
-                  <div className="pop-row">
-                    충전소 <b>{fmtInt(r.station_count)}곳</b>
-                  </div>
-                  <div className="pop-row">
-                    삭제 표시 <b>{fmtInt(r.deleted_charger_count)}기</b>
-                  </div>
-                </Popup>
-              </CircleMarker>
-            );
-          })}
-
-        {stationMode &&
-          stations.map((s) => (
-            <CircleMarker
-              key={s.station_id}
-              center={[s.latitude, s.longitude]}
-              radius={Math.min(11, 3 + Math.sqrt(s.charger_count) * 1.3)}
-              pathOptions={{ color: C.surface, weight: 1, fillColor: stationColor(s), fillOpacity: 0.85 }}
-            >
-              <Popup>
-                <div className="pop-title">{s.station_name}</div>
-                <div className="muted" style={{ marginBottom: 6 }}>
-                  {s.address}
-                </div>
-                <div className="pop-row">
-                  필터 일치 충전기 <b>{fmtInt(s.charger_count)}기</b>
-                </div>
-                <div className="pop-row">
-                  비삭제 / 삭제 표시{' '}
-                  <b>
-                    {fmtInt(s.not_deleted_charger_count)} / {fmtInt(s.deleted_charger_count)}
-                  </b>
-                </div>
-                <div className="pop-row">
-                  지역 <b>{s.region_name}</b>
-                </div>
-                <div className="pop-row">
-                  충전소 ID <b>{s.station_id}</b>
-                </div>
-              </Popup>
-            </CircleMarker>
-          ))}
+        <MarkLayer state={layerState} onMarkClick={onMarkClick} onHover={onHover} />
       </MapContainer>
 
-      <div className="map-basemap-toggle">
-        <div className="segmented" role="group" aria-label="배경 지도" style={{ height: 30 }}>
-          <button type="button" aria-pressed={basemap} onClick={() => setBasemap(true)}>
-            배경 지도
-          </button>
-          <button type="button" aria-pressed={!basemap} onClick={() => setBasemap(false)}>
-            끄기
-          </button>
-        </div>
-      </div>
-      <div className="map-hud" aria-live="polite">
-        {!stationMode ? (
-          <>
-            <div>
-              시도별 충전기 수를 버블 크기로 표시합니다. 버블을 누르면 그 지역으로 필터합니다.
-              {regions.isFetching && ' (갱신 중)'}
-            </div>
-            <div className="muted">
-              버블 위치는 표시용 대표 지점입니다. 지도를 줌 {STATION_ZOOM} 이상으로 확대하면 화면 영역의 충전소 좌표를 불러옵니다.
-            </div>
-            <div className="row">
-              <button
-                type="button"
-                className="btn btn-sm btn-primary"
-                disabled={!map}
-                onClick={() => map && map.setZoom(STATION_ZOOM)}
-              >
-                이 위치 충전소 보기
-              </button>
-            </div>
-            {regions.isError && <ErrorState error={regions.error} onRetry={() => regions.refetch()} height={80} />}
-          </>
-        ) : locs.isError ? (
-          <ErrorState error={locs.error} onRetry={() => locs.refetch()} height={80} />
-        ) : (
-          <>
-            <div>
-              화면 영역 충전소 <b>{fmtInt(stations.length)}</b> / <b>{fmtInt(totalInView)}</b>곳 표시
-              {matched && <> (일치 충전기 {fmtInt(matched.charger_count)}기)</>}
-            </div>
-            <div className="map-progress" aria-hidden="true">
-              <i style={{ width: `${totalInView ? (stations.length / totalInView) * 100 : 0}%` }} />
-            </div>
-            <div className="legend">
-              <span className="legend-item">
-                <span className="swatch" style={{ background: C.s1, borderRadius: '50%' }} />
-                비삭제 충전기 있음
+      {/* 위쪽: 상태 줄(왼쪽) + 배경 지도 선택(오른쪽) */}
+      <div className="geo-topbar">
+        <div className="geo-status" aria-live="polite">
+          {!stationMode ? (
+            regions.isError ? (
+              <ErrorState error={regions.error} onRetry={() => regions.refetch()} height={72} />
+            ) : (
+              <>
+                <span className="geo-status-mode">시도 집계</span>
+                <span className="geo-status-text">
+                  {regions.isLoading ? (
+                    '집계 불러오는 중…'
+                  ) : (
+                    <>
+                      숫자 = 충전소 수 · 줌 {STATION_ZOOM}부터 개별 충전소
+                      {regions.isFetching && ' (갱신 중)'}
+                    </>
+                  )}
+                </span>
+                <button type="button" className="btn btn-sm btn-primary" disabled={!map} onClick={() => map && map.setZoom(STATION_ZOOM)}>
+                  이 위치 충전소 보기
+                </button>
+              </>
+            )
+          ) : locs.isError ? (
+            <ErrorState error={locs.error} onRetry={() => locs.refetch()} height={72} />
+          ) : (
+            <>
+              <span className="geo-status-mode">{(view?.zoom ?? 0) >= CLUSTER_OFF_ZOOM ? '개별 충전소' : '충전소 묶음'}</span>
+              <span className="geo-status-text">
+                {locs.isLoading ? (
+                  '화면 영역 충전소 불러오는 중…'
+                ) : totalInView === 0 ? (
+                  '이 영역에 조건과 일치하는 충전소가 없습니다.'
+                ) : (
+                  <>
+                    화면 영역 <b className="num">{fmtInt(stations.length)}</b> / <b className="num">{fmtInt(totalInView)}</b>곳 불러옴
+                    {matched && <span className="muted"> · 일치 충전기 {fmtInt(matched.charger_count)}기</span>}
+                  </>
+                )}
               </span>
-              <span className="legend-item">
-                <span className="swatch" style={{ background: C.s2, borderRadius: '50%' }} />
-                모두 삭제 표시
-              </span>
-            </div>
-            <div className="row">
-              {locs.isFetching && <span className="muted">불러오는 중…</span>}
-              {!locs.isFetching && totalInView === 0 && <span className="muted">이 영역에 일치하는 충전소가 없습니다.</span>}
+              {locs.isFetching && !locs.isLoading && <span className="muted small">불러오는 중…</span>}
               {locs.hasNextPage && !locs.isFetchingNextPage && pages.length >= AUTO_PAGES && (
                 <button type="button" className="btn btn-sm" onClick={() => locs.fetchNextPage()}>
                   다음 1,000곳 불러오기
                 </button>
               )}
-              <button type="button" className="btn btn-sm btn-ghost" disabled={!map} onClick={() => map && fitKorea(map)}>
-                전국 보기
-              </button>
-            </div>
-            <div className="muted">충전소마다 대표 좌표 한 점입니다. 크기는 필터 일치 충전기 수입니다.</div>
-          </>
+              {totalInView > 0 && (
+                <span className="map-progress geo-progress" aria-hidden="true">
+                  <i style={{ width: `${loadedRatio * 100}%` }} />
+                </span>
+              )}
+            </>
+          )}
+        </div>
+        <div className="segmented geo-basemap" role="group" aria-label="배경 지도">
+          {(
+            [
+              ['dark', '어둡게'],
+              ['light', '원본'],
+              ['off', '끄기'],
+            ] as const
+          ).map(([key, label]) => (
+            <button key={key} type="button" aria-pressed={basemap === key} onClick={() => setBasemap(key)}>
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 아래 왼쪽: 범례 */}
+      <div className={`geo-legend${legendOpen ? '' : ' is-collapsed'}`}>
+        <button type="button" className="geo-legend-toggle" aria-expanded={legendOpen} onClick={() => setLegendOpen((o) => !o)}>
+          범례 <span className="muted num">줌 {zoomLabel}</span>
+        </button>
+        {legendOpen && (
+          <ul className="geo-legend-list">
+            {!stationMode ? (
+              <>
+                <li>
+                  <span className="geo-key geo-key-count">12</span>
+                  {REGION_SIZE_LEGEND}
+                </li>
+                <li>
+                  <span className="geo-key geo-key-count is-selected">3</span>
+                  선택한 지역
+                </li>
+                <li className="muted">원 위치는 표시용 대표 지점입니다.</li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <span className="geo-key geo-key-count">8</span>
+                  {(view?.zoom ?? 0) < CLUSTER_OFF_ZOOM ? '충전소 묶음 (불러온 충전소 수)' : '같은 위치의 충전소 묶음'}
+                </li>
+                <li>
+                  <span className="geo-key geo-key-dot" style={{ background: C.s1 }} />
+                  비삭제 충전기 있음
+                </li>
+                <li>
+                  <span className="geo-key geo-key-dot" style={{ background: C.s2 }} />
+                  모두 삭제 표시
+                </li>
+                <li>
+                  <span className="geo-key geo-key-ring" />
+                  선택한 충전소
+                </li>
+                <li className="muted">점 크기 = 필터 일치 충전기 수 · 위치 = 대표 좌표</li>
+              </>
+            )}
+          </ul>
         )}
       </div>
+
+      {hover && <MapTooltip hover={hover} />}
+    </div>
+  );
+}
+
+function MapTooltip({ hover }: { hover: Hover }) {
+  const { mark, x, y, w, h } = hover;
+  let body;
+  if (mark.kind === 'region') {
+    const r = mark.row;
+    body = (
+      <>
+        <div className="pop-title">{r.region_code === '12' ? `${r.region_name} (광주+전남 통합)` : r.region_name}</div>
+        <div className="pop-row">
+          충전소 <b>{fmtInt(r.station_count)}곳</b>
+        </div>
+        <div className="pop-row">
+          충전기 <b>{fmtInt(r.charger_count)}기</b>
+        </div>
+        <div className="muted">누르면 이 지역으로 필터합니다.</div>
+      </>
+    );
+  } else if (mark.kind === 'cluster') {
+    body = (
+      <>
+        <div className="pop-title">
+          충전소 {fmtInt(mark.cluster.members.length)}곳{mark.stack && ' (같은 위치)'}
+        </div>
+        <div className="pop-row">
+          필터 일치 충전기 <b>{fmtInt(mark.chargers)}기</b>
+        </div>
+        <div className="muted">{mark.stack ? '누르면 오른쪽 패널에 목록을 표시합니다.' : '누르면 확대합니다.'}</div>
+      </>
+    );
+  } else {
+    const s = mark.row;
+    body = (
+      <>
+        <div className="pop-title">{s.station_name}</div>
+        <div className="pop-row">
+          필터 일치 충전기 <b>{fmtInt(s.charger_count)}기</b>
+        </div>
+        <div className="muted">누르면 오른쪽 패널에 상세를 표시합니다.</div>
+      </>
+    );
+  }
+  return (
+    <div
+      className="geo-tooltip"
+      role="tooltip"
+      style={{
+        left: Math.round(x),
+        top: Math.round(y),
+        transform: `translate(${x > w - 260 ? 'calc(-100% - 14px)' : '14px'}, ${y > h - 150 ? 'calc(-100% - 14px)' : '14px'})`,
+      }}
+    >
+      {body}
     </div>
   );
 }

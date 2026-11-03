@@ -134,7 +134,6 @@ export function useLocationsPage(f: ChargerFilterParams, page: number, limit: nu
   return useQuery({
     queryKey: ['locations-page', norm(f), page, limit, bbox],
     queryFn: ({ signal }) => api.locations({ ...f, page, limit, bbox }, signal),
-    placeholderData: keepPreviousData,
   });
 }
 
