@@ -13,6 +13,7 @@ import { useFilters } from '../state/filters';
 import { fmtInt } from '../lib/format';
 import type { LocationRow } from '../api/types';
 import { RegionOutputHeatmapCard, StationChargerCard } from '../features/ChartCards';
+import { RegionCompareSection } from '../features/RegionCompare';
 
 function StationList({
   view,
@@ -172,7 +173,7 @@ export function RegionalExplorerPage() {
     <>
       <PageHead
         title="Regional Explorer"
-        lede="16개 시도(2026 체계)의 충전기 분포를 지도, 출력 구성 히트맵, 충전소 규모 산점도로 함께 비교합니다."
+        lede="16개 시도(2026 체계)의 충전기 분포를 지도, 두 지역 비교, 출력 구성 히트맵, 충전소 규모 산점도로 함께 비교합니다."
       />
       <FilterBar />
       <div className="grid">
@@ -206,6 +207,8 @@ export function RegionalExplorerPage() {
             />
           </div>
         </Card>
+
+        <RegionCompareSection />
 
         <RegionOutputHeatmapCard span={12} />
         <StationChargerCard span={7} height={360} />

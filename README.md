@@ -5,7 +5,9 @@ CHARGE GAP은 대한민국 전기차 보급 현황과 충전 인프라를 분석
 
 소스 코드는 GitHub에서 관리하며, Render 배포 설정(`render.yaml`, `deploy/render/`)이 준비되어 있습니다.
 
-배포 주소: https://charge-gap.onrender.com — **실제 서비스 생성·접속 상태는 저장소 안에서 확인되지 않았습니다(2026-10-31 기준).** 공개 여부와 동작은 Render 대시보드와 실제 접속으로 확인하세요. 아래 [무료 인터넷 배포 준비](#무료-인터넷-배포-준비) 절의 확인 항목도 참고하세요.
+배포 주소: https://charge-gap.onrender.com (Render Static Site), API: https://charge-gap-api.onrender.com (Render Docker Web Service).
+
+**2026-11-04 실제 접속 확인(읽기 전용):** 공개 주소에서 5개 페이지가 열리고 직접 URL(`/regional-explorer` 등) 접근이 200으로 응답하며, 화면이 위 API에 연결되어 데이터가 표시되고, 정적 사이트 보안 헤더(CSP·X-Frame-Options·Referrer-Policy·X-Content-Type-Options)가 전송되는 것을 확인했습니다. Render 대시보드 설정(서비스 생성 방식, 환경변수, 배포된 커밋)은 저장소 밖이라 확인하지 않았습니다. 무료 플랜이라 유휴 후 첫 접속은 서버 기동으로 지연될 수 있습니다. 공개 접속이 가능하다는 사실이 아래 [데이터 공개 조건](#공개-조건-확인-필요)의 확정을 뜻하지는 않습니다.
 
 전기차 등록 데이터: 2026년 9월 기준
 
@@ -24,6 +26,7 @@ CHARGE GAP은 대한민국 전기차 보급 현황과 충전 인프라를 분석
 - **Overview / EV Registration / Charging Infrastructure / Regional Explorer / Growth Trends**의 5개 페이지.
 - 지역·충전기 유형·삭제 표시·운영기관 필터, URL 쿼리 기반 필터, 초기화·데이터 표·페이지네이션.
 - 실제 API 기반 분석 설명, 툴팁·그래프 확대·애니메이션, 충전소 bbox 지도 조회.
+- Regional Explorer의 두 지역 비교: 전기차 등록(2026-09)과 충전 인프라(2026-10-15)를 각각 같은 기준일 자료끼리 비교(차이·%p·배수·순위). 등록 대수와 충전기 수를 서로 나눈 지표는 만들지 않습니다.
 - Flask 조회 API 10개, 박스플롯 집계·위치 조회 제한·요청 검증·JSON 오류 처리.
 - Python: Pandas·NumPy·Matplotlib·Seaborn / 웹: React·TypeScript·Vite·Recharts·Leaflet / 실행: Waitress·Nginx·Docker Compose.
 
@@ -144,11 +147,11 @@ npm run dev
 
 `npm run build`는 production 빌드라서 `VITE_API_BASE_URL`이 비어 있거나 localhost를 가리키면 **빌드가 실패**합니다. 배포용으로는 실제 백엔드 HTTPS origin(또는 Compose의 `/backend`)을 지정합니다. 로컬 미리보기용 빌드만 `CHARGE_GAP_ALLOW_LOCAL_API_BUILD=1`을 함께 지정합니다(PowerShell: `$env:CHARGE_GAP_ALLOW_LOCAL_API_BUILD='1'; npm run build`).
 
-브라우저 회귀 테스트 `frontend/tests/keyboard.browser.cjs`·`navigation.browser.cjs`·`url-filters.browser.cjs`·`api-errors.browser.cjs`·`server-wake.browser.cjs`(서버 절전 복귀, 실제 시간 약 3.5분)는 Playwright `page`를 받는 모듈입니다. 로컬 백엔드·프론트엔드를 실행한 뒤 별도 Playwright 스크립트에서 `await require('./frontend/tests/navigation.browser.cjs')(page, 'http://127.0.0.1:5173')`처럼 호출합니다. Playwright는 프로젝트 의존성에 포함하지 않았습니다. 기존 폰트 자산 경고는 유지되며, 실제 공개 호스팅의 HTTPS·CORS는 별도 실접속 검증 대상입니다. 2026-10-19 배포 준비 기록: [최종 GitHub·Render 준비 결과와 전체 파일 목록](reports/github_render_final_readiness_2026-10-19.md).
+브라우저 회귀 테스트 `frontend/tests/keyboard.browser.cjs`·`navigation.browser.cjs`·`url-filters.browser.cjs`·`api-errors.browser.cjs`·`region-compare.browser.cjs`(두 지역 비교)·`server-wake.browser.cjs`(서버 절전 복귀, 실제 시간 약 3.5분)는 Playwright `page`를 받는 모듈입니다. 로컬 백엔드·프론트엔드를 실행한 뒤 별도 Playwright 스크립트에서 `await require('./frontend/tests/navigation.browser.cjs')(page, 'http://127.0.0.1:5173')`처럼 호출합니다. Playwright는 프로젝트 의존성에 포함하지 않았습니다. 기존 폰트 자산 경고는 유지되며, 실제 공개 호스팅의 HTTPS·CORS는 별도 실접속 검증 대상입니다. 2026-10-19 배포 준비 기록: [최종 GitHub·Render 준비 결과와 전체 파일 목록](reports/github_render_final_readiness_2026-10-19.md).
 
 ## 무료 인터넷 배포 준비
 
-이 절은 2026-10-19 배포 준비 시점의 기록입니다. 이후 실제 Render 서비스 생성·공개 여부는 저장소에서 확인되지 않으므로 Render 대시보드에서 확인하세요.
+이 절은 2026-10-19 배포 준비 시점의 기록입니다. 이후 Render 서비스가 생성되어 2026-11-04 기준 공개 주소로 접속·동작하는 것을 확인했습니다(상단 [프로젝트 배포 현황](#프로젝트-배포-현황) 참고). 서비스 설정 자체는 Render 대시보드에서 확인하세요.
 
 구조는 **Render Static Site(React) + Free Docker Web Service(Flask) + 승인된 private S3 호환 저장소**입니다. 로컬 Compose/18080 설정과 분리해 `render.yaml`, `deploy/render/Dockerfile` 및 시작 시 검증 다운로드를 준비했습니다. CSV·메타데이터·기존 PNG 10개 총 14파일(231.287MiB)은 이미지에 포함하지 않습니다.
 
@@ -158,9 +161,9 @@ npm run dev
 
 R2 private 버킷에 14개 파일 업로드·검증과 읽기 전용 자격증명 교체는 완료됐습니다. 현재 객체는 버킷 루트의 manifest 상대 경로에 있으므로 `CHARGE_GAP_S3_PREFIX`는 **비워 둡니다**. 실제 비밀값은 Render 서버 환경 설정에만 입력합니다. R2는 종량제이며 계정 전체 무료 사용량 안에서 월 $0를 예상하되 무제한 무료를 보장하지 않습니다. Render Free의 유휴 종료 후에는 재다운로드·초기화 지연이 있습니다.
 
-EV 자료의 공식 첨부 목록과 통계누리 이용정책, 충전기 설치 추이의 공식 대응 표를 확인했습니다. 개별 파일·표에 적용되는 공개 이용 조건의 최종 확인은 남아 있습니다. 데이터와 파생 그래프의 공개 허용을 확정하기 전에는 인터넷 공개 배포를 진행하지 않습니다. [출처·이용 조건 확인 기록](docs/DATA_SOURCE_RIGHTS.md).
+EV 자료의 공식 첨부 목록과 통계누리 이용정책, 충전기 설치 추이의 공식 대응 표를 확인했습니다. 개별 파일·표에 적용되는 공개 이용 조건의 최종 확인은 **아직 남아 있습니다(미확인).** 사이트는 이미 공개 접속이 가능한 상태이지만, 데이터와 파생 그래프·보고서의 공개 이용 허락이 확정된 것은 아닙니다. [출처·이용 조건 확인 기록](docs/DATA_SOURCE_RIGHTS.md).
 
-**2026-10-19 기록 기준으로는 Render 서비스 생성 전이었습니다. 현재 배포 상태는 확인되지 않았습니다.** 실제 환경변수·실행 방법·단계별 사용자 작업은 [공개 배포 준비 안내](docs/RENDER_DEPLOYMENT.md)를 참고하세요. GitHub에는 CSV·Excel·자격증명을 올리지 않으며, clone만으로 데이터가 제공되지는 않습니다. 로컬 실행에는 별도 승인된 데이터 공급이, Render 실행에는 비공개 R2 읽기 권한이 필요합니다.
+2026-10-19 기록 시점에는 Render 서비스 생성 전이었고, 2026-11-04에는 정적 사이트와 API가 공개 주소에서 응답하는 것을 확인했습니다. 실제 환경변수·실행 방법·단계별 사용자 작업은 [공개 배포 준비 안내](docs/RENDER_DEPLOYMENT.md)를 참고하세요. GitHub에는 CSV·Excel·자격증명을 올리지 않으며, clone만으로 데이터가 제공되지는 않습니다. 로컬 실행에는 별도 승인된 데이터 공급이, Render 실행에는 비공개 R2 읽기 권한이 필요합니다.
 
 ## 구조와 공개 준비
 

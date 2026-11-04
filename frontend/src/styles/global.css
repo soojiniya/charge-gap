@@ -3224,3 +3224,292 @@ var(--panel);
 .insight-interp .sentence-line + .sentence-line {
   margin-top: 2px;
 }
+
+/* ================= 두 지역 비교 (Regional Explorer) =================
+   지역 A = 라벤더(--point), 지역 B = 청록(--compare). 막대는 장식이며 수치는 같은 행의 텍스트·표에 있습니다. */
+.cmp-a { --cmp: var(--point); --cmp-soft: var(--point-soft); }
+.cmp-b { --cmp: var(--compare); --cmp-soft: var(--compare-soft); }
+.cmp-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--cmp, var(--point));
+  flex: none;
+}
+.cmp-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.cmp-tag-key {
+  font-family: var(--font-num);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--cmp);
+  letter-spacing: 0.02em;
+}
+.cmp-pick {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.cmp-pick-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+}
+.cmp-field {
+  flex: 1 1 220px;
+  max-width: 340px;
+}
+.cmp-select.is-set.cmp-a {
+  border-color: rgba(164, 155, 200, 0.65);
+  background-color: rgba(164, 155, 200, 0.1);
+}
+.cmp-select.is-set.cmp-b {
+  border-color: rgba(129, 173, 168, 0.65);
+  background-color: rgba(129, 173, 168, 0.1);
+}
+.cmp-select:focus-visible {
+  outline: 2px solid var(--cmp);
+  outline-offset: 2px;
+}
+.cmp-swap,
+.cmp-clear {
+  height: 38px;
+}
+.cmp-status:empty {
+  display: none;
+}
+.cmp-hint {
+  margin: 0;
+}
+.cmp-basis {
+  display: grid;
+  gap: 8px;
+}
+.cmp-basis p {
+  margin: 0;
+}
+.cmp-card > .card-body {
+  justify-content: flex-start;
+  gap: 14px;
+}
+.cmp-duo {
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+.cmp-duo-label {
+  font-size: var(--t-sm);
+  color: var(--muted);
+}
+.cmp-duo-row {
+  display: grid;
+  grid-template-columns: minmax(64px, auto) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--t-sm);
+}
+.cmp-duo-name {
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.cmp-duo-track,
+.cmp-mix-track {
+  display: block;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+}
+.cmp-duo-track i,
+.cmp-mix-track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--cmp);
+}
+.cmp-duo-val {
+  color: var(--ink);
+  min-width: 88px;
+  text-align: right;
+}
+.cmp-table th[scope='row'] {
+  color: var(--ink-2);
+  font-weight: 400;
+  position: static;
+  background: none;
+  white-space: normal;
+  min-width: 140px;
+}
+.cmp-table td.n {
+  color: var(--ink);
+}
+.cmp-table td.n.muted {
+  color: var(--muted);
+}
+.cmp-times {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+}
+.cmp-mix-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 22px;
+}
+.cmp-mix-block {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cmp-mix-title {
+  margin: 0;
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: var(--ink);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  align-items: baseline;
+}
+.cmp-mix-title .muted {
+  font-weight: 400;
+  font-size: 12px;
+}
+.cmp-mix th,
+.cmp-mix td {
+  padding: 8px 12px;
+}
+.cmp-mix-label {
+  min-width: 96px !important;
+}
+.cmp-mix-cell {
+  min-width: 150px;
+}
+.cmp-mix-cell .cmp-mix-track {
+  margin-bottom: 4px;
+  height: 8px;
+}
+.cmp-mix-cell .num {
+  color: var(--ink);
+}
+.cmp-mix-count {
+  margin-left: 6px;
+  font-size: 11px;
+  color: var(--muted) !important;
+}
+.cmp-note {
+  margin: 0;
+}
+.cmp-ops {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.cmp-ops-col {
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--cmp);
+  border-radius: 12px;
+  padding: 12px 14px;
+  min-width: 0;
+}
+.cmp-ops-col ol {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+  font-size: var(--t-sm);
+}
+.cmp-ops-col li {
+  color: var(--ink-2);
+}
+.cmp-ops-name {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.cmp-ops-col .num {
+  color: var(--ink);
+}
+@media (max-width: 1280px) {
+  /* 두 비교 카드는 표 4열이 잘리지 않도록 좁은 화면에서 한 줄씩 */
+  .grid > .cmp-card.span-6 {
+    grid-column: span 12;
+  }
+  .cmp-mix-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .cmp-field {
+    max-width: none;
+    flex-basis: 100%;
+  }
+  .cmp-swap,
+  .cmp-clear {
+    flex: 1 1 auto;
+  }
+  .cmp-ops {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cmp-duo-val {
+    min-width: 0;
+  }
+  .cmp-table th,
+  .cmp-table td {
+    padding: 8px 10px;
+  }
+  .cmp-table th[scope='row'] {
+    min-width: 96px;
+  }
+}
+/* 비교 표 가로 스크롤 안내: 넘칠 때만 문구와 가장자리 그림자를 표시 */
+.cmp-scroll {
+  position: relative;
+}
+.cmp-scroll-hint {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.cmp-scroll-hint span {
+  color: var(--ink-2);
+  margin-right: 4px;
+}
+.cmp-scroll::before,
+.cmp-scroll::after {
+  content: '';
+  position: absolute;
+  bottom: 1px;
+  width: 22px;
+  height: var(--cmp-table-h, calc(100% - 26px));
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 2;
+}
+.cmp-scroll::before {
+  left: 1px;
+  border-radius: 12px 0 0 12px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.45), transparent);
+}
+.cmp-scroll::after {
+  right: 1px;
+  border-radius: 0 12px 12px 0;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.45), transparent);
+}
+.cmp-scroll.fade-start::before,
+.cmp-scroll.fade-end::after {
+  opacity: 1;
+}
+.cmp-scroll .cmp-table-wrap:focus-visible {
+  outline: 2px solid var(--point);
+  outline-offset: 2px;
+}

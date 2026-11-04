@@ -4,7 +4,7 @@
 
 확인일: 2026-10-19. **Linux 자원·기능 검증 PASS / 실제 공개 배포 준비 CONDITIONAL PASS**. 사용자에 의해 private R2 저장과 읽기 전용 토큰 설정이 완료됐고 실제 R2 다운로드 포함 512MiB·0.1 CPU 시험도 통과했다. 당시에는 Render 서비스를 생성하기 전이었고 최종 최적화·배포 준비 변경은 Git commit/push 전이었다.
 
-> 2026-10-31 상태 정리: 이 문서의 배포 단계 기록은 2026-10-19 기준이다. 이후 README 상단에 배포 주소(https://charge-gap.onrender.com)가 기재되었지만, 실제 Render 서비스 생성·공개·접속 상태는 저장소 안에서 확인되지 않았다. 현재 상태는 Render 대시보드와 실제 접속으로 확인한다. 커밋되지 않은 로컬 변경은 `git status`로 확인한다.
+> 2026-11-04 상태 정리: 이 문서의 배포 단계 기록은 2026-10-19 기준이다. 2026-11-04 읽기 전용 실제 접속으로 정적 사이트(https://charge-gap.onrender.com)와 API(https://charge-gap-api.onrender.com)가 응답하고, 직접 URL 접근과 정적 사이트 보안 헤더가 동작하는 것을 확인했다. 서비스 생성 방식(Blueprint 여부)·환경변수·배포된 커밋은 Render 대시보드 정보라 확인하지 않았다. 데이터·파생물의 공개 이용 조건 최종 확인은 여전히 남아 있다([DATA_SOURCE_RIGHTS.md](DATA_SOURCE_RIGHTS.md)). 커밋되지 않은 로컬 변경은 `git status`로 확인한다.
 
 ## 구조
 
