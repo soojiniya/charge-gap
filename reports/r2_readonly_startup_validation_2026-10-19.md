@@ -17,7 +17,7 @@
 | 실제 GET 시도 | 14회, 추가 재시도 없음 |
 | 총 크기 | 242,521,708 bytes / 231.286724 MiB |
 | 다운로드 + 스트리밍 크기/SHA 검증 | 9.125초, Windows 호스트 측정 |
-| 별도 임시 디렉터리 | `C:\Users\User\Documents\Codex\CHARGE GAP\work\r2-readonly-startup\local_20261019T020424Z\downloaded` |
+| 별도 임시 디렉터리 | `<프로젝트 폴더>\work\r2-readonly-startup\local_20261019T020424Z\downloaded` |
 | 원본과 비교한 API 응답 | 32/32 동일, 각각 32회 조회 모두 HTTP 200 |
 | 비교 방법 | 별도 프로세스에서 같은 Flask 코드에 원본/다운로드 디렉터리를 지정, JSON 키 정렬 후 SHA-256 비교 |
 | 다운로드 데이터 Flask 초기화 | 3.781초, Windows Flask test client |
@@ -69,7 +69,7 @@ SHA-256은 R2에서 실제 수신한 본문과 manifest를 비교했다. ETag를
 일반 PowerShell에서 Docker Desktop이 Linux 컨테이너 모드로 실행된 상태로 다음 명령을 실행한다.
 
 ```powershell
-Set-Location -LiteralPath 'C:\Users\User\Documents\Codex\CHARGE GAP'
+Set-Location -LiteralPath '<프로젝트 폴더>'
 & '.\backend\.venv\Scripts\python.exe' -B '.\work\r2-readonly-startup\run_docker.py' --build --repeats 3
 ```
 
@@ -110,9 +110,9 @@ Render Free는 15분 유휴 후 중지되며 재시작·재배포·유휴 종료
 
 ## 증거 파일
 
-- 실제 다운로드: `C:\Users\User\Documents\Codex\CHARGE GAP\work\r2-readonly-startup\local_20261019T020424Z\result.json`
-- 원본 API 비교: `C:\Users\User\Documents\Codex\CHARGE GAP\work\r2-readonly-startup\local_20261019T020424Z\original_api.json`
-- 다운로드 API 비교: `C:\Users\User\Documents\Codex\CHARGE GAP\work\r2-readonly-startup\local_20261019T020424Z\downloaded_api.json`
-- 비교 요약: `C:\Users\User\Documents\Codex\CHARGE GAP\work\r2-readonly-startup\local_20261019T020424Z\api_comparison.json`
-- Docker 접근 제한 기록: `C:\Users\User\Documents\Codex\CHARGE GAP\work\r2-readonly-startup\docker_20261019T020522Z\result.json`
-- 시험 도구: `C:\Users\User\Documents\Codex\CHARGE GAP\work\r2-readonly-startup\run_docker.py`
+- 실제 다운로드: `<프로젝트 폴더>\work\r2-readonly-startup\local_20261019T020424Z\result.json`
+- 원본 API 비교: `<프로젝트 폴더>\work\r2-readonly-startup\local_20261019T020424Z\original_api.json`
+- 다운로드 API 비교: `<프로젝트 폴더>\work\r2-readonly-startup\local_20261019T020424Z\downloaded_api.json`
+- 비교 요약: `<프로젝트 폴더>\work\r2-readonly-startup\local_20261019T020424Z\api_comparison.json`
+- Docker 접근 제한 기록: `<프로젝트 폴더>\work\r2-readonly-startup\docker_20261019T020522Z\result.json`
+- 시험 도구: `<프로젝트 폴더>\work\r2-readonly-startup\run_docker.py`

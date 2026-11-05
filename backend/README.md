@@ -9,7 +9,8 @@
 PowerShell에서:
 
 ```powershell
-Set-Location 'C:\Users\User\Documents\Codex\CHARGE GAP\backend'
+# <프로젝트 폴더> = 이 저장소를 clone한 폴더
+Set-Location '<프로젝트 폴더>\backend'
 .\.venv\Scripts\python.exe run.py
 ```
 

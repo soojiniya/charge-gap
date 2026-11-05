@@ -34,7 +34,7 @@ Flask 테스트 클라이언트로 4종 요청을 각 5회, 총 20회 측정했�
 
 `scripts/create_report_charts_v2.py`와 `scripts/requirements-charts-v2.txt`를 제공한다. Python 3.12, 맑은 고딕을 사용한다. 보고서의 API 입력 스냅샷은 reports/chart_v2_api_inputs.json에 보관하며 CSV와 독립 대조한 후 그린다.
 
-`python scripts/create_report_charts_v2.py --project-root "C:\Users\User\Documents\Codex\CHARGE GAP"`
+`python scripts/create_report_charts_v2.py --project-root "<프로젝트 폴더>"`
 
 기존 출력이 있으면 기본 실행은 중단해 덮어쓰기를 방지한다. `--repair-numbers`는 지정한 신규 그래프의 오류 수정 시에만 사용한다. 예전 outputs/charts/는 이 스크립트의 출력 대상이 아니다. 최초 재현은 별도 프로젝트 사본에서 수행한다.
 

@@ -18,7 +18,7 @@ Docker 엔진 직접 접근은 이 실행 환경에서 차단됐지만, 사용�
 
 프로젝트 외부 작업 도구:
 
-`C:\Users\User\Documents\Codex\2026-10-15\charge-gap-python-api-csv-api\work\memory_optimization`
+`<이전 작업 폴더>\work\memory_optimization`
 
 - `baseline_package/chargegap_api/`: 변경 전 소스의 비교용 복사본.
 - `compare_worker.py`, `before.json`, `after.json`: 새 프로세스에서 같은 API 부하/메모리 비교.
@@ -89,7 +89,7 @@ Windows 300.496MiB를 512MiB에서 빼 Linux 잔여 메모리로 제시하지 �
 
 완료 결과 폴더:
 
-`C:\Users\User\Documents\Codex\2026-10-15\charge-gap-python-api-csv-api\work\memory_optimization\results_20261018_182951_de2c23`
+`<이전 작업 폴더>\work\memory_optimization\results_20261018_182951_de2c23`
 
 최적화 이미지 ID: `sha256:4d9e802dfacae6cc500b8b1e6c6ca9a4d73433ac9b19b5d84d8780d6367aba5e`.
 
@@ -125,13 +125,13 @@ stats 파싱 오류는 0, stderr 파일은 비어 있다. stats 프로세스 ret
 먼저 기존 Compose 기본 이미지를 대체하지 않는 **별도 태그**로 빌드한다.
 
 ```powershell
-docker build -f "C:\Users\User\Documents\Codex\CHARGE GAP\backend\Dockerfile" -t charge-gap-backend:memory-optimized "C:\Users\User\Documents\Codex\CHARGE GAP"
+docker build -f "<프로젝트 폴더>\backend\Dockerfile" -t charge-gap-backend:memory-optimized "<프로젝트 폴더>"
 ```
 
 빌드 성공 후:
 
 ```powershell
-& "C:\Users\User\Documents\Codex\CHARGE GAP\backend\.venv\Scripts\python.exe" -B "C:\Users\User\Documents\Codex\2026-10-15\charge-gap-python-api-csv-api\work\memory_optimization\run_linux_optimized.py"
+& "<프로젝트 폴더>\backend\.venv\Scripts\python.exe" -B "<이전 작업 폴더>\work\memory_optimization\run_linux_optimized.py"
 ```
 
 빌드와 시험을 한 번에 실행하려면 같은 Python 명령 끝에 `--build`를 붙인다. 별도 memory-optimized 태그만 빌드하며 기존 Compose 기본 태그는 유지한다.

@@ -34,7 +34,7 @@
     "note": 449052
   },
   "duplicates_removed": 0,
-  "env_file": "C:\\Users\\User\\Documents\\Codex\\CHARGE GAP\\.env",
+  "env_file": "<프로젝트 폴더>\\.env",
   "api_total_count": 527433,
   "test_rows": 10,
   "test_at": "2026-10-15T04:18:57+09:00",

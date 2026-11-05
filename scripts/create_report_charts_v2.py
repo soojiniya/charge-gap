@@ -2,7 +2,7 @@
 import os,json,hashlib,argparse,warnings
 from pathlib import Path
 parser=argparse.ArgumentParser()
-parser.add_argument('--project-root',type=Path,default=Path(r'C:\Users\User\Documents\Codex\CHARGE GAP'))
+parser.add_argument('--project-root',type=Path,default=Path(__file__).resolve().parents[1])
 parser.add_argument('--inputs',type=Path)
 parser.add_argument('--repair-numbers',type=int,nargs='*',default=[])
 args=parser.parse_args(); P=args.project_root

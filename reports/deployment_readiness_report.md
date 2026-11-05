@@ -1,7 +1,7 @@
 # CHARGE GAP 보안 조치 및 배포 준비 검증
 
 작성: 2026-10-17T14:04:54.806993+09:00 (KST)  
-대상: `C:\Users\User\Documents\Codex\CHARGE GAP`
+대상: `<프로젝트 폴더>`
 
 **판정: CONDITIONAL PASS — 의존성 보안 조치와 로컬 실행 검증은 통과, 외부 공개·컨테이너 배포에는 아래 준비 조건이 남아 있다.**
 
@@ -143,7 +143,7 @@ Router 7은 메이저 변경이다. 패키지 peer 조건인 React >=18, Node >=
 
 ## 7. 증거와 공개 후보 목록
 
-검증 상세는 프로젝트 밖 `C:\Users\User\Documents\Codex\2026-10-15\charge-gap-python-api-csv-api\work\deployment_readiness`에 보존했다. `audit_before.json`, `audit_after.json`, `audit_production.json`, `typecheck.log`, `build.log`, `pytest.xml`, `pytest.log`, `python_dependencies.json`, `verification.json`, `browser_results.json`, `font_check.json`, 해시 baseline과 공개 후보 목록이다. 인증키 값은 저장하지 않았다. 이 임시 증거 폴더는 제출 프로젝트 파일 목록에 섞지 않았다.
+검증 상세는 프로젝트 밖 `<이전 작업 폴더>\work\deployment_readiness`에 보존했다. `audit_before.json`, `audit_after.json`, `audit_production.json`, `typecheck.log`, `build.log`, `pytest.xml`, `pytest.log`, `python_dependencies.json`, `verification.json`, `browser_results.json`, `font_check.json`, 해시 baseline과 공개 후보 목록이다. 인증키 값은 저장하지 않았다. 이 임시 증거 폴더는 제출 프로젝트 파일 목록에 섞지 않았다.
 
 아래 217개는 이 보고서까지 포함한 제외 규칙 적용 후보다. 데이터 및 보고서의 이용 조건·개인 경로 표기 검토 후 최종 공개 범위를 결정한다.
 

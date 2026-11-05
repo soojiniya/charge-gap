@@ -831,23 +831,23 @@
 
 | 입력 파일 | SHA-256 |
 |---|---|
-| C:\Users\User\Documents\Codex\CHARGE GAP\data\raw\2025년_12월_자동차_등록자료_통계.xlsx | 63edcfe041d50517139c86f935c98d358aff142077a53db85d4ea72bc6c88582 |
-| C:\Users\User\Documents\Codex\CHARGE GAP\data\raw\우리 지역 급속 충전 여건_2026-10-15.xlsx | 2ec158c31b7dc688020a3b83f8e1aace7a34474e13563abb9982f8d96f263006 |
-| C:\Users\User\Documents\Codex\CHARGE GAP\data\raw\충전기 설치 성장 추세_2026-10-15.xlsx | aa8cffe49bd71354092d356783927981c194187ae8fdb352e32c79385b48de1c |
-| C:\Users\User\Documents\Codex\CHARGE GAP\data\raw\charger_info_raw.csv | b98fbba0cf7f2c2df7ecd33b66190a3eb59a7f8826604b7811d8e1cc35845d5c |
-| C:\Users\User\Documents\Codex\CHARGE GAP\data\processed\charger_by_region.csv | ce50e9f5b60fdcdefbc1bb032307f224c6798fe6ccd8a630cf53175d776ffddb |
-| C:\Users\User\Documents\Codex\CHARGE GAP\data\processed\charger_coordinate_issues.csv | 22cc0b0f9542e0c1d333396ce663d6a3be33e9a5ebdd442ad4315cd50c9d5374 |
-| C:\Users\User\Documents\Codex\CHARGE GAP\data\processed\charger_duplicate_rows.csv | ed1cd3242ca43310c297dfedc4dceca2f06633f06037fdf83a5378e9ad8ac6c0 |
-| C:\Users\User\Documents\Codex\CHARGE GAP\data\processed\charger_identity_issues.csv | 22cc0b0f9542e0c1d333396ce663d6a3be33e9a5ebdd442ad4315cd50c9d5374 |
-| C:\Users\User\Documents\Codex\CHARGE GAP\data\processed\charger_info_clean.csv | 6cf8e89777a7720fdbb9f6800e555424896d870c4f45a6c5bde2f8012c5d00dd |
-| C:\Users\User\Documents\Codex\CHARGE GAP\data\processed\charger_installation_trend.csv | 7bf139ea609e6b4b7084e0a1aac65ed687f10b9094e4aee6b00697c8edd8e976 |
-| C:\Users\User\Documents\Codex\CHARGE GAP\data\processed\charger_operator_summary.csv | 642ddef41d69fadf50c8d9bfde16e2603cdf6901ed8675e5ab93b7da6a847d88 |
-| C:\Users\User\Documents\Codex\CHARGE GAP\data\processed\charger_output_summary.csv | fed2c362344735d7ebefbbada1b5d1c21776706ea4a26e700f0ed37d125c1ada |
-| C:\Users\User\Documents\Codex\CHARGE GAP\data\processed\charger_region_output_excel.csv | 71ea57d6cb6e8ecaecca9604dace3f60fb8f989355eb0d3a324a97d3c8db586e |
-| C:\Users\User\Documents\Codex\CHARGE GAP\data\processed\charger_region_summary.csv | faf9d4dae842eb3c1701eacd47d5fbb26d11752a787d2bc1e0cc835107ce2c61 |
-| C:\Users\User\Documents\Codex\CHARGE GAP\data\processed\charger_type_summary.csv | 4bd274d37ba7894af8230479f2c5c79d49fd6a766a0a65d6a5add25df199313b |
-| C:\Users\User\Documents\Codex\CHARGE GAP\data\processed\ev_registration_by_region_2025.csv | 2be3140319d5cc20766e598cba8f356c577b986d4ce4d3134c9f4dad8bfef075 |
-| C:\Users\User\Documents\Codex\CHARGE GAP\data\processed\region_comparison_2025_registration_2026_chargers.csv | 85cf4285ca08625c673507793f14bc8eae86cf2f23979dd49422d4fb3f3f0a5c |
+| <프로젝트 폴더>\data\raw\2025년_12월_자동차_등록자료_통계.xlsx | 63edcfe041d50517139c86f935c98d358aff142077a53db85d4ea72bc6c88582 |
+| <프로젝트 폴더>\data\raw\우리 지역 급속 충전 여건_2026-10-15.xlsx | 2ec158c31b7dc688020a3b83f8e1aace7a34474e13563abb9982f8d96f263006 |
+| <프로젝트 폴더>\data\raw\충전기 설치 성장 추세_2026-10-15.xlsx | aa8cffe49bd71354092d356783927981c194187ae8fdb352e32c79385b48de1c |
+| <프로젝트 폴더>\data\raw\charger_info_raw.csv | b98fbba0cf7f2c2df7ecd33b66190a3eb59a7f8826604b7811d8e1cc35845d5c |
+| <프로젝트 폴더>\data\processed\charger_by_region.csv | ce50e9f5b60fdcdefbc1bb032307f224c6798fe6ccd8a630cf53175d776ffddb |
+| <프로젝트 폴더>\data\processed\charger_coordinate_issues.csv | 22cc0b0f9542e0c1d333396ce663d6a3be33e9a5ebdd442ad4315cd50c9d5374 |
+| <프로젝트 폴더>\data\processed\charger_duplicate_rows.csv | ed1cd3242ca43310c297dfedc4dceca2f06633f06037fdf83a5378e9ad8ac6c0 |
+| <프로젝트 폴더>\data\processed\charger_identity_issues.csv | 22cc0b0f9542e0c1d333396ce663d6a3be33e9a5ebdd442ad4315cd50c9d5374 |
+| <프로젝트 폴더>\data\processed\charger_info_clean.csv | 6cf8e89777a7720fdbb9f6800e555424896d870c4f45a6c5bde2f8012c5d00dd |
+| <프로젝트 폴더>\data\processed\charger_installation_trend.csv | 7bf139ea609e6b4b7084e0a1aac65ed687f10b9094e4aee6b00697c8edd8e976 |
+| <프로젝트 폴더>\data\processed\charger_operator_summary.csv | 642ddef41d69fadf50c8d9bfde16e2603cdf6901ed8675e5ab93b7da6a847d88 |
+| <프로젝트 폴더>\data\processed\charger_output_summary.csv | fed2c362344735d7ebefbbada1b5d1c21776706ea4a26e700f0ed37d125c1ada |
+| <프로젝트 폴더>\data\processed\charger_region_output_excel.csv | 71ea57d6cb6e8ecaecca9604dace3f60fb8f989355eb0d3a324a97d3c8db586e |
+| <프로젝트 폴더>\data\processed\charger_region_summary.csv | faf9d4dae842eb3c1701eacd47d5fbb26d11752a787d2bc1e0cc835107ce2c61 |
+| <프로젝트 폴더>\data\processed\charger_type_summary.csv | 4bd274d37ba7894af8230479f2c5c79d49fd6a766a0a65d6a5add25df199313b |
+| <프로젝트 폴더>\data\processed\ev_registration_by_region_2025.csv | 2be3140319d5cc20766e598cba8f356c577b986d4ce4d3134c9f4dad8bfef075 |
+| <프로젝트 폴더>\data\processed\region_comparison_2025_registration_2026_chargers.csv | 85cf4285ca08625c673507793f14bc8eae86cf2f23979dd49422d4fb3f3f0a5c |
 
 ## 검증 항목
 

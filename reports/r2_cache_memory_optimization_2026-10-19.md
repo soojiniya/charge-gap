@@ -6,7 +6,7 @@
 
 ## 1. 제공된 Linux 시험의 실제 결과
 
-근거: `C:\Users\User\Documents\Codex\CHARGE GAP\work\r2-readonly-startup\docker_20261019T020615Z\result.json`.
+근거: `<프로젝트 폴더>\work\r2-readonly-startup\docker_20261019T020615Z\result.json`.
 
 | 항목 | 최적화 전 실제 측정 | 최적화 후 Linux |
 | --- | ---: | --- |
@@ -88,12 +88,12 @@ Windows에는 해당 Linux cache advice 기능이 없으므로 이 수치를 Lin
 
 ## 5. 실제 R2 Docker 재시험
 
-Codex 환경에서는 Docker 접근이 거부됐으나, 사용자 PC의 일반 PowerShell에서 실행된 `C:\Users\User\Documents\Codex\CHARGE GAP\work\r2-cache-optimization\docker_20261019T021506Z\result.json`의 완료 결과를 확인했다. **PASS, 96/96 성공, OOMKilled=false, max=0**이다. 아래 명령은 동일 시험의 재현용이며 현재 결과를 확인하기 위한 추가 재실행은 필요하지 않다.
+Codex 환경에서는 Docker 접근이 거부됐으나, 사용자 PC의 일반 PowerShell에서 실행된 `<프로젝트 폴더>\work\r2-cache-optimization\docker_20261019T021506Z\result.json`의 완료 결과를 확인했다. **PASS, 96/96 성공, OOMKilled=false, max=0**이다. 아래 명령은 동일 시험의 재현용이며 현재 결과를 확인하기 위한 추가 재실행은 필요하지 않다.
 
 사용자 PC의 일반 PowerShell에서:
 
 ```powershell
-Set-Location -LiteralPath 'C:\Users\User\Documents\Codex\CHARGE GAP'
+Set-Location -LiteralPath '<프로젝트 폴더>'
 & '.\backend\.venv\Scripts\python.exe' -B '.\work\r2-cache-optimization\run_docker.py' --build --repeats 3
 ```
 
@@ -133,7 +133,7 @@ file_dirty, inactive_file 등은 file과 중복되는 부분 집합이고 kernel
 
 ## 8. 실제 Linux 재시험 완료 결과 및 원인 구분
 
-근거: `C:\Users\User\Documents\Codex\CHARGE GAP\work\r2-cache-optimization\docker_20261019T021506Z\result.json`. 이미지: `sha256:3e2b8d462cf33c3e36aa459b4246dd531d227389b53b53eebcd5e28844170dd9`. 512MiB·0.1 CPU, 실제 배포 CMD, 데이터 bind mount 없이 R2에서 14개 파일 다운로드, 메모리 계측용 소형 Python 프로세스 포함.
+근거: `<프로젝트 폴더>\work\r2-cache-optimization\docker_20261019T021506Z\result.json`. 이미지: `sha256:3e2b8d462cf33c3e36aa459b4246dd531d227389b53b53eebcd5e28844170dd9`. 512MiB·0.1 CPU, 실제 배포 CMD, 데이터 bind mount 없이 R2에서 14개 파일 다운로드, 메모리 계측용 소형 Python 프로세스 포함.
 
 - 커널 memory.peak: **426.184MiB**, 기존보다 **85.816MiB 감소** (16.76%).
 - 최고값 기준 여유: **85.816MiB**. 목표인 최소 64MiB 여유를 충족한다.

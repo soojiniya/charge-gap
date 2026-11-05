@@ -2,7 +2,7 @@
 
 > 2026-10-20 로컬 등록자료 교체: 런타임과 manifest는 `data/processed/ev_registration_by_region_2026_09.csv`를 요구합니다. 이 새 객체는 아직 R2에 업로드하지 않았으며 원격 서비스도 변경하지 않았습니다. 아래 과거 R2 14개 검증 기록이 새 CSV 업로드·권리 확인을 대신하지 않습니다. 새 파일 승인·업로드·해시 검증과 코드 반영 전에는 재배포하지 마세요. 현재 manifest 총량은 242,523,813 bytes입니다.
 >
-> 2026-11-05 추가 확인(읽기 전용): 공개 API(`charge-gap-api`, 커밋 `eea94cd` 배포)가 2026-09 기준 전기차 1,191,873대·16개 지역을 응답하는 것을 확인했습니다. R2 객체의 크기·해시는 이번에 직접 조회하지 않았습니다. EV 등록 Excel의 공개 이용 조건은 여전히 미확정입니다.
+> 2026-11-05 추가 확인(읽기 전용): 공개 API(`charge-gap-api`, 당시 커밋 `eea94cd` 배포 — 이력 정리 후 해시 `155387f`, 파일 트리 동일)가 2026-09 기준 전기차 1,191,873대·16개 지역을 응답하는 것을 확인했습니다. R2 객체의 크기·해시는 이번에 직접 조회하지 않았습니다. EV 등록 Excel의 공개 이용 조건은 여전히 미확정입니다.
 
 확인일: 2026-10-19. **Linux 자원·기능 검증 PASS / 실제 공개 배포 준비 CONDITIONAL PASS**. 사용자에 의해 private R2 저장과 읽기 전용 토큰 설정이 완료됐고 실제 R2 다운로드 포함 512MiB·0.1 CPU 시험도 통과했다. 당시에는 Render 서비스를 생성하기 전이었고 최종 최적화·배포 준비 변경은 Git commit/push 전이었다.
 
@@ -103,7 +103,7 @@ Render Static 설정: Root Directory `frontend`, Build `npm ci && npm run build`
 
 ### 프론트엔드 갱신 배포 순서
 
-현재 작업 트리의 프론트엔드는 백엔드 API에 새 경로를 요구하지 않는다(사용 API 12개 경로는 커밋 `eea94cd`와 같고, `/api/regional-disparity`는 이미 공개 API에서 응답). 백엔드에는 출처 문구(설치 추이 `license`)만 바뀐 미커밋 변경이 있다. 화면과 API의 출처 문구를 맞추기 위해 다음 순서로 배포한다(`render.yaml`의 `autoDeployTrigger: 'off'`이므로 push 후 수동 배포).
+현재 작업 트리의 프론트엔드는 백엔드 API에 새 경로를 요구하지 않는다(사용 API 12개 경로는 커밋 `155387f`(이력 정리 전 해시 `eea94cd`)와 같고, `/api/regional-disparity`는 이미 공개 API에서 응답). 백엔드에는 출처 문구(설치 추이 `license`)만 바뀐 미커밋 변경이 있다. 화면과 API의 출처 문구를 맞추기 위해 다음 순서로 배포한다(`render.yaml`의 `autoDeployTrigger: 'off'`이므로 push 후 수동 배포).
 
 1. 필요한 파일만 명시적으로 stage해 commit·push한다(`git add .` 금지, CSV·Excel·`.env`·`work/`·백업 폴더 제외).
 2. Static Site 대시보드 Redirects/Rewrites에 `/python-visualization → /index.html`(Rewrite)을 추가한다(위 표).
@@ -224,8 +224,8 @@ docker build -f deploy/render/Dockerfile -t charge-gap-backend:render-prep .
 2. 완료: R2 private Standard 저장 및 14개 업로드·SHA 검증. 현재 PREFIX는 빈 문자열이며 객체 경로는 manifest와 일치한다.
 3. 완료: 버킷 한정 읽기 전용 자격증명으로 교체, 기존 업로드 토큰 폐기. 다음 단계에서 Render 서버에만 입력하고 6개월 만료 전 교체한다.
 4. 완료: 실제 다운로드·기동·512MiB/0.1 CPU·96개 API 검증 PASS. 다음 단계에서 실제 HTTPS 두 origin을 결정한다.
-5. 변경 목록·비밀정보·데이터 제외를 검토한 뒤 **사용자 승인 후** Git commit/push. Private 저장소 유지. 커밋되지 않은 로컬 변경은 GitHub에 연결해도 적용되지 않으므로 `git status`로 먼저 확인한다.
-6. Render GitHub 연결 권한을 이 Private 저장소로 한정. Free API와 Static 설정을 수동 또는 준비된 Blueprint로 생성. (2026-10-19 기록 기준 미생성. 현재 생성 여부는 Render 대시보드에서 확인한다.)
+5. 변경 목록·비밀정보·데이터 제외를 검토한 뒤 **사용자 승인 후** Git commit/push. (2026-11-05부터 저장소는 Public이다. 저장소 공개가 데이터·파생물의 공개 이용 조건을 확정하지는 않는다.) 커밋되지 않은 로컬 변경은 GitHub에 연결해도 적용되지 않으므로 `git status`로 먼저 확인한다.
+6. Render GitHub 연결 권한을 이 저장소로 한정. Free API와 Static 설정을 수동 또는 준비된 Blueprint로 생성. (2026-10-19 기록 기준 미생성. 현재 생성 여부는 Render 대시보드에서 확인한다.)
 7. 실제 두 URL을 VITE_API_BASE_URL/CORS에 교차 설정하고 프론트엔드 재빌드. deep-link 새로고침, cold-start 오류, 10개 API·필터·지도·PNG를 확인한다.
 
 현재 남은 필수 항목은 **개별 EV/growth 공개 조건 확정, 승인 후 GitHub 반영, 실제 Render URL/환경변수 및 HTTPS 연동·cold start 검증**이다. 로컬 Compose는 계속 localhost:18080에서 독립적으로 사용한다.

@@ -34,7 +34,7 @@ Docker Desktop이 실제로 중지됐다고 단정할 수 없다. 샌드박스�
 
 시험 스크립트와 실행 안내는 프로젝트 소스 밖의 다음 디렉터리에 새로 생성했다.
 
-`C:\Users\User\Documents\Codex\2026-10-15\charge-gap-python-api-csv-api\work\linux_memory_test`
+`<이전 작업 폴더>\work\linux_memory_test`
 
 - `run_linux_memory_test.py`: 호스트 측 실행·부하·Docker stats·상태·해시 기록.
 - `container_probe.py`: 시작 전부터 cgroup/프로세스 메모리 및 CPU 측정, 기존 create_app와 Waitress 실행.
@@ -46,7 +46,7 @@ Docker Desktop이 실제로 중지됐다고 단정할 수 없다. 샌드박스�
 Docker Desktop을 실행한 뒤 일반 PowerShell에서:
 
 ```powershell
-& "C:\Users\User\Documents\Codex\CHARGE GAP\backend\.venv\Scripts\python.exe" -B "C:\Users\User\Documents\Codex\2026-10-15\charge-gap-python-api-csv-api\work\linux_memory_test\run_linux_memory_test.py"
+& "<프로젝트 폴더>\backend\.venv\Scripts\python.exe" -B "<이전 작업 폴더>\work\linux_memory_test\run_linux_memory_test.py"
 ```
 
 기존 backend 이미지가 `charge-gap-backend:latest`가 아니라면 실제 로컬 이름을 확인해 `--image 이름:태그`를 추가한다. 이미지가 없으면 자동 pull/build하지 않고 중단한다.

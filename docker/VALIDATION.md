@@ -82,4 +82,4 @@ curl "http://localhost:18080/backend/api/station-size-distribution?region_code=3
 
 근거 문서: [Compose 서비스 설정](https://docs.docker.com/reference/compose-file/services/), [빌드 컨텍스트와 dockerignore](https://docs.docker.com/build/concepts/context/), [Nginx proxy_pass](https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_pass), [Compose up](https://docs.docker.com/reference/cli/docker/compose/up/), [공식 Compose 스키마](https://github.com/compose-spec/compose-spec/blob/main/schema/compose-spec.json).
 
-상세 증거: `C:\Users\User\Documents\Codex\2026-10-15\charge-gap-python-api-csv-api\work\docker_readiness`의 `verification.json`, `wsgi_http.json`, `pytest.xml`, `pytest.log`, `typecheck.log`, `build.log`, `baseline.json`.
+상세 증거: `<이전 작업 폴더>\work\docker_readiness`의 `verification.json`, `wsgi_http.json`, `pytest.xml`, `pytest.log`, `typecheck.log`, `build.log`, `baseline.json`.

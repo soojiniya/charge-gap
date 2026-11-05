@@ -1,7 +1,7 @@
 # CHARGE GAP GitHub 공개 준비 점검
 
 점검일: 2026-10-17 (KST)  
-대상: `C:\Users\User\Documents\Codex\CHARGE GAP`
+대상: `<프로젝트 폴더>`
 
 **판정: 기술적 공개 준비 완료 / 실제 공개는 조건부.** 인증키·의존성·원본 데이터 제외와 실행 안내는 정비했다. 데이터·PNG·보고서의 재배포 권리, 별도 데이터 전달 경로, 코드 라이선스는 소유자가 확정해야 한다. 후보 목록은 법적 공개 승인이나 실제 Git staging 목록이 아니다.
 
@@ -315,4 +315,4 @@ scripts/requirements-charts-v2.txt
 test_collector.py
 ```
 
-상세 검증 증거는 프로젝트 밖 `C:\Users\User\Documents\Codex\2026-10-15\charge-gap-python-api-csv-api\work\github_readiness`의 `verification.json`, `public_candidates.txt`, `baseline.json`에 저장했다. 키 값은 저장하지 않았다.
+상세 검증 증거는 프로젝트 밖 `<이전 작업 폴더>\work\github_readiness`의 `verification.json`, `public_candidates.txt`, `baseline.json`에 저장했다. 키 값은 저장하지 않았다.

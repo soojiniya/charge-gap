@@ -10,7 +10,8 @@
 **1. 백엔드 실행** (터미널 1, 기존 방식 그대로)
 
 ```powershell
-Set-Location 'C:\Users\User\Documents\Codex\CHARGE GAP\backend'
+# <프로젝트 폴더> = 이 저장소를 clone한 폴더
+Set-Location '<프로젝트 폴더>\backend'
 .\.venv\Scripts\python.exe run.py
 ```
 
@@ -19,7 +20,7 @@ Set-Location 'C:\Users\User\Documents\Codex\CHARGE GAP\backend'
 **2. 프론트엔드 실행** (터미널 2)
 
 ```powershell
-Set-Location 'C:\Users\User\Documents\Codex\CHARGE GAP\frontend'
+Set-Location '<프로젝트 폴더>\frontend'
 npm ci
 npm run dev
 ```

@@ -2,7 +2,7 @@
 
 **최종 판정: CONDITIONAL PASS**
 
-검증 대상: `C:\Users\User\Documents\Codex\CHARGE GAP`  
+검증 대상: `<프로젝트 폴더>`  
 보고서 완료 시각: 2026-10-17T13:23:06.372131+09:00 (KST)
 
 핵심 원본 데이터와 Flask API 집계, TypeScript 검사·빌드는 통과했다. 다만 회귀선 표시 계산, 연도 필터에 따른 분석 문구, 모바일 확대 모달과 일부 툴팁·너비 문제가 남아 있어 **현재 상태를 필수 항목 전체 통과(PASS)로 제출 승인하지 않는다.** 핵심 수집 데이터와 API 자체가 잘못된 상태는 아니므로 프로젝트 전체 FAIL과는 구분한다. 필수 수정 및 해당 항목 재확인 후 제출 가능하다. 외부 공개 배포는 의존성 보안 조치도 선행해야 한다.
@@ -252,6 +252,6 @@ Docker 적용 전에는 실행 경로·한글 폰트 이식성, API/정적 프�
 | `unverified-production-load` | UNVERIFIED | Production multi-user load and latency |
 | `unverified-browser-remaining-interactions` | UNVERIFIED | Remaining detailed UI interactions |
 
-상세 증거 원본은 `C:\Users\User\Documents\Codex\2026-10-15\charge-gap-python-api-csv-api\work\final_validation_20261017`의 `data_api_audit.json`, `browser_audit.json`, `pytest.xml`, `png_audit.json`, `frontend_math.json`, `npm_audit.json`, `final_validation_ledger.json`이다. 이는 새 보고서의 근거 기록이며 제출용 프로젝트 소스와 혼합하지 않았다. JSON 전체에는 체크 ID·분야·상태·수치 증거가 포함된다.
+상세 증거 원본은 `<이전 작업 폴더>\work\final_validation_20261017`의 `data_api_audit.json`, `browser_audit.json`, `pytest.xml`, `png_audit.json`, `frontend_math.json`, `npm_audit.json`, `final_validation_ledger.json`이다. 이는 새 보고서의 근거 기록이며 제출용 프로젝트 소스와 혼합하지 않았다. JSON 전체에는 체크 ID·분야·상태·수치 증거가 포함된다.
 
 **제출 판단:** F1~F5 수정 및 좁은 범위 재검증 후 제출 권장. 공개 배포 시 S1~S2도 선행해야 한다. 선택적 폰트·번들·이식성 개선과 미확인 시험은 그 목적에 맞게 계획한다. 이번 작업에서는 지적만 했으며 오류 수정은 수행하지 않았다.
