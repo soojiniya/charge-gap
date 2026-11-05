@@ -9,6 +9,8 @@ export type Scope = { kind: 'filtered'; label?: string } | { kind: 'fixed'; labe
 
 interface CardProps {
   title: ReactNode;
+  /** 다른 페이지에서 주소 hash(#id)로 바로 이동할 때 쓰는 앵커 */
+  id?: string;
   sub?: ReactNode;
   scope?: Scope;
   span?: 3 | 4 | 5 | 6 | 7 | 8 | 12;
@@ -48,7 +50,7 @@ export function ScopeTag({ scope }: { scope: Scope }) {
   );
 }
 
-export function Card({ title, sub, scope, span, isFetching, actions, foot, className, children, detail, no, insight, pending, reveal = true }: CardProps) {
+export function Card({ id, title, sub, scope, span, isFetching, actions, foot, className, children, detail, no, insight, pending, reveal = true }: CardProps) {
   const [open, setOpen] = useState(false);
   // 그래프 설명(i) 버튼: 카드 아래 Insight의 설명 패널을 머리글에서도 엽니다(그래프를 가리지 않는 오른쪽 패널).
   const openInfo = useRef<(() => void) | null>(null);
@@ -57,7 +59,7 @@ export function Card({ title, sub, scope, span, isFetching, actions, foot, class
   const insightCtx = useMemo(() => ({ title, no, openRef: openInfo, onOpenChange: onInfoOpenChange }), [title, no, onInfoOpenChange]);
   const titleText = typeof title === 'string' ? title : '그래프';
   return (
-    <section className={`card ${span ? `span-${span}` : ''} ${pending ? 'pending' : ''} ${className ?? ''}`} aria-busy={isFetching || undefined}>
+    <section id={id} className={`card ${span ? `span-${span}` : ''} ${pending ? 'pending' : ''} ${className ?? ''}`} aria-busy={isFetching || undefined}>
       {isFetching && <div className="refetching" aria-hidden="true" />}
       <header className="card-head">
         <div>

@@ -1,6 +1,7 @@
 /* Reusable real-browser regression: await require(thisFile)(playwrightPage, baseUrl, apiUrl).
  * Overview "주요 분석 발견": 화면 수치가 /api/regional-disparity(필터 없음) 응답에서 직접 계산한 값과 같은지,
- * 필터를 바꿔도 고정인지, Regional Explorer 링크, 1440px·390px 레이아웃, API 오류 시 다시 시도 상태를 확인합니다.
+ * 필터를 바꿔도 고정인지, Regional Explorer 격차 카드(#regional-gap)로 바로 이동하는 링크(새로고침·뒤로/앞으로·직접 URL 포함),
+ * 1440px·390px 레이아웃, API 오류 시 다시 시도 상태를 확인합니다.
  */
 module.exports = async function keyFindingsRegressions(page, baseUrl = 'http://127.0.0.1:15173', apiUrl = 'http://127.0.0.1:5000') {
   const checks = [];
@@ -57,16 +58,57 @@ module.exports = async function keyFindingsRegressions(page, baseUrl = 'http://1
   const filtered = await section();
   check('filters do not change the section (fixed national basis)', filtered.cards[0].includes(`${fMax.name} ${fMax.v.toFixed(2)}%`) && filtered.cards[1].includes(rText));
 
-  // 링크: Regional Explorer 격차 분석으로 이동
+  // 링크: Regional Explorer '전국 충전 인프라 구성 격차' 카드(#regional-gap)로 바로 이동
   await page.goto(`${baseUrl}/`, { waitUntil: 'networkidle' });
   await section();
   const hrefs = await page.locator('.kf-link').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
-  check('links go to Regional Explorer with the matching metric', hrefs[0] === `/regional-explorer?region=${fMax.code}` && hrefs[1] === '/regional-explorer?gap_metric=chargers_per_station' && hrefs[2] === `/regional-explorer?gap_metric=operator_hhi&region=${hMax.code}`, hrefs);
-  await page.locator('.kf-link').nth(2).click();
+  const want = [`/regional-explorer?region=${fMax.code}#regional-gap`, '/regional-explorer?gap_metric=chargers_per_station#regional-gap', `/regional-explorer?gap_metric=operator_hhi&region=${hMax.code}#regional-gap`];
+  check('links go to the disparity card anchor with the matching metric/region', JSON.stringify(hrefs) === JSON.stringify(want), hrefs);
+  const landed = async () => {
+    await page.locator('#regional-gap .disparity-table tbody tr').first().waitFor({ timeout: 60000 });
+    await page.waitForTimeout(2000);
+    return page.evaluate(() => {
+      const c = document.getElementById('regional-gap');
+      const covered = Math.max(0, ...[...document.querySelectorAll('.filterbar, .mobile-bar')].map((b) => {
+        const cs = getComputedStyle(b);
+        return cs.display !== 'none' && (cs.position === 'sticky' || cs.position === 'fixed') ? b.getBoundingClientRect().bottom : 0;
+      }));
+      const top = c.getBoundingClientRect().top;
+      return { top, covered, metric: c.querySelector('.disparity-toolbar select').value, summary: c.querySelector('.disparity-region-summary h3')?.textContent || '', visible: c.querySelector('.reveal').classList.contains('is-visible'), scrollY };
+    });
+  };
+  const atCard = (s) => s.top >= s.covered && s.top <= s.covered + 40 && s.visible;
+  for (const [w, h] of [[1440, 1000], [390, 844]]) {
+    await page.setViewportSize({ width: w, height: h });
+    const expect = [['high_100kw', fMax.name], ['chargers_per_station', null], ['operator_hhi', hMax.name]];
+    for (let i = 0; i < 3; i++) {
+      await page.goto(`${baseUrl}/`, { waitUntil: 'networkidle' });
+      await section();
+      await page.locator('.kf-link').nth(i).click();
+      await page.locator('h1', { hasText: 'Regional Explorer' }).waitFor();
+      const s = await landed();
+      check(`${w}: link ${i + 1} lands on the disparity card below the fixed bars`, atCard(s), s);
+      check(`${w}: link ${i + 1} applies gap_metric ${expect[i][0]}`, s.metric === expect[i][0], s);
+      check(`${w}: link ${i + 1} keeps the region selection`, expect[i][1] ? s.summary.includes(expect[i][1]) : s.summary === '', s);
+    }
+    await page.reload({ waitUntil: 'networkidle' });
+    check(`${w}: reload keeps the anchor position`, atCard(await landed()));
+    await page.goBack();
+    await page.locator('h1', { hasText: 'Overview' }).waitFor();
+    await page.goForward();
+    await page.locator('h1', { hasText: 'Regional Explorer' }).waitFor();
+    check(`${w}: back then forward lands on the card again`, atCard(await landed()));
+  }
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(`${baseUrl}/regional-explorer?gap_metric=operator_hhi&region=${hMax.code}#regional-gap`, { waitUntil: 'networkidle' });
+  const direct = await landed();
+  check('direct URL with #regional-gap lands on the card with HHI', atCard(direct) && direct.metric === 'operator_hhi', direct);
+  await page.goto(`${baseUrl}/`, { waitUntil: 'networkidle' });
+  await page.getByRole('navigation').getByRole('link', { name: /Regional Explorer/ }).click();
   await page.locator('h1', { hasText: 'Regional Explorer' }).waitFor();
-  await page.locator('.disparity-card').waitFor({ timeout: 60000 });
-  const url = new URL(page.url());
-  check('HHI link opens Regional Explorer with HHI and the top region selected', url.searchParams.get('gap_metric') === 'operator_hhi' && url.searchParams.get('region') === hMax.code);
+  await page.locator('#regional-gap .disparity-table tbody tr').first().waitFor({ timeout: 60000 });
+  await page.waitForTimeout(1500);
+  check('sidebar menu still opens Regional Explorer at the top (map first)', (await page.evaluate(() => scrollY)) === 0 && !new URL(page.url()).hash);
 
   // API 오류: 다시 시도 버튼이 보이고 다른 카드는 영향 없음
   await page.route('**/api/regional-disparity**', (route) => route.fulfill({ status: 500, contentType: 'application/json', body: JSON.stringify({ error: { code: 'internal_error', message: 'test' } }) }));

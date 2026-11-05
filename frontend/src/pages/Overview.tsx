@@ -162,8 +162,10 @@ function NotesCard() {
             </div>
           </dl>
           <p className="notes-text">
-            <strong>등록 대수와 충전기 수는 서로 나누지 않습니다.</strong> 지역 체계는 대응하지만 기준 시점(2026-09와 2026-10-15)이 달라 충전기 1기당 차량 수나
-            충전 부족률을 계산하지 않습니다.
+            <strong className="line-block">등록 대수와 충전기 수는 서로 나누지 않습니다. </strong>
+            <span className="line-block">
+              지역 체계는 대응하지만 기준 시점(2026-09와 2026-10-15)이 달라 충전기 1기당 차량 수나 충전 부족률을 계산하지 않습니다.
+            </span>
           </p>
         </section>
         <section className="notes-block" aria-labelledby="notes-regions">

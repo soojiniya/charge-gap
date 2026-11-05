@@ -1,3 +1,4 @@
+import { useHashScroll } from '../lib/hashScroll';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Card } from '../components/ui/Card';
@@ -80,6 +81,9 @@ function useGapParams() {
   return { metric, type, select };
 }
 
+/** Overview 등에서 이 분석으로 바로 오는 주소: /regional-explorer?…#regional-gap */
+export const REGIONAL_GAP_ANCHOR = 'regional-gap';
+
 export function RegionalDisparitySection() {
   const [exportStatus, setExportStatus] = useState('');
   const { chargerParams, state, update } = useFilters();
@@ -92,6 +96,8 @@ export function RegionalDisparitySection() {
   }, [metric, type, chargerParams]);
   const data = query.data?.data;
   const meta = query.data?.meta;
+  // Overview '주요 분석 발견' 링크(#regional-gap)로 들어왔을 때만, 이 분석의 첫 응답이 그려진 뒤 이 카드로 이동합니다.
+  useHashScroll(REGIONAL_GAP_ANCHOR, !query.isLoading);
   const active = OPTIONS.find((o) => o.key === metric)!;
   const typeName = (code: string) => opts.data?.charger_types.find((t) => t.code === code)?.name;
   // URL로 받은 유형이 현재 필터 결과에 없으면(전국 0기) 그 유형도 0기로 목록에 둡니다.
@@ -182,6 +188,7 @@ export function RegionalDisparitySection() {
 
   return (
     <Card
+      id={REGIONAL_GAP_ANCHOR}
       span={12}
       className="disparity-card"
       title="전국 충전 인프라 구성 격차"
@@ -399,8 +406,10 @@ export function RegionalDisparitySection() {
               </table>
             </div>
             <p className="small muted disparity-foot">
-              전국 기준값은 전국 분자·분모를 각각 합산해 계산합니다. 삭제 표시 비중 계산에는 삭제 상태 필터가 적용되지 않습니다. 이는 공급 구성의 상대적 차이이며 수요 대비 부족률이
-              아닙니다. 분모 기준: {denomBasis(metric)}.
+              <span className="line-block">전국 기준값은 전국 분자·분모를 각각 합산해 계산합니다. </span>
+              <span className="line-block">삭제 표시 비중 계산에는 삭제 상태 필터가 적용되지 않습니다. </span>
+              <span className="line-block">이는 공급 구성의 상대적 차이이며 수요 대비 부족률이 아닙니다. </span>
+              <span className="line-block">분모 기준: {denomBasis(metric)}.</span>
             </p>
           </>
         )}

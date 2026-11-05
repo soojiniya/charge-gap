@@ -65,3 +65,15 @@ test('section sits between the KPIs and the charts; numbers are not hard-coded; 
   assert.match(ui, /독점 여부나 서비스 품질을 판정하는 지표가 아닙니다/);
   assert.match(ui, /getChargerInfo/);
 });
+
+test('finding links target the disparity card anchor, which scrolls only when the hash is present', () => {
+  const root = path.resolve(__dirname, '..');
+  const ui = fs.readFileSync(path.join(root, 'src/features/KeyFindings.tsx'), 'utf8');
+  assert.match(ui, /pathname: '\/regional-explorer', search, hash: '#regional-gap'/);
+  const gap = fs.readFileSync(path.join(root, 'src/features/RegionalDisparity.tsx'), 'utf8');
+  assert.match(gap, /export const REGIONAL_GAP_ANCHOR = 'regional-gap'/);
+  assert.match(gap, /id=\{REGIONAL_GAP_ANCHOR\}/);
+  assert.match(gap, /useHashScroll\(REGIONAL_GAP_ANCHOR, !query\.isLoading\)/);
+  const hook = fs.readFileSync(path.join(root, 'src/lib/hashScroll.ts'), 'utf8');
+  assert.match(hook, /if \(hash !== `#\$\{id\}` \|\| !ready \|\| done\.current === key\) return;/);
+});

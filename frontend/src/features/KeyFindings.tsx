@@ -18,7 +18,8 @@ const NO_FILTERS = {};
 const SCOPE = { kind: 'fixed' as const, label: '전국 기준 · 필터 무관' };
 const fmtHhi = (n: number) => `${n.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}점`;
 const fmtCps = (n: number) => `${n.toFixed(2)}기`;
-const explorer = (search: string) => ({ pathname: '/regional-explorer', search });
+// Regional Explorer '전국 충전 인프라 구성 격차' 카드로 바로 이동 (RegionalDisparity의 REGIONAL_GAP_ANCHOR와 같은 id)
+const explorer = (search: string) => ({ pathname: '/regional-explorer', search, hash: '#regional-gap' });
 
 /** 실제 그리기 폭(px)을 재서 SVG 글자가 화면 크기와 무관하게 같은 크기로 보이게 합니다. */
 function useWidth<T extends HTMLElement>() {
@@ -154,7 +155,7 @@ function MiniScatter({ data }: { data: Correlation }) {
   );
 }
 
-const foot = (to: { pathname: string; search: string }, text: string) => (
+const foot = (to: { pathname: string; search: string; hash: string }, text: string) => (
   <Link className="kf-link" to={to}>
     {text} →
   </Link>
@@ -205,13 +206,15 @@ export function KeyFindingsSection() {
                 </div>
               </div>
               <DotStrip data={d} format={(n) => fmtPct(n, 2)} label="100kW 이상 충전기 비중" />
-              <p className="kf-text">
-                전국 {fmtPct(d.national, 2)} 기준으로 {d.above}개 지역은 높고 {d.below}개 지역은 낮습니다. 충전기 대수와 별개로 구성 비율이 지역마다 크게 다릅니다.
-              </p>
-              <p className="kf-note">
-                충전기가 가장 많은 {d.largest.name}({fmtInt(d.largest.chargers)}기)은 {fmtPct(d.largest.value, 2)}로 16개 지역 중 {d.largest.rank}위입니다.{' '}
-                <span className="kf-caution">비중이 높다고 충전 여건이 낫다는 뜻은 아닙니다.</span>
-              </p>
+              <div className="kf-text-group">
+                <p className="kf-text">
+                  전국 {fmtPct(d.national, 2)} 기준으로 {d.above}개 지역은 높고 {d.below}개 지역은 낮습니다. 충전기 대수와 별개로 구성 비율이 지역마다 크게 다릅니다.
+                </p>
+                <p className="kf-note">
+                  충전기가 가장 많은 {d.largest.name}({fmtInt(d.largest.chargers)}기)은 {fmtPct(d.largest.value, 2)}로 16개 지역 중 {d.largest.rank}위입니다.{' '}
+                  <span className="kf-caution">비중이 높다고 충전 여건이 낫다는 뜻은 아닙니다.</span>
+                </p>
+              </div>
             </div>
           );
         })}

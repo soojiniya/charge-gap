@@ -55,14 +55,19 @@ export function Reveal({ children, enabled = true }: { children: ReactNode; enab
 
   useEffect(() => {
     if (seen || !ref.current) return;
+    // 12% 이상 보이면 등장. 화면보다 훨씬 긴 카드(모바일 격차 분석 등)는 12%에 못 미쳐도
+    // 화면 높이의 1/4 이상이 보이면 등장시킵니다(주소 #앵커로 바로 이동했을 때 빈 카드로 남지 않도록).
     const io = new IntersectionObserver(
       (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
+        const shown = entries.some(
+          (e) => e.isIntersecting && (e.intersectionRatio >= 0.12 || (e.rootBounds != null && e.intersectionRect.height >= e.rootBounds.height * 0.25)),
+        );
+        if (shown) {
           setSeen(true);
           io.disconnect();
         }
       },
-      { rootMargin: '0px 0px -6% 0px', threshold: 0.12 },
+      { rootMargin: '0px 0px -6% 0px', threshold: [0, 0.03, 0.06, 0.09, 0.12] },
     );
     io.observe(ref.current);
     return () => io.disconnect();

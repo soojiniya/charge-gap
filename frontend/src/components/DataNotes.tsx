@@ -6,7 +6,8 @@ export function RegionSystemNote({ compact }: { compact?: boolean }) {
     <div>
       {!compact && (
         <p className="small muted" style={{ marginBottom: 10 }}>
-          두 자료는 16개 지역으로 대응합니다. 등록자료의 전남광주를 충전기 자료의 12번 지역에 연결하며 과거 광주·전남으로 나누지 않습니다.
+          <span className="line-block">두 자료는 16개 지역으로 대응합니다. </span>
+          <span className="line-block">등록자료의 전남광주를 충전기 자료의 12번 지역에 연결하며 과거 광주·전남으로 나누지 않습니다.</span>
         </p>
       )}
       <div className="regions-pair">

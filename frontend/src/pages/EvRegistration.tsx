@@ -81,8 +81,9 @@ export function EvRegistrationPage() {
           <Card title="지역 체계" sub="광주·전남 통합 기준">
             <RegionSystemNote compact />
             <p className="small" style={{ marginTop: 14, color: 'var(--ink-2)' }}>
-              이 페이지는 2026년 9월 원본의 16개 지역을 사용합니다. 원본 명칭 전남광주는 충전기 자료의
-              전남광주통합특별시(12)에 대응합니다. 등록 기준월과 충전기 조회일은 서로 다릅니다.
+              <span className="line-block">이 페이지는 2026년 9월 원본의 16개 지역을 사용합니다. </span>
+              <span className="line-block">원본 명칭 전남광주는 충전기 자료의 전남광주통합특별시(12)에 대응합니다. </span>
+              <span className="line-block">등록 기준월과 충전기 조회일은 서로 다릅니다.</span>
             </p>
           </Card>
         </div>

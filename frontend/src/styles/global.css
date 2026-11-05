@@ -4077,3 +4077,14 @@ var(--panel);
 @media (max-width: 1100px) {
   .kf-aux-body { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* 문장 단위 줄바꿈: 문구는 그대로 두고 문장마다 새 줄에서 시작 (자료 해석 기준·지역 체계·격차 분석 설명) */
+.line-block { display: block; }
+.line-block + .line-block { margin-top: 2px; }
+/* 주요 분석 발견 첫 카드: 분포 그래프와 설명 문구 묶음 사이 간격 (두 문구 간격 10px 유지) */
+.kf-text-group { display: grid; gap: 10px; margin-top: 22px; }
+@media (max-width: 960px) {
+  .kf-text-group { margin-top: 8px; }
+}
+/* 해석 문단: 문장이 여러 줄로 감길 때도 다음 문장이 새 문장임을 알아볼 수 있게 문장 사이 간격을 조금 넓힘 */
+.insight-interp .sentence-line + .sentence-line { margin-top: 6px; }
