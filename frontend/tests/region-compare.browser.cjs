@@ -136,12 +136,14 @@ module.exports = async function regionCompareRegressions(page, baseUrl = 'http:/
   await ready();
   const afterRegion = await firstCell();
   check(`top region filter does not change the comparison (${before} → ${afterRegion})`, afterRegion === before);
+  const evFindingsBeforeType = await page.locator('.cmp-card').first().locator('.insight-key').innerText();
   await page.locator('.filterbar label.field', { hasText: '충전기 유형' }).locator('select').selectOption('04');
-  await page.waitForFunction(() => [...document.querySelectorAll('.cmp-card .insight-mode')].some((e) => e.textContent.includes('필터 적용 16개 지역 기준')), null, { timeout: 60000 });
+  await page.waitForURL((u) => u.searchParams.get('type') === '04');
   await ready();
   check('type filter changes charger numbers', (await firstCell()) !== before);
   check('basis note lists the applied filter', (await page.locator('.cmp-basis').innerText()).includes('유형 04'));
-  check('EV card stays filter-independent', (await page.locator('.cmp-card').first().locator('.insight-mode').innerText()).includes('충전기 필터 미적용'));
+  check('EV findings stay filter-independent', (await page.locator('.cmp-card').first().locator('.insight-key').innerText()) === evFindingsBeforeType);
+  check('findings headers contain no auxiliary status', (await page.locator('.cmp-card .insight-key-head > :not(h3)').count()) === 0);
 
   // 10) 다른 페이지 링크에는 cmp_* 를 넘기지 않음
   const hrefs = await page.locator('nav a[href]').evaluateAll((as) => as.map((a) => a.getAttribute('href')));

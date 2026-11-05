@@ -147,7 +147,7 @@ function GrowthTable({ rows }: { rows: GrowthRow[] }) {
       columns={[
         { key: 'y', header: '연도', render: (r) => <span className="num">{r.year}</span> },
         { key: 'a', header: '연간 설치(기)', numeric: true, render: (r) => fmtInt(r.annual_installed_count) },
-        { key: 'c', header: '누적(기)', numeric: true, render: (r) => fmtInt(r.cumulative_count) },
+        { key: 'c', header: '누적(기, 2011년부터)', numeric: true, render: (r) => fmtInt(r.cumulative_count) },
         {
           key: 'p',
           header: '구분',
@@ -198,7 +198,7 @@ export function EvRegionsCard({ span = 7, rowHeight = 26 }: { span?: Span; rowHe
       sub="2026년 9월, 16개 시도. 막대를 누르면 그 지역을 선택합니다."
       scope={{ kind: 'fixed', label: '전국 16개 지역' }}
       isFetching={q.isFetching && !q.isLoading}
-      detail={{ chart: chart(30), table: <EvTable rows={rows} selected={state.evRegion} />, meta: q.data?.meta, staticChartIds: [1] }}
+      detail={{ chart: chart(30), table: <EvTable rows={rows} selected={state.evRegion} />, meta: q.data?.meta, pythonChartIds: [1] }}
       insight={rows.length ? <Insight {...insightEvRegions(rows, state.evRegion)} stack={span < 7} /> : undefined}
     >
       <QueryState isLoading={q.isLoading} error={q.error} onRetry={() => q.refetch()} isEmpty={!rows.length} height={440}>
@@ -242,7 +242,7 @@ export function EvTypesCard({ span = 5 }: { span?: Span }) {
         chart: <DonutChart data={slices} unit="대" centerLabel="등록 대수" ariaLabel="차종별 전기차 구성" size={300} />,
         table: <EvTable rows={rows} selected={state.evRegion} />,
         meta: q.data?.meta,
-        staticChartIds: [2],
+        pythonChartIds: [2],
       }}
       insight={rows.length ? <Insight {...insightEvTypes(s, name, !!state.evRegion)} stack={span < 7} /> : undefined}
     >
@@ -330,7 +330,7 @@ export function EvCommercialCard({ span = 12 }: { span?: Span }) {
           ))}
         </div>
       }
-      detail={{ chart, table: <EvTable rows={rows} selected={state.evRegion} />, meta: q.data?.meta, staticChartIds: [3] }}
+      detail={{ chart, table: <EvTable rows={rows} selected={state.evRegion} />, meta: q.data?.meta, pythonChartIds: [3] }}
       insight={insight ? <Insight {...insight} /> : undefined}
     >
       <QueryState isLoading={q.isLoading} error={q.error} onRetry={() => q.refetch()} isEmpty={!rows.length} height={460}>
@@ -371,7 +371,7 @@ export function StationChargerCard({ span = 7, height = 340 }: { span?: Span; he
       sub="16개 시도 산점도 + 최소제곱 회귀선(점선). 점을 누르면 지역을 선택합니다."
       scope={{ kind: 'filtered', label: '유형·삭제·기관 필터' }}
       isFetching={q.isFetching && !q.isLoading}
-      detail={{ chart: chart(460), table: <RegionTable rows={rows} selected={state.region} />, meta: q.data?.meta, staticChartIds: [4] }}
+      detail={{ chart: chart(460), table: <RegionTable rows={rows} selected={state.region} />, meta: q.data?.meta, pythonChartIds: [4] }}
       insight={rows.length ? <Insight {...insightStationCharger(rows, filtered, state.region)} stack={span < 7} /> : undefined}
     >
       <QueryState isLoading={q.isLoading} error={q.error} onRetry={() => q.refetch()} isEmpty={!rows.length} height={height}>
@@ -454,6 +454,7 @@ export function StationBoxplotCard({ span = 12 }: { span?: Span }) {
         chart,
         table: <StationSizeTable rows={rows} />,
         meta: q.data?.meta,
+        pythonChartIds: [5],
         note: q.data ? `${q.data.meta.whisker_rule} 사분위수: ${q.data.meta.quantile_method}. ${q.data.meta.deletion_policy}` : undefined,
       }}
       insight={rows.length ? <Insight {...insightBoxplot(rows, deletionUsed, filtered, sampleTotal)} /> : undefined}
@@ -503,7 +504,7 @@ export function TypesDonutCard({ span = 5, size = 200 }: { span?: Span; size?: n
         chart: <DonutChart data={slices} unit="기" centerLabel="충전기" ariaLabel="유형별 충전기 구성" size={300} />,
         table: <TypeTable rows={rows} />,
         meta: q.data?.meta,
-        staticChartIds: [6],
+        pythonChartIds: [6],
         note: q.data?.meta.classification_note,
       }}
       insight={rows.length ? <Insight {...insightTypes(rows, activeChargerCount > 0)} stack={span < 7} /> : undefined}
@@ -547,7 +548,7 @@ export function OutputHistCard({ span = 12 }: { span?: Span }) {
         chart: <HistKde items={items} height={460} logY={logY} ariaLabel="정격 출력 히스토그램과 KDE" />,
         table: <OutputTable rows={rows} />,
         meta: q.data?.meta,
-        staticChartIds: [7],
+        pythonChartIds: [7],
         note: q.data?.meta.output_note,
       }}
       insight={rows.length ? <Insight {...insightOutput(rows, stats, activeChargerCount > 0)} /> : undefined}
@@ -616,7 +617,7 @@ export function RegionOutputHeatmapCard({ span = 12 }: { span?: Span }) {
       sub="행 기준 비율(%) 히트맵. 칸에 마우스를 올리면 실제 대수를 보여 줍니다. 지역명을 누르면 지역을 선택합니다."
       scope={{ kind: 'filtered', label: '유형·삭제·기관 필터' }}
       isFetching={m.isFetching && !m.isLoading}
-      detail={{ table, staticChartIds: [10] }}
+      detail={{ table, pythonChartIds: [8] }}
       insight={rows.length ? <Insight {...insightHeatmap(rows, OUTPUT_BANDS, filtered, state.region)} /> : undefined}
     >
       <QueryState
@@ -642,6 +643,7 @@ export function RegionOutputHeatmapCard({ span = 12 }: { span?: Span }) {
 export function AnnualCard({ span = 7, yearFrom, yearTo, height = 300 }: { span?: Span; yearFrom?: number; yearTo?: number; height?: number }) {
   const q = useGrowth(yearFrom, yearTo);
   const rows = q.data?.data ?? [];
+  const partialYear = rows.find((r) => r.is_partial_year)?.year;
   const data: ColumnDatum[] = rows.map((r) => ({
     key: String(r.year),
     label: String(r.year),
@@ -657,14 +659,13 @@ export function AnnualCard({ span = 7, yearFrom, yearTo, height = 300 }: { span?
     <Card
       span={span}
       title="연간 충전기 설치 수"
-      sub="완료 연도는 막대, 2026년 부분 연도는 빗금"
+      sub={partialYear ? `완료 연도는 막대, ${partialYear}년 부분 연도는 빗금` : '완료 연도만 표시 (선택 구간에 부분 연도 없음)'}
       scope={{ kind: 'filtered', label: '연도 구간' }}
       isFetching={q.isFetching && !q.isLoading}
       detail={{
         chart: <ColumnChart data={data} unit="기" height={460} labelPolicy="extremes" ariaLabel="연간 충전기 설치 수" />,
         table: <GrowthTable rows={rows} />,
         meta: q.data?.meta,
-        staticChartIds: [9],
         note: q.data?.meta.growth_warning,
       }}
       insight={rows.length ? <Insight {...insightAnnual(rows)} stack={span < 7} /> : undefined}
@@ -675,10 +676,12 @@ export function AnnualCard({ span = 7, yearFrom, yearTo, height = 300 }: { span?
             <span className="swatch" style={{ background: C.s1 }} />
             완료 연도
           </span>
-          <span className="legend-item" style={{ color: C.s3 }}>
-            <span className="swatch hatched" />
-            <span style={{ color: 'var(--ink-2)' }}>부분 연도 (2026)</span>
-          </span>
+          {partialYear !== undefined && (
+            <span className="legend-item" style={{ color: C.s3 }}>
+              <span className="swatch hatched" />
+              <span style={{ color: 'var(--ink-2)' }}>부분 연도 ({partialYear})</span>
+            </span>
+          )}
         </div>
         <ColumnChart data={data} unit="기" height={height} labelPolicy="extremes" ariaLabel="연간 충전기 설치 수 막대 그래프" />
       </QueryState>
@@ -693,19 +696,20 @@ export function CumulativeCard({ span = 5, yearFrom, yearTo, height = 300, stack
   const full = useGrowth(undefined, undefined);
   const rows = q.data?.data ?? [];
   const fullRows = full.data?.data ?? [];
+  const partialYear = rows.find((r) => r.is_partial_year)?.year;
   return (
     <Card
       no={9}
       span={span}
       title="연도별 누적 충전기 설치 추이"
-      sub="영역 그래프. 점선과 음영 띠는 2026년 부분 연도입니다."
+      sub={`영역 그래프. 누적값은 2011년부터의 전체 누적입니다(선택 구간 시작부터 다시 세지 않음).${partialYear ? ` 점선과 음영 띠는 ${partialYear}년 부분 연도입니다.` : ''}`}
       scope={{ kind: 'filtered', label: '연도 구간' }}
       isFetching={q.isFetching && !q.isLoading}
       detail={{
         chart: <CumulativeChart rows={rows} height={460} ariaLabel="누적 충전기 설치 수" />,
         table: <GrowthTable rows={rows} />,
         meta: q.data?.meta,
-        staticChartIds: [9],
+        pythonChartIds: [9],
         note: q.data?.meta.growth_warning,
       }}
       insight={rows.length && fullRows.length ? <Insight {...insightCumulative(rows, fullRows)} stack={stack} /> : undefined}
@@ -749,7 +753,7 @@ export function OperatorTreemapCard({ span = 12, height = 380 }: { span?: Span; 
       sub="트리맵: 면적 = 충전기 수. 상위 20개 (기관 ID, 명칭) 조합 + 기타. 칸을 누르면 그 기관 ID로 필터합니다."
       scope={{ kind: 'filtered', label: '지역·유형·삭제 필터' }}
       isFetching={q.isFetching && !q.isLoading}
-      detail={{ chart: <OperatorTreemap items={items} height={520} ariaLabel="운영기관별 충전기 트리맵" />, meta: q.data?.meta, staticChartIds: [8] }}
+      detail={{ chart: <OperatorTreemap items={items} height={520} ariaLabel="운영기관별 충전기 트리맵" />, meta: q.data?.meta, pythonChartIds: [10] }}
       insight={rows.length ? <Insight {...insightOperators(rows, matched, combos, filtered, !!state.operator)} /> : undefined}
     >
       <QueryState isLoading={q.isLoading} error={q.error} onRetry={() => q.refetch()} isEmpty={!rows.length} height={height}>

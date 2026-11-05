@@ -11,6 +11,7 @@ const PAGES = [
   { path: '/charging-infrastructure', title: 'Charging Infrastructure' },
   { path: '/regional-explorer', title: 'Regional Explorer' },
   { path: '/growth-trends', title: 'Growth Trends' },
+  { path: '/python-visualization', title: 'Python Visualization' },
 ];
 
 module.exports = async function directUrlRegressions(page, baseUrl = 'http://127.0.0.1:4173', apiUrl = 'http://127.0.0.1:10000') {

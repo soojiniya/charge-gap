@@ -14,7 +14,7 @@ import {
   rankOf,
   regionLabel,
 } from '../analysis/disparity';
-import { parseSource, type SourceParts } from '../analysis/sourceParts';
+import { joinSourceParts, parseSource, type SourceParts } from '../analysis/sourceParts';
 
 export const CHARGER_SNAPSHOT_DATE = '2026-10-15';
 
@@ -76,7 +76,8 @@ export function buildDisparityCsv(context: DisparityExportContext) {
   const national = nationalValue(data, metric, type);
   const rows = orderedRows(data, metric, type);
   const effectiveFilters = filters.length ? filters.join(' · ') : '없음';
-  const header = ['지역 코드', '지역명', '분석 지표', '지표값', '단위', '전국 기준값', '전국 대비 차이', '차이 단위', '순위', '선택 지역', '분모 기준', '적용 필터', '지역 필터', '자료 기준일'];
+  const header = ['지역 코드', '지역명', '분석 지표', '지표값', '단위', '전국 기준값', '전국 대비 차이', '차이 단위', '순위', '선택 지역', '분모 기준', '적용 필터', '지역 필터', '자료 기준일', '데이터 출처'];
+  const source = joinSourceParts(splitSources(context.source).main);
   const lines = [header, ...rows.map((row) => {
     const value = row.value ?? null;
     const delta = diffFor(value, national);
@@ -99,6 +100,7 @@ export function buildDisparityCsv(context: DisparityExportContext) {
       filterText,
       '미적용 (16개 지역 비교)',
       CHARGER_SNAPSHOT_DATE,
+      source,
     ];
   })];
   return `\uFEFF${lines.map((line) => line.map(csvCell).join(',')).join('\r\n')}`;
@@ -210,6 +212,25 @@ ${selected
 <div class="rpt-kpi"><dt>전국 대비 높음 / 낮음</dt><dd><span class="v num">${counts.up} / ${counts.down}<small>곳</small></span><span class="s">비교 ${data.regions.length}개 지역 · 순위 산정 ${ranked.length}개${counts.same ? ` · 같음 ${counts.same}곳` : ''}${excluded ? ` · 계산 제외 ${excluded}곳` : ''}</span></dd></div>
 </dl>`;
 
+  /* 1쪽 하단(선택 지역이 없을 때): 상위·하위 지역을 전국 기준과 나란히 보는 간단한 발산 막대.
+   * 값·차이는 02 표와 같은 계산(지역 값, 지역 값 − 전국 기준값)을 그대로 쓰며 새 수치를 만들지 않습니다. 16개 전체는 02 표에만 둡니다. */
+  function extremesVisual() {
+    const n = Math.min(3, Math.floor(ranked.length / 2));
+    if (!n || national == null) return '';
+    const picks = [...ranked.slice(0, n), ...ranked.slice(-n)];
+    const diffs = picks.map((row) => diffFor(row.value, national));
+    const maxAbs = Math.max(0, ...diffs.map((d) => Math.abs(d ?? 0)));
+    const line = (row: (typeof ranked)[number], d: number | null, group: 'top' | 'bottom') => {
+      const w = d == null || maxAbs <= 0 ? 0 : (Math.abs(d) / maxAbs) * 48;
+      const x = d != null && d < 0 ? 50 - w : 50;
+      return `<div class="rpt-ext-row is-${group}"><span class="r">${rankOf(row, metric, type)}위</span><span class="g">${escapeHtml(regionLabel(row))}</span><span class="v num">${escapeHtml(option.format(row.value))}</span><svg class="rpt-ext-bar" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><rect class="track" x="0" y="2" width="100" height="6"/><rect class="fill${signClass(d)}" x="${x.toFixed(2)}" y="2" width="${w.toFixed(2)}" height="6"/><rect class="axis" x="49.7" y="0" width="0.6" height="10"/></svg><span class="d num${signClass(d)}">${escapeHtml(diffText(d, option))}</span></div>`;
+    };
+    return `<div class="rpt-ext keep"><h3>전국 기준 대비 상위·하위 ${n}개 지역</h3><p class="rpt-ext-lead">가운데 세로선이 전국 기준값(${escapeHtml(option.format(national))})이며, 막대는 전국 대비 차이(${escapeHtml(option.diffUnit)})의 크기입니다. 16개 지역 전체 값과 순위는 02 표에 있습니다.</p>
+<div class="rpt-ext-head" aria-hidden="true"><span>순위</span><span>지역</span><span class="v">지역 값</span><span class="b"><em>전국보다 낮음</em><em>전국보다 높음</em></span><span class="d">전국 대비</span></div>
+<div class="rpt-ext-group"><p class="rpt-ext-label">상위 ${n}개 지역</p>${picks.slice(0, n).map((row, i) => line(row, diffs[i], 'top')).join('')}</div>
+<div class="rpt-ext-group"><p class="rpt-ext-label">하위 ${n}개 지역</p>${picks.slice(n).map((row, i) => line(row, diffs[n + i], 'bottom')).join('')}</div></div>`;
+  }
+
   const selectedSummary = selected
     ? `<div class="rpt-selected keep"><h3>선택 지역 분석 · ${escapeHtml(regionLabel(selected))}</h3><p class="rpt-selected-meta">충전기 ${selected.charger_count.toLocaleString('ko-KR')}기 · 충전소 ${selected.station_count.toLocaleString('ko-KR')}곳 · ${chosenRank == null || chosenRank === '—' ? '순위 없음(계산 제외)' : `${ranked.length}개 지역 중 ${escapeHtml(chosenRank)}`}</p><p class="rpt-selected-text">${escapeHtml(chosenNarrative)}</p>
 <h3>선택 지역의 5개 지표</h3>${renderTable(
@@ -222,7 +243,7 @@ ${selected
         }),
         { cls: 'rpt-mini' },
       )}</div>`
-    : '<p class="rpt-note">선택된 지역이 없습니다. 웹 화면에서 지역을 선택하면 해당 지역의 상세 요약이 보고서에 포함됩니다.</p>';
+    : `${extremesVisual()}<p class="rpt-note">선택된 지역이 없습니다. 웹 화면에서 지역을 선택하면 해당 지역의 상세 요약이 보고서에 포함됩니다.</p>`;
 
   const deletionNote = metric === 'deletion_share'
     ? '<p class="rpt-note is-warn">삭제 표시 비중은 삭제 상태 필터를 제외한 모집단에서 계산합니다. 삭제 표시는 자료상 분류이며 실제 고장이나 이용 불가를 뜻하지 않습니다.</p>'
@@ -299,6 +320,7 @@ ${selected
 <p class="rpt-legend"><span><i></i>지역 값 (막대 길이 = 값 ÷ 표 안 최댓값)</span><span><i class="mark"></i>전국 기준값 위치</span><span>맨 위 행: 전국 기준</span></p></section>
 
 <section class="rpt-section rpt-page-method"><h2><span class="no">03</span>계산 방법 및 해석</h2>
+<div class="rpt-block rpt-block-method"><h3 class="rpt-block-title">계산 방법</h3>
 <div class="rpt-formula keep"><dl class="f-main"><dt>계산식</dt><dd>${escapeHtml(def.formula)}</dd></dl><dl class="f-parts"><div><dt>분자</dt><dd>${escapeHtml(def.numerator)}</dd></div><div><dt>분모</dt><dd>${escapeHtml(def.denominator)}</dd></div></dl></div>
 <dl class="rpt-defs">
 <div><dt>정의</dt><dd><strong>${escapeHtml(def.definition)}</strong></dd></div>
@@ -306,8 +328,8 @@ ${selected
 <div><dt>전국 기준값</dt><dd>${escapeHtml(KOREAN_NATIONAL_BASIS)} 현재 전국 값: <span class="num">${escapeHtml(option.format(national))}</span> (${escapeHtml(nationalBasisDetail)})</dd></div>
 <div><dt>순위</dt><dd>값이 큰 지역이 1위입니다. 값이 같으면 같은 순위를 주고, 값이 없는 지역(충전기 0기·분모 0)은 순위에서 제외합니다.</dd></div>
 <div><dt>지역 필터</dt><dd>16개 지역 비교에는 적용하지 않고 선택 지역 표시에만 씁니다.${metric === 'deletion_share' ? ' 이 지표에는 삭제 상태 필터도 적용하지 않습니다.' : ''}</dd></div>
-</dl>
-<h3>해석 주의사항</h3><ol class="rpt-cautions">${cautions.map((c) => `<li>${escapeHtml(c)}</li>`).join('')}</ol></section>
+</dl></div>
+<div class="rpt-block rpt-block-cautions"><h3 class="rpt-block-title">해석 주의사항<small>${cautions.length}개 항목</small></h3><ol class="rpt-cautions">${cautions.map((c) => `<li>${escapeHtml(c)}</li>`).join('')}</ol></div></section>
 
 <section class="rpt-section rpt-source-section"><h2><span class="no">04</span>데이터 출처 및 분석 한계</h2>
 <div class="rpt-sources">${sourceCard('분석 자료', '이 보고서의 모든 수치', mainSource)}${refSource ? sourceCard('참고 자료', '결합하지 않음', refSource) : ''}</div>

@@ -6,6 +6,7 @@ import { DataTable } from '../components/ui/DataTable';
 import { useGrowth } from '../api/hooks';
 import { fmtInt } from '../lib/format';
 import type { GrowthRow } from '../api/types';
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { AnnualCard, CumulativeCard } from '../features/ChartCards';
 
@@ -21,7 +22,7 @@ function GrowthTable({ rows }: { rows: GrowthRow[] }) {
       columns={[
         { key: 'y', header: '연도', render: (r) => <span className="num">{r.year}</span> },
         { key: 'a', header: '연간 설치(기)', numeric: true, render: (r) => fmtInt(r.annual_installed_count) },
-        { key: 'c', header: '누적(기)', numeric: true, render: (r) => fmtInt(r.cumulative_count) },
+        { key: 'c', header: '누적(기, 2011년부터)', numeric: true, render: (r) => fmtInt(r.cumulative_count) },
         {
           key: 'p',
           header: '구분',
@@ -40,17 +41,32 @@ export function GrowthTrendsPage() {
     return Number.isInteger(n) && n >= MIN_YEAR && n <= MAX_YEAR ? n : undefined;
   };
   const yearFrom = parse('from');
-  const yearTo = parse('to');
-  const setYear = (k: 'from' | 'to', v?: number) =>
+  const rawTo = parse('to');
+  // 시작 연도가 종료 연도보다 늦은 주소(?from=2024&to=2020)는 종료 연도를 무시하고 주소도 정리합니다.
+  const invalidRange = yearFrom !== undefined && rawTo !== undefined && rawTo < yearFrom;
+  const yearTo = invalidRange ? undefined : rawTo;
+  // 두 값을 한 번의 주소 갱신으로 바꿉니다(연속 호출하면 뒤 호출이 앞의 변경을 덮어씀).
+  const setRange = (patch: { from?: number | null; to?: number | null }) =>
     setParams(
       (prev) => {
-        const next = new URLSearchParams(prev);
-        if (v === undefined) next.delete(k);
-        else next.set(k, String(v));
+        // 화면이 다시 그려지기 전에 연달아 바꿔도(전환 렌더링 중) 앞의 변경을 잃지 않도록 실제 주소를 기준으로 합니다.
+        const next = new URLSearchParams(typeof window === 'undefined' ? prev : window.location.search);
+        for (const [k, v] of Object.entries(patch) as ['from' | 'to', number | null | undefined][]) {
+          if (v === undefined) continue;
+          if (v === null) next.delete(k);
+          else next.set(k, String(v));
+        }
         return next;
       },
       { replace: true },
     );
+  // 범위 밖·숫자가 아닌 연도(?from=1999, ?to=abc)도 주소에서 지워 화면과 주소가 같은 구간을 가리키게 합니다.
+  const badFrom = params.has('from') && yearFrom === undefined;
+  const badTo = params.has('to') && rawTo === undefined;
+  useEffect(() => {
+    if (invalidRange || badFrom || badTo) setRange({ ...(badFrom ? { from: null } : {}), ...(invalidRange || badTo ? { to: null } : {}) });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [invalidRange, badFrom, badTo]);
 
   const q = useGrowth(yearFrom, yearTo);
   const rows = q.data?.data ?? [];
@@ -73,29 +89,32 @@ export function GrowthTrendsPage() {
         <label className="field">
           <span className="field-label">시작 연도 (year_from)</span>
           <select
-            className={`select ${yearFrom ? 'is-set' : ''}`}
+            className={`select cg-menu-select cg-year-select ${yearFrom ? 'is-set' : ''}`}
             value={effFrom}
             onChange={(e) => {
               const v = Number(e.target.value);
-              setYear('from', v === MIN_YEAR ? undefined : v);
-              if (v > effTo) setYear('to', undefined);
+              // 목록에는 종료 연도 이하만 있으므로 구간이 뒤집히지 않고, 종료 연도도 그대로 유지됩니다.
+              setRange({ from: v === MIN_YEAR ? null : v });
             }}
           >
-            {years.map((y) => (
-              <option key={y} value={y}>
-                {y}
-              </option>
-            ))}
+            {/* 시작 연도는 현재 종료 연도 이하, 종료 연도는 현재 시작 연도 이상만 표시(같은 연도 허용) */}
+            {years
+              .filter((y) => y <= effTo)
+              .map((y) => (
+                <option key={y} value={y}>
+                  {y}
+                </option>
+              ))}
           </select>
         </label>
         <label className="field">
           <span className="field-label">종료 연도 (year_to)</span>
           <select
-            className={`select ${yearTo ? 'is-set' : ''}`}
+            className={`select cg-menu-select cg-year-select ${yearTo ? 'is-set' : ''}`}
             value={effTo}
             onChange={(e) => {
               const v = Number(e.target.value);
-              setYear('to', v === MAX_YEAR ? undefined : v);
+              setRange({ to: v === MAX_YEAR ? null : v });
             }}
           >
             {years
@@ -120,19 +139,7 @@ export function GrowthTrendsPage() {
                 key={p.label}
                 type="button"
                 aria-pressed={yearFrom === p.f && yearTo === p.t}
-                onClick={() => {
-                  setParams(
-                    (prev) => {
-                      const next = new URLSearchParams(prev);
-                      next.delete('from');
-                      next.delete('to');
-                      if (p.f) next.set('from', String(p.f));
-                      if (p.t) next.set('to', String(p.t));
-                      return next;
-                    },
-                    { replace: true },
-                  );
-                }}
+                onClick={() => setRange({ from: p.f ?? null, to: p.t ?? null })}
               >
                 {p.label}
               </button>
@@ -153,16 +160,16 @@ export function GrowthTrendsPage() {
                 </div>
               </div>
               <div className="stat">
-                <div className="stat-label">구간 마지막 연도 누적</div>
+                <div className="stat-label">구간 마지막 연도 누적 (2011년부터)</div>
                 <div className="stat-value">
                   {lastRow ? fmtInt(lastRow.cumulative_count) : '—'}
                   <small>기{lastRow ? `, ${lastRow.year}년${lastRow.is_partial_year ? ' (부분)' : ''}` : ''}</small>
                 </div>
               </div>
               <div className="stat">
-                <div className="stat-label">2026년 부분 연도 설치</div>
-                <div className="stat-value">
-                  {partial ? fmtInt(partial.annual_installed_count) : '구간 밖'}
+                <div className="stat-label">{MAX_YEAR}년 부분 연도 설치</div>
+                <div className={`stat-value ${partial ? '' : 'is-excluded'}`}>
+                  {partial ? fmtInt(partial.annual_installed_count) : '선택 구간에서 제외'}
                   {partial && <small>기</small>}
                 </div>
               </div>

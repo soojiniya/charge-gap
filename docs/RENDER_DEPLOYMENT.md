@@ -1,6 +1,8 @@
 # CHARGE GAP 인터넷 공개 배포 준비
 
 > 2026-10-20 로컬 등록자료 교체: 런타임과 manifest는 `data/processed/ev_registration_by_region_2026_09.csv`를 요구합니다. 이 새 객체는 아직 R2에 업로드하지 않았으며 원격 서비스도 변경하지 않았습니다. 아래 과거 R2 14개 검증 기록이 새 CSV 업로드·권리 확인을 대신하지 않습니다. 새 파일 승인·업로드·해시 검증과 코드 반영 전에는 재배포하지 마세요. 현재 manifest 총량은 242,523,813 bytes입니다.
+>
+> 2026-11-05 추가 확인(읽기 전용): 공개 API(`charge-gap-api`, 커밋 `eea94cd` 배포)가 2026-09 기준 전기차 1,191,873대·16개 지역을 응답하는 것을 확인했습니다. R2 객체의 크기·해시는 이번에 직접 조회하지 않았습니다. EV 등록 Excel의 공개 이용 조건은 여전히 미확정입니다.
 
 확인일: 2026-10-19. **Linux 자원·기능 검증 PASS / 실제 공개 배포 준비 CONDITIONAL PASS**. 사용자에 의해 private R2 저장과 읽기 전용 토큰 설정이 완료됐고 실제 R2 다운로드 포함 512MiB·0.1 CPU 시험도 통과했다. 당시에는 Render 서비스를 생성하기 전이었고 최종 최적화·배포 준비 변경은 Git commit/push 전이었다.
 
@@ -79,7 +81,7 @@ Render Static 설정: Root Directory `frontend`, Build `npm ci && npm run build`
 
 증상: `/`는 열리고 메뉴 이동도 되지만 `/regional-explorer` 등을 주소창에 직접 입력하거나 새로고침하면 404. 정적 호스트에는 `index.html`과 `assets/`만 있고 페이지 경로 파일은 없으므로, rewrite 규칙이 없으면 이렇게 된다. 코드나 빌드 문제가 아니라 Static Site 설정 문제다.
 
-규칙은 Render 대시보드 또는 Blueprint(`render.yaml`의 `routes`)로만 설정한다(Netlify식 `_redirects` 파일은 Render 문서에 없다). **Blueprint로 관리하지 않고 대시보드에서 만든 서비스에는 `render.yaml`이 자동 적용되지 않는다.** 이 저장소의 `render.yaml`은 "Preparation only" 초안이고 Static Site 이름은 `charge-gap-web`이다. 공개 주소(`charge-gap.onrender.com`)의 서비스가 이 Blueprint로 만들어졌는지는 저장소에서 확인되지 않는다. 대시보드에서 만든 서비스라면(또는 확인이 안 되면) 대시보드에서 Static Site → **Redirects/Rewrites**에 다음 4개를 **Rewrite**로 추가한다(`/`는 이미 `index.html`이 제공됨).
+규칙은 Render 대시보드 또는 Blueprint(`render.yaml`의 `routes`)로만 설정한다(Netlify식 `_redirects` 파일은 Render 문서에 없다). **Blueprint로 관리하지 않고 대시보드에서 만든 서비스에는 `render.yaml`이 자동 적용되지 않는다.** 이 저장소의 `render.yaml`은 "Preparation only" 초안이고 Static Site 이름은 `charge-gap-web`이다. 공개 주소(`charge-gap.onrender.com`)의 서비스가 이 Blueprint로 만들어졌는지는 저장소에서 확인되지 않는다. 대시보드에서 만든 서비스라면(또는 확인이 안 되면) 대시보드에서 Static Site → **Redirects/Rewrites**에 다음 5개를 **Rewrite**로 추가한다(`/`는 이미 `index.html`이 제공됨).
 
 | Source | Destination | Action |
 |---|---|---|
@@ -87,14 +89,27 @@ Render Static 설정: Root Directory `frontend`, Build `npm ci && npm run build`
 | `/charging-infrastructure` | `/index.html` | Rewrite |
 | `/regional-explorer` | `/index.html` | Rewrite |
 | `/growth-trends` | `/index.html` | Rewrite |
+| `/python-visualization` | `/index.html` | Rewrite |
 
 - 페이지 경로만 지정하고 `/*` 전체 규칙은 쓰지 않는다. Render는 실제 파일이 있는 경로(`/assets/*.js` 등)에는 규칙을 적용하지 않지만, `/*`이면 **없는** 자산이나 이 정적 호스트로 잘못 온 `/api/...` 요청까지 `index.html`(200)로 바뀌어 오류 원인이 가려진다. 페이지 목록에 없는 주소는 Render 404가 된다.
 - API는 별도 Web Service origin(`VITE_API_BASE_URL`)으로 요청하므로 이 규칙의 영향을 받지 않는다.
+- Python Visualization 페이지의 고정 PNG 10개와 `charts.json`은 `frontend/public/python-charts/`에서 빌드 결과 `dist/python-charts/`로 복사되는 **실제 정적 파일**이다(`/python-charts/charts.json`, `/python-charts/py01_….png` 등). 실제 파일은 rewrite되지 않으므로 별도 규칙이 필요 없다. 반대로 이 폴더가 Git에 없으면 빌드 결과에도 없어 404가 된다.
+- 2026-11-05 공개 주소 확인: `/growth-trends`는 200, `/python-visualization`과 `/python-charts/charts.json`은 404(새 프론트엔드 미배포·대시보드 규칙 미추가 상태). 배포 후 다시 확인한다.
 - 페이지를 추가하면 `frontend/src/App.tsx`, `render.yaml`, 대시보드 규칙을 함께 고친다. `tests/spa-fallback.test.cjs`가 App.tsx와 `render.yaml`의 일치를 확인한다.
 - 규칙을 추가한 뒤 실제 공개 주소에서 각 경로를 직접 입력·새로고침해 반영 여부를 확인한다.
 - 로컬 Compose(Nginx)는 `frontend/nginx.conf`의 `try_files $uri $uri/ /index.html`로 이미 처리한다. `/assets/` 누락 파일은 404, `/backend/`는 API 프록시다.
 
 별도 origin 간 HTTPS 연결이므로 Nginx `/backend` 프록시는 클라우드 구조에서 사용하지 않는다. 로컬 Compose에서는 계속 `/backend`를 사용한다. HTTPS는 Render가 TLS를 종료하며 컨테이너 자체는 PORT의 HTTP를 제공한다. [Render Web Services](https://render.com/docs/web-services).
+
+### 프론트엔드 갱신 배포 순서
+
+현재 작업 트리의 프론트엔드는 백엔드 API에 새 경로를 요구하지 않는다(사용 API 12개 경로는 커밋 `eea94cd`와 같고, `/api/regional-disparity`는 이미 공개 API에서 응답). 백엔드에는 출처 문구(설치 추이 `license`)만 바뀐 미커밋 변경이 있다. 화면과 API의 출처 문구를 맞추기 위해 다음 순서로 배포한다(`render.yaml`의 `autoDeployTrigger: 'off'`이므로 push 후 수동 배포).
+
+1. 필요한 파일만 명시적으로 stage해 commit·push한다(`git add .` 금지, CSV·Excel·`.env`·`work/`·백업 폴더 제외).
+2. Static Site 대시보드 Redirects/Rewrites에 `/python-visualization → /index.html`(Rewrite)을 추가한다(위 표).
+3. 백엔드 `charge-gap-api`를 같은 커밋으로 수동 배포하고 `/api/overview`·`/api/growth`가 200인지 확인한다. 응답 형식은 바뀌지 않으므로 이전 프론트엔드도 계속 동작한다.
+4. 프론트엔드 `charge-gap`을 수동 배포한다(`VITE_API_BASE_URL` 유지).
+5. 공개 주소에서 6개 페이지 직접 접근·새로고침, `/python-charts/charts.json`과 PNG 10개 200, 콘솔·API 오류, PDF 인쇄 미리보기를 확인한다.
 
 ### 정적 사이트 보안 헤더
 

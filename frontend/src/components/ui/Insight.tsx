@@ -61,9 +61,6 @@ export function Insight({ mode, modeNote, purpose, reason, findings, interpretat
       <section className="insight-key" aria-label="주요 분석 결과">
         <header className="insight-key-head">
           <h3>주요 분석 결과</h3>
-          <span className={`insight-mode ${mode === 'dynamic' ? 'dynamic' : ''}`}>
-            {basis}
-          </span>
         </header>
         {findings.length ? (
           <ul>

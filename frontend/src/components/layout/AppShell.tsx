@@ -13,6 +13,7 @@ const NAV: { to: string; label: string; ko: string; icon: IconName }[] = [
   { to: '/charging-infrastructure', label: 'Charging Infrastructure', ko: '충전 인프라', icon: 'plug' },
   { to: '/regional-explorer', label: 'Regional Explorer', ko: '지역 탐색', icon: 'map' },
   { to: '/growth-trends', label: 'Growth Trends', ko: '설치 추이', icon: 'trend' },
+  { to: '/python-visualization', label: 'Python Visualization', ko: 'Python 데이터 시각화', icon: 'image' },
 ];
 
 function BrandMark() {

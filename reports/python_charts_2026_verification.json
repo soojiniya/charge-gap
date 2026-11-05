@@ -1,0 +1,324 @@
+{
+ "api": "http://127.0.0.1:5000",
+ "checks": 50,
+ "failed": [],
+ "results": [
+  {
+   "chart": 0,
+   "check": "source unchanged: data/processed/charger_info_clean.csv",
+   "ok": true
+  },
+  {
+   "chart": 0,
+   "check": "source unchanged: data/processed/ev_registration_by_region_2026_09.csv",
+   "ok": true
+  },
+  {
+   "chart": 0,
+   "check": "source unchanged: data/processed/charger_installation_trend.csv",
+   "ok": true
+  },
+  {
+   "chart": 1,
+   "check": "png exists and sha256 matches charts.json",
+   "ok": true
+  },
+  {
+   "chart": 2,
+   "check": "png exists and sha256 matches charts.json",
+   "ok": true
+  },
+  {
+   "chart": 3,
+   "check": "png exists and sha256 matches charts.json",
+   "ok": true
+  },
+  {
+   "chart": 4,
+   "check": "png exists and sha256 matches charts.json",
+   "ok": true
+  },
+  {
+   "chart": 5,
+   "check": "png exists and sha256 matches charts.json",
+   "ok": true
+  },
+  {
+   "chart": 6,
+   "check": "png exists and sha256 matches charts.json",
+   "ok": true
+  },
+  {
+   "chart": 7,
+   "check": "png exists and sha256 matches charts.json",
+   "ok": true
+  },
+  {
+   "chart": 8,
+   "check": "png exists and sha256 matches charts.json",
+   "ok": true
+  },
+  {
+   "chart": 9,
+   "check": "png exists and sha256 matches charts.json",
+   "ok": true
+  },
+  {
+   "chart": 10,
+   "check": "png exists and sha256 matches charts.json",
+   "ok": true
+  },
+  {
+   "chart": 0,
+   "check": "charger totals = /api/overview (all)",
+   "ok": true
+  },
+  {
+   "chart": 0,
+   "check": "EV total and month = /api/overview",
+   "ok": true
+  },
+  {
+   "chart": 1,
+   "check": "national total",
+   "ok": true
+  },
+  {
+   "chart": 1,
+   "check": "16 regional counts",
+   "ok": true
+  },
+  {
+   "chart": 2,
+   "check": "vehicle type totals",
+   "ok": true
+  },
+  {
+   "chart": 3,
+   "check": "national commercial %",
+   "ok": true
+  },
+  {
+   "chart": 3,
+   "check": "top-to-bottom order = commercial % descending (API)",
+   "ok": true
+  },
+  {
+   "chart": 3,
+   "check": "regional commercial %",
+   "ok": true
+  },
+  {
+   "chart": 4,
+   "check": "regional station/charger counts",
+   "ok": true
+  },
+  {
+   "chart": 4,
+   "check": "OLS slope/intercept/R² = web formula",
+   "ok": true,
+   "detail": {
+    "slope": 6.290917453093967,
+    "r2": 0.9724747480942123
+   }
+  },
+  {
+   "chart": 5,
+   "check": "box stats region 41",
+   "ok": true
+  },
+  {
+   "chart": 5,
+   "check": "box stats region 11",
+   "ok": true
+  },
+  {
+   "chart": 5,
+   "check": "box stats region 12",
+   "ok": true
+  },
+  {
+   "chart": 5,
+   "check": "box stats region 48",
+   "ok": true
+  },
+  {
+   "chart": 5,
+   "check": "box stats region 47",
+   "ok": true
+  },
+  {
+   "chart": 5,
+   "check": "box stats region 28",
+   "ok": true
+  },
+  {
+   "chart": 5,
+   "check": "box stats region 26",
+   "ok": true
+  },
+  {
+   "chart": 5,
+   "check": "box stats region 44",
+   "ok": true
+  },
+  {
+   "chart": 5,
+   "check": "box stats region 52",
+   "ok": true
+  },
+  {
+   "chart": 5,
+   "check": "box stats region 51",
+   "ok": true
+  },
+  {
+   "chart": 5,
+   "check": "box stats region 27",
+   "ok": true
+  },
+  {
+   "chart": 5,
+   "check": "box stats region 43",
+   "ok": true
+  },
+  {
+   "chart": 5,
+   "check": "box stats region 50",
+   "ok": true
+  },
+  {
+   "chart": 5,
+   "check": "box stats region 30",
+   "ok": true
+  },
+  {
+   "chart": 5,
+   "check": "box stats region 31",
+   "ok": true
+  },
+  {
+   "chart": 5,
+   "check": "box stats region 36",
+   "ok": true
+  },
+  {
+   "chart": 5,
+   "check": "sample count = sum of API samples",
+   "ok": true
+  },
+  {
+   "chart": 6,
+   "check": "top4 + other counts",
+   "ok": true,
+   "detail": {
+    "python": [
+     469049,
+     43676,
+     6449,
+     5587,
+     2672
+    ],
+    "api": [
+     469049,
+     43676,
+     6449,
+     5587,
+     2672
+    ]
+   }
+  },
+  {
+   "chart": 6,
+   "check": "type codes order",
+   "ok": true
+  },
+  {
+   "chart": 7,
+   "check": "histogram bins = web logHistogram on API data",
+   "ok": true,
+   "detail": {
+    "python": [
+     46148,
+     1,
+     1,
+     406962,
+     0,
+     10194,
+     6198,
+     135,
+     2356,
+     51,
+     12784,
+     10,
+     7,
+     29652,
+     133,
+     8642,
+     3118,
+     872,
+     0
+    ],
+    "web": [
+     46148,
+     1,
+     1,
+     406962,
+     0,
+     10194,
+     6198,
+     135,
+     2356,
+     51,
+     12784,
+     10,
+     7,
+     29652,
+     133,
+     8642,
+     3118,
+     872,
+     0
+    ]
+   }
+  },
+  {
+   "chart": 7,
+   "check": "valid/invalid/median = API output_statistics",
+   "ok": true
+  },
+  {
+   "chart": 7,
+   "check": "Seaborn KDE curve = web weightedKde (max diff < 0.1% of peak)",
+   "ok": true,
+   "detail": {
+    "max_relative_diff_of_peak": 3.5542998605834766e-16
+   }
+  },
+  {
+   "chart": 8,
+   "check": "16 regions × 6 bands = web heatmap counts",
+   "ok": true
+  },
+  {
+   "chart": 9,
+   "check": "years/annual/cumulative = /api/growth",
+   "ok": true
+  },
+  {
+   "chart": 9,
+   "check": "partial years = API is_partial_year",
+   "ok": true
+  },
+  {
+   "chart": 10,
+   "check": "operator pairs count",
+   "ok": true
+  },
+  {
+   "chart": 10,
+   "check": "top20 + other counts and order",
+   "ok": true
+  }
+ ]
+}

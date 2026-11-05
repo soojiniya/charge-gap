@@ -501,7 +501,7 @@ export function RegionCompareSection() {
       </span>
       <select
         id={id}
-        className={`select cmp-select cmp-${side} ${value ? 'is-set' : ''}`}
+        className={`select cg-menu-select cmp-select cmp-${side} ${value ? 'is-set' : ''}`}
         value={value ?? ''}
         onChange={(e) => set(side, e.target.value || undefined)}
         disabled={!opts.data}

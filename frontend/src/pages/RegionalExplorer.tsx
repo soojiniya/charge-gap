@@ -4,8 +4,7 @@ import { FilterBar } from '../components/FilterBar';
 import { Card } from '../components/ui/Card';
 import { QueryState } from '../components/ui/QueryState';
 import { DataTable, Pager } from '../components/ui/DataTable';
-import { StationMap, STATION_ZOOM, type MapView } from '../components/StationMap';
-import { ReportGallery } from '../components/ReportGallery';
+import { StationMap, STATION_ZOOM } from '../components/StationMap';
 import { MapAnalysisPanel } from '../components/MapAnalysisPanel';
 import { RegionSystemNote } from '../components/DataNotes';
 import { useChargerRegions, useLocationsPage } from '../api/hooks';
@@ -17,22 +16,18 @@ import { RegionCompareSection } from '../features/RegionCompare';
 import { RegionalDisparitySection } from '../features/RegionalDisparity';
 
 function StationList({
-  view,
   selectedId,
   onShowOnMap,
 }: {
-  view: MapView | null;
   selectedId: string | null;
   onShowOnMap: (row: LocationRow) => void;
 }) {
   const { chargerParams, state } = useFilters();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(20);
-  const [inView, setInView] = useState(false);
-  const bbox = inView && view ? view.bbox : null;
-  const q = useLocationsPage(chargerParams, page, limit, bbox);
+  const q = useLocationsPage(chargerParams, page, limit, null);
 
-  const key = JSON.stringify([chargerParams, bbox]);
+  const key = JSON.stringify(chargerParams);
   useEffect(() => setPage(1), [key]);
 
   const rows = q.data?.data ?? [];
@@ -43,14 +38,8 @@ function StationList({
       span={12}
       title="충전소 목록"
       sub="충전소 ID 순. 각 행의 충전기 수는 현재 필터와 일치하는 충전기만 셉니다."
-      scope={{ kind: 'filtered', label: inView ? '필터 + 지도 영역' : '충전기 필터' }}
+      scope={{ kind: 'filtered', label: '충전기 필터' }}
       isFetching={q.isFetching && !q.isLoading}
-      actions={
-        <label className="row small" style={{ gap: 8, cursor: 'pointer', marginRight: 6 }}>
-          <input type="checkbox" checked={inView} onChange={(e) => setInView(e.target.checked)} disabled={!view} />
-          지도 영역만
-        </label>
-      }
       foot={
         meta && (
           <>
@@ -65,7 +54,7 @@ function StationList({
         error={q.error}
         onRetry={() => q.refetch()}
         isEmpty={!rows.length}
-        emptyDetail={inView ? '지도를 옮기거나 “지도 영역만”을 해제해 보세요.' : '필터를 바꾸거나 초기화해 보세요.'}
+        emptyDetail="필터를 바꾸거나 초기화해 보세요."
         height={300}
       >
         <DataTable
@@ -137,7 +126,6 @@ export function RegionalExplorerPage() {
   const { chargerParams, state, update } = useFilters();
   const regions = useChargerRegions(chargerParams);
   const rows = [...(regions.data?.data ?? [])].sort((a, b) => b.charger_count - a.charger_count);
-  const [view, setView] = useState<MapView | null>(null);
   const [selected, setSelected] = useState<LocationRow | null>(null);
   const [group, setGroup] = useState<LocationRow[] | null>(null);
   const [focusRequest, setFocusRequest] = useState(0);
@@ -189,7 +177,6 @@ export function RegionalExplorerPage() {
           <div className="geo-explorer" ref={mapRef}>
             <StationMap
               filters={chargerParams}
-              onView={setView}
               onRegionSelect={(code) => update({ region: code })}
               selected={selected}
               onSelect={selectOnMap}
@@ -240,8 +227,7 @@ export function RegionalExplorerPage() {
           </Card>
         </div>
 
-        <StationList view={view} selectedId={selected?.station_id ?? null} onShowOnMap={showOnMap} />
-        <ReportGallery ids={[4, 5, 10]} />
+        <StationList selectedId={selected?.station_id ?? null} onShowOnMap={showOnMap} />
       </div>
     </>
   );

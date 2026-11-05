@@ -5,7 +5,7 @@
  * Tab stays in the panel, Esc closes it and focus returns to the button. The chart detail modal shows the evidence
  * inline (no nested panel button). The Overview "자료 해석 기준" keeps its three blocks.
  */
-const PAGES = ['/', '/ev-registration', '/charging-infrastructure', '/regional-explorer', '/growth-trends'];
+const PAGES = ['/', '/ev-registration', '/charging-infrastructure', '/regional-explorer', '/growth-trends', '/python-visualization'];
 
 module.exports = async function cardLayoutRegressions(page, baseUrl = 'http://127.0.0.1:4173') {
   const checks = [];

@@ -33,7 +33,7 @@ function renderStaticRoutes() {
 }
 
 test('App.tsx page paths: index / plus the four page paths', () => {
-  assert.deepEqual(appPagePaths(), ['/charging-infrastructure', '/ev-registration', '/growth-trends', '/regional-explorer']);
+  assert.deepEqual(appPagePaths(), ['/charging-infrastructure', '/ev-registration', '/growth-trends', '/python-visualization', '/regional-explorer']);
 });
 
 test('render.yaml rewrites exactly the App.tsx page paths to /index.html', () => {

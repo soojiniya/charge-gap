@@ -25,12 +25,13 @@ interface CardProps {
   reveal?: boolean;
   /** 백엔드 집계가 준비되지 않은 미완료 그래프 */
   pending?: boolean;
-  /** 상세 보기: 확대 차트·데이터 표·출처·보존된 보고서 PNG */
+  /** 상세 보기: 확대 차트·데이터 표·출처·대응 Python 그래프 */
   detail?: {
     chart?: ReactNode;
     table?: ReactNode;
     meta?: BaseMeta;
-    staticChartIds?: number[];
+    /** 같은 기준으로 그린 Python 그래프(고정 PNG) 번호 */
+    pythonChartIds?: number[];
     note?: ReactNode;
     insight?: ReactNode;
   };

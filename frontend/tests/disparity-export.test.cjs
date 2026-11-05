@@ -45,6 +45,8 @@ test('CSV is BOM encoded, includes all 16 regions, screen-formatted values, rank
   assert.match(csv, /미적용 \(16개 지역 비교\)/);
   assert.match(csv, /50\.00%/);
   assert.match(csv, /1위/);
+  assert.match(csv, /데이터 출처/);
+  assert.match(csv, /한국환경공단/);
 });
 
 test('CSV represents zero denominator and absent type as em dash, while valid zero share has a rank', () => {

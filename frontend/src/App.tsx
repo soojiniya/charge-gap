@@ -10,6 +10,7 @@ const ChargingInfrastructurePage = lazy(() =>
 );
 const RegionalExplorerPage = lazy(() => import('./pages/RegionalExplorer').then((m) => ({ default: m.RegionalExplorerPage })));
 const GrowthTrendsPage = lazy(() => import('./pages/GrowthTrends').then((m) => ({ default: m.GrowthTrendsPage })));
+const PythonVisualizationPage = lazy(() => import('./pages/PythonVisualization').then((m) => ({ default: m.PythonVisualizationPage })));
 
 function PageLoading() {
   return (
@@ -39,6 +40,7 @@ export default function App() {
         <Route path="charging-infrastructure" element={<ChargingInfrastructurePage />} />
         <Route path="regional-explorer" element={<RegionalExplorerPage />} />
         <Route path="growth-trends" element={<GrowthTrendsPage />} />
+        <Route path="python-visualization" element={<PythonVisualizationPage />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

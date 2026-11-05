@@ -1703,27 +1703,6 @@ var(--panel);
   font-size: 0.75rem;
   color: var(--compare);
 }
-.insight-mode {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 8px;
-  font-size: var(--t-xs);
-  color: var(--muted);
-}
-.insight-mode::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--muted);
-}
-.insight-mode.dynamic {
-  color: var(--compare);
-}
-.insight-mode.dynamic::before {
-  background: var(--compare);
-}
 
 /* pending (needs backend aggregate) */
 .card.pending {
@@ -1941,10 +1920,6 @@ var(--panel);
   color: #fff;
   font-weight: 650;
   font-family: var(--font-num);
-}
-.insight .insight-mode {
-  margin: 0;
-  font-size: var(--t-xs);
 }
 .insight-interp p {
   margin: 4px 0 0;
@@ -3960,8 +3935,115 @@ var(--panel);
 .disparity-basis dt { color: var(--ink-2); font-weight: 500; white-space: nowrap; }
 .disparity-basis dd { margin: 0; min-width: 0; overflow-wrap: anywhere; word-break: keep-all; }
 .disparity-export-status { margin: 0; font-size: var(--t-sm); line-height: 1.55; }
+/* 안내 문구는 화면 폭과 관계없이 항상 CSV·PDF 버튼 아래 한 줄 전체에 둡니다(줄 길이는 각 행에서 제한). */
+.disparity-toolbar > .disparity-basis { flex: 0 0 100%; max-width: none; }
+.disparity-toolbar > .disparity-basis > div { max-width: 88ch; }
 .disparity-hint { margin: 0; display: grid; gap: 2px; font-size: var(--t-sm); line-height: 1.6; color: var(--muted); word-break: keep-all; overflow-wrap: anywhere; }
 @media (max-width: 560px) {
   .disparity-basis > div { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .disparity-basis > div + div { margin-top: 4px; }
 }
+
+/* ================= 기존 분석 그래프 아카이브 (Overview 맨 아래, 기본 접힘) ================= */
+.chart-archive .archive-toggle > summary {
+  cursor: pointer;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--t-sm);
+  color: var(--muted);
+  border-radius: 6px;
+}
+.chart-archive .archive-toggle > summary::-webkit-details-marker { display: none; }
+.chart-archive .archive-toggle > summary::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-right: 1.6px solid currentColor;
+  border-bottom: 1.6px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.15s var(--ease);
+}
+.chart-archive .archive-toggle[open] > summary::before { transform: rotate(45deg); }
+.chart-archive .archive-toggle > summary:hover { color: var(--ink); }
+.chart-archive .archive-toggle[open] > summary { margin-bottom: 14px; }
+/* 썸네일 아래 기준 표시: 기준일 · 지역 체계 · 삭제 기준 */
+.thumb .thumb-meta {
+  margin: 0;
+  padding: 6px 4px 0;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 3px;
+  font-size: 11px;
+  line-height: 1.45;
+}
+.thumb .thumb-meta > div { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 6px; }
+.thumb .thumb-meta dt { color: var(--muted); }
+.thumb .thumb-meta dd { margin: 0; min-width: 0; color: var(--ink-2); overflow-wrap: anywhere; word-break: keep-all; }
+/* Python 데이터 시각화 그래프 갤러리(Python Visualization 페이지). 그래프 안 글씨가 읽히도록 카드 폭을 우선합니다.
+ * 카드 영역 폭 기준: 1500px 이상 4열 · 880–1499px 3열(일반 데스크톱) · 400–879px 2열(태블릿) · 400px 미만 1열(모바일) */
+.python-charts .pyc-wrap { container-type: inline-size; }
+.python-charts .pyc-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; align-items: stretch; gap: 16px; }
+@container (min-width: 1500px) { .python-charts .pyc-gallery { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@container (min-width: 400px) and (max-width: 879.98px) { .python-charts .pyc-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; } }
+@container (max-width: 399.98px) { .python-charts .pyc-gallery { grid-template-columns: minmax(0, 1fr); gap: 14px; } }
+.python-charts .thumb { min-width: 0; height: 100%; padding: 10px 10px 12px; gap: 10px; }
+/* 그래프마다 가로세로 비율이 달라(1.28–1.67) 같은 3:2 틀 안에 원본 비율 그대로 맞춤: 잘림·왜곡 없음, 카드 높이는 통일 */
+.python-charts .thumb img { aspect-ratio: 3 / 2; height: auto; object-fit: contain; background: var(--panel); border-radius: 8px; }
+.python-charts .thumb > span { min-height: 2.9em; font-size: var(--t-sm); line-height: 1.45; overflow-wrap: anywhere; word-break: keep-all; }
+.python-charts .thumb-meta { margin-top: auto; padding-top: 8px; border-top: 1px solid var(--line); }
+.python-charts .thumb-meta > div { grid-template-columns: 62px minmax(0, 1fr); gap: 6px; }
+.python-charts .pyc-foot { margin: 14px 0 0; }
+
+/* Python 그래프 확대 보기: ① 그래프 ② 바로 아래 출처·기준 정보(간결) ③ 주요 분석 결과(먼저 읽힘) | 해석 주의(보조)
+ * 웹 그래프 상세 보기의 "Python 그래프 (고정)" 탭에서도 같은 구성을 씁니다. */
+.pyc-body { display: grid; gap: 12px; min-width: 0; }
+.pyc-notice { margin: 0; display: flex; align-items: flex-start; gap: 8px; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(217, 168, 95, 0.3); background: var(--warn-soft); font-size: var(--t-xs); line-height: 1.5; color: var(--ink-2); }
+.pyc-notice svg { flex: none; width: 15px; height: 15px; margin-top: 2px; color: var(--warn); }
+.pyc-figure { margin: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--panel); display: flex; justify-content: center; }
+/* 그래프가 화면 대부분을 차지하되, 아래 기준 정보가 첫 화면에서 보이도록 높이 상한을 둠(원본 비율 유지) */
+.pyc-figure img { display: block; width: auto; max-width: 100%; height: auto; max-height: min(64vh, 680px); object-fit: contain; }
+.pyc-facts { margin: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px 16px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2); }
+.pyc-facts > div { min-width: 0; }
+.pyc-facts > .is-source { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; padding-bottom: 7px; border-bottom: 1px solid var(--line); }
+.pyc-facts dt { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.pyc-facts dd { margin: 1px 0 0; font-size: var(--t-xs); line-height: 1.5; color: var(--ink); word-break: keep-all; overflow-wrap: anywhere; }
+.pyc-facts > .is-source dd { margin: 0; min-width: 0; flex: 1 1 260px; }
+.pyc-text { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; gap: 12px 22px; max-width: none; }
+.pyc-results, .pyc-notes { min-width: 0; }
+.pyc-text li, .pyc-text p { word-break: keep-all; overflow-wrap: anywhere; }
+/* 주요 분석 결과: 본문 색·한 단계 큰 제목과 보라 표시로 먼저 읽히게 */
+.pyc-results { padding: 2px 0 0; }
+.pyc-results h4 { margin: 0; display: flex; align-items: center; gap: 8px; font-size: var(--t-sm); font-weight: 600; color: var(--ink); }
+.pyc-results h4::before { content: ''; width: 3px; height: 14px; border-radius: 2px; background: var(--point); }
+.pyc-results ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 6px; font-size: var(--t-sm); line-height: 1.6; color: var(--ink); }
+/* 해석 주의·웹 그래프와의 관계·기준: 보조 정보로 한 칸에 작게 */
+.pyc-notes { padding: 10px 14px; border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 10px; background: var(--panel-2); font-size: var(--t-xs); }
+.pyc-notes h4 { margin: 0; font-size: 12px; font-weight: 500; color: var(--muted); }
+.pyc-notes h4:first-child { color: var(--warn); }
+.pyc-notes h4 + p { margin-top: 2px; }
+.pyc-notes p { line-height: 1.55; color: var(--ink-2); }
+.pyc-notes p + h4 { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+@media (max-width: 760px) {
+  .pyc-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pyc-text { grid-template-columns: minmax(0, 1fr); }
+  .pyc-figure img { max-height: none; width: 100%; }
+}
+@media (max-width: 340px) {
+  .pyc-facts { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* 설치 추이: 선택 구간에 부분 연도가 없을 때 KPI는 숫자 대신 짧은 안내 */
+.stat-value.is-excluded {
+  font-family: var(--font-ui);
+  font-stretch: normal;
+  font-size: var(--t-md);
+  font-weight: 500;
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+/* Overview: Python 데이터 시각화 페이지 바로가기 */
+.pyc-shortcut-link { width: fit-content; max-width: 100%; color: var(--ink); text-decoration: none; }
+.pyc-shortcut-link:hover { color: var(--ink); }

@@ -995,7 +995,7 @@ export function insightCumulative(
   if (last)
     findings.push(
       <>
-        {last.year}년 말 누적 <B>{fmtInt(last.cumulative_count)}기</B>.
+        {last.year}년 말 누적(2011년부터) <B>{fmtInt(last.cumulative_count)}기</B>.
       </>,
     );
   if (crossAll)
@@ -1034,7 +1034,7 @@ export function insightCumulative(
   return {
     mode: "dynamic",
     modeNote: isFiltered
-      ? `선택 구간 ${rows[0].year}–${rows[rows.length - 1].year}년으로 계산 (최초 돌파 연도는 전체 기간 기준)`
+      ? `선택 구간 ${rows[0].year}–${rows[rows.length - 1].year}년만 표시 · 누적값은 2011년부터의 전체 누적 (최초 돌파 연도도 전체 기간 기준)`
       : "선택한 연도 구간으로 계산 (누적값은 원본 그대로)",
     purpose:
       "충전기 설치가 시간에 따라 얼마나 쌓여 왔는지, 증가 속도가 언제 빨라졌는지 확인합니다.",

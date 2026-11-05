@@ -3,12 +3,12 @@ import { EvRegionSelect, FilterBar } from '../components/FilterBar';
 import { Card } from '../components/ui/Card';
 import { QueryState } from '../components/ui/QueryState';
 import { RegionSystemNote } from '../components/DataNotes';
-import { ReportGallery } from '../components/ReportGallery';
 import { Icon } from '../components/ui/Icon';
+import { Link, useLocation } from 'react-router-dom';
 import { DATA_SOURCES, GROWTH_REVISION_NOTE, GROWTH_SNAPSHOT_NOTE } from '../analysis/dataSources';
 import { C } from '../charts/theme';
 import { useBaseOverview, useOverview } from '../api/hooks';
-import { useFilters } from '../state/filters';
+import { filterSearch, useFilters } from '../state/filters';
 import { fmtInt, fmtPct } from '../lib/format';
 import { CountUp } from '../lib/motion';
 import { CumulativeCard, EvRegionsCard, StationChargerCard, TypesDonutCard } from '../features/ChartCards';
@@ -129,6 +129,18 @@ function Kpis() {
   );
 }
 
+/** Python 데이터 시각화 그래프(고정 PNG 10개)는 별도 페이지로 옮겼습니다. Overview에는 바로가기만 둡니다. */
+function PythonChartsShortcut() {
+  const search = filterSearch(useLocation().search);
+  return (
+    <Card span={12} className="pyc-shortcut" title="Python 데이터 시각화 그래프" sub="Matplotlib·Seaborn으로 그린 고정 PNG 10개는 별도 페이지에서 확대 보기·분석 결과·해석 주의와 함께 볼 수 있습니다." scope={{ kind: 'fixed', label: '고정 PNG · 필터 무관' }}>
+      <Link className="btn pyc-shortcut-link" to={{ pathname: '/python-visualization', search }}>
+        <Icon name="image" /> Python Visualization 페이지로 이동
+      </Link>
+    </Card>
+  );
+}
+
 function NotesCard() {
   const base = useBaseOverview();
   return (
@@ -240,7 +252,7 @@ export function OverviewPage() {
         <StationChargerCard span={7} height={320} />
         <EvRegionsCard span={5} rowHeight={22} />
         <NotesCard />
-        <ReportGallery />
+        <PythonChartsShortcut />
       </div>
     </>
   );

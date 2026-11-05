@@ -5,6 +5,7 @@ import { useFilters } from '../state/filters';
 import { DELETION_LABEL, fmtInt } from '../lib/format';
 import { OperatorPicker } from './ui/OperatorPicker';
 import { Icon } from './ui/Icon';
+import './filterMenus.css';
 
 /** 12번 지역은 현 행정체계 명칭 + 통합 사실을 함께 표시 */
 export const chargerRegionLabel = (code: string, name: string) =>
@@ -29,14 +30,15 @@ export function FilterBar({ charger = true, children }: { charger?: boolean; chi
           <label className="field">
             <span className="field-label">충전기 지역 (2026 기준 16개)</span>
             <select
-              className={`select ${state.region ? 'is-set' : ''}`}
+              className={`select cg-region-select ${state.region ? 'is-set' : ''}`}
+              title={state.region ? opts.data?.charger_regions.map((r) => ({ code: r.code, label: chargerRegionLabel(r.code, r.name) })).find((r) => r.code === state.region)?.label : '전국'}
               value={state.region ?? ''}
               onChange={(e) => update({ region: e.target.value || undefined })}
               disabled={!opts.data}
             >
               <option value="">전국</option>
               {opts.data?.charger_regions.map((r) => (
-                <option key={r.code} value={r.code}>
+                <option key={r.code} value={r.code} title={chargerRegionLabel(r.code, r.name)}>
                   {chargerRegionLabel(r.code, r.name)}
                 </option>
               ))}
@@ -46,7 +48,7 @@ export function FilterBar({ charger = true, children }: { charger?: boolean; chi
           <label className="field">
             <span className="field-label">충전기 유형</span>
             <select
-              className={`select ${state.type ? 'is-set' : ''}`}
+              className={`select cg-type-select ${state.type ? 'is-set' : ''}`}
               value={state.type ?? ''}
               onChange={(e) => update({ type: e.target.value || undefined })}
               disabled={!opts.data}
@@ -98,14 +100,15 @@ export function EvRegionSelect({ label = '등록 지역 (2026-09 기준 16개)' 
     <label className="field">
       <span className="field-label">{label}</span>
       <select
-        className={`select ${state.evRegion ? 'is-set' : ''}`}
+        className={`select cg-region-select ${state.evRegion ? 'is-set' : ''}`}
+        title={state.evRegion ? opts.data?.ev_regions.find((r) => r.code === state.evRegion)?.name : '전국'}
         value={state.evRegion ?? ''}
         onChange={(e) => update({ evRegion: e.target.value || undefined })}
         disabled={!opts.data}
       >
         <option value="">전국</option>
         {opts.data?.ev_regions.map((r) => (
-          <option key={r.code} value={r.code}>
+          <option key={r.code} value={r.code} title={r.name}>
             {r.name}
           </option>
         ))}

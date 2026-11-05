@@ -9,7 +9,9 @@ CHARGE GAP은 대한민국 전기차 보급 현황과 충전 인프라를 분석
 
 **2026-11-04 실제 접속 확인(읽기 전용):** 공개 주소에서 5개 페이지가 열리고 직접 URL(`/regional-explorer` 등) 접근이 200으로 응답하며, 화면이 위 API에 연결되어 데이터가 표시되고, 정적 사이트 보안 헤더(CSP·X-Frame-Options·Referrer-Policy·X-Content-Type-Options)가 전송되는 것을 확인했습니다. Render 대시보드 설정(서비스 생성 방식, 환경변수, 배포된 커밋)은 저장소 밖이라 확인하지 않았습니다. 무료 플랜이라 유휴 후 첫 접속은 서버 기동으로 지연될 수 있습니다. 공개 접속이 가능하다는 사실이 아래 [데이터 공개 조건](#공개-조건-확인-필요)의 확정을 뜻하지는 않습니다.
 
-**2026-11-05 확인:** 아래의 지역 격차 분석(`/api/regional-disparity`)과 CSV·PDF 내보내기는 로컬·Docker에서 검증했으며 **공개 주소에는 아직 배포되지 않았습니다**(공개 API에서 해당 경로 404 확인). 공개 API의 데이터 기준(전기차 2026-09, 충전기 2026-10-15)과 건수는 로컬과 같습니다.
+**2026-11-05 공개 주소 확인(읽기 전용):**
+- **백엔드 API(커밋 `eea94cd` 배포):** 지역 격차 분석 `/api/regional-disparity`가 공개 API에서 응답합니다(16개 지역). 데이터 기준(전기차 2026-09, 충전기 2026-10-15)과 건수(전기차 1,191,873대, 충전기 527,433기, 충전소 101,091곳, 삭제 표시 4,121기)는 로컬과 같습니다.
+- **프론트엔드:** 공개 사이트는 아직 이전 빌드(사이드바 5개 페이지)이며, 현재 작업 트리의 프론트엔드 변경(**Python Visualization 페이지**, 지역 격차 화면·CSV/PDF 내보내기 개선 등)은 **아직 배포되지 않았습니다**(공개 주소의 `/python-visualization`은 404). 이 변경은 로컬에서 검증했습니다. 배포 순서는 [공개 배포 준비 안내](docs/RENDER_DEPLOYMENT.md#프론트엔드-갱신-배포-순서)를 따릅니다.
 
 전기차 등록 데이터: 2026년 9월 기준
 
@@ -19,13 +21,13 @@ CHARGE GAP은 대한민국 전기차 보급 현황과 충전 인프라를 분석
 
 주요 기능: 전기차 등록 현황 및 충전 인프라 시각화, 두 지역 비교, 16개 시도 충전 인프라 구성 격차 분석(5개 지표), 충전기 유형·삭제 표시·운영기관별 필터링, 그래프별 분석 결과, 격차 분석 CSV·PDF 보고서 내보내기
 
-웹사이트는 총 5개의 분석 페이지로 구성되어 있으며, 다양한 그래프와 지도 기반 시각화를 제공합니다.
+웹사이트는 총 6개 페이지(분석 페이지 5개 + Python 데이터 시각화 페이지 1개)로 구성되어 있으며, 다양한 그래프와 지도 기반 시각화를 제공합니다.
 
 ※ Render 무료 서버로 배포하면 일정 시간 접속이 없을 때 서버가 절전 상태로 전환되어 최초 접속 시 데이터 로딩에 시간이 걸릴 수 있습니다.
 
 ## 주요 기능과 기술
 
-- **Overview / EV Registration / Charging Infrastructure / Regional Explorer / Growth Trends**의 5개 페이지.
+- **Overview / EV Registration / Charging Infrastructure / Regional Explorer / Growth Trends / Python Visualization**의 6개 페이지.
 - 지역·충전기 유형·삭제 표시·운영기관 필터, URL 쿼리 기반 필터, 초기화·데이터 표·페이지네이션.
 - 실제 API 기반 분석 설명, 툴팁·그래프 확대·애니메이션, 충전소 bbox 지도 조회.
 - Regional Explorer의 두 지역 비교: 전기차 등록(2026-09)과 충전 인프라(2026-10-15)를 각각 같은 기준일 자료끼리 비교(차이·%p·배수·순위). 등록 대수와 충전기 수를 서로 나눈 지표는 만들지 않습니다.
@@ -33,6 +35,8 @@ CHARGE GAP은 대한민국 전기차 보급 현황과 충전 인프라를 분석
 - 격차 분석 내보내기: 현재 지표·필터의 16개 지역 표를 **CSV**(UTF-8 BOM, Excel 한글 호환)로 저장하고, A4 3페이지 **PDF 보고서**(핵심 요약 · 16개 지역 비교 · 계산 방법·주의사항·출처)를 브라우저 인쇄로 저장.
 - Flask 조회 API **12개 경로**(JSON 11개 + 그래프 PNG 1개), 박스플롯 집계·지역 격차 지표·위치 조회 제한·요청 검증·JSON 오류 처리. 명세: [API_SPEC.md](backend/API_SPEC.md), [openapi.json](backend/openapi.json).
 - Python: Pandas·NumPy·Matplotlib·Seaborn / 웹: React·TypeScript·Vite·Recharts·Leaflet / 실행: Waitress·Nginx·Docker Compose.
+
+**Python Visualization 페이지**(`/python-visualization`, 사이드바 「Python 데이터 시각화」)는 `scripts/create_python_charts_2026.py`가 만든 `frontend/public/python-charts/`의 고정 PNG 10개를 항상 표시합니다(데스크톱 3~4열, 태블릿 2열, 모바일 1열). 그래프를 누르면 확대 이미지와 데이터 출처·기준일·지역 체계·삭제 기준·시각화 기법·사용 라이브러리, 주요 분석 결과, 해석 주의를 볼 수 있습니다. 메타데이터는 같은 폴더의 `charts.json`에 있으며, 웹사이트 필터와 무관한 고정 이미지입니다. Overview에는 이 페이지로 가는 바로가기만 둡니다. 이 PNG는 프론트엔드 정적 파일(`/python-charts/…`)이고, 백엔드 `/api/charts`가 제공하는 보존용 PNG 10개(`outputs/charts/`)와는 별도 자료입니다. 이 페이지는 아직 공개 사이트에 배포되지 않았습니다.
 
 ## 주요 그래프 10개
 
@@ -159,7 +163,7 @@ npm run dev
 
 구조는 **Render Static Site(React) + Free Docker Web Service(Flask) + 승인된 private S3 호환 저장소**입니다. 로컬 Compose/18080 설정과 분리해 `render.yaml`, `deploy/render/Dockerfile` 및 시작 시 검증 다운로드를 준비했습니다. CSV·메타데이터·기존 PNG 10개 총 14파일(231.287MiB)은 이미지에 포함하지 않습니다.
 
-백엔드는 Render의 PORT로 0.0.0.0에 bind하고 Waitress/수치 라이브러리 스레드를 1로 제한합니다. 프론트엔드 `VITE_API_BASE_URL`에는 백엔드의 실제 HTTPS origin을(비어 있거나 localhost이면 빌드 실패), 백엔드 `CHARGE_GAP_CORS_ORIGINS`에는 프론트엔드의 정확한 HTTPS origin을 넣습니다. React Router 직접 URL 접근·새로고침은 Static Site의 페이지 경로 rewrite(`/ev-registration`, `/charging-infrastructure`, `/regional-explorer`, `/growth-trends` → `/index.html`)로 지원합니다. Blueprint로 관리하지 않고 대시보드에서 만든 Static Site에는 `render.yaml` 규칙이 자동 적용되지 않으므로 대시보드 Redirects/Rewrites에 같은 규칙을 넣어야 합니다([설정 방법](docs/RENDER_DEPLOYMENT.md#직접-url새로고침-404-spa-rewrite)). private 저장소 endpoint·read credentials는 Render 환경 설정에만 넣고 VITE_*나 코드에 넣지 않습니다.
+백엔드는 Render의 PORT로 0.0.0.0에 bind하고 Waitress/수치 라이브러리 스레드를 1로 제한합니다. 프론트엔드 `VITE_API_BASE_URL`에는 백엔드의 실제 HTTPS origin을(비어 있거나 localhost이면 빌드 실패), 백엔드 `CHARGE_GAP_CORS_ORIGINS`에는 프론트엔드의 정확한 HTTPS origin을 넣습니다. React Router 직접 URL 접근·새로고침은 Static Site의 페이지 경로 rewrite(`/ev-registration`, `/charging-infrastructure`, `/regional-explorer`, `/growth-trends`, `/python-visualization` → `/index.html`)로 지원합니다. `/python-charts/*.png`·`charts.json`은 빌드 결과(`dist/python-charts/`)에 실제 파일로 있으므로 rewrite 대상이 아닙니다. Blueprint로 관리하지 않고 대시보드에서 만든 Static Site에는 `render.yaml` 규칙이 자동 적용되지 않으므로 대시보드 Redirects/Rewrites에 같은 규칙을 넣어야 합니다([설정 방법](docs/RENDER_DEPLOYMENT.md#직접-url새로고침-404-spa-rewrite)). private 저장소 endpoint·read credentials는 Render 환경 설정에만 넣고 VITE_*나 코드에 넣지 않습니다.
 
 2026-10-19 실제 비공개 R2 다운로드 포함 Linux 시험에서 14개 파일의 크기·SHA-256, API 96/96, 메모리 512MiB·CPU 0.1 제한을 통과했습니다. 최고 메모리는 426.18MiB로 약 85.82MiB의 여유를 확보했고 메모리 제한 이벤트·OOM·재시작은 0회였습니다. 서버 준비 시간은 약 74초였습니다. 다운로드·해시 검증·CSV 파싱의 파일 캐시 반환 최적화를 Render Dockerfile이 복사하는 백엔드 코드에 반영했습니다. [측정 근거](reports/r2_cache_memory_optimization_2026-10-19.md).
 

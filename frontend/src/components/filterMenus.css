@@ -1,0 +1,139 @@
+/* Only region/charger-type pickers, selects marked .cg-menu-select (region compare A/B, disparity metric) and the named operator table/list; no global scrollbar reset. */
+:is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select) {
+  color-scheme: dark;
+  color: var(--ink);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-inline-size: 100%;
+}
+
+@supports (appearance: base-select) {
+  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select),
+  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select)::picker(select) {
+    appearance: base-select;
+  }
+  .filterbar .cg-region-select {
+    inline-size: 280px;
+    align-items: center;
+  }
+  /* 충전기 유형: 기본 메뉴일 때의 폭(285px)을 그대로 유지 */
+  .filterbar .cg-type-select {
+    inline-size: 285px;
+    align-items: center;
+  }
+  /* 지역 A·B, 분석 지표: 폭은 각 필드가 정하던 그대로, 선택값 글자만 세로 가운데 정렬 */
+  .cg-menu-select { align-items: center; }
+  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select)::picker-icon { display: none; }
+  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select)::picker(select) {
+    background: var(--panel);
+    color: var(--ink);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-ctl);
+    padding: 5px;
+    margin-block: 5px;
+    max-block-size: min(320px, 50dvh);
+    max-inline-size: calc(100vw - 24px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #566173 transparent;
+  }
+  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select) option {
+    min-block-size: 40px;
+    padding: 9px 10px;
+    border-radius: 6px;
+    color: var(--ink-2);
+    white-space: normal;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+  }
+  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select) option:hover,
+  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select) option:focus {
+    background: var(--panel-3);
+    color: var(--ink);
+  }
+  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select) option:checked {
+    background: var(--point-soft);
+    color: var(--ink);
+  }
+  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select) option::checkmark { color: var(--point); }
+  /* 선택할 수 없는 항목(두 지역 비교에서 반대편이 고른 지역): 기본 메뉴처럼 흐리게, 강조 없음 */
+  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select) option:disabled,
+  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select) option:disabled:hover {
+    background: transparent;
+    color: var(--muted);
+    cursor: not-allowed;
+  }
+  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select) option:focus-visible {
+    outline: 1px solid var(--point);
+    outline-offset: -1px;
+  }
+  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select)::picker(select)::-webkit-scrollbar { width: 6px; }
+  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select)::picker(select)::-webkit-scrollbar-thumb {
+    background: #566173;
+    border-radius: 6px;
+  }
+  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select)::picker(select)::-webkit-scrollbar-thumb:hover { background: #758194; }
+}
+
+.table-wrap[aria-label='운영기관별 충전기'],
+.filterbar .combo-list {
+  scrollbar-width: thin;
+  scrollbar-color: #566173 transparent;
+}
+.table-wrap[aria-label='운영기관별 충전기']::-webkit-scrollbar,
+.filterbar .combo-list::-webkit-scrollbar { width: 6px; height: 6px; }
+.table-wrap[aria-label='운영기관별 충전기']::-webkit-scrollbar-thumb,
+.filterbar .combo-list::-webkit-scrollbar-thumb {
+  background: #566173;
+  border-radius: 6px;
+}
+.table-wrap[aria-label='운영기관별 충전기']::-webkit-scrollbar-thumb:hover,
+.filterbar .combo-list::-webkit-scrollbar-thumb:hover { background: #758194; }
+
+/* Chromium uses the explicit 6px scrollbar; Firefox uses scrollbar-width: thin. */
+@supports selector(::-webkit-scrollbar) {
+  .table-wrap[aria-label='운영기관별 충전기'],
+  .filterbar .combo-list { scrollbar-width: auto; scrollbar-color: auto; }
+  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select)::picker(select) { scrollbar-width: auto; scrollbar-color: auto; }
+}
+
+/* Same 6px dark scrollbar for the remaining internal scroll containers (only elements that really scroll):
+   map analysis panel, data tables (vertical/horizontal), the heatmap's horizontal scroller, the chart detail modal body. */
+.geo-panel,
+.table-wrap,
+div:has(> table.heatmap),
+.modal-body {
+  scrollbar-width: thin;
+  scrollbar-color: #566173 transparent;
+}
+.geo-panel::-webkit-scrollbar,
+.table-wrap::-webkit-scrollbar,
+div:has(> table.heatmap)::-webkit-scrollbar,
+.modal-body::-webkit-scrollbar { width: 6px; height: 6px; }
+.geo-panel::-webkit-scrollbar-track,
+.table-wrap::-webkit-scrollbar-track,
+div:has(> table.heatmap)::-webkit-scrollbar-track,
+.modal-body::-webkit-scrollbar-track,
+.geo-panel::-webkit-scrollbar-corner,
+.table-wrap::-webkit-scrollbar-corner,
+div:has(> table.heatmap)::-webkit-scrollbar-corner,
+.modal-body::-webkit-scrollbar-corner { background: transparent; }
+.geo-panel::-webkit-scrollbar-thumb,
+.table-wrap::-webkit-scrollbar-thumb,
+div:has(> table.heatmap)::-webkit-scrollbar-thumb,
+.modal-body::-webkit-scrollbar-thumb {
+  background: #566173;
+  border-radius: 6px;
+}
+.geo-panel::-webkit-scrollbar-thumb:hover,
+.table-wrap::-webkit-scrollbar-thumb:hover,
+div:has(> table.heatmap)::-webkit-scrollbar-thumb:hover,
+.modal-body::-webkit-scrollbar-thumb:hover { background: #758194; }
+@supports selector(::-webkit-scrollbar) {
+  .geo-panel,
+  .table-wrap,
+  div:has(> table.heatmap),
+  .modal-body { scrollbar-width: auto; scrollbar-color: auto; }
+}

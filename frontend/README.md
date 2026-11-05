@@ -41,7 +41,7 @@ production 빌드는 `VITE_API_BASE_URL`이 비어 있거나 localhost(`127.0.0.
 **서버 절전 복귀**: 연결 실패나 JSON이 아닌 응답이 오면 요청마다 오류를 띄우지 않고 `src/api/readiness.ts`의 공용 대기열에서 기다립니다. 상태 확인 요청 하나만 2·4·8초 뒤, 이후 10초마다 최대 3분 보내고, 화면 위에 안내 하나(`src/components/ServerWakeNotice.tsx`)를 보여 줍니다. 서버가 응답하면 현재 화면·필터 그대로 다시 불러오고, 3분이 지나면 '다시 시도'를 안내합니다. 400·404·500처럼 API가 JSON으로 보낸 오류는 기존 카드 오류로 표시합니다.
 
 `dist/`를 다른 주소에서 서비스한다면, 그 origin을 백엔드 실행 전에 `CHARGE_GAP_CORS_ORIGINS`에 추가해야 합니다(API_SPEC.md 참고).
-이때 직접 URL 접근·새로고침을 위해 페이지 경로(`/ev-registration`, `/charging-infrastructure`, `/regional-explorer`, `/growth-trends`)가 `index.html`로 가도록 rewrite를 설정해야 합니다. 실제 파일(`/assets/...`)과 API 경로는 rewrite하지 않습니다. Render 설정은 `../docs/RENDER_DEPLOYMENT.md`의 "직접 URL·새로고침 404" 절을 참고하세요.
+이때 직접 URL 접근·새로고침을 위해 페이지 경로(`/ev-registration`, `/charging-infrastructure`, `/regional-explorer`, `/growth-trends`, `/python-visualization`)가 `index.html`로 가도록 rewrite를 설정해야 합니다. 실제 파일(`/assets/...`, `/python-charts/...`)과 API 경로는 rewrite하지 않습니다. Render 설정은 `../docs/RENDER_DEPLOYMENT.md`의 "직접 URL·새로고침 404" 절을 참고하세요.
 
 **API 주소 변경** (선택): `.env.example`을 `.env`로 복사한 뒤 `VITE_API_BASE_URL`을 바꿉니다. 기본값은 `http://127.0.0.1:5000`입니다.
 
@@ -53,11 +53,12 @@ production 빌드는 `VITE_API_BASE_URL`이 비어 있거나 localhost(`127.0.0.
 
 | 경로 | 페이지 | 그래프 |
 |---|---|---|
-| `/` | Overview | 기준 시점 띠, KPI 4개, 그래프 9(누적 영역), 6(유형 도넛), 4(산점도+회귀선), 1(지역 막대), 해석 기준, 보고서 PNG 10종 |
+| `/` | Overview | 기준 시점 띠, KPI 4개, 그래프 9(누적 영역), 6(유형 도넛), 4(산점도+회귀선), 1(지역 막대), 해석 기준, Python Visualization 바로가기 |
 | `/ev-registration` | EV Registration | 등록 요약, 그래프 1(가로 막대), 2(차종 도넛), 3(사업용 비율 점 그래프, 100% 누적·대수 보기 전환), 등록 표 |
 | `/charging-infrastructure` | Charging Infrastructure | 요약, 그래프 6(유형 도넛)과 유형 표, 7(히스토그램+KDE), 5(충전소당 충전기 수 박스플롯), 10(운영기관 트리맵), 운영기관 표 |
-| `/regional-explorer` | Regional Explorer | 충전소 지도, 두 지역 비교(`cmp_a`·`cmp_b`), 그래프 8(지역×출력 히트맵), 4(산점도), 지역 표, 충전소 목록, 보고서 PNG |
+| `/regional-explorer` | Regional Explorer | 충전소 지도, 두 지역 비교(`cmp_a`·`cmp_b`), 전국 충전 인프라 구성 격차(5개 지표, CSV·PDF 내보내기), 그래프 8(지역×출력 히트맵), 4(산점도), 지역 표, 충전소 목록 |
 | `/growth-trends` | Growth Trends | 구간 요약, 연간 설치 막대, 그래프 9(누적 영역), 연도 표 |
+| `/python-visualization` | Python Visualization | Python(Matplotlib·Seaborn) 고정 PNG 10개 갤러리(데스크톱 3~4열·태블릿 2열·모바일 1열)와 확대 보기. 정적 파일 `public/python-charts/`(PNG 10개 + `charts.json`), 필터 무관 |
 
 모든 주요 그래프 아래에는 분석 목적, 그래프 선택 이유, 주요 결과, 해석, 주의사항, 데이터 출처·변수가 있습니다.
 결과·해석의 수치는 그 그래프가 받은 실제 API 응답으로 계산하며(`src/analysis/insights.tsx`), 필터 반영 여부를 문단 위에 표시합니다.
@@ -108,6 +109,7 @@ frontend/
   tsconfig.json
   .env.example            # VITE_API_BASE_URL
   public/favicon.svg
+  public/python-charts/   # Python 고정 PNG 10개 + charts.json (scripts/create_python_charts_2026.py 결과)
   docs/CHART_PLAN.md      # 그래프 10종 지원 현황, 미완료 API 명세, 백엔드 작업 목록
   src/
     main.tsx              # QueryClient, Router, 폰트, 전역 CSS
@@ -130,11 +132,11 @@ frontend/
       layout/AppShell.tsx # 사이드바, 모바일 메뉴, 페이지 헤더(기준 시점 레일)
       FilterBar.tsx       # 지역, 유형, 삭제 표시, 운영기관, 등록 지역
       StationMap.tsx      # Leaflet 지도 (시도 버블, bbox 충전소)
-      ReportGallery.tsx   # 보고서 PNG 갤러리
+      ReportGallery.tsx   # Python 데이터 시각화 그래프 갤러리(PythonChartGallery)
       DataNotes.tsx       # 지역 체계, 비율 미계산 안내
-      ui/                 # Card, Insight(분석 문단), ChartDetail(상세 보기), Modal, DataTable, Pager,
+      ui/                 # Card, Insight(분석 문단), ChartDetail(상세 보기), PythonChartView(Python 그래프 확대 보기), Modal, DataTable, Pager,
                           # QueryState(로딩/빈 결과/오류), OperatorPicker, Icon
-    pages/                # 5개 페이지
+    pages/                # 6개 페이지 (PythonVisualization.tsx 포함)
     styles/tokens.css     # 색, 글꼴, 반경 토큰
     styles/global.css     # 레이아웃, 컴포넌트, 반응형
 ```

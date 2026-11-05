@@ -14,7 +14,7 @@ module.exports = async function navigationRegressions(page, baseUrl = 'http://12
     await page.locator('h1', { hasText: name }).waitFor();
     await page.waitForLoadState('networkidle');
   };
-  for (const name of ['EV Registration', 'Charging Infrastructure', 'Regional Explorer', 'Growth Trends', 'Overview']) {
+  for (const name of ['EV Registration', 'Charging Infrastructure', 'Regional Explorer', 'Growth Trends', 'Python Visualization', 'Overview']) {
     await go(name);
     check(`${name}: URL keeps shared filters`, same());
     const charger = page.locator('label.field', { hasText: '충전기 지역' }).locator('select');

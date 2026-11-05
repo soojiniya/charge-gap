@@ -32,7 +32,7 @@ function sidebarHrefs(url) {
 
 test('every sidebar link carries the active filters', () => {
   const hrefs = sidebarHrefs('/growth-trends?from=2015&region=41&deletion=not_deleted&operator=PI');
-  const pages = ['/', '/ev-registration', '/charging-infrastructure', '/regional-explorer', '/growth-trends'];
+  const pages = ['/', '/ev-registration', '/charging-infrastructure', '/regional-explorer', '/growth-trends', '/python-visualization'];
   for (const page of pages) assert.ok(hrefs.includes(`${page}?region=41&deletion=not_deleted&operator=PI`), `${page}: ${hrefs}`);
   assert.ok(hrefs.every((h) => !/[?&](from|to)=/.test(h)), 'Growth Trends year range must not leak to other pages');
 });

@@ -1,11 +1,8 @@
 import { useState, type ReactNode } from 'react';
 import type { BaseMeta } from '../../api/types';
-import { EV_PNG_IDS, EV_PNG_VS_WEB } from '../../analysis/dataSources';
-import { useStaticCharts } from '../../api/hooks';
-import { assetUrl } from '../../api/client';
 import { Modal } from './Modal';
+import { PythonChartsById } from './PythonChartView';
 import { InsightContext } from './Insight';
-import { QueryState } from './QueryState';
 import { Icon } from './Icon';
 import { DELETION_LABEL, fmtInt } from '../../lib/format';
 
@@ -15,7 +12,7 @@ interface Props {
   title: ReactNode;
   sub?: ReactNode;
   onClose: () => void;
-  detail: { chart?: ReactNode; table?: ReactNode; meta?: BaseMeta; staticChartIds?: number[]; note?: ReactNode; insight?: ReactNode };
+  detail: { chart?: ReactNode; table?: ReactNode; meta?: BaseMeta; pythonChartIds?: number[]; note?: ReactNode; insight?: ReactNode };
 }
 
 export function ChartDetail({ title, sub, onClose, detail }: Props) {
@@ -23,7 +20,7 @@ export function ChartDetail({ title, sub, onClose, detail }: Props) {
   if (detail.chart) tabs.push({ id: 'chart', label: '확대 차트' });
   if (detail.table) tabs.push({ id: 'table', label: '데이터 표' });
   if (detail.meta) tabs.push({ id: 'source', label: '출처와 기준' });
-  if (detail.staticChartIds?.length) tabs.push({ id: 'report', label: '보고서 원본 그래프' });
+  if (detail.pythonChartIds?.length) tabs.push({ id: 'report', label: 'Python 그래프 (고정)' });
   const [tab, setTab] = useState<Tab>(tabs[0]?.id ?? 'chart');
 
   return (
@@ -62,7 +59,7 @@ export function ChartDetail({ title, sub, onClose, detail }: Props) {
       )}
       {tab === 'table' && detail.table}
       {tab === 'source' && detail.meta && <SourcePanel meta={detail.meta} />}
-      {tab === 'report' && detail.staticChartIds && <ReportCharts ids={detail.staticChartIds} />}
+      {tab === 'report' && detail.pythonChartIds && <PythonChartsById ids={detail.pythonChartIds} />}
     </Modal>
   );
 }
@@ -189,88 +186,5 @@ function SourcePanel({ meta }: { meta: BaseMeta }) {
         </ul>
       </div>
     </>
-  );
-}
-
-/** 등록 PNG(1~3번)와 현재 웹 그래프의 기준월·지역 체계 차이 */
-export function EvPngBasis() {
-  return (
-    <div className="table-wrap png-basis">
-      <table className="table">
-        <caption className="sr-only">보고서 PNG와 현재 웹 그래프의 기준 차이</caption>
-        <thead>
-          <tr>
-            <th scope="col">구분</th>
-            <th scope="col">기준월</th>
-            <th scope="col">지역 체계</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">이 PNG (보존 기록)</th>
-            <td>{EV_PNG_VS_WEB.png.month}</td>
-            <td>{EV_PNG_VS_WEB.png.regions}</td>
-          </tr>
-          <tr>
-            <th scope="row">현재 웹 그래프</th>
-            <td>{EV_PNG_VS_WEB.web.month}</td>
-            <td>{EV_PNG_VS_WEB.web.regions}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-export function ReportCharts({ ids }: { ids: number[] }) {
-  const q = useStaticCharts();
-  const charts = q.data?.data.filter((c) => ids.includes(c.id)) ?? [];
-  return (
-    <QueryState isLoading={q.isLoading} error={q.error} onRetry={() => q.refetch()} isEmpty={!charts.length}>
-      <div className="notice warn">
-        <Icon name="alert" />
-        <div>{q.data?.meta.static_chart_warning ?? 'PNG는 제작 당시의 고정 그래프이며 필터가 적용되지 않습니다.'}</div>
-      </div>
-      {charts.map((c) => (
-        <div key={c.id} style={{ display: 'grid', gap: 14 }}>
-          {EV_PNG_IDS.includes(c.id) && <EvPngBasis />}
-          <figure className="static-figure">
-            <img
-              src={assetUrl(c.image_url)}
-              alt={`${c.title} (${c.chart_type}, ${c.period})`}
-              width={c.image_pixels[0]}
-              height={c.image_pixels[1]}
-              loading="lazy"
-            />
-          </figure>
-          <div className="prose">
-            <div>
-              <h4>그래프 {c.id}. {c.chart_type}</h4>
-              <p>{c.purpose}</p>
-            </div>
-            <div>
-              <h4>기간</h4>
-              <p>{c.period}</p>
-            </div>
-            <div>
-              <h4>결과</h4>
-              <p>{c.results}</p>
-            </div>
-            <div>
-              <h4>표현 방식</h4>
-              <p>{c.reason}</p>
-            </div>
-            <div>
-              <h4>해석 주의</h4>
-              <p>{c.caution}</p>
-            </div>
-            <div>
-              <h4>파일</h4>
-              <p className="num small muted">{c.filename}</p>
-            </div>
-          </div>
-        </div>
-      ))}
-    </QueryState>
   );
 }

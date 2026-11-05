@@ -251,3 +251,58 @@ tr.is-selected .rpt-bar .fill, tr.is-national .rpt-bar .fill { fill: var(--point
 .rpt-defs dt, .rpt-defs dd { font-size: 9pt; }
 .rpt-sources { grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); }
 .rpt-compare td { padding-top: 13px; padding-bottom: 13px; }
+
+/* ===== 1쪽 하단: 전국 기준 대비 상위·하위 지역(선택 지역이 없을 때만). 값은 02 표와 같은 계산 ===== */
+.rpt-ext { margin-top: 22px; }
+.rpt-ext h3 { margin: 0 0 4px; }
+.rpt-ext-lead { color: var(--muted); font-size: 8.5pt; line-height: 1.55; margin-bottom: 10px; }
+.rpt-ext-head, .rpt-ext-row { display: grid; grid-template-columns: 12mm 22mm 24mm minmax(0, 1fr) 26mm; gap: 0 10px; align-items: center; }
+.rpt-ext-head { padding: 6px 0; font-size: 7.5pt; font-weight: 600; color: var(--ink-2); background: var(--soft); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line-strong); }
+.rpt-ext-head > span:first-child { padding-left: 8px; }
+.rpt-ext-head .v, .rpt-ext-head .d { text-align: right; }
+.rpt-ext-head .d { padding-right: 8px; }
+.rpt-ext-head .b { display: flex; justify-content: space-between; font-weight: 500; color: var(--muted); }
+.rpt-ext-head .b em { font-style: normal; }
+.rpt-ext-group + .rpt-ext-group { border-top: 1px solid var(--line-strong); }
+.rpt-ext-label { margin: 0; padding: 6px 0 2px 8px; font-size: 7.5pt; font-weight: 600; color: var(--point); letter-spacing: 0.02em; }
+.rpt-ext-row { padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 9pt; }
+.rpt-ext-group .rpt-ext-row:last-child { border-bottom: 0; }
+.rpt-ext-row .r { padding-left: 8px; color: var(--ink-2); white-space: nowrap; }
+.rpt-ext-row .g { font-weight: 500; white-space: nowrap; }
+.rpt-ext-row .v, .rpt-ext-row .d { text-align: right; white-space: nowrap; }
+.rpt-ext-row .d { padding-right: 8px; font-weight: 600; }
+.rpt-ext-bar { display: block; width: 100%; height: 10px; }
+.rpt-ext-bar .track { fill: #f3f4f7; }
+.rpt-ext-bar .fill { fill: var(--bar); }
+.rpt-ext-bar .fill.up { fill: var(--up); }
+.rpt-ext-bar .fill.down { fill: var(--point); }
+.rpt-ext-bar .axis { fill: var(--ink); }
+.rpt-ext + .rpt-note { margin-top: 12px; }
+
+/* ===== 3쪽: 계산 방법 / 해석 주의사항 / 데이터 출처 및 분석 한계를 세 블록으로 구분 ===== */
+.rpt-block + .rpt-block { margin-top: 10px; }
+.rpt-page-method .rpt-block-title,
+.rpt-source-section h2 { break-after: avoid; page-break-after: avoid; }
+.rpt-page-method h3.rpt-block-title {
+  display: flex; align-items: baseline; gap: 8px;
+  margin: 0 0 6px; padding-left: 9px;
+  font-size: 10pt; line-height: 1.35; color: var(--ink);
+  border-left: 3px solid var(--point);
+}
+.rpt-block-title small { font-size: 7.5pt; font-weight: 500; color: var(--muted); }
+.rpt-block-method { margin-top: 0; }
+.rpt-block-cautions { padding: 8px 12px 3px; background: var(--soft); }
+.rpt-block-cautions .rpt-cautions { column-gap: 8mm; }
+.rpt-block-cautions .rpt-cautions li { margin-bottom: 5px; font-size: 8.75pt; line-height: 1.55; color: var(--ink-2); }
+.rpt-block-cautions .rpt-cautions li::before { background: #fff; }
+.rpt-source-section { margin-top: 12px; }
+.rpt-page-method h2 { margin-bottom: 10px; }
+.rpt-page-method .rpt-defs { margin-top: 8px; }
+/* 3쪽 블록 구분 후 한 장 유지: 글자 크기는 그대로, 블록 사이 여백만 조정 */
+.rpt-page-method h2 { margin-bottom: 8px; }
+.rpt-page-method h3.rpt-block-title { margin-bottom: 5px; }
+.rpt-page-method .rpt-formula { padding: 9px 14px; }
+.rpt-block-cautions .rpt-cautions li:last-child { margin-bottom: 2px; }
+.rpt-source-section { margin-top: 10px; }
+.rpt-source-section h2 { margin-bottom: 8px; }
+.rpt-closing { margin-top: 8px; padding-top: 6px; }

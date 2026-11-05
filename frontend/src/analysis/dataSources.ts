@@ -1,8 +1,8 @@
 /**
  * 데이터 출처 표기 (한 곳에서 관리).
  * - 제공기관·작성기관·자료명·자료 기준·파일 저장일(또는 조회 시각)·이용 조건을 구분합니다.
- * - 공공누리 제1유형은 공식 페이지에서 확인된 충전기 API 자료에만 적습니다(공공데이터포털 이용허락범위).
- *   등록자료·설치 추이는 '이용 조건 확인 중'으로 둡니다.
+ * - 공개자료 목록의 제1유형 안내는 그 목록의 데이터셋에 적용됩니다.
+ *   별도 데이터·통계 화면의 설치 추이 Excel에 적용되는지는 확인 중입니다.
  * - 백엔드 메타데이터(backend/chargegap_api/data.py의 *_SOURCE)와 같은 값이어야 합니다(tests/data-sources.test.cjs).
  */
 
@@ -59,7 +59,7 @@ export const DATA_SOURCES = {
     basis: '집계 마감일 원본 미기재, 당시 공식 화면 갱신 표시 2026-09-30',
     collected: '2026-10-15',
     collectedLabel: '파일 저장',
-    license: { confirmed: false, text: '확인 중' },
+    license: { confirmed: false, text: '확인 중 (공개자료 목록의 이용 안내는 이 표 적용 미확인)' },
     url: 'https://ev.or.kr/nportal/stats/statsDashboard.do',
   },
 } as const satisfies Record<string, DataSourceInfo>;

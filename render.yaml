@@ -53,6 +53,9 @@ services:
       - type: rewrite
         source: /growth-trends
         destination: /index.html
+      - type: rewrite
+        source: /python-visualization
+        destination: /index.html
     # Security headers (static site). Allowed origins = what the built app really loads:
     #   own files (JS/CSS/fonts as data: in CSS), OSM tiles, and the API (fetch + report PNGs).
     #   No inline scripts/styles or eval. If VITE_API_BASE_URL or VITE_TILE_URL changes, update CSP too

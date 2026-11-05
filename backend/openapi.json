@@ -2264,7 +2264,7 @@
                         "file": "charger_installation_trend.csv",
                         "file_saved_date": "2026-10-15",
                         "geography": "전국 (지역 세분 없음)",
-                        "license": "확인 중",
+                        "license": "확인 중 (공개자료 목록의 이용 안내는 이 표 적용 미확인)",
                         "license_confirmed": false,
                         "measurement_cutoff_date": null,
                         "official_update_label_at_collection": "2026-09-30",

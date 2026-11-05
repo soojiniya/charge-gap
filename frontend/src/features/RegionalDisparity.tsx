@@ -197,7 +197,7 @@ export function RegionalDisparitySection() {
       <div className="disparity-toolbar">
         <label className="field disparity-control">
           <span className="field-label">분석 지표</span>
-          <select className="select" value={metric} onChange={(e) => select({ metric: e.target.value as DisparityMetricKey })}>
+          <select className="select cg-menu-select" value={metric} onChange={(e) => select({ metric: e.target.value as DisparityMetricKey })}>
             {OPTIONS.map((o) => (
               <option key={o.key} value={o.key}>
                 {o.label}
@@ -225,7 +225,6 @@ export function RegionalDisparitySection() {
             PDF 보고서
           </button>
         </div>
-        {exportStatus && <p className="small muted disparity-export-status" role="status" aria-live="polite">{exportStatus}</p>}
         <dl className="disparity-basis" aria-label="현재 적용 조건">
           <div>
             <dt>현재 적용</dt>
@@ -240,6 +239,8 @@ export function RegionalDisparitySection() {
             <dd>지역 비율의 평균이 아니라 전국 분자·분모를 합산해 계산합니다.</dd>
           </div>
         </dl>
+        {/* 안내 문구 뒤에 두어 메시지가 나타나도 버튼·안내 위치가 바뀌지 않음 */}
+        {exportStatus && <p className="small muted disparity-export-status" role="status" aria-live="polite">{exportStatus}</p>}
       </div>
       {metric === 'deletion_share' && (
         <p className="notice warn" role="note">

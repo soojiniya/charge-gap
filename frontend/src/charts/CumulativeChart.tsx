@@ -51,7 +51,7 @@ export function CumulativeChart({ rows, height = 280, ariaLabel }: { rows: Growt
                 <TipBox
                   title={`${r.year}년${r.is_partial_year ? ' (부분 연도)' : ''}`}
                   rows={[
-                    { label: '누적 설치', value: `${fmtInt(r.cumulative_count)}기`, color: C.s1 },
+                    { label: '누적 설치 (2011년부터)', value: `${fmtInt(r.cumulative_count)}기`, color: C.s1 },
                     { label: '연간 설치', value: `${fmtInt(r.annual_installed_count)}기` },
                   ]}
                   note={r.is_partial_year ? '집계 마감일 미기재. 완료 연도와 직접 비교하지 마세요.' : undefined}

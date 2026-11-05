@@ -19,8 +19,8 @@ WARNINGS = [
     '전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다.',
 ]
 # 출처 표기: 제공기관·작성기관·자료명·자료 기준·파일 저장일(또는 조회 시각)·이용 조건을 구분합니다.
-# 공공누리 제1유형은 공식 페이지(공공데이터포털 이용허락범위)에서 확인된 충전기 API 자료에만 적고,
-# 등록자료·설치 추이는 '이용 조건 확인 중'으로 둡니다(license_confirmed=False).
+# 충전기 API의 제1유형은 공공데이터포털에서 확인했습니다. 무공해차 공개자료 목록의
+# 제1유형 안내는 별도 데이터·통계 화면의 설치 추이 Excel까지 적용되는지 미확인입니다.
 # 기존 필드(file, source, reference_month, snapshot_date 등)는 그대로 유지합니다.
 # frontend/src/analysis/dataSources.ts와 같은 값이어야 합니다(frontend/tests/data-sources.test.cjs).
 EV_SOURCE = {'provider':'국토교통부 통계누리','author':'국토교통부',
@@ -45,7 +45,7 @@ GROWTH_SOURCE = {'provider':'무공해차 통합누리집','author':'원본 미�
     'official_update_label_at_collection':'2026-09-30','file_saved_date':'2026-10-15',
     'revision_note':'이 자료는 2026-10-15에 저장한 당시 표의 값이며 현재 공식 최신값이 아닙니다. '
         '공식 화면은 이후 2026-10-31 갱신에서 과거 연도 수치까지 수정했고, 수정 사유는 공식적으로 확인되지 않았습니다.',
-    'license':'확인 중','license_confirmed':False,
+    'license':'확인 중 (공개자료 목록의 이용 안내는 이 표 적용 미확인)','license_confirmed':False,
     'source_url':'https://ev.or.kr/nportal/stats/statsDashboard.do',
     'file':'charger_installation_trend.csv','source':'충전기 설치 성장 추세_2026-10-15.xlsx',
     'period':'2011–2026','source_filename_date':'2026-10-15','measurement_cutoff_date':None,

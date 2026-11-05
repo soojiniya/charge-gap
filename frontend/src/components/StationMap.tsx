@@ -156,7 +156,8 @@ function MarkLayer({
 
 interface Props {
   filters: ChargerFilterParams;
-  onView: (v: MapView) => void;
+  /** 지도 보기(중심·줌·bbox)가 바뀔 때 알림 (선택) */
+  onView?: (v: MapView) => void;
   onRegionSelect: (code: string) => void;
   /** 선택한 충전소 (페이지가 관리, 목록·패널과 공유) */
   selected?: LocationRow | null;
@@ -237,7 +238,7 @@ export function StationMap({ filters, onView, onRegionSelect, selected = null, o
 
   const handleView = (v: MapView) => {
     setView(v);
-    onView(v);
+    onView?.(v);
     setHover(null);
   };
 
