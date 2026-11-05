@@ -4047,3 +4047,33 @@ var(--panel);
 /* Overview: Python 데이터 시각화 페이지 바로가기 */
 .pyc-shortcut-link { width: fit-content; max-width: 100%; color: var(--ink); text-decoration: none; }
 .pyc-shortcut-link:hover { color: var(--ink); }
+
+/* ================= Overview 주요 분석 발견 (전시용 요약, /api/regional-disparity 전국 기준) ================= */
+.kf-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin: 6px 0 -4px; }
+.kf-title { margin: 0; font-size: var(--t-lg); font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+.kf-basis { margin: 0; font-size: var(--t-xs); color: var(--muted); line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
+.kf-body { display: grid; gap: 10px; min-width: 0; }
+.kf-figures { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.kf-figures > div { display: grid; gap: 2px; min-width: 0; }
+.kf-k { font-size: var(--t-xs); color: var(--muted); }
+.kf-v { font-family: var(--font-num); font-size: var(--t-xl); font-weight: 650; line-height: 1.1; color: var(--ink); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+.kf-v.is-max { color: var(--point); }
+.kf-v.is-min { color: var(--compare); }
+.kf-v-sm { font-size: var(--t-md); font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
+.kf-chart { width: 100%; min-width: 0; overflow: hidden; }
+.kf-strip, .kf-scatter { display: block; }
+.kf-halo { paint-order: stroke; stroke: var(--panel); stroke-width: 3px; stroke-linejoin: round; }
+.kf-card .card-body { justify-content: flex-start; }
+.kf-svg-note { font-size: 11px; fill: var(--muted); font-family: var(--font-num); }
+.kf-svg-label { font-size: 11.5px; font-weight: 600; font-family: var(--font-ui); }
+.kf-text { margin: 0; font-size: var(--t-sm); line-height: 1.6; color: var(--ink-2); word-break: keep-all; overflow-wrap: anywhere; }
+.kf-caution { color: var(--muted); }
+.kf-note { margin: 0; font-size: var(--t-xs); line-height: 1.55; color: var(--ink-2); word-break: keep-all; overflow-wrap: anywhere; }
+.kf-link { color: var(--ink-2); text-decoration: none; font-weight: 500; }
+.kf-link:hover, .kf-link:focus-visible { color: var(--ink); text-decoration: underline; }
+/* 보조 카드: 숫자 · 분포 · 설명을 한 줄로 (좁은 화면은 세로) */
+.kf-aux-body { display: grid; grid-template-columns: minmax(0, auto) minmax(200px, 1fr) minmax(0, 1.1fr); align-items: center; gap: 10px 26px; }
+.kf-aux .kf-v { font-size: var(--t-lg); }
+@media (max-width: 1100px) {
+  .kf-aux-body { grid-template-columns: minmax(0, 1fr); }
+}

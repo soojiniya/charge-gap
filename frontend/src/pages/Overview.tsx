@@ -12,6 +12,7 @@ import { filterSearch, useFilters } from '../state/filters';
 import { fmtInt, fmtPct } from '../lib/format';
 import { CountUp } from '../lib/motion';
 import { CumulativeCard, EvRegionsCard, StationChargerCard, TypesDonutCard } from '../features/ChartCards';
+import { KeyFindingsSection } from '../features/KeyFindings';
 
 /** 두 자료의 기준 시점을 한 줄로 (기존의 높은 타임라인 카드를 축소) */
 function TimeStrip() {
@@ -247,6 +248,7 @@ export function OverviewPage() {
       <div className="grid">
         <TimeStrip />
         <Kpis />
+        <KeyFindingsSection />
         <CumulativeCard span={7} height={280} />
         <TypesDonutCard span={5} size={180} />
         <StationChargerCard span={7} height={320} />
