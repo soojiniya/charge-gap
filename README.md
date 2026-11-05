@@ -9,13 +9,15 @@ CHARGE GAP은 대한민국 전기차 보급 현황과 충전 인프라를 분석
 
 **2026-11-04 실제 접속 확인(읽기 전용):** 공개 주소에서 5개 페이지가 열리고 직접 URL(`/regional-explorer` 등) 접근이 200으로 응답하며, 화면이 위 API에 연결되어 데이터가 표시되고, 정적 사이트 보안 헤더(CSP·X-Frame-Options·Referrer-Policy·X-Content-Type-Options)가 전송되는 것을 확인했습니다. Render 대시보드 설정(서비스 생성 방식, 환경변수, 배포된 커밋)은 저장소 밖이라 확인하지 않았습니다. 무료 플랜이라 유휴 후 첫 접속은 서버 기동으로 지연될 수 있습니다. 공개 접속이 가능하다는 사실이 아래 [데이터 공개 조건](#공개-조건-확인-필요)의 확정을 뜻하지는 않습니다.
 
+**2026-11-05 확인:** 아래의 지역 격차 분석(`/api/regional-disparity`)과 CSV·PDF 내보내기는 로컬·Docker에서 검증했으며 **공개 주소에는 아직 배포되지 않았습니다**(공개 API에서 해당 경로 404 확인). 공개 API의 데이터 기준(전기차 2026-09, 충전기 2026-10-15)과 건수는 로컬과 같습니다.
+
 전기차 등록 데이터: 2026년 9월 기준
 
 충전기 데이터: 2026년 10월 15일 조회 기준
 
 주요 기술: Python, Pandas, Matplotlib, Seaborn, React, TypeScript, Flask, Docker
 
-주요 기능: 전기차 등록 현황 및 충전 인프라 시각화, 지역별 비교, 충전기 유형·운영기관별 필터링, 그래프별 분석 결과 제공
+주요 기능: 전기차 등록 현황 및 충전 인프라 시각화, 두 지역 비교, 16개 시도 충전 인프라 구성 격차 분석(5개 지표), 충전기 유형·삭제 표시·운영기관별 필터링, 그래프별 분석 결과, 격차 분석 CSV·PDF 보고서 내보내기
 
 웹사이트는 총 5개의 분석 페이지로 구성되어 있으며, 다양한 그래프와 지도 기반 시각화를 제공합니다.
 
@@ -27,7 +29,9 @@ CHARGE GAP은 대한민국 전기차 보급 현황과 충전 인프라를 분석
 - 지역·충전기 유형·삭제 표시·운영기관 필터, URL 쿼리 기반 필터, 초기화·데이터 표·페이지네이션.
 - 실제 API 기반 분석 설명, 툴팁·그래프 확대·애니메이션, 충전소 bbox 지도 조회.
 - Regional Explorer의 두 지역 비교: 전기차 등록(2026-09)과 충전 인프라(2026-10-15)를 각각 같은 기준일 자료끼리 비교(차이·%p·배수·순위). 등록 대수와 충전기 수를 서로 나눈 지표는 만들지 않습니다.
-- Flask 조회 API 10개, 박스플롯 집계·위치 조회 제한·요청 검증·JSON 오류 처리.
+- Regional Explorer의 전국 충전 인프라 구성 격차: 16개 시도를 5개 지표(100kW 이상 비중, 충전소당 평균 충전기, 충전기 유형별 구성, 운영기관 집중도 HHI, 삭제 표시 비중)로 비교. 전국 기준값(전국 분자·분모 합산)·16개 지역 순위·막대그래프·히트맵·선택 지역 요약 문장·계산 근거 패널, 지표 선택의 URL 저장. 공급 구성 지표이며 충전 수요나 부족률을 계산하지 않습니다.
+- 격차 분석 내보내기: 현재 지표·필터의 16개 지역 표를 **CSV**(UTF-8 BOM, Excel 한글 호환)로 저장하고, A4 3페이지 **PDF 보고서**(핵심 요약 · 16개 지역 비교 · 계산 방법·주의사항·출처)를 브라우저 인쇄로 저장.
+- Flask 조회 API **12개 경로**(JSON 11개 + 그래프 PNG 1개), 박스플롯 집계·지역 격차 지표·위치 조회 제한·요청 검증·JSON 오류 처리. 명세: [API_SPEC.md](backend/API_SPEC.md), [openapi.json](backend/openapi.json).
 - Python: Pandas·NumPy·Matplotlib·Seaborn / 웹: React·TypeScript·Vite·Recharts·Leaflet / 실행: Waitress·Nginx·Docker Compose.
 
 ## 주요 그래프 10개
@@ -49,18 +53,18 @@ CHARGE GAP은 대한민국 전기차 보급 현황과 충전 인프라를 분석
 
 ## 데이터 출처와 해석 기준
 
-| 자료 | 출처·원본 | 기준·주의사항 |
+| 자료 | 제공기관 · 작성기관, 자료명 | 자료 기준 · 수집 시점 · 이용 조건 |
 |---|---|---|
-| 전기차 등록 | `2026년_09월_자동차_등록자료_통계.xlsx`, 연료별 등록현황 | 2026-09, 순수 전기차 1,191,873대, 전남광주 포함 16개 지역. 기존 2025-12 원본·고정 PNG는 기록으로 보존. 새 파일의 재배포 조건 확인 필요 |
-| 충전기·충전소 | [한국환경공단 전기자동차 충전소 정보 API](https://www.data.go.kr/data/15076352/openapi.do), getChargerInfo | 2026-10-15 조회, 충전기 527,433기·고유 충전소 101,091곳, 16개 지역 |
-| 연도별 설치 | `충전기 설치 성장 추세_2026-10-15.xlsx` | 2011–2026, 2026년은 부분 연도. 정확한 집계 마감일은 원본에서 미확인 |
+| 전기차 등록 | [국토교통부 통계누리](https://stat.molit.go.kr/portal/cate/statMetaView.do?hFormId=1244&hRsId=58) · 작성기관 국토교통부, 「2026년 09월 자동차 등록자료 통계」 10.연료별_등록현황 (자동차등록현황보고) | 2026년 9월 말 등록 기준, 파일 저장 2026-10-20. 순수 전기차 1,191,873대, 전남광주 포함 16개 지역. **이용 조건 확인 중** (통계누리 저작권보호정책에 따라 출처 표시). 기존 2025-12 원본·고정 PNG 1~3번(17개 시도)은 기록으로 보존 |
+| 충전기·충전소 | 한국환경공단 ([공공데이터포털](https://www.data.go.kr/data/15076352/openapi.do)), 「전기자동차 충전소 정보」 getChargerInfo | 2026-10-15 조회(04:16–04:19 KST), 충전기 527,433기·고유 충전소 101,091곳, 16개 지역. **공공누리 제1유형(출처표시)** — 포털 이용허락범위에 명시 |
+| 연도별 설치 | [무공해차 통합누리집](https://ev.or.kr/nportal/stats/statsDashboard.do) 데이터·통계 「충전기 설치 성장 추세」, 작성기관 원본 미기재 | 2011–2026, 2026년은 부분 연도. 집계 마감일 원본 미기재(당시 공식 화면 갱신 표시 2026-09-30), 파일 저장 2026-10-15. **이용 조건 확인 중.** 공식 화면은 이후 2026-10-31 갱신에서 과거 연도 수치까지 수정했으며(사유 미확인), 이 프로젝트는 당시 자료를 유지하므로 2026년 누적 540,210기 등은 현재 공식 최신값이 아님 |
 | 참고용 지역 출력 통계 | `우리 지역 급속 충전 여건_2026-10-15.xlsx` | 원본 대조·분석용. 웹 출력 히트맵은 API 집계 사용. 기준일·공개 조건 추가 확인 필요 |
 
 전기차 등록(2026-09)과 충전기(2026-10-15)는 **16개 지역이 대응하지만 기준 시점이 다릅니다.** 서로 다른 시점으로 부족률을 계산하거나 현재 스냅샷을 2025년 12월 현황으로 해석하지 않습니다. 전남광주통합특별시를 광주·전남으로 임의 분리하지 않습니다. 삭제 표시 4,121기·비삭제 523,312기를 구분하고, 비삭제를 실제 이용 가능 상태로 해석하지 않습니다. `statUpdDt`는 상태 갱신일시이며 설치일이 아닙니다.
 
 ### 공개 조건: 확인 필요
 
-API 포털에는 확인 시점에 공공누리 제1유형 출처표시 조건이 안내됐으나, 이것으로 Excel·파생 CSV·PNG·보고서 전체의 재배포 권리를 일괄 확정하지 않습니다. 각 원본의 이용 조건·제3자 권리·출처와 가공 사실 표기를 검토해야 합니다. **CSV·Excel의 공개 여부, 별도 데이터 제공 URL, 전달 방식과 담당자는 모두 미확정**입니다. 코드 공개 라이선스도 소유자가 별도 결정해야 합니다. 후보에 남은 PNG·보고서도 최종 권리·내용 검토 대상입니다.
+API 포털에는 확인 시점에 공공누리 제1유형 출처표시 조건이 안내됐으나, 이것으로 Excel·파생 CSV·PNG·보고서 전체의 재배포 권리를 일괄 확정하지 않습니다. 각 원본의 이용 조건·제3자 권리·출처와 가공 사실 표기를 검토해야 합니다. **CSV·Excel의 공개 여부, 별도 데이터 제공 URL, 전달 방식과 담당자는 모두 미확정**입니다. 코드 공개 라이선스도 소유자가 별도 결정해야 합니다. 후보에 남은 PNG·보고서도 최종 권리·내용 검토 대상입니다. 격차 분석 CSV에는 이용 조건이 확인된 충전기 API 자료의 집계값만 들어가며, PDF 보고서는 전기차 등록 자료를 결합하지 않고 참고 출처로만 표기합니다. 전기차 등록·연도별 설치 자료의 **이용 조건은 아직 미확인**입니다.
 
 ## 별도 데이터 준비: 실행 필수
 
@@ -136,18 +140,18 @@ npm run dev
 
 ### 테스트 실행 방법
 
-데이터 파일(위 CSV 3개, `reports/chart_verification.json`, PNG 10개)이 있어야 백엔드 테스트가 실행됩니다. 2026-10-31 로컬 재검증 결과를 함께 적습니다.
+데이터 파일(위 CSV 3개, `reports/chart_verification.json`, PNG 10개)이 있어야 백엔드 테스트가 실행됩니다. 2026-11-05 로컬 재검증 결과를 함께 적습니다.
 
-| 대상 | 실행 위치·명령 | 2026-10-31 결과 |
+| 대상 | 실행 위치·명령 | 2026-11-05 결과 |
 |---|---|---|
-| 백엔드 API·Render 기동 스크립트 | 프로젝트 루트, backend venv Python으로 `python -m pytest backend/tests deploy/render/tests -q` | 178 passed (캐시 테스트 포함) |
+| 백엔드 API·Render 기동 스크립트 | 프로젝트 루트, backend venv Python으로 `python -m pytest backend/tests deploy/render/tests -q` | 204 passed (캐시·지역 격차·출처 테스트 포함) |
 | 데이터 수집기 | 프로젝트 루트, 루트 `requirements.lock.txt`를 설치한 Python으로 `python -m unittest test_collector -v` | 12 passed |
-| 프론트엔드 단위·회귀 | `frontend`에서 `npm test` (Node 내장 테스트 러너, 추가 의존성 없음) | 46개 통과 (줄바꿈 검사 1개는 Git 저장소 안에서만 실행) |
+| 프론트엔드 단위·회귀 | `frontend`에서 `npm test` (Node 내장 테스트 러너, 추가 의존성 없음) | 122개 중 121개 통과, 1개 건너뜀 (줄바꿈 검사는 Git 저장소 안에서만 실행되며 Windows 저장소에서 통과) |
 | 프론트엔드 타입·빌드 | `frontend`에서 `npm run typecheck`, `npm run build` | 통과 (외부 HTTPS API 주소 지정) |
 
 `npm run build`는 production 빌드라서 `VITE_API_BASE_URL`이 비어 있거나 localhost를 가리키면 **빌드가 실패**합니다. 배포용으로는 실제 백엔드 HTTPS origin(또는 Compose의 `/backend`)을 지정합니다. 로컬 미리보기용 빌드만 `CHARGE_GAP_ALLOW_LOCAL_API_BUILD=1`을 함께 지정합니다(PowerShell: `$env:CHARGE_GAP_ALLOW_LOCAL_API_BUILD='1'; npm run build`).
 
-브라우저 회귀 테스트 `frontend/tests/keyboard.browser.cjs`·`navigation.browser.cjs`·`url-filters.browser.cjs`·`api-errors.browser.cjs`·`region-compare.browser.cjs`(두 지역 비교)·`server-wake.browser.cjs`(서버 절전 복귀, 실제 시간 약 3.5분)는 Playwright `page`를 받는 모듈입니다. 로컬 백엔드·프론트엔드를 실행한 뒤 별도 Playwright 스크립트에서 `await require('./frontend/tests/navigation.browser.cjs')(page, 'http://127.0.0.1:5173')`처럼 호출합니다. Playwright는 프로젝트 의존성에 포함하지 않았습니다. 기존 폰트 자산 경고는 유지되며, 실제 공개 호스팅의 HTTPS·CORS는 별도 실접속 검증 대상입니다. 2026-10-19 배포 준비 기록: [최종 GitHub·Render 준비 결과와 전체 파일 목록](reports/github_render_final_readiness_2026-10-19.md).
+브라우저 회귀 테스트 `frontend/tests/keyboard.browser.cjs`·`navigation.browser.cjs`·`url-filters.browser.cjs`·`api-errors.browser.cjs`·`region-compare.browser.cjs`(두 지역 비교)·`regional-disparity.browser.cjs`(지역 격차 16개 지역×5개 지표 문장·URL 상태·범례)·`disparity-report.browser.cjs`(PDF 보고서 A4 3페이지, 이 테스트에서는 `page.route()`를 쓰지 말 것)·`map-explorer.browser.cjs`(지도 확대·bbox)·`card-layout.browser.cjs`·`direct-url.browser.cjs`·`server-wake.browser.cjs`(서버 절전 복귀, 실제 시간 약 3.5분)는 Playwright `page`를 받는 모듈입니다. 로컬 백엔드·프론트엔드를 실행한 뒤 별도 Playwright 스크립트에서 `await require('./frontend/tests/navigation.browser.cjs')(page, 'http://127.0.0.1:5173')`처럼 호출합니다. Playwright는 프로젝트 의존성에 포함하지 않았습니다. 기존 폰트 자산 경고는 유지되며, 실제 공개 호스팅의 HTTPS·CORS는 별도 실접속 검증 대상입니다. 2026-10-19 배포 준비 기록: [최종 GitHub·Render 준비 결과와 전체 파일 목록](reports/github_render_final_readiness_2026-10-19.md).
 
 ## 무료 인터넷 배포 준비
 

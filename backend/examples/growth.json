@@ -29,13 +29,23 @@
     "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
     "sources": {
       "growth": {
+        "author": "원본 미기재",
+        "dataset": "데이터·통계 「충전기 설치 성장 추세」 2011–2026 (2026년 부분 연도)",
         "file": "charger_installation_trend.csv",
+        "file_saved_date": "2026-10-15",
         "geography": "전국 (지역 세분 없음)",
+        "license": "확인 중",
+        "license_confirmed": false,
         "measurement_cutoff_date": null,
+        "official_update_label_at_collection": "2026-09-30",
         "partial_year": 2026,
         "period": "2011–2026",
+        "provider": "무공해차 통합누리집",
+        "reference_basis": "집계 마감일 원본 미기재, 당시 공식 화면 갱신 표시 2026-09-30",
+        "revision_note": "이 자료는 2026-10-15에 저장한 당시 표의 값이며 현재 공식 최신값이 아닙니다. 공식 화면은 이후 2026-10-31 갱신에서 과거 연도 수치까지 수정했고, 수정 사유는 공식적으로 확인되지 않았습니다.",
         "source": "충전기 설치 성장 추세_2026-10-15.xlsx",
         "source_filename_date": "2026-10-15",
+        "source_url": "https://ev.or.kr/nportal/stats/statsDashboard.do",
         "unit": "기"
       }
     },

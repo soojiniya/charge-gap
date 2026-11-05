@@ -369,7 +369,14 @@
                     "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
                     "sources": {
                       "chargers": {
+                        "author": "한국환경공단",
+                        "dataset": "「전기자동차 충전소 정보」 getChargerInfo",
                         "file": "charger_info_clean.csv",
+                        "license": "공공누리 제1유형 (출처표시)",
+                        "license_confirmed": true,
+                        "platform": "공공데이터포털",
+                        "provider": "한국환경공단",
+                        "reference_basis": "2026-10-15 조회 시점 현황",
                         "region_system": "2026_16_provinces",
                         "snapshot_date": "2026-10-15",
                         "snapshot_end_at": "2026-10-15T04:19:04+09:00",
@@ -379,13 +386,21 @@
                         "unit": "기 / 곳 / kW"
                       },
                       "ev_registration": {
+                        "author": "국토교통부",
+                        "dataset": "「2026년 09월 자동차 등록자료 통계」 10.연료별_등록현황 (자동차등록현황보고)",
                         "file": "ev_registration_by_region_2026_09.csv",
+                        "file_saved_date": "2026-10-20",
                         "fuel": "전기 (하이브리드·수소전기 제외)",
                         "legacy_field_aliases": "region_code_2025 / region_name_2025 are deprecated aliases of current region_code / region_name; not historical values",
+                        "license": "확인 중 (통계누리 저작권보호정책에 따라 출처 표시)",
+                        "license_confirmed": false,
+                        "provider": "국토교통부 통계누리",
+                        "reference_basis": "2026년 9월 말 등록 기준",
                         "reference_month": "2026-09",
                         "region_code_basis": "원본 지역명 전남광주를 기존 충전기 지역코드 12에 대응; 원본 Excel에 숫자 코드 없음",
                         "region_system": "2026_16_provinces",
                         "source": "2026년 9월 자동차 등록자료 / 10.연료별_등록현황",
+                        "source_url": "https://stat.molit.go.kr/portal/cate/statMetaView.do?hFormId=1244&hRsId=58",
                         "unit": "대"
                       }
                     },
@@ -725,13 +740,21 @@
                     "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
                     "sources": {
                       "ev_registration": {
+                        "author": "국토교통부",
+                        "dataset": "「2026년 09월 자동차 등록자료 통계」 10.연료별_등록현황 (자동차등록현황보고)",
                         "file": "ev_registration_by_region_2026_09.csv",
+                        "file_saved_date": "2026-10-20",
                         "fuel": "전기 (하이브리드·수소전기 제외)",
                         "legacy_field_aliases": "region_code_2025 / region_name_2025 are deprecated aliases of current region_code / region_name; not historical values",
+                        "license": "확인 중 (통계누리 저작권보호정책에 따라 출처 표시)",
+                        "license_confirmed": false,
+                        "provider": "국토교통부 통계누리",
+                        "reference_basis": "2026년 9월 말 등록 기준",
                         "reference_month": "2026-09",
                         "region_code_basis": "원본 지역명 전남광주를 기존 충전기 지역코드 12에 대응; 원본 Excel에 숫자 코드 없음",
                         "region_system": "2026_16_provinces",
                         "source": "2026년 9월 자동차 등록자료 / 10.연료별_등록현황",
+                        "source_url": "https://stat.molit.go.kr/portal/cate/statMetaView.do?hFormId=1244&hRsId=58",
                         "unit": "대"
                       }
                     },
@@ -1033,7 +1056,14 @@
                     "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
                     "sources": {
                       "chargers": {
+                        "author": "한국환경공단",
+                        "dataset": "「전기자동차 충전소 정보」 getChargerInfo",
                         "file": "charger_info_clean.csv",
+                        "license": "공공누리 제1유형 (출처표시)",
+                        "license_confirmed": true,
+                        "platform": "공공데이터포털",
+                        "provider": "한국환경공단",
+                        "reference_basis": "2026-10-15 조회 시점 현황",
                         "region_system": "2026_16_provinces",
                         "snapshot_date": "2026-10-15",
                         "snapshot_end_at": "2026-10-15T04:19:04+09:00",
@@ -1297,7 +1327,14 @@
                     "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
                     "sources": {
                       "chargers": {
+                        "author": "한국환경공단",
+                        "dataset": "「전기자동차 충전소 정보」 getChargerInfo",
                         "file": "charger_info_clean.csv",
+                        "license": "공공누리 제1유형 (출처표시)",
+                        "license_confirmed": true,
+                        "platform": "공공데이터포털",
+                        "provider": "한국환경공단",
+                        "reference_basis": "2026-10-15 조회 시점 현황",
                         "region_system": "2026_16_provinces",
                         "snapshot_date": "2026-10-15",
                         "snapshot_end_at": "2026-10-15T04:19:04+09:00",
@@ -1866,7 +1903,14 @@
                     "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
                     "sources": {
                       "chargers": {
+                        "author": "한국환경공단",
+                        "dataset": "「전기자동차 충전소 정보」 getChargerInfo",
                         "file": "charger_info_clean.csv",
+                        "license": "공공누리 제1유형 (출처표시)",
+                        "license_confirmed": true,
+                        "platform": "공공데이터포털",
+                        "provider": "한국환경공단",
+                        "reference_basis": "2026-10-15 조회 시점 현황",
                         "region_system": "2026_16_provinces",
                         "snapshot_date": "2026-10-15",
                         "snapshot_end_at": "2026-10-15T04:19:04+09:00",
@@ -2086,7 +2130,14 @@
                     "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
                     "sources": {
                       "chargers": {
+                        "author": "한국환경공단",
+                        "dataset": "「전기자동차 충전소 정보」 getChargerInfo",
                         "file": "charger_info_clean.csv",
+                        "license": "공공누리 제1유형 (출처표시)",
+                        "license_confirmed": true,
+                        "platform": "공공데이터포털",
+                        "provider": "한국환경공단",
+                        "reference_basis": "2026-10-15 조회 시점 현황",
                         "region_system": "2026_16_provinces",
                         "snapshot_date": "2026-10-15",
                         "snapshot_end_at": "2026-10-15T04:19:04+09:00",
@@ -2208,13 +2259,23 @@
                     "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
                     "sources": {
                       "growth": {
+                        "author": "원본 미기재",
+                        "dataset": "데이터·통계 「충전기 설치 성장 추세」 2011–2026 (2026년 부분 연도)",
                         "file": "charger_installation_trend.csv",
+                        "file_saved_date": "2026-10-15",
                         "geography": "전국 (지역 세분 없음)",
+                        "license": "확인 중",
+                        "license_confirmed": false,
                         "measurement_cutoff_date": null,
+                        "official_update_label_at_collection": "2026-09-30",
                         "partial_year": 2026,
                         "period": "2011–2026",
+                        "provider": "무공해차 통합누리집",
+                        "reference_basis": "집계 마감일 원본 미기재, 당시 공식 화면 갱신 표시 2026-09-30",
+                        "revision_note": "이 자료는 2026-10-15에 저장한 당시 표의 값이며 현재 공식 최신값이 아닙니다. 공식 화면은 이후 2026-10-31 갱신에서 과거 연도 수치까지 수정했고, 수정 사유는 공식적으로 확인되지 않았습니다.",
                         "source": "충전기 설치 성장 추세_2026-10-15.xlsx",
                         "source_filename_date": "2026-10-15",
+                        "source_url": "https://ev.or.kr/nportal/stats/statsDashboard.do",
                         "unit": "기"
                       }
                     },
@@ -2440,7 +2501,14 @@
                     "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
                     "sources": {
                       "chargers": {
+                        "author": "한국환경공단",
+                        "dataset": "「전기자동차 충전소 정보」 getChargerInfo",
                         "file": "charger_info_clean.csv",
+                        "license": "공공누리 제1유형 (출처표시)",
+                        "license_confirmed": true,
+                        "platform": "공공데이터포털",
+                        "provider": "한국환경공단",
+                        "reference_basis": "2026-10-15 조회 시점 현황",
                         "region_system": "2026_16_provinces",
                         "snapshot_date": "2026-10-15",
                         "snapshot_end_at": "2026-10-15T04:19:04+09:00",
@@ -2877,7 +2945,14 @@
                     "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
                     "sources": {
                       "chargers": {
+                        "author": "한국환경공단",
+                        "dataset": "「전기자동차 충전소 정보」 getChargerInfo",
                         "file": "charger_info_clean.csv",
+                        "license": "공공누리 제1유형 (출처표시)",
+                        "license_confirmed": true,
+                        "platform": "공공데이터포털",
+                        "provider": "한국환경공단",
+                        "reference_basis": "2026-10-15 조회 시점 현황",
                         "region_system": "2026_16_provinces",
                         "snapshot_date": "2026-10-15",
                         "snapshot_end_at": "2026-10-15T04:19:04+09:00",
@@ -2903,6 +2978,378 @@
                     ],
                     "whisker_iqr_multiplier": 1.5,
                     "whisker_rule": "Observed minimum/maximum within inclusive [Q1 - 1.5*IQR, Q3 + 1.5*IQR]; outliers strictly outside."
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "요청변수 검증 실패",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "내부 오류. 내부 정보는 노출하지 않음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/regional-disparity": {
+      "get": {
+        "operationId": "regionalDisparity",
+        "summary": "16개 시도의 충전 인프라 구성 격차 5개 지표(값·전국 기준·순위)",
+        "parameters": [
+          {
+            "name": "region_code",
+            "in": "query",
+            "required": false,
+            "description": "요청 호환을 위해 받지만 무시합니다. 항상 16개 시도를 모두 비교합니다(meta.region_filter_policy).",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "11",
+                "12",
+                "26",
+                "27",
+                "28",
+                "30",
+                "31",
+                "36",
+                "41",
+                "43",
+                "44",
+                "47",
+                "48",
+                "50",
+                "51",
+                "52"
+              ]
+            }
+          },
+          {
+            "name": "charger_type",
+            "in": "query",
+            "required": false,
+            "description": "충전기 유형 필터(공식 커넥터 코드). 모든 지표의 모집단에 적용됩니다. 09는 관측 0건",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "01",
+                "02",
+                "03",
+                "04",
+                "05",
+                "06",
+                "07",
+                "08",
+                "09",
+                "10",
+                "11"
+              ]
+            }
+          },
+          {
+            "name": "deletion",
+            "in": "query",
+            "required": false,
+            "description": "삭제 필터. 단, deletion_share 지표는 이 값과 관계없이 삭제 상태 전체(all)로 계산합니다.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "not_deleted",
+                "deleted"
+              ],
+              "default": "all"
+            }
+          },
+          {
+            "name": "operator_id",
+            "in": "query",
+            "required": false,
+            "description": "CSV에 관측된 busiId 기관 ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "Always returns all 16 regions (region_code ignored). Metrics: high_100kw = output_kw >= 100 / positive numeric output count (missing, non-positive, non-numeric excluded); chargers_per_station = charger count / distinct statId; type_mix = type count / regional charger count; operator_hhi = sum((operator charger count / charger count)^2) * 10000 grouped by (busiId, busiNm); deletion_share = delYn=Y / all rows, deletion filter forced to all. National values sum numerators and denominators nationwide before division (not an average of regional ratios); national HHI is recalculated from nationwide operator counts. Ranks: descending competition rank, ties share rank, null values unranked (no rank key). Supply-composition indicators only: no demand, shortage or EV-per-charger ratio is computed. Example shows 1 of 16 regions.",
+        "responses": {
+          "200": {
+            "description": "성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegionalDisparityResponse"
+                },
+                "example": {
+                  "data": {
+                    "national": {
+                      "chargers_per_station": {
+                        "denominator": 101091,
+                        "numerator": 527433,
+                        "value": 5.2174080778704335
+                      },
+                      "deletion_share": {
+                        "denominator": 527433,
+                        "numerator": 4121,
+                        "value_pct": 0.781331467693527
+                      },
+                      "high_100kw": {
+                        "denominator": 527264,
+                        "numerator": 42417,
+                        "value_pct": 8.04473660253687
+                      },
+                      "operator_hhi": {
+                        "operator_count": 342,
+                        "scale": "0-10000",
+                        "value": 585.7074915470868
+                      },
+                      "type_mix": [
+                        {
+                          "charger_count": 40,
+                          "charger_type_code": "01",
+                          "denominator": 527433,
+                          "value_pct": 0.007583901651963377
+                        },
+                        {
+                          "charger_count": 469049,
+                          "charger_type_code": "02",
+                          "denominator": 527433,
+                          "value_pct": 88.93053714879426
+                        },
+                        {
+                          "charger_count": 3,
+                          "charger_type_code": "03",
+                          "denominator": 527433,
+                          "value_pct": 0.0005687926238972532
+                        },
+                        {
+                          "charger_count": 43676,
+                          "charger_type_code": "04",
+                          "denominator": 527433,
+                          "value_pct": 8.28086221377881
+                        },
+                        {
+                          "charger_count": 1476,
+                          "charger_type_code": "05",
+                          "denominator": 527433,
+                          "value_pct": 0.2798459709574486
+                        },
+                        {
+                          "charger_count": 6449,
+                          "charger_type_code": "06",
+                          "denominator": 527433,
+                          "value_pct": 1.2227145438377955
+                        },
+                        {
+                          "charger_count": 287,
+                          "charger_type_code": "07",
+                          "denominator": 527433,
+                          "value_pct": 0.054414494352837225
+                        },
+                        {
+                          "charger_count": 600,
+                          "charger_type_code": "08",
+                          "denominator": 527433,
+                          "value_pct": 0.11375852477945067
+                        },
+                        {
+                          "charger_count": 266,
+                          "charger_type_code": "10",
+                          "denominator": 527433,
+                          "value_pct": 0.05043294598555646
+                        },
+                        {
+                          "charger_count": 5587,
+                          "charger_type_code": "11",
+                          "denominator": 527433,
+                          "value_pct": 1.0592814632379848
+                        }
+                      ]
+                    },
+                    "regions": [
+                      {
+                        "charger_count": 76202,
+                        "metrics": {
+                          "chargers_per_station": {
+                            "denominator": 13035,
+                            "numerator": 76202,
+                            "rank": 6,
+                            "value": 5.845953202915228
+                          },
+                          "deletion_share": {
+                            "denominator": 76202,
+                            "numerator": 696,
+                            "rank": 7,
+                            "value_pct": 0.9133618540195796
+                          },
+                          "high_100kw": {
+                            "denominator": 76191,
+                            "numerator": 4175,
+                            "rank": 14,
+                            "value_pct": 5.479649827407437
+                          },
+                          "operator_hhi": {
+                            "operator_count": 166,
+                            "rank": 6,
+                            "scale": "0-10000",
+                            "value": 701.442869883696
+                          },
+                          "type_mix": [
+                            {
+                              "charger_count": 7,
+                              "charger_type_code": "01",
+                              "denominator": 76202,
+                              "rank": 4,
+                              "value_pct": 0.009186110600771635
+                            },
+                            {
+                              "charger_count": 70118,
+                              "charger_type_code": "02",
+                              "denominator": 76202,
+                              "rank": 3,
+                              "value_pct": 92.01595758641506
+                            },
+                            {
+                              "charger_count": 1,
+                              "charger_type_code": "03",
+                              "denominator": 76202,
+                              "rank": 1,
+                              "value_pct": 0.0013123015143959476
+                            },
+                            {
+                              "charger_count": 4152,
+                              "charger_type_code": "04",
+                              "denominator": 76202,
+                              "rank": 15,
+                              "value_pct": 5.448675887771975
+                            },
+                            {
+                              "charger_count": 148,
+                              "charger_type_code": "05",
+                              "denominator": 76202,
+                              "rank": 10,
+                              "value_pct": 0.19422062413060023
+                            },
+                            {
+                              "charger_count": 707,
+                              "charger_type_code": "06",
+                              "denominator": 76202,
+                              "rank": 13,
+                              "value_pct": 0.927797170677935
+                            },
+                            {
+                              "charger_count": 54,
+                              "charger_type_code": "07",
+                              "denominator": 76202,
+                              "rank": 6,
+                              "value_pct": 0.07086428177738116
+                            },
+                            {
+                              "charger_count": 104,
+                              "charger_type_code": "08",
+                              "denominator": 76202,
+                              "rank": 7,
+                              "value_pct": 0.13647935749717854
+                            },
+                            {
+                              "charger_count": 5,
+                              "charger_type_code": "10",
+                              "denominator": 76202,
+                              "rank": 12,
+                              "value_pct": 0.006561507571979737
+                            },
+                            {
+                              "charger_count": 906,
+                              "charger_type_code": "11",
+                              "denominator": 76202,
+                              "rank": 3,
+                              "value_pct": 1.1889451720427286
+                            }
+                          ]
+                        },
+                        "region_code": "11",
+                        "region_name": "서울",
+                        "station_count": 13035
+                      }
+                    ]
+                  },
+                  "meta": {
+                    "api_version": "1.0",
+                    "count": 16,
+                    "deletion_share_policy": "Deletion share always uses all deletion statuses regardless of the requested deletion filter.",
+                    "deletion_warning": "삭제 표시 비중은 자료상 delYn 표기이며 실제 이용 가능 여부가 아닙니다.",
+                    "filters": {
+                      "charger_type": null,
+                      "deletion": "all",
+                      "deletion_share_deletion_filter": "all",
+                      "operator_id": null,
+                      "region_code": null
+                    },
+                    "matched": {
+                      "charger_count": 527433,
+                      "deleted_charger_count": 4121,
+                      "not_deleted_charger_count": 523312,
+                      "station_count": 101091
+                    },
+                    "metric_rules": {
+                      "chargers_per_station": "charger count / distinct statId within region",
+                      "deletion_share": "delYn=Y / all delYn rows; deletion filter forced to all for this metric",
+                      "high_100kw": "output_kw >= 100 / positive numeric output count; missing/nonpositive/nonnumeric excluded",
+                      "operator_hhi": "sum((operator charger count / denominator)^2) * 10000; grouped by (busiId,busiNm)",
+                      "type_mix": "charger type count / regional charger count"
+                    },
+                    "national_basis": "Nationwide numerator and denominator are summed independently before division; national HHI is recalculated from nationwide operator counts.",
+                    "ranking_policy": "Descending competition rank; ties share rank; null values are unranked.",
+                    "region_count": 16,
+                    "region_filter_policy": "region_code is accepted for request compatibility but ignored; always compares all 16 regions.",
+                    "same_period_shortage_rate_computed": false,
+                    "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
+                    "sources": {
+                      "chargers": {
+                        "author": "한국환경공단",
+                        "dataset": "「전기자동차 충전소 정보」 getChargerInfo",
+                        "file": "charger_info_clean.csv",
+                        "license": "공공누리 제1유형 (출처표시)",
+                        "license_confirmed": true,
+                        "platform": "공공데이터포털",
+                        "provider": "한국환경공단",
+                        "reference_basis": "2026-10-15 조회 시점 현황",
+                        "region_system": "2026_16_provinces",
+                        "snapshot_date": "2026-10-15",
+                        "snapshot_end_at": "2026-10-15T04:19:04+09:00",
+                        "snapshot_start_at": "2026-10-15T04:16:31+09:00",
+                        "source": "한국환경공단 getChargerInfo",
+                        "source_url": "https://www.data.go.kr/data/15076352/openapi.do",
+                        "unit": "기 / 곳 / kW"
+                      }
+                    },
+                    "units": {
+                      "charger_count": "기",
+                      "ev_registration_count": "대",
+                      "output_kw": "kW",
+                      "share_pct": "%",
+                      "station_count": "곳"
+                    },
+                    "warnings": [
+                      "전기차 등록은 2026-09, 충전기 API는 2026-10-15 조회 자료입니다. 서로 다른 시점입니다.",
+                      "비삭제 표시(delYn=N)는 실제 이용 가능 상태를 뜻하지 않습니다.",
+                      "statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.",
+                      "전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다."
+                    ]
                   }
                 }
               }
@@ -3854,6 +4301,315 @@
           },
           "meta": {
             "$ref": "#/components/schemas/StationSizeMeta"
+          }
+        }
+      },
+      "DisparityRatio": {
+        "type": "object",
+        "required": [
+          "numerator",
+          "denominator",
+          "value_pct"
+        ],
+        "properties": {
+          "numerator": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "denominator": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "value_pct": {
+            "type": "number",
+            "nullable": true,
+            "description": "numerator / denominator × 100. 분모 0이면 null"
+          },
+          "rank": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "내림차순 경쟁 순위(동률 같은 순위). 값이 null이면 키가 없습니다."
+          }
+        }
+      },
+      "DisparityPerStation": {
+        "type": "object",
+        "required": [
+          "numerator",
+          "denominator",
+          "value"
+        ],
+        "properties": {
+          "numerator": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "충전기 수"
+          },
+          "denominator": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "고유 statId 수"
+          },
+          "value": {
+            "type": "number",
+            "nullable": true,
+            "description": "충전기 수 / 고유 충전소 수. 충전소 0곳이면 null"
+          },
+          "rank": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "내림차순 경쟁 순위(동률 같은 순위). 값이 null이면 키가 없습니다."
+          }
+        }
+      },
+      "DisparityHHI": {
+        "type": "object",
+        "required": [
+          "value",
+          "scale",
+          "operator_count"
+        ],
+        "properties": {
+          "value": {
+            "type": "number",
+            "nullable": true,
+            "minimum": 0,
+            "maximum": 10000,
+            "description": "Σ(운영기관 그룹 충전기 수 / 충전기 수)² × 10000. 충전기 0기면 null"
+          },
+          "scale": {
+            "type": "string",
+            "enum": [
+              "0-10000"
+            ]
+          },
+          "operator_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "(busiId, busiNm) 그룹 수"
+          },
+          "rank": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "내림차순 경쟁 순위(동률 같은 순위). 값이 null이면 키가 없습니다."
+          }
+        }
+      },
+      "DisparityTypeShare": {
+        "type": "object",
+        "required": [
+          "charger_type_code",
+          "charger_count",
+          "denominator",
+          "value_pct"
+        ],
+        "properties": {
+          "charger_type_code": {
+            "type": "string",
+            "enum": [
+              "01",
+              "02",
+              "03",
+              "04",
+              "05",
+              "06",
+              "07",
+              "08",
+              "09",
+              "10",
+              "11"
+            ]
+          },
+          "charger_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "denominator": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "지역(또는 전국) 충전기 수"
+          },
+          "value_pct": {
+            "type": "number",
+            "nullable": true
+          },
+          "rank": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "내림차순 경쟁 순위(동률 같은 순위). 값이 null이면 키가 없습니다."
+          }
+        }
+      },
+      "DisparityMetrics": {
+        "type": "object",
+        "required": [
+          "high_100kw",
+          "chargers_per_station",
+          "type_mix",
+          "operator_hhi",
+          "deletion_share"
+        ],
+        "properties": {
+          "high_100kw": {
+            "$ref": "#/components/schemas/DisparityRatio"
+          },
+          "chargers_per_station": {
+            "$ref": "#/components/schemas/DisparityPerStation"
+          },
+          "type_mix": {
+            "type": "array",
+            "description": "전국에서 관측된 유형마다 1개. 충전기가 있는 지역은 없는 유형을 0으로 채우고, 충전기 0기 지역은 빈 배열",
+            "items": {
+              "$ref": "#/components/schemas/DisparityTypeShare"
+            }
+          },
+          "operator_hhi": {
+            "$ref": "#/components/schemas/DisparityHHI"
+          },
+          "deletion_share": {
+            "$ref": "#/components/schemas/DisparityRatio"
+          }
+        }
+      },
+      "RegionalDisparityRow": {
+        "type": "object",
+        "required": [
+          "region_code",
+          "region_name",
+          "charger_count",
+          "station_count",
+          "metrics"
+        ],
+        "properties": {
+          "region_code": {
+            "type": "string",
+            "enum": [
+              "11",
+              "12",
+              "26",
+              "27",
+              "28",
+              "30",
+              "31",
+              "36",
+              "41",
+              "43",
+              "44",
+              "47",
+              "48",
+              "50",
+              "51",
+              "52"
+            ]
+          },
+          "region_name": {
+            "type": "string"
+          },
+          "charger_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "필터 적용 후 지역 충전기 수"
+          },
+          "station_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/DisparityMetrics"
+          }
+        }
+      },
+      "RegionalDisparityMeta": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Meta"
+          },
+          {
+            "type": "object",
+            "required": [
+              "count",
+              "region_count",
+              "metric_rules",
+              "national_basis",
+              "region_filter_policy",
+              "deletion_share_policy",
+              "ranking_policy",
+              "deletion_warning"
+            ],
+            "properties": {
+              "count": {
+                "type": "integer",
+                "enum": [
+                  16
+                ]
+              },
+              "region_count": {
+                "type": "integer",
+                "enum": [
+                  16
+                ]
+              },
+              "metric_rules": {
+                "type": "object",
+                "required": [
+                  "high_100kw",
+                  "chargers_per_station",
+                  "type_mix",
+                  "operator_hhi",
+                  "deletion_share"
+                ],
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "national_basis": {
+                "type": "string"
+              },
+              "region_filter_policy": {
+                "type": "string"
+              },
+              "deletion_share_policy": {
+                "type": "string"
+              },
+              "ranking_policy": {
+                "type": "string"
+              },
+              "deletion_warning": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "RegionalDisparityResponse": {
+        "type": "object",
+        "required": [
+          "data",
+          "meta"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "regions",
+              "national"
+            ],
+            "properties": {
+              "regions": {
+                "type": "array",
+                "minItems": 16,
+                "maxItems": 16,
+                "items": {
+                  "$ref": "#/components/schemas/RegionalDisparityRow"
+                }
+              },
+              "national": {
+                "$ref": "#/components/schemas/DisparityMetrics"
+              }
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/RegionalDisparityMeta"
           }
         }
       }

@@ -251,13 +251,21 @@
     "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
     "sources": {
       "ev_registration": {
+        "author": "국토교통부",
+        "dataset": "「2026년 09월 자동차 등록자료 통계」 10.연료별_등록현황 (자동차등록현황보고)",
         "file": "ev_registration_by_region_2026_09.csv",
+        "file_saved_date": "2026-10-20",
         "fuel": "전기 (하이브리드·수소전기 제외)",
         "legacy_field_aliases": "region_code_2025 / region_name_2025 are deprecated aliases of current region_code / region_name; not historical values",
+        "license": "확인 중 (통계누리 저작권보호정책에 따라 출처 표시)",
+        "license_confirmed": false,
+        "provider": "국토교통부 통계누리",
+        "reference_basis": "2026년 9월 말 등록 기준",
         "reference_month": "2026-09",
         "region_code_basis": "원본 지역명 전남광주를 기존 충전기 지역코드 12에 대응; 원본 Excel에 숫자 코드 없음",
         "region_system": "2026_16_provinces",
         "source": "2026년 9월 자동차 등록자료 / 10.연료별_등록현황",
+        "source_url": "https://stat.molit.go.kr/portal/cate/statMetaView.do?hFormId=1244&hRsId=58",
         "unit": "대"
       }
     },

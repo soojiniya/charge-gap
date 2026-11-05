@@ -63,6 +63,8 @@
 | `/api/locations` | 충전기 공통 필터 + `page`, `limit`, `bbox` | 충전소별 대표 좌표·일치 충전기 수 |
 | `/api/charts` | 선택 `chart_id=1..10` | 기존 그래프의 목적·종류·기간·분석·주의·수치·이미지 메타데이터 |
 | `/api/charts/{id}/image` | 경로 id=1..10; query 없음 | 기존 PNG 이미지. JSON이 아닌 image/png |
+| `/api/station-size-distribution` | 충전기 공통 필터 | 지역별 충전소당 충전기 수 박스플롯 통계 (아래 추가 API 절) |
+| `/api/regional-disparity` | 충전기 공통 필터 (`region_code`는 무시) | 16개 시도의 구성 격차 5개 지표·전국 기준·순위 (아래 추가 API 절) |
 
 ### overview 필터 범위
 
@@ -208,3 +210,143 @@ $env:CHARGE_GAP_CORS_ORIGINS='http://localhost:5173,http://localhost:3000'
 ```
 
 위 예시는 data와 핵심 meta만 발췌했습니다. 당시 실제 응답은 `examples/station-size-distribution-filtered.json`, 전국 비삭제 응답은 `examples/station-size-distribution.json`에 보존했습니다. 현재 등록자료 2026-09와 이 API의 충전기 조회 2026-10-15는 다른 기준일입니다. 이 API는 설치일·부족률을 계산하지 않습니다. 신규 PNG는 `outputs/charts_v2_report/`에 따로 보관하며 기존 `/api/charts`의 10개 고정 PNG 목록은 유지됩니다.
+
+## 추가 API: 지역 충전 인프라 구성 격차
+
+`GET /api/regional-disparity`
+
+16개 시도의 충전 인프라 **공급 구성** 차이를 5개 지표로 비교합니다. 충전기 공통 필터 `charger_type`, `deletion`, `operator_id`를 지원합니다. `region_code`는 요청 호환을 위해 받지만 **무시**하며 항상 16개 시도를 모두 반환합니다(`meta.region_filter_policy`). 알 수 없는 변수·잘못된 값은 다른 API와 같은 400 오류 형식입니다. `page`, `limit`, `bbox`는 지원하지 않습니다.
+
+| 지표 (`metrics` 키) | 계산 | 분모 | 값 필드 |
+|---|---|---|---|
+| `high_100kw` | 출력 100kW 이상 충전기 수 ÷ 출력값이 확인된 충전기 수 × 100 | 출력(`output`)이 숫자이고 0보다 큰 충전기. 결측·0 이하·숫자 아님은 분자·분모 모두 제외 | `value_pct` (%) |
+| `chargers_per_station` | 충전기 수 ÷ 고유 `statId` 수 | 지역 고유 충전소 수 | `value` (기/곳) |
+| `type_mix` | 유형별 충전기 수 ÷ 지역 충전기 수 × 100 | 지역 충전기 수 | 배열 항목별 `value_pct` (%) |
+| `operator_hhi` | Σ(운영기관 그룹 충전기 수 ÷ 지역 충전기 수)² × 10,000 | 지역 충전기 수. 그룹 = 공백 정리한 `(busiId, busiNm)` | `value` (0–10,000), `operator_count` |
+| `deletion_share` | 삭제 표시(`delYn=Y`) 충전기 수 ÷ 전체 충전기 수 × 100 | 삭제 상태 전체. **이 지표는 `deletion` 필터와 관계없이 all로 계산** | `value_pct` (%) |
+
+응답 구조: `data.regions`는 16개 행(`region_code`, `region_name`, 필터 적용 후 `charger_count`·`station_count`, `metrics`), `data.national`은 같은 5개 지표의 전국 값입니다. 비율 지표는 `numerator`·`denominator`를 함께 제공합니다.
+
+- **전국 기준값**은 지역 비율의 평균이 아닙니다. 전국의 분자와 분모를 각각 합산한 뒤 나눕니다. 전국 HHI는 전국 운영기관별 충전기 수로 다시 계산합니다(`meta.national_basis`).
+- **순위** `rank`는 값이 큰 지역이 1위인 경쟁 순위입니다. 동률은 같은 순위를 받고 다음 순위는 그 수만큼 건너뜁니다. 값이 `null`인 지역(필터 결과 충전기 0기, 분모 0)은 순위가 없으며 `rank` 키가 빠집니다(`meta.ranking_policy`).
+- **`type_mix`** 는 전국에서 관측된 유형마다 1개 항목입니다. 충전기가 있는 지역은 없는 유형을 `charger_count: 0`, `value_pct: 0`으로 채우고, 필터 결과 충전기가 0기인 지역은 빈 배열입니다. 09(NACS)는 관측 0건이라 항목이 없습니다.
+- **값이 `null`인 경우**: 필터 결과 지역 충전기가 0기(이 경우 `type_mix`도 빈 배열)이거나 지표의 분모가 0일 때입니다. `0`(실제 0건)과 구분하세요.
+- 추가 meta: `count`·`region_count`(16), `metric_rules`(지표별 계산 규칙 원문), `national_basis`, `region_filter_policy`, `deletion_share_policy`, `ranking_policy`, `deletion_warning`. `filters.region_code`는 항상 `null`, `filters.deletion_share_deletion_filter`는 `all`입니다.
+- 해석 주의: 공급 측 충전기 자료만으로 만든 구성 지표입니다. 충전 수요·인구·전기차 등록 대수와 결합하지 않으며 부족률을 계산하지 않습니다(`same_period_shortage_rate_computed=false`). 삭제 표시는 자료상 표기이며 실제 고장·이용 불가를 뜻하지 않습니다. 충전기 자료 기준일은 2026-10-15 조회입니다.
+
+실제 응답 발췌 (`GET /api/regional-disparity`, 16개 지역 중 서울 1개, `type_mix`는 02·04 두 항목만 표시):
+
+```json
+{
+  "data": {
+    "regions": [
+      {
+        "charger_count": 76202,
+        "region_code": "11",
+        "region_name": "서울",
+        "station_count": 13035,
+        "metrics": {
+          "chargers_per_station": {
+            "denominator": 13035,
+            "numerator": 76202,
+            "rank": 6,
+            "value": 5.845953202915228
+          },
+          "deletion_share": {
+            "denominator": 76202,
+            "numerator": 696,
+            "rank": 7,
+            "value_pct": 0.9133618540195796
+          },
+          "high_100kw": {
+            "denominator": 76191,
+            "numerator": 4175,
+            "rank": 14,
+            "value_pct": 5.479649827407437
+          },
+          "operator_hhi": {
+            "operator_count": 166,
+            "rank": 6,
+            "scale": "0-10000",
+            "value": 701.442869883696
+          },
+          "type_mix": [
+            {
+              "charger_count": 70118,
+              "charger_type_code": "02",
+              "denominator": 76202,
+              "rank": 3,
+              "value_pct": 92.01595758641506
+            },
+            {
+              "charger_count": 4152,
+              "charger_type_code": "04",
+              "denominator": 76202,
+              "rank": 15,
+              "value_pct": 5.448675887771975
+            }
+          ]
+        }
+      }
+    ],
+    "national": {
+      "chargers_per_station": {
+        "denominator": 101091,
+        "numerator": 527433,
+        "value": 5.2174080778704335
+      },
+      "deletion_share": {
+        "denominator": 527433,
+        "numerator": 4121,
+        "value_pct": 0.781331467693527
+      },
+      "high_100kw": {
+        "denominator": 527264,
+        "numerator": 42417,
+        "value_pct": 8.04473660253687
+      },
+      "operator_hhi": {
+        "operator_count": 342,
+        "scale": "0-10000",
+        "value": 585.7074915470868
+      },
+      "type_mix": [
+        {
+          "charger_count": 469049,
+          "charger_type_code": "02",
+          "denominator": 527433,
+          "value_pct": 88.93053714879426
+        },
+        {
+          "charger_count": 43676,
+          "charger_type_code": "04",
+          "denominator": 527433,
+          "value_pct": 8.28086221377881
+        }
+      ]
+    }
+  },
+  "meta": {
+    "count": 16,
+    "region_count": 16,
+    "filters": {
+      "charger_type": null,
+      "deletion": "all",
+      "deletion_share_deletion_filter": "all",
+      "operator_id": null,
+      "region_code": null
+    },
+    "matched": {
+      "charger_count": 527433,
+      "deleted_charger_count": 4121,
+      "not_deleted_charger_count": 523312,
+      "station_count": 101091
+    },
+    "ranking_policy": "Descending competition rank; ties share rank; null values are unranked.",
+    "region_filter_policy": "region_code is accepted for request compatibility but ignored; always compares all 16 regions.",
+    "deletion_share_policy": "Deletion share always uses all deletion statuses regardless of the requested deletion filter."
+  }
+}
+```
+
+전체 응답 스키마와 예시는 `openapi.json`의 `/api/regional-disparity`, `RegionalDisparityResponse`에 있습니다. 웹 화면의 지표 전환은 이 응답 하나를 재사용하며 지표마다 다시 요청하지 않습니다. CSV·PDF 내보내기도 같은 응답 값을 그대로 사용합니다.
