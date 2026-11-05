@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import type { BaseMeta } from '../../api/types';
+import { EV_PNG_IDS, EV_PNG_VS_WEB } from '../../analysis/dataSources';
 import { useStaticCharts } from '../../api/hooks';
 import { assetUrl } from '../../api/client';
 import { Modal } from './Modal';
@@ -79,7 +80,17 @@ const FILTER_LABEL: Record<string, string> = {
 };
 
 const SOURCE_LABEL: Record<string, string> = {
-  source: '원본 출처',
+  provider: '제공기관',
+  author: '작성기관',
+  platform: '제공 창구',
+  dataset: '자료명',
+  reference_basis: '자료 기준',
+  file_saved_date: '파일 저장일',
+  official_update_label_at_collection: '수집 당시 공식 갱신 표시',
+  revision_note: '공식 수치 수정 안내',
+  license: '이용 조건',
+  license_confirmed: '이용 조건 공식 확인',
+  source: '원본 자료',
   file: '정제 파일',
   reference_month: '기준월',
   snapshot_date: '조회일',
@@ -95,6 +106,13 @@ const SOURCE_LABEL: Record<string, string> = {
   geography: '지역 범위',
   source_url: '출처 URL',
   region_code_basis: '지역코드 대응 근거',
+};
+
+/** API는 키를 알파벳순으로 보내므로, 출처 항목은 SOURCE_LABEL에 적은 순서(제공기관 → … → 기존 항목)로 보여 줍니다. */
+const SOURCE_KEYS = Object.keys(SOURCE_LABEL);
+const sourceOrder = (k: string) => {
+  const i = SOURCE_KEYS.indexOf(k);
+  return i < 0 ? SOURCE_KEYS.length : i;
 };
 
 function SourcePanel({ meta }: { meta: BaseMeta }) {
@@ -136,7 +154,10 @@ function SourcePanel({ meta }: { meta: BaseMeta }) {
             {key === 'ev_registration' ? '전기차 등록 자료' : key === 'chargers' ? '충전기 자료' : key === 'growth' ? '연도별 설치 통계' : '그래프 메타데이터'}
           </h3>
           <dl className="meta-grid">
-            {Object.entries(src).filter(([k]) => k !== 'legacy_field_aliases').map(([k, v]) => (
+            {Object.entries(src)
+              .filter(([k]) => k !== 'legacy_field_aliases')
+              .sort(([a], [b]) => sourceOrder(a) - sourceOrder(b))
+              .map(([k, v]) => (
               <div key={k}>
                 <dt>{SOURCE_LABEL[k] ?? k}</dt>
                 <dd>
@@ -146,6 +167,8 @@ function SourcePanel({ meta }: { meta: BaseMeta }) {
                     </a>
                   ) : v === null ? (
                     '미기재'
+                  ) : typeof v === 'boolean' ? (
+                    v ? '확인됨 (공식 페이지에 명시)' : '확인 중'
                   ) : (
                     String(v)
                   )}
@@ -169,6 +192,36 @@ function SourcePanel({ meta }: { meta: BaseMeta }) {
   );
 }
 
+/** 등록 PNG(1~3번)와 현재 웹 그래프의 기준월·지역 체계 차이 */
+export function EvPngBasis() {
+  return (
+    <div className="table-wrap png-basis">
+      <table className="table">
+        <caption className="sr-only">보고서 PNG와 현재 웹 그래프의 기준 차이</caption>
+        <thead>
+          <tr>
+            <th scope="col">구분</th>
+            <th scope="col">기준월</th>
+            <th scope="col">지역 체계</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">이 PNG (보존 기록)</th>
+            <td>{EV_PNG_VS_WEB.png.month}</td>
+            <td>{EV_PNG_VS_WEB.png.regions}</td>
+          </tr>
+          <tr>
+            <th scope="row">현재 웹 그래프</th>
+            <td>{EV_PNG_VS_WEB.web.month}</td>
+            <td>{EV_PNG_VS_WEB.web.regions}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 export function ReportCharts({ ids }: { ids: number[] }) {
   const q = useStaticCharts();
   const charts = q.data?.data.filter((c) => ids.includes(c.id)) ?? [];
@@ -180,6 +233,7 @@ export function ReportCharts({ ids }: { ids: number[] }) {
       </div>
       {charts.map((c) => (
         <div key={c.id} style={{ display: 'grid', gap: 14 }}>
+          {EV_PNG_IDS.includes(c.id) && <EvPngBasis />}
           <figure className="static-figure">
             <img
               src={assetUrl(c.image_url)}

@@ -1,0 +1,253 @@
+/*
+ * CHARGE GAP · 전국 충전 인프라 구성 격차 PDF 보고서(인쇄 전용).
+ * 보고서 창은 사이트 CSP(style-src 'self')를 그대로 물려받으므로 인라인 <style>·style 속성 대신
+ * 이 같은 출처 파일을 <link>로 불러옵니다. 막대는 SVG 속성으로 그립니다.
+ * 한글 글꼴은 웹과 같은 IBM Plex Sans KR(같은 /assets 파일)을 씁니다.
+ */
+@import '@fontsource/ibm-plex-sans-kr/400.css';
+@import '@fontsource/ibm-plex-sans-kr/500.css';
+@import '@fontsource/ibm-plex-sans-kr/600.css';
+
+:root {
+  --ink: #141a26;
+  --ink-2: #3a4355;
+  --muted: #687185;
+  --line: #e1e5ec;
+  --line-strong: #c3cad6;
+  --soft: #f5f6f9;
+  --point: #574b9c;
+  --point-soft: #f1eff9;
+  --up: #17766d;
+  --down: #574b9c;
+  --bar: #b9b1de;
+}
+
+@page {
+  size: A4 portrait;
+  margin: 16mm 15mm 18mm;
+  @bottom-left {
+    content: 'CHARGE GAP · 전국 충전 인프라 구성 격차 분석 보고서';
+    font: 7.5pt 'IBM Plex Sans KR', 'Malgun Gothic', sans-serif;
+    color: #687185;
+  }
+  @bottom-right {
+    content: counter(page) ' / ' counter(pages);
+    font: 7.5pt 'IBM Plex Sans KR', 'Malgun Gothic', sans-serif;
+    color: #687185;
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: #fff;
+  font: 400 9.5pt/1.65 'IBM Plex Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  font-variant-numeric: tabular-nums;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+/* 화면 미리보기: A4 폭 종이처럼 */
+@media screen {
+  html { background: #eef0f4; }
+  body { max-width: 210mm; margin: 24px auto; padding: 16mm 15mm 18mm; box-shadow: 0 0 0 1px var(--line); }
+}
+
+p { margin: 0; }
+strong { font-weight: 600; }
+.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* ---------- 01 헤더 ---------- */
+.rpt-head { padding-bottom: 14px; border-bottom: 2px solid var(--ink); margin-bottom: 20px; }
+.rpt-brand { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+.rpt-brand b { font-size: 10pt; font-weight: 600; letter-spacing: 0.14em; color: var(--point); }
+.rpt-brand span { font-size: 8pt; color: var(--muted); letter-spacing: 0.04em; }
+.rpt-head h1 { margin: 0; font-size: 19pt; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; }
+.rpt-subtitle { margin-top: 4px; font-size: 10.5pt; color: var(--ink-2); }
+.rpt-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 18px; margin: 16px 0 0; }
+.rpt-meta div { min-width: 0; }
+.rpt-meta dt { font-size: 7.5pt; color: var(--muted); letter-spacing: 0.02em; }
+.rpt-meta dd { margin: 2px 0 0; font-size: 9pt; font-weight: 500; line-height: 1.5; }
+
+/* ---------- 섹션 공통 ---------- */
+.rpt-section { margin-top: 24px; }
+.rpt-section:first-of-type { margin-top: 0; }
+h2 {
+  display: flex; align-items: baseline; gap: 10px;
+  margin: 0 0 12px; padding-bottom: 6px;
+  font-size: 12.5pt; line-height: 1.35; font-weight: 600;
+  border-bottom: 1px solid var(--line-strong);
+  break-after: avoid; page-break-after: avoid;
+}
+h2 .no { font-size: 9pt; font-weight: 600; color: var(--point); letter-spacing: 0.06em; }
+h3 { margin: 18px 0 8px; font-size: 10.5pt; line-height: 1.4; font-weight: 600; break-after: avoid; page-break-after: avoid; }
+.rpt-lead { color: var(--ink-2); margin-bottom: 10px; }
+.rpt-note { margin-top: 10px; padding: 8px 12px; background: var(--soft); color: var(--ink-2); font-size: 8.5pt; }
+.rpt-note.is-warn { border-left: 2px solid var(--up); }
+.keep { break-inside: avoid; page-break-inside: avoid; }
+/* 03 계산 방법: 표 아래 남은 공간부터 이어서 배치. 제목은 계산식 상자와 같은 페이지에 두고, 정의·주의사항은 항목 단위로만 넘깁니다. */
+.rpt-section.is-page h2 + .rpt-formula { break-before: avoid; page-break-before: avoid; }
+.rpt-source-section h2, .rpt-source-section .rpt-sources { break-inside: avoid; page-break-inside: avoid; }
+
+/* ---------- 02 핵심 분석 요약 ---------- */
+.rpt-kpis { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.rpt-kpi { padding: 12px 16px 14px; min-width: 0; }
+.rpt-kpi + .rpt-kpi { border-left: 1px solid var(--line); }
+.rpt-kpi:first-child { padding-left: 0; }
+.rpt-kpi dt { font-size: 8pt; color: var(--muted); line-height: 1.45; }
+.rpt-kpi dd { margin: 0; }
+.rpt-kpi .v { display: block; margin-top: 4px; font-size: 20pt; line-height: 1.15; font-weight: 600; letter-spacing: -0.01em; }
+.rpt-kpi.is-key .v { font-size: 24pt; color: var(--point); }
+.rpt-kpi .s { display: block; margin-top: 6px; font-size: 8pt; line-height: 1.5; color: var(--ink-2); }
+.rpt-kpi .s b { font-weight: 600; color: var(--ink); }
+.rpt-findings { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.rpt-findings li { position: relative; padding-left: 14px; line-height: 1.6; }
+.rpt-findings li::before { content: ''; position: absolute; left: 0; top: 0.68em; width: 5px; height: 5px; background: var(--point); }
+.rpt-selected { margin-top: 18px; }
+.rpt-selected h3 { margin-top: 0; }
+.rpt-selected-meta { color: var(--muted); font-size: 8.5pt; margin: -4px 0 8px; }
+.rpt-selected-text { padding: 10px 14px; background: var(--point-soft); border-left: 2px solid var(--point); line-height: 1.7; }
+
+/* ---------- 표 공통 ---------- */
+table { width: 100%; border-collapse: collapse; font-size: 9pt; line-height: 1.45; }
+thead { display: table-header-group; }
+tr { break-inside: avoid; page-break-inside: avoid; }
+th { padding: 7px 10px; text-align: left; font-size: 8pt; font-weight: 600; color: var(--ink-2); background: var(--soft); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
+td { padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+td.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.region { white-space: nowrap; font-weight: 500; }
+td.muted { color: var(--muted); }
+.up { color: var(--up); }
+.down { color: var(--down); }
+
+/* 선택 지역 5개 지표 표 */
+.rpt-mini th:nth-child(n + 2) { text-align: right; }
+.rpt-mini td:first-child { color: var(--ink-2); }
+
+/* 16개 지역 비교 표 */
+.rpt-compare { width: 100%; }
+.rpt-compare col.c-rank { width: 15%; }
+.rpt-compare col.c-region { width: 13%; }
+.rpt-compare col.c-value { width: 14%; }
+.rpt-compare col.c-bar { width: 22%; }
+.rpt-compare col.c-diff { width: 15%; }
+.rpt-compare col.c-den { width: 21%; }
+.rpt-compare th:nth-child(3), .rpt-compare th:nth-child(5), .rpt-compare th:nth-child(6) { text-align: right; }
+.rpt-compare th { white-space: normal; vertical-align: bottom; }
+.rpt-compare td.rank { color: var(--ink-2); white-space: nowrap; }
+.rpt-compare td.rank small { display: block; font-size: 7pt; color: var(--muted); line-height: 1.3; }
+.rpt-compare tr.is-national td { background: var(--point-soft); border-bottom: 1px solid var(--line-strong); font-weight: 600; }
+.rpt-compare tr.is-national td.region { color: var(--point); }
+.rpt-compare tr.is-selected td { background: #f7f6fc; font-weight: 600; }
+.rpt-compare tr.is-selected td.region::after { content: '선택'; margin-left: 6px; padding: 0 5px; font-size: 7pt; font-weight: 600; color: var(--point); border: 1px solid var(--point); vertical-align: 1px; }
+.rpt-bar { display: block; width: 100%; height: 10px; }
+.rpt-bar .track { fill: #eef0f4; }
+.rpt-bar .fill { fill: var(--bar); }
+tr.is-selected .rpt-bar .fill, tr.is-national .rpt-bar .fill { fill: var(--point); }
+.rpt-bar .mark { fill: var(--ink); }
+.rpt-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 8px 0 0; font-size: 8pt; color: var(--muted); }
+.rpt-legend i { display: inline-block; width: 10px; height: 8px; margin-right: 5px; background: var(--bar); vertical-align: 0; }
+.rpt-legend i.mark { width: 2px; height: 10px; background: var(--ink); vertical-align: -1px; }
+
+/* ---------- 03 계산 방법 및 해석 ---------- */
+.rpt-formula { padding: 12px 16px; border: 1px solid var(--line-strong); }
+.rpt-formula dt { font-size: 8pt; color: var(--muted); }
+.rpt-formula dd { margin: 4px 0 0; font-size: 11.5pt; font-weight: 600; line-height: 1.5; }
+.rpt-defs { margin: 12px 0 0; display: grid; gap: 0; }
+.rpt-defs > div { display: grid; grid-template-columns: 26mm minmax(0, 1fr); gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--line); break-inside: avoid; page-break-inside: avoid; }
+.rpt-defs > div:first-child { border-top: 1px solid var(--line); }
+.rpt-defs dt { font-weight: 600; color: var(--ink); }
+.rpt-defs dd { margin: 0; color: var(--ink-2); line-height: 1.65; }
+.rpt-defs dd .num { color: var(--ink); font-weight: 500; }
+.rpt-cautions { margin: 0; padding: 0; list-style: none; counter-reset: c; display: grid; gap: 7px; }
+.rpt-cautions li { position: relative; padding-left: 24px; color: var(--ink-2); line-height: 1.65; counter-increment: c; break-inside: avoid; page-break-inside: avoid; }
+.rpt-cautions li::before { content: counter(c); position: absolute; left: 0; top: 0.15em; width: 16px; height: 16px; font-size: 7.5pt; line-height: 16px; text-align: center; font-weight: 600; color: var(--point); border: 1px solid var(--point); }
+
+/* ---------- 04 데이터 출처 ---------- */
+.rpt-sources { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.rpt-source { padding: 12px 14px; border: 1px solid var(--line); break-inside: avoid; page-break-inside: avoid; }
+.rpt-source h4 { margin: 0 0 8px; font-size: 9.5pt; font-weight: 600; }
+.rpt-source h4 small { margin-left: 6px; font-size: 7.5pt; font-weight: 500; color: var(--muted); }
+.rpt-source dl { margin: 0; display: grid; gap: 4px; }
+.rpt-source dl > div { display: grid; grid-template-columns: 20mm minmax(0, 1fr); gap: 8px; font-size: 8.5pt; line-height: 1.55; }
+.rpt-source dt { color: var(--muted); }
+.rpt-source dd { margin: 0; }
+.rpt-source .raw { font-size: 8.5pt; color: var(--ink-2); }
+.rpt-limits { margin: 12px 0 0; padding-left: 16px; color: var(--ink-2); font-size: 8.5pt; line-height: 1.65; }
+.rpt-limits li + li { margin-top: 3px; }
+.rpt-times { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0 0; padding-top: 10px; border-top: 1px solid var(--line); font-size: 8.5pt; }
+.rpt-times dt { color: var(--muted); font-size: 7.5pt; }
+.rpt-times dd { margin: 2px 0 0; font-weight: 500; }
+.rpt-foot { margin-top: 18px; color: var(--muted); font-size: 7.5pt; line-height: 1.6; }
+.rpt-kpi .v small { margin-left: 2px; font-size: 10pt; font-weight: 500; color: var(--ink-2); }
+/* 3페이지(계산 방법·해석·출처) 한 장 맞춤: 내용은 그대로, 배치만 압축 */
+.rpt-cautions { display: block; columns: 2; column-gap: 9mm; }
+.rpt-cautions li { margin-bottom: 6px; font-size: 8.75pt; line-height: 1.6; }
+.rpt-defs > div { padding: 5px 0; }
+.rpt-formula { padding: 10px 14px; }
+.rpt-section.is-page h3 { margin-top: 14px; }
+.rpt-source-section { margin-top: 18px; }
+.rpt-kpi .v.is-range { font-size: 15pt; white-space: normal; line-height: 1.3; margin-top: 8px; }
+
+/* ===== 페이지 구성 정리: 1쪽 핵심 요약 · 2쪽 16개 지역 비교 · 3쪽 계산 방법·주의사항·출처 ===== */
+/* 이전 단계의 흐름 배치 규칙은 아래 규칙으로 대체합니다(디자인·색·글꼴 크기 체계는 그대로). */
+.rpt-page-compare, .rpt-page-method { break-before: page; page-break-before: always; margin-top: 0; }
+.rpt-page-compare { break-inside: auto; }
+
+/* 1쪽: 요소 간 간격을 조금 넓혀 페이지를 고르게 채움 */
+.rpt-head { padding-bottom: 16px; margin-bottom: 24px; }
+.rpt-meta { gap: 12px 18px; margin-top: 18px; }
+.rpt-kpi { padding: 16px 18px 18px; }
+.rpt-kpi .s { margin-top: 8px; }
+.rpt-findings { margin-top: 18px; gap: 8px; }
+.rpt-selected { margin-top: 24px; }
+.rpt-selected-meta { margin: -2px 0 10px; }
+.rpt-selected-text { padding: 12px 16px; }
+.rpt-selected h3 + p + p + h3 { margin-top: 20px; }
+.rpt-mini td, .rpt-mini th { padding-top: 9px; padding-bottom: 9px; }
+.rpt-note { margin-top: 16px; padding: 10px 14px; }
+
+/* 2쪽: 표 행 높이를 늘려 한 페이지를 채우고 읽기 쉽게 */
+.rpt-page-compare .rpt-lead { margin-bottom: 14px; }
+.rpt-compare th { padding-top: 9px; padding-bottom: 9px; }
+.rpt-compare td { padding-top: 11px; padding-bottom: 11px; }
+.rpt-legend { margin-top: 12px; }
+
+/* 3쪽: 계산식 상자 안에 분자·분모를 2단으로, 정의·주의사항·출처는 간격만 압축(글자 크기 유지) */
+.rpt-formula { padding: 12px 16px; }
+.rpt-formula .f-main { margin: 0; }
+.rpt-formula .f-main dt { font-size: 8pt; color: var(--muted); }
+.rpt-formula .f-main dd { margin: 3px 0 0; font-size: 11.5pt; font-weight: 600; line-height: 1.5; }
+.rpt-formula .f-parts { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; margin: 10px 0 0; padding-top: 9px; border-top: 1px solid var(--line); }
+.rpt-formula .f-parts dt { font-size: 8pt; color: var(--muted); }
+.rpt-formula .f-parts dd { margin: 2px 0 0; font-size: 9pt; font-weight: 400; line-height: 1.55; color: var(--ink-2); }
+.rpt-defs { margin-top: 10px; }
+.rpt-defs > div { grid-template-columns: 22mm minmax(0, 1fr); padding: 5px 0; }
+.rpt-defs dd { line-height: 1.55; }
+.rpt-page-method h3 { margin: 14px 0 7px; }
+.rpt-cautions li { margin-bottom: 5px; line-height: 1.55; }
+.rpt-source-section { margin-top: 16px; }
+.rpt-source-section h2 { margin-bottom: 10px; }
+.rpt-sources { gap: 12px; }
+.rpt-source { padding: 10px 12px; }
+.rpt-source h4 { margin-bottom: 6px; }
+.rpt-source dl { gap: 2px; }
+.rpt-source dl > div { grid-template-columns: 17mm minmax(0, 1fr); line-height: 1.5; }
+.rpt-limits { margin-top: 10px; }
+.rpt-times { margin-top: 10px; padding-top: 8px; }
+/* 최종 밀도 조정: 페이지 상하 여백 2mm씩 축소, 3쪽 마지막 줄(분석 한계 | 조회·생성 시점)을 2단으로 */
+@page { margin: 14mm 15mm 16mm; }
+.rpt-head { margin-bottom: 20px; }
+.rpt-findings { margin-top: 16px; }
+.rpt-selected { margin-top: 20px; }
+.rpt-mini td, .rpt-mini th { padding-top: 8px; padding-bottom: 8px; }
+.rpt-page-method h3 { margin: 12px 0 6px; }
+.rpt-source-section { margin-top: 14px; }
+.rpt-closing { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 16px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--line); }
+.rpt-closing .rpt-limits { margin: 0; }
+.rpt-closing .rpt-times { display: grid; grid-template-columns: 1fr; gap: 6px; margin: 0; padding: 0; border: 0; }
+.rpt-formula .f-main dd { font-size: 10.5pt; }
+.rpt-defs dt, .rpt-defs dd { font-size: 9pt; }
+.rpt-sources { grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); }
+.rpt-compare td { padding-top: 13px; padding-bottom: 13px; }

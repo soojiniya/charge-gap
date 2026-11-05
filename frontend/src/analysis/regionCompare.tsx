@@ -11,6 +11,7 @@ import type { ReactNode } from 'react';
 import type { ChargerOutputRow, ChargerRegionRow, ChargerTypeRow, EvRegistrationRow, OperatorRow, StationSizeRow } from '../api/types';
 import type { InsightProps } from '../components/ui/Insight';
 import { fmtInt, fmtPct } from '../lib/format';
+import { CH_SRC, EV_SRC } from './dataSources';
 
 /* ---------------- 공통 계산 ---------------- */
 
@@ -287,8 +288,6 @@ export const fmtX = (x: number) => x.toFixed(x < 1.1 ? 2 : 1);
 /* ---------------- 분석 문장 (Insight) ---------------- */
 
 const B = ({ children }: { children: ReactNode }) => <b>{children}</b>;
-const EV_SRC = '2026년 9월 자동차 등록자료(연료별 등록현황), /api/ev-registration';
-const CH_SRC = '한국환경공단 충전기 정보 2026-10-15 조회';
 const DATE_NOTE =
   '전기차 등록(2026-09)과 충전기(2026-10-15)는 기준 시점이 달라, 등록 대수와 충전기 수를 서로 나눈 지표(차량당 충전기, 충전 부족률 등)는 만들지 않습니다.';
 

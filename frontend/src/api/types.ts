@@ -21,6 +21,16 @@ export interface ChargerCounts {
 }
 
 export interface SourceInfo {
+  provider?: string;
+  author?: string;
+  platform?: string;
+  dataset?: string;
+  reference_basis?: string;
+  file_saved_date?: string;
+  official_update_label_at_collection?: string;
+  revision_note?: string;
+  license?: string;
+  license_confirmed?: boolean;
   file?: string;
   source?: string;
   source_url?: string;
@@ -150,6 +160,22 @@ export interface ChargerTypesMeta extends BaseMeta {
 export interface OperatorRow extends ShareRow {
   operator_id: string;
   operator_name: string;
+}
+
+export type DisparityMetricKey = 'high_100kw' | 'chargers_per_station' | 'type_mix' | 'operator_hhi' | 'deletion_share';
+export interface DisparityValue { numerator?: number; denominator?: number; value?: number | null; value_pct?: number | null; rank?: number; scale?: string; operator_count?: number; }
+export interface DisparityTypeValue { charger_type_code: string; charger_count: number; denominator: number; value_pct: number | null; rank?: number; }
+export interface RegionalDisparityRow {
+  region_code: string; region_name: string; charger_count: number; station_count: number;
+  metrics: { high_100kw: DisparityValue; chargers_per_station: DisparityValue; type_mix: DisparityTypeValue[]; operator_hhi: DisparityValue; deletion_share: DisparityValue };
+}
+export interface RegionalDisparityData {
+  regions: RegionalDisparityRow[];
+  national: { high_100kw: DisparityValue; chargers_per_station: DisparityValue; type_mix: DisparityTypeValue[]; operator_hhi: DisparityValue; deletion_share: DisparityValue };
+}
+export interface RegionalDisparityMeta extends BaseMeta {
+  region_count: number; metric_rules: Record<string, string>; national_basis: string;
+  region_filter_policy: string; deletion_share_policy: string; ranking_policy: string; deletion_warning: string;
 }
 
 /* ---------- /api/growth ---------- */

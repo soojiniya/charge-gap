@@ -15,6 +15,8 @@ import type {
   LocationRow,
   LocationsMeta,
   OperatorRow,
+  RegionalDisparityData,
+  RegionalDisparityMeta,
   OverviewData,
   OverviewMeta,
   BaseMeta,
@@ -43,6 +45,9 @@ export const api = {
 
   chargerRegions: (f: ChargerFilterParams, signal?: AbortSignal) =>
     apiGet<ChargerRegionRow[]>('/api/charger-regions', chargerParams(f), signal),
+
+  regionalDisparity: (f: ChargerFilterParams, signal?: AbortSignal) =>
+    apiGet<RegionalDisparityData, RegionalDisparityMeta>('/api/regional-disparity', chargerParams(f), signal),
 
   chargerTypes: (f: ChargerFilterParams, signal?: AbortSignal) =>
     apiGet<ChargerTypeRow[], ChargerTypesMeta>('/api/charger-types', chargerParams(f), signal),

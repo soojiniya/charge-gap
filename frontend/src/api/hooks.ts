@@ -57,6 +57,15 @@ export function useChargerRegions(f: ChargerFilterParams) {
   });
 }
 
+/** Single API request for the 16-region disparity analysis; region selection is intentionally excluded. */
+export function useRegionalDisparity(f: ChargerFilterParams) {
+  const base = { ...f, region_code: undefined };
+  return useQuery({
+    queryKey: ['regional-disparity', norm(base)],
+    queryFn: ({ signal }) => api.regionalDisparity(base, signal),
+  });
+}
+
 export function useChargerTypes(f: ChargerFilterParams) {
   return useQuery({
     queryKey: ['charger-types', norm(f)],

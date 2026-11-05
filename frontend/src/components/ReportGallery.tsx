@@ -5,6 +5,7 @@ import { Card } from './ui/Card';
 import { Modal } from './ui/Modal';
 import { QueryState } from './ui/QueryState';
 import { ReportCharts } from './ui/ChartDetail';
+import { EV_PNG_IDS } from '../analysis/dataSources';
 
 /** /api/charts 메타데이터 + /api/charts/{id}/image PNG. 보고서용 고정 그래프 10종. */
 export function ReportGallery({ ids, span = 12 }: { ids?: number[]; span?: 12 | 6 | 5 | 7 }) {
@@ -17,7 +18,7 @@ export function ReportGallery({ ids, span = 12 }: { ids?: number[]; span?: 12 | 
     <Card
       span={span}
       title="보고서용 원본 그래프"
-      sub="Matplotlib·Seaborn 고정 PNG입니다. 등록 그래프는 2025-12 기록이며 현재 인터랙티브 그래프(2026-09)와 기준월이 다릅니다."
+      sub="Matplotlib·Seaborn 고정 PNG입니다. 등록 PNG(01–03)는 2025년 12월·당시 17개 시도(광주·전남 따로) 기록이고, 위의 웹 그래프는 2026년 9월·16개 지역(전남광주 통합)입니다."
       scope={{ kind: 'fixed', label: '고정 PNG' }}
     >
       <QueryState isLoading={q.isLoading} error={q.error} onRetry={() => q.refetch()} isEmpty={!charts.length} height={180}>
@@ -30,6 +31,7 @@ export function ReportGallery({ ids, span = 12 }: { ids?: number[]; span?: 12 | 
                   {String(c.id).padStart(2, '0')}
                 </b>
                 {c.title}
+                {EV_PNG_IDS.includes(c.id) && <em className="thumb-basis">2025-12 · 17개 시도</em>}
               </span>
             </button>
           ))}

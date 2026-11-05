@@ -1,8 +1,9 @@
 import json
 import math
+import pandas as pd
 import pytest
 
-ENDPOINTS=['overview','ev-registration','charger-regions','charger-types','charger-output','operators','growth','locations','charts']
+ENDPOINTS=['overview','ev-registration','charger-regions','charger-types','charger-output','operators','growth','locations','charts','regional-disparity']
 
 
 @pytest.mark.parametrize('endpoint',ENDPOINTS)
@@ -93,6 +94,78 @@ def test_output_missing_and_positive(client):
         'median_kw':7.0,'min_kw':3.0,'max_kw':400.0}
     missing=[r for r in body['data'] if r['value_status']=='missing']
     assert len(missing)==1 and missing[0]['output_kw'] is None and missing[0]['charger_count']==169
+
+
+@pytest.mark.parametrize('query', [
+    {}, {'deletion':'not_deleted'}, {'deletion':'deleted'}, {'charger_type':'11'},
+    {'operator_id':'PW','deletion':'not_deleted'}, {'region_code':'12','charger_type':'04'}])
+def test_regional_disparity_independent_reconciliation(client, truth, query):
+    body=client.get('/api/regional-disparity',query_string=query).get_json()
+    assert len(body['data']['regions'])==16
+    rows=body['data']['regions']; national=body['data']['national']
+    # Independently apply non-region, requested deletion filters to the raw fixture.
+    selected=truth.copy()
+    for parameter,col in [('charger_type','chgerType'),('operator_id','busiId')]:
+        if parameter in query: selected=selected[selected[col]==query[parameter]]
+    if query.get('deletion','all')!='all': selected=selected[selected.delYn==('N' if query['deletion']=='not_deleted' else 'Y')]
+    assert sum(r['charger_count'] for r in rows)==len(selected)
+    assert sum(r['station_count'] for r in rows)==selected.groupby('zcode').statId.nunique().sum()
+    valid=pd.to_numeric(selected.output,errors='coerce')
+    denominator=int(valid.gt(0).sum()); numerator=int(valid.ge(100).sum())
+    assert national['high_100kw']['numerator']==numerator
+    assert national['high_100kw']['denominator']==denominator
+    assert national['high_100kw']['value_pct']==pytest.approx(numerator/denominator*100 if denominator else None) if denominator else national['high_100kw']['value_pct'] is None
+    # Deletion share ignores only the deletion filter; type/operator filters remain.
+    deletion_base=truth.copy()
+    for parameter,col in [('charger_type','chgerType'),('operator_id','busiId')]:
+        if parameter in query: deletion_base=deletion_base[deletion_base[col]==query[parameter]]
+    assert national['deletion_share']['numerator']==int(deletion_base.delYn.eq('Y').sum())
+    assert national['deletion_share']['denominator']==len(deletion_base)
+    by_operator=selected.groupby(['busiId','busiNm']).size()
+    expected_hhi=sum((int(v)/len(selected))**2 for v in by_operator)*10000 if len(selected) else None
+    assert national['operator_hhi']['value']==pytest.approx(expected_hhi) if expected_hhi is not None else national['operator_hhi']['value'] is None
+    assert body['meta']['region_filter_policy'].startswith('region_code is accepted')
+    assert body['meta']['same_period_shortage_rate_computed'] is False
+
+
+def test_regional_disparity_rejects_invalid_filters(client):
+    assert client.get('/api/regional-disparity?charger_type=bogus').status_code==400
+    assert client.get('/api/regional-disparity?region_code=29').status_code==400
+
+
+@pytest.mark.parametrize('deletion', ['all', 'not_deleted', 'deleted'])
+def test_regional_disparity_empty_valid_type(client, deletion):
+    response=client.get('/api/regional-disparity',query_string={'charger_type':'09', 'deletion':deletion})
+    assert response.status_code==200
+    data=response.get_json()['data']
+    assert len(data['regions'])==16
+    assert all(row['charger_count']==0 and row['station_count']==0 for row in data['regions'])
+    assert all(row['metrics']['high_100kw']['value_pct'] is None
+               and row['metrics']['chargers_per_station']['value'] is None
+               and row['metrics']['deletion_share']['value_pct'] is None
+               and row['metrics']['type_mix']==[] for row in data['regions'])
+    assert data['national']['high_100kw']=={'numerator':0, 'denominator':0, 'value_pct':None}
+    assert data['national']['chargers_per_station']=={'numerator':0, 'denominator':0, 'value':None}
+    assert data['national']['deletion_share']=={'numerator':0, 'denominator':0, 'value_pct':None}
+    assert data['national']['operator_hhi']['value'] is None
+
+
+def test_regional_disparity_zero_share_tied_rank(client):
+    data=client.get('/api/regional-disparity?deletion=deleted').get_json()['data']
+    rows=data['regions']
+    zero=[]
+    for row in rows:
+        item=next((item for item in row['metrics']['type_mix']
+                   if item['charger_type_code']=='04'), None)
+        if row['charger_count'] and item['charger_count']==0:
+            assert item['denominator']==row['charger_count']
+            assert item['value_pct']==0
+            zero.append((row['region_code'], item['rank']))
+    assert {code for code, _ in zero}=={'36', '43'}
+    assert len({rank for _, rank in zero})==1
+    positive=sum(any(item['charger_type_code']=='04' and item['charger_count']>0
+                     for item in row['metrics']['type_mix']) for row in rows)
+    assert zero[0][1]==positive+1
 
 
 def test_operators_all_pages_and_whitespace(client):

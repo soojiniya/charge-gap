@@ -18,6 +18,7 @@ import type { InsightProps } from "../components/ui/Insight";
 import { fmtInt, fmtPct } from "../lib/format";
 import { ols, pearson, sum } from "../lib/stats";
 import type { HeatRow } from "../charts/Heatmap";
+import { CH_SRC, EV_SRC, GROWTH_REVISION_NOTE, GROWTH_SNAPSHOT_NOTE, GROWTH_SRC } from "./dataSources";
 
 const B = ({ children }: { children: ReactNode }) => <b>{children}</b>;
 const fmtNum = (v: number) =>
@@ -27,9 +28,6 @@ const pct = (a: number, b: number, d = 1) =>
 const shortRegion = (code: string, name: string) =>
   code === "12" ? "전남광주" : name;
 
-const EV_SRC =
-  "2026년 9월 자동차 등록자료(연료별 등록현황), /api/ev-registration";
-const CH_SRC = "한국환경공단 충전기 정보 2026-10-15 조회";
 const CAPITAL = ["11", "41", "28"];
 
 /* ---------------- G1 지역별 전기차 등록 ---------------- */
@@ -958,9 +956,8 @@ export function insightAnnual(rows: GrowthRow[]): InsightProps {
       ) : (
         "선택 구간에 완료 연도가 부족해 변화를 계산하지 않았습니다."
       ),
-    caution:
-      "원본 통계 파일의 연간값이며 충전기 API 현황과 모집단이 다릅니다. 2026년은 집계 마감일이 기재되지 않은 부분 연도입니다.",
-    source: "충전기 설치 성장 추세_2026-10-15.xlsx, /api/growth",
+    caution: `원본 통계 파일의 연간값이며 충전기 API 현황과 모집단이 다릅니다. 2026년은 집계 마감일이 기재되지 않은 부분 연도입니다. ${GROWTH_SNAPSHOT_NOTE} ${GROWTH_REVISION_NOTE}`,
+    source: GROWTH_SRC,
     variables: ["year", "annual_installed_count", "is_partial_year"],
   };
 }
@@ -977,6 +974,8 @@ export function insightCumulative(
   // '최초 돌파'는 선택 구간이 아니라 전체 시계열(2011~)에서 판단합니다.
   const fullSorted = [...fullRows].sort((x, y) => x.year - y.year);
   const crossAll = fullSorted.find((r) => r.cumulative_count >= 100_000);
+  // 고정 숫자 대신 응답에서 읽은 부분 연도 누적값을 주의사항에 씁니다(구간 선택과 무관하게 전체 시계열 기준).
+  const latestPartial = [...fullSorted].reverse().find((r) => r.is_partial_year);
   const isFiltered =
     rows.length > 0 &&
     fullSorted.length > 0 &&
@@ -1063,9 +1062,12 @@ export function insightCumulative(
       ) : (
         "—"
       ),
-    caution:
-      "누적값은 선택 구간으로 다시 계산하지 않은 원본 값입니다. 2026년 누적 540,210기는 API 현황 527,433기와 모집단이 달라 서로 맞추지 않습니다.",
-    source: "충전기 설치 성장 추세_2026-10-15.xlsx, /api/growth",
+    caution: `누적값은 선택 구간으로 다시 계산하지 않은 원본 값입니다.${
+      latestPartial
+        ? ` ${latestPartial.year}년 누적 ${fmtInt(latestPartial.cumulative_count)}기는 프로젝트가 2026-10-15에 저장한 당시 표의 값이며 현재 공식 최신값이 아닙니다.`
+        : ""
+    } 충전기 API 현황 527,433기와 모집단이 달라 서로 맞추지 않습니다. ${GROWTH_REVISION_NOTE}`,
+    source: GROWTH_SRC,
     variables: ["year", "cumulative_count", "is_partial_year"],
   };
 }

@@ -14,6 +14,7 @@ import { fmtInt } from '../lib/format';
 import type { LocationRow } from '../api/types';
 import { RegionOutputHeatmapCard, StationChargerCard } from '../features/ChartCards';
 import { RegionCompareSection } from '../features/RegionCompare';
+import { RegionalDisparitySection } from '../features/RegionalDisparity';
 
 function StationList({
   view,
@@ -209,6 +210,8 @@ export function RegionalExplorerPage() {
         </Card>
 
         <RegionCompareSection />
+
+        <RegionalDisparitySection />
 
         <RegionOutputHeatmapCard span={12} />
         <StationChargerCard span={7} height={360} />

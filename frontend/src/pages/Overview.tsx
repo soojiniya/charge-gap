@@ -5,6 +5,7 @@ import { QueryState } from '../components/ui/QueryState';
 import { RegionSystemNote } from '../components/DataNotes';
 import { ReportGallery } from '../components/ReportGallery';
 import { Icon } from '../components/ui/Icon';
+import { DATA_SOURCES, GROWTH_REVISION_NOTE, GROWTH_SNAPSHOT_NOTE } from '../analysis/dataSources';
 import { C } from '../charts/theme';
 import { useBaseOverview, useOverview } from '../api/hooks';
 import { useFilters } from '../state/filters';
@@ -167,7 +168,60 @@ function NotesCard() {
           </QueryState>
         </section>
       </div>
+      <DataSourcesTable />
     </Card>
+  );
+}
+
+/** 데이터 출처: 제공기관·작성기관·자료명·자료 기준·수집 시점·이용 조건 (공공누리 제1유형은 공식 확인된 자료에만) */
+function DataSourcesTable() {
+  const rows = [DATA_SOURCES.ev, DATA_SOURCES.chargers, DATA_SOURCES.growth];
+  return (
+    <section className="notes-sources" aria-labelledby="notes-sources">
+      <h3 id="notes-sources" className="notes-sources-title">
+        <Icon name="database" /> 데이터 출처
+      </h3>
+      <div className="table-wrap">
+        <table className="table notes-sources-table">
+          <caption className="sr-only">데이터 출처와 이용 조건</caption>
+          <thead>
+            <tr>
+              <th scope="col">자료</th>
+              <th scope="col">제공기관 · 작성기관</th>
+              <th scope="col">자료명</th>
+              <th scope="col">자료 기준</th>
+              <th scope="col">수집 시점</th>
+              <th scope="col">이용 조건</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.label}>
+                <th scope="row">{r.label}</th>
+                <td data-label="제공기관 · 작성기관">
+                  <a href={r.url} target="_blank" rel="noreferrer">
+                    {r.provider}
+                  </a>
+                  {'platform' in r && r.platform ? ` (${r.platform})` : ''}
+                  <span className="muted"> · 작성기관 {r.author}</span>
+                </td>
+                <td data-label="자료명">{r.dataset}</td>
+                <td data-label="자료 기준">{r.basis}</td>
+                <td data-label="수집 시점">
+                  {r.collectedLabel} <span className="notes-sources-date">{r.collected}</span>
+                </td>
+                <td data-label="이용 조건">
+                  <span className={`license-tag ${r.license.confirmed ? 'is-confirmed' : 'is-pending'}`}>{r.license.text}</span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="notes-text small">
+        {GROWTH_SNAPSHOT_NOTE.replace('이 그래프는', '설치 추이 그래프는')} {GROWTH_REVISION_NOTE} 수집 시점의 ‘파일 저장’은 원본 파일을 저장한 날짜이며 공식 다운로드 기록이 아닙니다.
+      </p>
+    </section>
   );
 }
 

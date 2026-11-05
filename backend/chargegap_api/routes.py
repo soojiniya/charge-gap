@@ -112,6 +112,26 @@ def create_blueprint(store,response_cache=None,locations_cache=None):
         return reply(records(result),{'chargers':API_SOURCE},filters,frame,
             {'count':len(result),'station_count_additivity':'각 지역 안의 고유 충전소 수. 분류별 충전소 수는 중복 가능성이 있어 전국 값은 matched.station_count를 사용하세요.'})
 
+    @bp.get('/regional-disparity')
+    @cached
+    def regional_disparity():
+        filters, _ = charger_request()
+        rows, national, frame, deletion_frame = store.regional_disparity(filters)
+        return reply({'regions':rows,'national':national}, {'chargers':API_SOURCE},
+            {**filters,'region_code':None,'deletion_share_deletion_filter':'all'}, frame,
+            {'count':len(rows),'region_count':len(REGIONS_2026),
+             'metric_rules':{'high_100kw':'output_kw >= 100 / positive numeric output count; missing/nonpositive/nonnumeric excluded',
+                 'chargers_per_station':'charger count / distinct statId within region',
+                 'type_mix':'charger type count / regional charger count',
+                 'operator_hhi':'sum((operator charger count / denominator)^2) * 10000; grouped by (busiId,busiNm)',
+                 'deletion_share':'delYn=Y / all delYn rows; deletion filter forced to all for this metric'},
+             'national_basis':'Nationwide numerator and denominator are summed independently before division; national HHI is recalculated from nationwide operator counts.',
+             'region_filter_policy':'region_code is accepted for request compatibility but ignored; always compares all 16 regions.',
+             'deletion_share_policy':'Deletion share always uses all deletion statuses regardless of the requested deletion filter.',
+             'ranking_policy':'Descending competition rank; ties share rank; null values are unranked.',
+             'deletion_warning':'삭제 표시 비중은 자료상 delYn 표기이며 실제 이용 가능 여부가 아닙니다.',
+             'same_period_shortage_rate_computed':False})
+
     @bp.get('/station-size-distribution')
     @cached
     def station_size_distribution():
@@ -223,7 +243,7 @@ def create_blueprint(store,response_cache=None,locations_cache=None):
         chart_id=integer('chart_id',1,1,10) if 'chart_id' in request.args else None
         rows=[chart_record(i) for i in store.chart_metadata if chart_id is None or i['number']==chart_id]
         return reply(rows,{'chart_metadata':{'file':'chart_verification.json','source':'기존 검증된 그래프 메타데이터','reference':'각 그래프 period 필드 참조'}},
-            {'chart_id':chart_id},extra={'count':len(rows),'static_chart_warning':'PNG는 제작 당시의 고정 그래프이며 API 필터로 다시 생성하지 않습니다. 등록 PNG는 2025-12 기록이며 현재 인터랙티브 등록자료(2026-09)와 다릅니다.'})
+            {'chart_id':chart_id},extra={'count':len(rows),'static_chart_warning':'PNG는 제작 당시의 고정 그래프이며 API 필터로 다시 생성하지 않습니다. 등록 PNG(1~3번)는 2025-12 기준·당시 17개 시도(광주·전남 따로) 기록이고, 현재 인터랙티브 등록 그래프는 2026-09 기준·16개 지역(전남광주 통합)입니다.'})
 
     @bp.get('/charts/<int:chart_id>/image')
     def chart_image(chart_id):

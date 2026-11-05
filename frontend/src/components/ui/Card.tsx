@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react';
 import type { BaseMeta } from '../../api/types';
 import { Icon } from './Icon';
 import { ChartDetail } from './ChartDetail';
@@ -49,6 +49,12 @@ export function ScopeTag({ scope }: { scope: Scope }) {
 
 export function Card({ title, sub, scope, span, isFetching, actions, foot, className, children, detail, no, insight, pending, reveal = true }: CardProps) {
   const [open, setOpen] = useState(false);
+  // 그래프 설명(i) 버튼: 카드 아래 Insight의 설명 패널을 머리글에서도 엽니다(그래프를 가리지 않는 오른쪽 패널).
+  const openInfo = useRef<(() => void) | null>(null);
+  const [infoOpen, setInfoOpen] = useState(false);
+  const onInfoOpenChange = useCallback((v: boolean) => setInfoOpen(v), []);
+  const insightCtx = useMemo(() => ({ title, no, openRef: openInfo, onOpenChange: onInfoOpenChange }), [title, no, onInfoOpenChange]);
+  const titleText = typeof title === 'string' ? title : '그래프';
   return (
     <section className={`card ${span ? `span-${span}` : ''} ${pending ? 'pending' : ''} ${className ?? ''}`} aria-busy={isFetching || undefined}>
       {isFetching && <div className="refetching" aria-hidden="true" />}
@@ -64,6 +70,20 @@ export function Card({ title, sub, scope, span, isFetching, actions, foot, class
           {pending && <span className="pending-badge">미완료: 백엔드 집계 필요</span>}
           {scope && <ScopeTag scope={scope} />}
           {actions}
+          {insight && (
+            <button
+              type="button"
+              className="icon-btn"
+              data-info-toggle
+              aria-haspopup="dialog"
+              aria-expanded={infoOpen}
+              onClick={() => openInfo.current?.()}
+              aria-label={`${titleText} 그래프 설명: 데이터 출처, 기준일, 계산 방법, 주요 결과, 주의사항`}
+              title="그래프 설명 (출처·기준일·계산 방법·주의사항)"
+            >
+              <Icon name="info" />
+            </button>
+          )}
           {detail && (
             <button type="button" className="icon-btn" onClick={() => setOpen(true)} aria-label={`${typeof title === 'string' ? title : '차트'} 상세 보기`} title="상세 보기">
               <Icon name="expand" />
@@ -74,7 +94,7 @@ export function Card({ title, sub, scope, span, isFetching, actions, foot, class
       <div className="card-body">
         <Reveal enabled={reveal}>{children}</Reveal>
       </div>
-      {insight && <InsightContext.Provider value={{ title, no }}>{insight}</InsightContext.Provider>}
+      {insight && <InsightContext.Provider value={insightCtx}>{insight}</InsightContext.Provider>}
       {foot && <footer className="card-foot">{foot}</footer>}
       {open && detail && (
         <ChartDetail title={title} sub={sub} detail={{ ...detail, insight: detail.insight ?? insight }} onClose={() => setOpen(false)} />

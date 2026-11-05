@@ -18,18 +18,38 @@ WARNINGS = [
     'statUpdDt는 상태 갱신일시이며 설치일이 아닙니다.',
     '전남광주통합특별시(12)를 과거 광주(29)·전남(46)으로 분할하지 않습니다.',
 ]
-EV_SOURCE = {'file':'ev_registration_by_region_2026_09.csv','reference_month':'2026-09',
+# 출처 표기: 제공기관·작성기관·자료명·자료 기준·파일 저장일(또는 조회 시각)·이용 조건을 구분합니다.
+# 공공누리 제1유형은 공식 페이지(공공데이터포털 이용허락범위)에서 확인된 충전기 API 자료에만 적고,
+# 등록자료·설치 추이는 '이용 조건 확인 중'으로 둡니다(license_confirmed=False).
+# 기존 필드(file, source, reference_month, snapshot_date 등)는 그대로 유지합니다.
+# frontend/src/analysis/dataSources.ts와 같은 값이어야 합니다(frontend/tests/data-sources.test.cjs).
+EV_SOURCE = {'provider':'국토교통부 통계누리','author':'국토교통부',
+    'dataset':'「2026년 09월 자동차 등록자료 통계」 10.연료별_등록현황 (자동차등록현황보고)',
+    'reference_basis':'2026년 9월 말 등록 기준','file_saved_date':'2026-10-20',
+    'license':'확인 중 (통계누리 저작권보호정책에 따라 출처 표시)','license_confirmed':False,
+    'source_url':'https://stat.molit.go.kr/portal/cate/statMetaView.do?hFormId=1244&hRsId=58',
+    'file':'ev_registration_by_region_2026_09.csv','reference_month':'2026-09',
     'region_system':'2026_16_provinces','source':'2026년 9월 자동차 등록자료 / 10.연료별_등록현황',
     'region_code_basis':'원본 지역명 전남광주를 기존 충전기 지역코드 12에 대응; 원본 Excel에 숫자 코드 없음',
     'legacy_field_aliases':'region_code_2025 / region_name_2025 are deprecated aliases of current region_code / region_name; not historical values',
     'unit':'대','fuel':'전기 (하이브리드·수소전기 제외)'}
-API_SOURCE = {'file':'charger_info_clean.csv','snapshot_date':'2026-10-15',
+API_SOURCE = {'provider':'한국환경공단','author':'한국환경공단','platform':'공공데이터포털',
+    'dataset':'「전기자동차 충전소 정보」 getChargerInfo','reference_basis':'2026-10-15 조회 시점 현황',
+    'license':'공공누리 제1유형 (출처표시)','license_confirmed':True,
+    'file':'charger_info_clean.csv','snapshot_date':'2026-10-15',
     'region_system':'2026_16_provinces','source':'한국환경공단 getChargerInfo',
     'source_url':'https://www.data.go.kr/data/15076352/openapi.do','unit':'기 / 곳 / kW'}
-GROWTH_SOURCE = {'file':'charger_installation_trend.csv','source':'충전기 설치 성장 추세_2026-10-15.xlsx',
+GROWTH_SOURCE = {'provider':'무공해차 통합누리집','author':'원본 미기재',
+    'dataset':'데이터·통계 「충전기 설치 성장 추세」 2011–2026 (2026년 부분 연도)',
+    'reference_basis':'집계 마감일 원본 미기재, 당시 공식 화면 갱신 표시 2026-09-30',
+    'official_update_label_at_collection':'2026-09-30','file_saved_date':'2026-10-15',
+    'revision_note':'이 자료는 2026-10-15에 저장한 당시 표의 값이며 현재 공식 최신값이 아닙니다. '
+        '공식 화면은 이후 2026-10-31 갱신에서 과거 연도 수치까지 수정했고, 수정 사유는 공식적으로 확인되지 않았습니다.',
+    'license':'확인 중','license_confirmed':False,
+    'source_url':'https://ev.or.kr/nportal/stats/statsDashboard.do',
+    'file':'charger_installation_trend.csv','source':'충전기 설치 성장 추세_2026-10-15.xlsx',
     'period':'2011–2026','source_filename_date':'2026-10-15','measurement_cutoff_date':None,
     'partial_year':2026,'unit':'기','geography':'전국 (지역 세분 없음)'}
-
 
 def records(frame):
     """Standard JSON nulls, Unicode, and preserved string IDs; no NaN/Infinity."""
@@ -121,6 +141,104 @@ class DataStore:
             result[col] = result[col].astype(object)
         result['share_pct'] = result.charger_count/total*100 if total else None
         return result
+
+    def regional_disparity(self, filters):
+        """Aggregate regional infrastructure metrics in one pass per metric family.
+
+        Region selection is deliberately ignored: the comparison population is always
+        the 16-region system. Deletion selection applies to all metrics except the
+        deletion share, whose numerator and denominator require both Y and N rows.
+        """
+        base_filters = {**filters, 'region_code': None}
+        frame = self.select(base_filters)
+        deletion_frame = self.select({**base_filters, 'deletion': 'all'})
+        output = frame.assign(_valid=frame._output_kw.gt(0), _high=frame._output_kw.ge(100))
+        by_region = output.groupby('zcode', observed=True, sort=True).agg(
+            charger_count=('chgerId', 'size'), station_count=('statId', 'nunique'),
+            valid_output_count=('_valid', 'sum'), high_output_count=('_high', 'sum'))
+        # Operator counts are retained at operator ID/name granularity, matching /api/operators.
+        operator = frame.groupby(['zcode', 'busiId', 'busiNm'], observed=True, sort=True).chgerId.size()
+        operator_totals = frame.groupby(['busiId', 'busiNm'], observed=True, sort=True).chgerId.size()
+        types = frame.groupby(['zcode', 'chgerType'], observed=True, sort=True).chgerId.size()
+        deleted = deletion_frame.groupby('zcode', observed=True, sort=True).delYn.agg(
+            total='size', deleted=lambda values: int(values.eq('Y').sum()))
+        def hhi(counts):
+            total = int(counts.sum())
+            return (sum((int(v) / total) ** 2 for v in counts) * 10000) if total else None
+        national_output = int(by_region.high_output_count.sum()) / int(by_region.valid_output_count.sum()) * 100 if int(by_region.valid_output_count.sum()) else None
+        national_chargers = int(by_region.charger_count.sum())
+        national_stations = int(frame.statId.nunique())
+        national_types = frame.groupby('chgerType', observed=True).chgerId.size()
+        # Empty categorical aggregations do not support Series.sum() on some
+        # pandas versions. Count their integer values explicitly for 0-row filters.
+        national_deleted_total = sum(int(value) for value in deleted.total)
+        national_deleted = sum(int(value) for value in deleted.deleted)
+        national_operator_hhi = hhi(operator_totals)
+        rows = []
+        for code, name in REGIONS_2026.items():
+            charger_n = int(by_region.loc[code, 'charger_count']) if code in by_region.index else 0
+            station_n = int(by_region.loc[code, 'station_count']) if code in by_region.index else 0
+            valid_n = int(by_region.loc[code, 'valid_output_count']) if code in by_region.index else 0
+            high_n = int(by_region.loc[code, 'high_output_count']) if code in by_region.index else 0
+            type_counts = types.loc[code] if code in types.index.get_level_values(0) else pd.Series(dtype='int64')
+            region_operators = operator.loc[code] if code in operator.index.get_level_values(0) else pd.Series(dtype='int64')
+            del_total = int(deleted.loc[code, 'total']) if code in deleted.index else 0
+            del_n = int(deleted.loc[code, 'deleted']) if code in deleted.index else 0
+            metrics = {
+                'high_100kw': {'numerator': high_n, 'denominator': valid_n, 'value_pct': high_n / valid_n * 100 if valid_n else None},
+                'chargers_per_station': {'numerator': charger_n, 'denominator': station_n, 'value': charger_n / station_n if station_n else None},
+                'type_mix': [{'charger_type_code': str(t), 'charger_count': int(v), 'denominator': charger_n,
+                              'value_pct': int(v) / charger_n * 100 if charger_n else None} for t, v in type_counts.items()],
+                'operator_hhi': {'value': hhi(region_operators), 'scale': '0-10000', 'operator_count': int(len(region_operators))},
+                'deletion_share': {'numerator': del_n, 'denominator': del_total, 'value_pct': del_n / del_total * 100 if del_total else None},
+            }
+            rows.append({'region_code': code, 'region_name': name, 'charger_count': charger_n,
+                         'station_count': station_n, 'metrics': metrics})
+        nat_types = [{'charger_type_code': str(t), 'charger_count': int(v), 'denominator': national_chargers,
+                      'value_pct': int(v) / national_chargers * 100 if national_chargers else None} for t, v in national_types.items()]
+        national = {
+            'high_100kw': {'numerator': int(by_region.high_output_count.sum()), 'denominator': int(by_region.valid_output_count.sum()), 'value_pct': national_output},
+            'chargers_per_station': {'numerator': national_chargers, 'denominator': national_stations, 'value': national_chargers / national_stations if national_stations else None},
+            'type_mix': nat_types,
+            'operator_hhi': {'value': national_operator_hhi, 'scale': '0-10000', 'operator_count': int(len(operator_totals))},
+            'deletion_share': {'numerator': national_deleted, 'denominator': national_deleted_total,
+                               'value_pct': national_deleted / national_deleted_total * 100 if national_deleted_total else None},
+        }
+        value_keys = ['high_100kw', 'chargers_per_station', 'operator_hhi', 'deletion_share']
+        for key in value_keys:
+            field = 'value' if key in {'chargers_per_station', 'operator_hhi'} else 'value_pct'
+            vals = [(row['region_code'], row['metrics'][key][field]) for row in rows if row['metrics'][key][field] is not None]
+            vals.sort(key=lambda item: (-item[1], item[0]))
+            previous = object(); rank = 0
+            for index, (code, value) in enumerate(vals, start=1):
+                if value != previous: rank = index
+                next(row for row in rows if row['region_code'] == code)['metrics'][key]['rank'] = rank
+                previous = value
+        # Add region ranks for each connector type; absent observations are zero shares.
+        all_types = sorted({item['charger_type_code'] for row in rows for item in row['metrics']['type_mix']})
+        for row in rows:
+            if not row['charger_count']:
+                continue  # No denominator: keep the share null and exclude the region from ranking.
+            observed = {item['charger_type_code'] for item in row['metrics']['type_mix']}
+            for type_code in all_types:
+                if type_code not in observed:
+                    row['metrics']['type_mix'].append({
+                        'charger_type_code': type_code, 'charger_count': 0,
+                        'denominator': row['charger_count'], 'value_pct': 0.0})
+            row['metrics']['type_mix'].sort(key=lambda item: item['charger_type_code'])
+        for type_code in all_types:
+            values = []
+            for row in rows:
+                item = next((x for x in row['metrics']['type_mix'] if x['charger_type_code'] == type_code), None)
+                values.append((row, item['value_pct'] if item else (0 if row['charger_count'] else None)))
+            ranked = sorted(((r, v) for r, v in values if v is not None), key=lambda x: (-x[1], x[0]['region_code']))
+            prev = object(); rank = 0
+            for i, (row, value) in enumerate(ranked, 1):
+                if value != prev: rank = i
+                item = next((x for x in row['metrics']['type_mix'] if x['charger_type_code'] == type_code), None)
+                if item: item['rank'] = rank
+                prev = value
+        return rows, national, frame, deletion_frame
 
     def filter_options(self):
         return {'charger_regions':[{'code':k,'name':v} for k,v in REGIONS_2026.items()],

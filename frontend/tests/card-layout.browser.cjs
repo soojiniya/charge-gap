@@ -52,8 +52,10 @@ module.exports = async function cardLayoutRegressions(page, baseUrl = 'http://12
       const panel = page.locator('[role="dialog"][data-variant="panel"]');
       await panel.waitFor();
       const dts = await panel.locator('.evidence-title').allInnerTexts();
-      check(`${p}: evidence panel has purpose, reason, caution, source, variables`,
-        ['분석 목적', '그래프 선택 이유', '주의사항', '데이터 출처', '사용 변수'].every((t) => dts.some((d) => d.trim() === t)), dts);
+      check(`${p}: evidence panel has findings, purpose, method, reason, caution, source, variables`,
+        ['주요 분석 결과', '분석 목적', '계산 방법', '그래프 선택 이유', '주의사항', '데이터 출처', '사용 변수'].every((t) => dts.some((d) => d.trim() === t)), dts);
+      const glance = await panel.locator('.evidence-glance dt').allInnerTexts();
+      check(`${p}: evidence panel summary shows source, basis date and calculation basis`, ['데이터 출처', '데이터 기준일', '계산 기준'].every((t) => glance.includes(t)), glance);
       check(`${p}: opening evidence does not change any card height`, JSON.stringify(await heights()) === JSON.stringify(before));
       check(`${p}: button reports expanded`, (await btn.getAttribute('aria-expanded')) === 'true');
       for (let i = 0; i < 3; i += 1) await page.keyboard.press('Tab');
@@ -61,6 +63,22 @@ module.exports = async function cardLayoutRegressions(page, baseUrl = 'http://12
       await page.keyboard.press('Escape');
       await panel.waitFor({ state: 'detached' });
       check(`${p}: Esc closes the panel and focus returns to the button`, await btn.evaluate((el) => el === document.activeElement));
+      // 카드 머리글의 그래프 설명(i) 버튼도 같은 패널을 열고, 닫으면 그 버튼으로 포커스가 돌아갑니다.
+      const card = btn.locator('xpath=ancestor::section[contains(concat(" ", normalize-space(@class), " "), " card ")][1]');
+      const info = card.locator('[data-info-toggle]');
+      check(`${p}: card header has a graph info button`, (await info.count()) === 1);
+      await info.focus();
+      await page.keyboard.press('Enter');
+      await panel.waitFor();
+      // aria-expanded는 패널이 열린 직후 effect로 갱신되므로 잠깐 기다립니다(검사 시점 경쟁 방지).
+      await info.evaluate((el) => new Promise((resolve) => {
+        const t0 = Date.now();
+        (function poll() { if (el.getAttribute('aria-expanded') === 'true' || Date.now() - t0 > 3000) resolve(); else setTimeout(poll, 25); })();
+      }));
+      check(`${p}: info button opens the same panel and reports expanded`, (await info.getAttribute('aria-expanded')) === 'true' && (await panel.locator('.evidence-glance').count()) === 1);
+      await page.keyboard.press('Escape');
+      await panel.waitFor({ state: 'detached' });
+      check(`${p}: Esc returns focus to the info button`, await info.evaluate((el) => el === document.activeElement));
     }
 
     const expand = page.locator('.main .card .icon-btn[aria-label$="상세 보기"]').first();
@@ -71,7 +89,7 @@ module.exports = async function cardLayoutRegressions(page, baseUrl = 'http://12
       await modal.waitFor();
       if (await modal.locator('.insight').count()) {
         check(`${p}: chart modal shows evidence inline, without a nested panel button`,
-          (await modal.locator('.insight-more.is-inline .evidence-title').count()) === 5 && (await modal.locator('[data-evidence-toggle]').count()) === 0);
+          (await modal.locator('.insight-more.is-inline .evidence-title').count()) === 6 && (await modal.locator('[data-evidence-toggle]').count()) === 0);
       }
       await page.keyboard.press('Escape');
       await modal.waitFor({ state: 'detached' });

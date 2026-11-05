@@ -906,31 +906,44 @@ var(--panel);
   border-radius: 12px;
   border: 1px solid var(--line);
 }
+/* 표 공통: 헤더·셀 모두 왼쪽 정렬(숫자 포함), 같은 패딩·행 높이·글자 크기. 숫자는 고정폭 숫자로 자릿수를 맞춥니다. */
 .table {
   width: 100%;
   border-collapse: collapse;
   font-size: var(--t-sm);
+  line-height: 1.45;
 }
 .table th,
 .table td {
+  height: 44px;
   padding: 10px 14px;
   text-align: left;
+  vertical-align: middle;
   white-space: nowrap;
   border-bottom: 1px solid var(--line);
 }
 .table th {
   position: sticky;
   top: 0;
+  z-index: 1;
+  height: 40px;
   background: var(--panel-2);
   color: var(--muted);
-  font-weight: 500;
-  font-size: var(--t-sm);
+  font-weight: 600;
+  font-size: var(--t-xs);
+  letter-spacing: 0.01em;
+}
+.table td {
+  color: var(--ink-2);
 }
 .table td.n,
 .table th.n {
-  text-align: right;
+  text-align: left;
   font-family: var(--font-num);
   font-variant-numeric: tabular-nums;
+}
+.table td.n {
+  color: var(--ink);
 }
 .table tbody tr {
   transition: background 0.12s;
@@ -946,7 +959,7 @@ var(--panel);
 }
 .table .wrap {
   white-space: normal;
-  min-width: 220px;
+  min-width: 200px;
 }
 .table .muted {
   color: var(--muted);
@@ -955,7 +968,7 @@ var(--panel);
   display: flex;
   align-items: center;
   gap: 10px;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 .bar-cell i {
   display: block;
@@ -3512,4 +3525,443 @@ var(--panel);
 .cmp-scroll .cmp-table-wrap:focus-visible {
   outline: 2px solid var(--point);
   outline-offset: 2px;
+}
+/* 분석 근거의 출처 항목: 작성기관·자료명·자료 기준·파일 저장일·이용 조건을 줄마다 구분 */
+.evidence-source-items {
+  display: grid;
+  gap: 3px;
+  margin: 2px 0 4px;
+  font-size: var(--t-sm);
+  line-height: 1.55;
+}
+.evidence-source-items > div {
+  display: grid;
+  grid-template-columns: 6.5em minmax(0, 1fr);
+  gap: 8px;
+}
+.evidence-source-items dt {
+  color: var(--muted);
+}
+.evidence-source-items dd {
+  margin: 0;
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+.evidence-license dd {
+  font-weight: 500;
+}
+.evidence-license.is-confirmed dd {
+  color: var(--good);
+}
+.evidence-license.is-pending dd {
+  color: var(--warn);
+}
+/* 보고서 PNG 갤러리: 등록 PNG(01–03)의 기준월·지역 체계 표시 */
+.thumb .thumb-basis {
+  display: block;
+  margin-top: 3px;
+  font-style: normal;
+  font-size: 11px;
+  color: var(--warn);
+}
+.png-basis th[scope='row'] {
+  position: static;
+  background: none;
+  color: var(--ink-2);
+  font-weight: 400;
+}
+.png-basis td {
+  color: var(--ink);
+  white-space: normal;
+}
+/* Overview 자료 해석 기준: 데이터 출처 표 (세 블록 아래 전체 폭) */
+.notes-sources {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+}
+.notes-sources-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: var(--ink);
+}
+.notes-sources-title svg {
+  width: 16px;
+  height: 16px;
+  color: var(--point);
+}
+.notes-sources-table th,
+.notes-sources-table td {
+  white-space: normal;
+  vertical-align: top;
+  line-height: 1.55;
+}
+.notes-sources-table th[scope='row'] {
+  position: static;
+  background: none;
+  color: var(--ink);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.notes-sources-table td {
+  color: var(--ink-2);
+  min-width: 120px;
+}
+.notes-sources-table a {
+  color: var(--ink);
+}
+.license-tag {
+  display: inline-block;
+  font-size: var(--t-xs);
+  line-height: 1.5;
+}
+.license-tag.is-confirmed {
+  color: var(--good);
+}
+.license-tag.is-pending {
+  color: var(--warn);
+}
+.notes-sources .notes-text {
+  margin: 0;
+}
+.notes-sources-date {
+  white-space: nowrap;
+}
+/* 좁은 화면: 출처 표를 자료별 카드로 쌓아 가로 스크롤 없이 읽기 */
+@media (max-width: 560px) {
+  .notes-sources .table-wrap {
+    border: 0;
+    overflow: visible;
+  }
+  .notes-sources-table thead {
+    display: none;
+  }
+  .notes-sources-table,
+  .notes-sources-table tbody,
+  .notes-sources-table tr,
+  .notes-sources-table th,
+  .notes-sources-table td {
+    display: block;
+    width: 100%;
+  }
+  .notes-sources-table tr {
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .notes-sources-table th,
+  .notes-sources-table td {
+    padding: 3px 0;
+    border: 0;
+    min-width: 0;
+  }
+  .notes-sources-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: var(--t-xs);
+    color: var(--muted);
+  }
+}
+
+/* ================= 전국 충전 인프라 구성 격차 (RegionalDisparity) ================= */
+.disparity-card .card-body { min-width: 0; justify-content: flex-start; gap: 16px; }
+.disparity-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px 16px;
+}
+.disparity-control { min-width: 220px; margin: 0; }
+.disparity-basis { flex: 1 1 320px; margin: 0; max-width: 72ch; line-height: 1.6; }
+.disparity-export-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.disparity-export-status { flex-basis: 100%; margin: -4px 0 0; line-height: 1.45; }
+.disparity-card .notice { margin: 0; }
+/* 요약 통계: 핵심 값 1개 + 보조 값 2개 */
+.disparity-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--line);
+}
+.disparity-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 16px;
+  background: var(--panel-2);
+  min-width: 0;
+}
+.disparity-stat dt { font-size: var(--t-xs); color: var(--muted); }
+.disparity-stat dd { margin: 0; font-size: var(--t-lg); font-weight: 600; color: var(--ink); }
+.disparity-stat.is-key dd { font-size: var(--t-xl); color: var(--point); }
+/* 선택 지역 요약 */
+.disparity-region-summary {
+  display: grid;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid rgba(164, 155, 200, 0.28);
+  border-radius: 12px;
+  background: var(--point-soft);
+}
+.disparity-region-summary.is-empty { border-style: dashed; border-color: var(--line-strong); background: transparent; }
+.disparity-region-summary.is-empty p { margin: 0; }
+.disparity-region-summary-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.disparity-region-summary-head h3 { margin: 0; font-size: var(--t-md); font-weight: 600; }
+.disparity-region-summary-head h3 strong { color: var(--point); font-weight: 600; }
+.disparity-region-summary-head .btn { margin-left: auto; }
+.disparity-region-metrics {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+.disparity-region-metrics > div {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--panel);
+  min-width: 0;
+}
+.disparity-region-metrics dt { font-size: var(--t-xs); color: var(--muted); }
+.disparity-region-metrics dd { margin: 0; display: grid; gap: 2px; }
+.disparity-region-value { font-size: var(--t-lg); font-weight: 600; color: var(--ink); }
+/* 막대 + 히트맵 */
+.disparity-layout { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.7fr); gap: 20px; align-items: start; }
+.disparity-main, .disparity-side { min-width: 0; }
+.disparity-panel-head { min-height: 52px; display: flex; flex-direction: column; gap: 4px; margin-bottom: 4px; }
+.disparity-panel-head h3 { margin: 0; font-size: var(--t-sm); font-weight: 600; color: var(--ink); }
+.disparity-panel-head p { margin: 0; }
+.disparity-bar-head, .disparity-bar-row { display: grid; grid-template-columns: 88px minmax(80px, 1fr) 96px 44px 104px; gap: 10px; align-items: center; }
+.disparity-bar-head { height: 34px; padding: 0 6px; color: var(--muted); font-size: var(--t-xs); font-weight: 600; border-bottom: 1px solid var(--line); }
+.disparity-bars { min-width: 0; display: grid; grid-auto-rows: 40px; }
+.disparity-bar-row { min-width: 0; height: 40px; padding: 0 6px; border-radius: 8px; }
+.disparity-bar-row:hover { background: rgba(255, 255, 255, 0.03); }
+.disparity-bar-row.is-selected { background: var(--point-soft); }
+.disparity-region { border: 0; padding: 6px 4px; border-radius: 6px; color: var(--ink-2); background: transparent; text-align: left; cursor: pointer; font-size: var(--t-sm); line-height: 1.35; white-space: nowrap; }
+.disparity-region:hover, .disparity-bar-row.is-selected .disparity-region { color: var(--point); }
+.disparity-bar-row.is-selected .disparity-region { font-weight: 600; }
+.disparity-track { position: relative; height: 14px; border: 0; padding: 0; background: var(--panel-3); border-radius: 3px; cursor: pointer; overflow: visible; }
+.disparity-track > span { display: block; height: 100%; min-width: 2px; border-radius: 3px; background: var(--point); }
+.disparity-national-mark { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--compare); box-shadow: 0 0 0 1px var(--bg); }
+.disparity-value, .disparity-rank, .disparity-diff { font: 600 var(--t-xs)/1.4 var(--font-num); font-variant-numeric: tabular-nums; text-align: left; white-space: nowrap; }
+.disparity-value { color: var(--ink); }
+.disparity-rank { color: var(--muted); }
+.disparity-diff { color: var(--ink-2); }
+.disparity-diff.is-up { color: var(--compare); }
+.disparity-diff.is-down { color: var(--point); }
+.disparity-legend { display: flex; gap: 7px; align-items: center; color: var(--muted); font-size: var(--t-xs); }
+.disparity-legend i { width: 12px; height: 12px; background: var(--point); border-radius: 2px; }
+.disparity-legend i.national-key { width: 2px; height: 14px; margin-left: 8px; background: var(--compare); }
+.disparity-heat { min-width: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.disparity-heat-head, .disparity-heat-row { display: grid; grid-template-columns: minmax(72px, 0.8fr) minmax(84px, 1fr) minmax(96px, 1fr); gap: 8px; align-items: center; padding: 0 10px; }
+.disparity-heat-head { height: 34px; color: var(--muted); background: var(--panel-2); font-size: var(--t-xs); font-weight: 600; }
+.disparity-heat-head span { min-width: 0; overflow-wrap: anywhere; line-height: 1.3; }
+.disparity-heat-row { width: 100%; height: 40px; border: 0; border-bottom: 1px solid var(--line); color: var(--ink-2); background: transparent; text-align: left; font: 600 var(--t-xs)/1.4 var(--font-num); font-variant-numeric: tabular-nums; cursor: pointer; }
+.disparity-heat-row:last-child { border-bottom: 0; }
+.disparity-heat-row span:first-child { font-family: var(--font-ui); font-size: var(--t-sm); font-weight: 500; }
+.disparity-heat-row span { padding: 3px 6px; border-radius: 4px; }
+.disparity-heat-row:hover, .disparity-heat-row[aria-pressed="true"] { outline: 1px solid var(--point); outline-offset: -1px; }
+.disparity-heat-row:focus-visible { outline: 2px solid var(--point); outline-offset: -2px; border-radius: 0; }
+/* 순위표 */
+.disparity-table-title { margin: 4px 0 0; font-size: var(--t-sm); font-weight: 600; color: var(--ink); }
+.disparity-table-wrap { max-width: 100%; overflow-x: auto; }
+.disparity-table { min-width: 620px; }
+.disparity-table .btn-sm { height: 28px; }
+.disparity-table .btn[aria-pressed="true"] { color: var(--point); border-color: rgba(164, 155, 200, 0.5); }
+.disparity-foot { margin: 0; max-width: 100ch; line-height: 1.6; }
+@media (max-width: 1280px) {
+  .disparity-layout { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .disparity-region-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 768px) {
+  .disparity-summary { grid-template-columns: minmax(0, 1fr); }
+  .disparity-region-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .disparity-control { width: 100%; min-width: 0; }
+  .disparity-export-actions { width: 100%; }
+  .disparity-export-actions .btn { flex: 1 1 120px; }
+  .disparity-bar-head { display: none; }
+  .disparity-panel-head { min-height: 0; margin-bottom: 8px; }
+  .disparity-bars { grid-auto-rows: minmax(52px, auto); }
+  .disparity-bar-row { grid-template-columns: 70px minmax(24px, 1fr) 76px 34px; gap: 6px; height: auto; min-height: 52px; padding: 4px; }
+  .disparity-diff { grid-column: 3 / 5; font-size: var(--t-xs); }
+  .disparity-region { padding-inline: 2px; }
+  .disparity-region-metrics { grid-template-columns: minmax(0, 1fr); }
+  .disparity-region-summary-head .btn { margin-left: 0; }
+}
+/* 격차 카드 안의 덩어리 사이 간격 (QueryState 내부라 card-body gap이 닿지 않음) */
+.disparity-summary,
+.disparity-region-summary,
+.disparity-layout { margin-top: 16px; }
+.disparity-table-title { margin-top: 24px; margin-bottom: 10px; }
+.disparity-foot { margin-top: 12px; }
+/* 그래프 설명 패널: 한눈에 보기(데이터 출처·기준일·계산 기준) */
+.evidence-glance {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--line);
+}
+.evidence-glance > div {
+  display: grid;
+  grid-template-columns: 6.5em minmax(0, 1fr);
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--panel-2);
+}
+.evidence-glance dt {
+  font-size: var(--t-xs);
+  color: var(--muted);
+  line-height: 1.6;
+}
+.evidence-glance dd {
+  margin: 0;
+  font-size: var(--t-sm);
+  line-height: 1.55;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.evidence-findings {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 18px;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+.evidence-findings b {
+  color: var(--ink);
+}
+.evidence-text code {
+  font-family: var(--font-num);
+  font-size: 0.8125rem;
+  color: var(--compare);
+}
+/* 격차: 선택 지역 분석 문장 · 히트맵 색 범례 · 설명 패널 계산식 */
+.disparity-region-metrics dd { gap: 4px; }
+.disparity-region-metrics .disparity-region-value { font-size: var(--t-xl); line-height: 1.2; letter-spacing: -0.01em; }
+.disparity-region-rank { display: flex; flex-wrap: wrap; gap: 0 10px; font-size: var(--t-xs); line-height: 1.5; color: var(--muted); }
+.disparity-region-rank > span { white-space: nowrap; }
+.disparity-region-rank .num { color: var(--ink-2); font-weight: 600; }
+.disparity-region-headline { margin: 4px 0 0; font-size: var(--t-sm); font-weight: 600; line-height: 1.55; color: var(--ink); overflow-wrap: anywhere; word-break: keep-all; }
+.disparity-region-more { margin-top: 2px; }
+.disparity-region-more summary { display: inline-flex; align-items: center; gap: 4px; min-height: 28px; color: var(--point); font-size: var(--t-xs); cursor: pointer; list-style: none; }
+.disparity-region-more summary::-webkit-details-marker { display: none; }
+.disparity-region-more summary::before { content: ''; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(-45deg); transition: transform 0.15s; }
+.disparity-region-more[open] summary::before { transform: rotate(45deg); }
+.disparity-region-more summary:focus-visible { outline: 2px solid var(--point); outline-offset: 2px; border-radius: 4px; }
+.disparity-region-more[open] summary { margin-bottom: 4px; }
+.disparity-region-note { margin: 0; font-size: var(--t-sm); line-height: 1.65; color: var(--ink-2); overflow-wrap: anywhere; word-break: keep-all; }
+@media (max-width: 768px) {
+  .disparity-region-metrics > div:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+@media (max-width: 560px) {
+  .disparity-region-metrics > div:last-child:nth-child(odd) { grid-column: auto; }
+}
+.disparity-region-caveat { margin: 0; line-height: 1.6; }
+.disparity-heat-legend { display: grid; gap: 8px; margin-top: 12px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; }
+.disparity-heat-legend ul { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.disparity-heat-legend li { display: flex; align-items: center; gap: 8px; color: var(--ink-2); font-size: var(--t-xs); line-height: 1.4; }
+.disparity-heat-legend i { flex: none; height: 12px; border-radius: 3px; }
+.disparity-heat-legend .heat-ramp { width: 64px; }
+.disparity-heat-legend .heat-swatch { width: 12px; margin-inline: 26px; }
+.disparity-heat-legend .heat-swatch.is-none { border: 1px dashed var(--line-strong); }
+.disparity-heat-legend p { margin: 0; line-height: 1.6; }
+.evidence-method { display: grid; gap: 10px; margin-bottom: 8px; }
+.evidence-method-list, .evidence-tech-list { display: grid; gap: 8px; margin: 0; }
+.evidence-method-list > div, .evidence-tech-list > div { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 12px; }
+.evidence-method-list dt, .evidence-tech-list dt { color: var(--ink); font-weight: 600; }
+.evidence-method-list dd, .evidence-tech-list dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.evidence-tech summary { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; color: var(--muted); font-size: var(--t-xs); cursor: pointer; list-style: none; }
+.evidence-tech summary::-webkit-details-marker { display: none; }
+.evidence-tech summary::before { content: ''; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(-45deg); transition: transform 0.15s; }
+.evidence-tech[open] summary::before { transform: rotate(45deg); }
+.evidence-tech summary:hover { color: var(--ink-2); }
+.evidence-tech summary:focus-visible { outline: 2px solid var(--point); outline-offset: 2px; border-radius: 4px; }
+.evidence-tech-list { padding-top: 6px; font-size: var(--t-xs); line-height: 1.6; }
+.evidence-tech-list dd { display: flex; flex-wrap: wrap; gap: 4px 8px; }
+.evidence-tech-list code { overflow-wrap: anywhere; }
+@media (max-width: 560px) {
+  .evidence-method-list > div, .evidence-tech-list > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}
+/* ===== 격차 섹션 가독성 마무리 (이 섹션 선택자만, 색·막대 비율·기능은 그대로) ===== */
+/* 선택 지역 요약 카드: 같은 여백, 같은 높이(모두 접혀 있을 때), 같은 정보 순서. '상세 분석 보기'는 카드 아래쪽에 정렬 */
+.disparity-region-metrics { gap: 12px; }
+.disparity-region-metrics:not(:has(details[open])) { grid-auto-rows: 1fr; }
+.disparity-region-metrics > div { display: flex; flex-direction: column; gap: 6px; padding: 16px; }
+.disparity-region-metrics dt { font-size: var(--t-xs); line-height: 1.4; color: var(--muted); }
+.disparity-region-metrics dd { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.disparity-region-metrics .disparity-region-value { font-size: var(--t-xl); line-height: 1.2; }
+.disparity-region-rank { font-size: var(--t-xs); line-height: 1.55; gap: 2px 12px; }
+.disparity-region-headline { margin: 2px 0 0; font-size: var(--t-sm); line-height: 1.65; }
+.disparity-region-more { margin-top: auto; padding-top: 4px; }
+.disparity-region-more summary {
+  min-height: 32px;
+  font-size: var(--t-xs);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: rgba(164, 155, 200, 0.45);
+  text-underline-offset: 4px;
+}
+.disparity-region-more summary:hover { color: var(--ink); text-decoration-color: currentColor; }
+.disparity-region-more[open] summary { margin-bottom: 6px; }
+.disparity-region-note { font-size: var(--t-sm); line-height: 1.7; }
+/* 막대그래프·히트맵: 행 44px·수치 14px로 맞추고, 두 표의 행 위치를 일치(히트맵 바깥 테두리 1px만큼 머리글 보정) */
+.disparity-panel-head { min-height: 52px; }
+.disparity-bar-head { height: 39px; font-size: var(--t-xs); }
+.disparity-heat-head { height: 38px; font-size: var(--t-xs); }
+.disparity-bars { grid-auto-rows: 44px; }
+.disparity-bar-row { height: 44px; grid-template-columns: 92px minmax(80px, 1fr) 104px 48px 112px; }
+.disparity-region { font-size: var(--t-sm); }
+.disparity-value, .disparity-rank, .disparity-diff { font-size: var(--t-sm); }
+.disparity-heat-row { height: 44px; font-size: var(--t-sm); }
+.disparity-heat-row span { padding: 4px 8px; }
+@media (max-width: 560px) {
+  .disparity-bars { grid-auto-rows: minmax(56px, auto); }
+  .disparity-bar-row { grid-template-columns: 64px minmax(24px, 1fr) 88px 40px; height: auto; min-height: 56px; gap: 4px 8px; }
+  .disparity-diff { font-size: var(--t-xs); }
+  .disparity-heat-head, .disparity-heat-row { gap: 6px; padding: 0 8px; }
+}
+/* 분석 근거 패널 계산 방법: 항목명 열을 맞추고 본문과 같은 크기·줄 간격 */
+.evidence-method-list { gap: 10px; }
+.evidence-method-list > div, .evidence-tech-list > div { grid-template-columns: 96px minmax(0, 1fr); gap: 14px; align-items: baseline; }
+.evidence-method-list dt, .evidence-method-list dd { font-size: 0.9375rem; line-height: 1.7; }
+.evidence-method-list dd { word-break: keep-all; }
+.evidence-method-list .num { white-space: normal; }
+.evidence-tech { margin-top: 2px; }
+.evidence-tech-list dt { font-size: var(--t-xs); }
+@media (max-width: 560px) {
+  .evidence-method-list > div, .evidence-tech-list > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}
+
+/* 격차 섹션 상단 설명: 의미별 줄바꿈(항목명 | 설명), 읽기 편한 크기·줄 간격 */
+.disparity-basis { flex: 1 1 100%; max-width: 88ch; margin: 0; display: grid; gap: 4px; font-size: var(--t-sm); line-height: 1.6; color: var(--muted); }
+.disparity-basis > div { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 12px; }
+.disparity-basis dt { color: var(--ink-2); font-weight: 500; white-space: nowrap; }
+.disparity-basis dd { margin: 0; min-width: 0; overflow-wrap: anywhere; word-break: keep-all; }
+.disparity-export-status { margin: 0; font-size: var(--t-sm); line-height: 1.55; }
+.disparity-hint { margin: 0; display: grid; gap: 2px; font-size: var(--t-sm); line-height: 1.6; color: var(--muted); word-break: keep-all; overflow-wrap: anywhere; }
+@media (max-width: 560px) {
+  .disparity-basis > div { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .disparity-basis > div + div { margin-top: 4px; }
 }

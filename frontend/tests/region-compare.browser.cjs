@@ -78,6 +78,7 @@ module.exports = async function regionCompareRegressions(page, baseUrl = 'http:/
   // 5) 요청 수·응답 시간 (A·B 선택 후 비교 영역에 필요한 요청)
   const t0 = Date.now();
   await selA().selectOption('12');
+  await page.waitForFunction(() => document.querySelector('.cmp-card thead .cmp-tag.cmp-a')?.textContent.includes('전남광주'), null, { timeout: 60000 });
   await ready();
   metrics.changeOneSideMs = Date.now() - t0;
   await page.waitForLoadState('networkidle');
@@ -85,6 +86,7 @@ module.exports = async function regionCompareRegressions(page, baseUrl = 'http:/
   reqs.clear();
   const t1 = Date.now();
   await selA().selectOption('11');
+  await page.waitForFunction(() => document.querySelector('.cmp-card thead .cmp-tag.cmp-a')?.textContent.includes('서울'), null, { timeout: 60000 });
   await ready();
   metrics.backToCachedMs = Date.now() - t1;
   await page.waitForLoadState('networkidle');
@@ -129,12 +131,12 @@ module.exports = async function regionCompareRegressions(page, baseUrl = 'http:/
   check('swap exchanges A and B', (await selA().inputValue()) === '41' && (await selB().inputValue()) === '11');
   const firstCell = async () => page.locator('.cmp-card').nth(1).locator('tbody tr').first().locator('td').first().innerText();
   const before = await firstCell();
-  await page.locator('label.field', { hasText: '충전기 지역' }).locator('select').selectOption('26');
+  await page.locator('.filterbar label.field', { hasText: '충전기 지역' }).locator('select').selectOption('26');
   await page.waitForURL((u) => u.searchParams.get('region') === '26');
   await ready();
   const afterRegion = await firstCell();
   check(`top region filter does not change the comparison (${before} → ${afterRegion})`, afterRegion === before);
-  await page.locator('label.field', { hasText: '충전기 유형' }).locator('select').selectOption('04');
+  await page.locator('.filterbar label.field', { hasText: '충전기 유형' }).locator('select').selectOption('04');
   await page.waitForFunction(() => [...document.querySelectorAll('.cmp-card .insight-mode')].some((e) => e.textContent.includes('필터 적용 16개 지역 기준')), null, { timeout: 60000 });
   await ready();
   check('type filter changes charger numbers', (await firstCell()) !== before);
@@ -166,16 +168,22 @@ module.exports = async function regionCompareRegressions(page, baseUrl = 'http:/
   check('code 12 shown as 전남광주 (광주+전남 통합) in the select', (await selA().locator('option:checked').innerText()).includes('광주+전남 통합'));
   check('no error states', (await page.locator('.cmp-card .state.error').count()) === 0);
   // 390px 표 가로 스크롤: 넘치는 표에만 안내 문구·가장자리 그림자, 키보드 포커스 가능, 끝까지 밀면 오른쪽 그림자 해제
-  const sc = page.locator('.cmp-scroll.is-overflow').first();
-  check('390px: overflowing tables show a scroll hint', (await page.locator('.cmp-scroll.is-overflow .cmp-scroll-hint').count()) >= 1);
-  check('390px: right-edge shadow marks hidden columns', await sc.evaluate((e) => e.classList.contains('fade-end')));
-  const wrap = sc.locator('.cmp-table-wrap');
+  // (카드는 처음 보일 때 다시 그려지므로 먼저 화면에 들인 뒤, 요소 핸들 대신 매번 선택자로 다시 찾습니다)
+  for (let i = 0; i < 3; i++) {
+    await page.locator('.cmp-card').nth(i).scrollIntoViewIfNeeded();
+    await page.waitForTimeout(300);
+  }
+  await page.locator('.cmp-card .cmp-scroll.is-overflow').first().scrollIntoViewIfNeeded();
+  await page.waitForTimeout(300);
+  await ready();
+  const SC = '.cmp-card .cmp-scroll.is-overflow';
+  check('390px: overflowing tables show a scroll hint', (await page.locator(`${SC} .cmp-scroll-hint`).count()) >= 1);
+  check('390px: right-edge shadow marks hidden columns', await page.locator(SC).first().evaluate((e) => e.classList.contains('fade-end')));
+  const wrap = page.locator(`${SC} .cmp-table-wrap`).first();
   check('390px: scrollable table is a labelled, focusable region', (await wrap.getAttribute('tabindex')) === '0' && (await wrap.getAttribute('role')) === 'region' && /가로 스크롤/.test(await wrap.getAttribute('aria-label')));
   await wrap.focus();
-  await page.keyboard.press('End');
   await wrap.evaluate((e) => e.scrollTo({ left: e.scrollWidth }));
-  await page.waitForFunction((el) => !el.classList.contains('fade-end'), await sc.elementHandle());
-  check('390px: scrolled to the end removes the right shadow and adds the left one', await sc.evaluate((e) => !e.classList.contains('fade-end') && e.classList.contains('fade-start')));
-
+  await page.waitForFunction((sel) => { const e = document.querySelector(sel); return e && !e.classList.contains('fade-end') && e.classList.contains('fade-start'); }, SC, { timeout: 10000 });
+  check('390px: scrolled to the end removes the right shadow and adds the left one', true);
   return { checks, metrics };
 };
