@@ -55,6 +55,17 @@ manifest는 현재 스냅샷의 내용 고정 장치다. 데이터가 바뀌면 
 | CHARGE_GAP_S3_SECRET_ACCESS_KEY | 같은 자격증명의 비밀키 |
 | CHARGE_GAP_S3_SESSION_TOKEN | 임시 자격증명 방식일 때만 추가. 기본 Blueprint에서는 사용하지 않음 |
 
+시작 다운로드 제한값(선택, 비밀값 아님). 설정하지 않으면 기본값을 쓴다. 정수만 허용하며 범위를 벗어나면 다운로드 전에 `DOWNLOAD_LIMITS_INVALID`로 중단하고 입력값은 출력하지 않는다.
+
+| 키 | 기본값 | 범위 | 의미 |
+|---|---|---|---|
+| CHARGE_GAP_DOWNLOAD_DEADLINE_S | 900 | 60–3600 | 14개 파일 전체·모든 재시도·재시도 대기를 합친 제한 시간. 재시도로 늘어나지 않음 |
+| CHARGE_GAP_DOWNLOAD_STALL_S | 60 | 10–900 (제한 시간보다 작게) | 정체 판단 구간 |
+| CHARGE_GAP_DOWNLOAD_STALL_MIN_BYTES | 65536 | 1–67108864 | 한 구간 동안 이보다 적게 받으면 정체(`DOWNLOAD_STALLED`)로 보고 재시도 |
+| CHARGE_GAP_DOWNLOAD_SOCKET_TIMEOUT_S | 30 | 5–300 | 연결·읽기 1회 대기. 남은 제한 시간보다 길어지지 않음 |
+
+기본값은 느리지만 정상인 전송(240MB를 900초 안에, 약 0.27MB/s 이상)을 끊지 않도록 정했다. 실제 Render 속도를 로그로 확인한 뒤 조정한다. 진입점은 다운로드 프로세스가 제한 시간 + 120초 안에 끝나지 않으면 강제로 종료한다(`TimeoutExpired; guard=…s`).
+
 ### 시작 실패 진단
 
 `CHARGE_GAP_CORS_ORIGINS`가 없으면 다운로드 전에 시작이 중단된다. Render 환경 설정에 **실제 프론트엔드 Static Site의 HTTPS origin**을 입력한다. 예를 들어 프론트엔드 주소가 `https://your-frontend.example`일 때 값도 동일하며, 끝 `/`, `/api`, 경로, 와일드카드를 붙이지 않는다. 예시 주소를 실제 주소로 오인해 입력하지 않는다. CORS는 브라우저의 교차 출처 읽기 정책이며 API 인증 수단은 아니다. `/api/charts` Health Check에는 Origin 헤더가 필요하지 않다.
@@ -64,6 +75,8 @@ manifest는 현재 스냅샷의 내용 고정 장치다. 데이터가 바뀌면 
 R2의 region은 `auto`, 현재 prefix는 미설정 또는 빈 값이다. endpoint는 R2 콘솔의 **S3 API endpoint**를 버킷 경로 없이 입력하고, Access Key ID와 Secret Access Key는 읽기 전용 자격증명의 두 값을 각각 입력한다. Cloudflare 관리 API bearer token을 S3 Secret Access Key 대신 넣지 않는다. 설정 검증은 형식·필수값만 확인하며 실제 권한은 다운로드 응답으로 확인한다. `CHARGE_GAP_S3_SESSION_TOKEN`은 이 프로젝트의 일반 R2 키 방식에서는 생략한다.
 
 다운로드 오류에는 HTTP 숫자 상태와 허용 목록에 있는 S3 오류 코드만 추가로 표시한다. 공급자 XML은 최대 4KiB만 검사하며 메시지·URL·알 수 없는 코드는 출력하지 않는다. `artifact_index=1`은 manifest의 첫 파일이며 파일 본문을 뜻하지 않는다. `AccessDenied`, `InvalidAccessKeyId`, `SignatureDoesNotMatch`, `NoSuchKey` 등을 구분해 권한·키 쌍·서명·객체 경로를 점검한다. `MEMORY_ALLOCATION_FAILED`는 Python MemoryError이며, 부모 로그의 `child_exit=-9`는 자식이 SIGKILL로 종료됐다는 뜻이다. SIGKILL만으로 OOM이라고 단정하지 말고 Render 메모리 지표/이벤트와 대조한다. 부모의 최종 종료 1은 자식 종료 원인을 대신하지 않는다.
+
+시작 단계 로그로 어디서 멈췄는지 구분한다. 정상 순서는 `Boot: start.py started` → `Boot: runtime configuration ok` → `Boot: data bootstrap started` → `Data bootstrap: 14 artifacts …` → `Download limits: …` → `Artifact 1/14: download started` → 16MiB 또는 15초마다 `Artifact 1/14: … MiB / … MiB (…%), … MiB/s` → `Artifact n/14: verified …` → `Data ready: … in …s` → `Boot: data bootstrap finished in …s` → `Boot: starting waitress` → (데이터 스냅샷 적재, 0.15 CPU에서 약 50초) → `Serving on`. 재시작 뒤 `Boot: start.py started`가 없으면 컨테이너가 이 파일을 실행하지 않은 것이고, 진행 로그가 멈춘 채 끝나면 R2 전송 단계 문제다. 재시도는 `attempt 1/3 failed (코드) …; retrying in …s, …s left before the deadline`로 표시한다. 최종 실패에는 `DOWNLOAD_STALLED`(정체), `DOWNLOAD_DEADLINE_EXCEEDED`(전체 제한 시간 초과, 재시도 없음) 같은 코드와 `artifact_index`, `received=받은/예상 bytes`, `elapsed=…s`가 붙는다. 로그에는 파일 번호·크기·속도·고정 코드만 쓰며 URL, 버킷, 객체 경로, 자격증명은 쓰지 않는다.
 
 설정 누락만 해결하려면 기존 커밋에서도 올바른 CORS 값을 저장한 뒤 재배포할 수 있다. 보완 로그를 사용하려면 검토·승인 후 해당 코드가 반영된 커밋을 배포해야 한다. 환경 저장 시 Render가 자동 재배포하는 옵션이 있는지 확인하고, 승인 전에는 저장·재배포를 실행하지 않는다.
 
