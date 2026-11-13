@@ -157,11 +157,11 @@
 
 ### 공개 조건: 확인 필요
 
-| 자료 | 이용 조건 (2026-11-13 공식 페이지 재확인) | 상태 |
+| 자료 | 이용 조건 (2026-11-14 공식 페이지 재확인) | 상태 |
 |---|---|---|
 | 충전기·충전소 (한국환경공단 API) | 공공데이터포털 이용허락범위 「공공저작물: 출처표시(제1유형)」 | 확인 |
-| 전기차 등록 (통계누리) | 저작권보호정책은 출처 표시 조건의 자유 이용을 안내하지만, 공공누리 표시가 붙은 저작물인지 확인하라고 함. 해당 통계 페이지에서 공공누리 표시를 찾지 못함 | **미확정** |
-| 충전기 설치 추이 (무공해차 통합누리집) | 공개자료 목록은 공공누리 제1유형이지만 설치 추이 표는 그 목록에 없고, 데이터·통계 화면에는 이용 조건 문구가 없음 | **미확정** |
+| 전기차 등록 (통계누리) | 저작권보호정책은 통계정보의 자유로운 사용·재사용·재배포를 안내하면서, 자유이용 자료에는 공공누리 제1유형 표시를 붙여 개방하니 표시를 확인하라고 함. 해당 통계·첨부 목록 페이지에는 공공누리 표시가 없음 | **미확정** (허용 근거 강함) |
+| 충전기 설치 추이 (무공해차 통합누리집) | 공개자료 목록(10건)은 공공누리 제1유형이지만 설치 추이 표는 그 목록에 없고, 데이터·통계 화면에는 이용 조건·공공누리 표시가 없음 | **미확정** (근거 부족) |
 | 참고용 지역 출력 통계 Excel | 출처 이용 조건 미확인. 배포·R2에 포함하지 않아 공개되지 않음 | 미확인(비공개) |
 | 파생 그래프·보고서 | 입력 자료 조건을 따름. 전기차 등록·설치 추이로 만든 그래프(PY01–03·PY09, 보존 PNG 1–3·9)는 해당 자료 조건이 확정되어야 함 | 일부 미확정 |
 | 지도 배경 (카카오맵) | 데이터가 아닌 지도 서비스. 등록 도메인에서 JavaScript 키 사용, 지도 캡처에는 카카오 로고 유지 | 사용 조건 확인 |
@@ -278,7 +278,20 @@ Render Static Site(프론트엔드) + Docker Web Service(백엔드) + 비공개 
 | 데이터 수집기 | `python -m unittest test_collector -v` | 12 passed | 2026-11-14 실행 |
 | 좌표 품질 안내 | `backend/tests/test_coordinate_quality.py`, `frontend/tests/coordinate-quality.*` | 508·182·46·644곳 재현, 보고서 목록 일치, 정상 행 응답·집계·캐시 불변, 브라우저 21개 확인(1440px·390px, 의심/정상 충전소 정보창·패널) | 2026-11-14 실행 |
 
-**공개 사이트 실제 브라우저 점검 (Chrome · 커밋 `36ed7a6` 배포본, 2026-11-13)**
+**공개 사이트 실제 브라우저 점검 (Chrome · 커밋 `ad022d7` 배포본, 2026-11-14)**
+
+| 항목 | 결과 |
+|---|---|
+| API 응답 비교 | 배포 직전(`36ed7a6`)과 배포 후 9개 응답(overview·지역별·히트맵·격자·locations·지역 격차·박스플롯)의 `data`가 새 선택 필드 `coordinate_flag`를 빼면 모두 같음. 충전기 527,433기·충전소 101,091곳, 수도권 줌 11 격자 1,627칸·42,393곳·260,866기 |
+| 첫 지도 요청 | 배포 직후 수도권 줌 11 격자 첫 요청 4.8초(배포 전 3.3초, 좌표 품질 판정 1회 포함), 이후 같은 요청 0.1초 |
+| 좌표 품질 안내 | 의심 충전소(CGC00001, `far_from_address`)를 누르면 정보창·분석 패널에 안내 1줄씩. 제주 서쪽 바다 `33.0, 125.0`의 22곳은 모두 `placeholder_far_from_address`, 묶음 목록에는 안내 없음, 충전소 선택 후 패널에 표시 |
+| 정상 충전소 | 서울 중구 충전소(CGA00296): 응답에 `coordinate_flag` 키 없음, 정보창·패널 안내 0개 |
+| 지도·히트맵 | 카카오맵·로고 표시, 상태 줄 215곳·1,488기 = API 집계, 히트맵 `/api/charger-output/regions` 1회 요청·지역별 개별 요청 0, 콘솔 오류 0 |
+| 페이지·PNG | 6개 경로 직접 접속 200, Python 그래프 PNG 10개 모두 표시 |
+| 화면 폭 390px | 같은 사이트를 폭 390px 창으로 열어 확인: 가로 스크롤 없음, 안내가 들어간 정보창이 지도 안에 표시, 정상 충전소 안내 없음 |
+| 서버 로그 | 데이터 14개 해시 검증 후 기동, 오류·재시작·메모리 부족 없음. Waitress 대기열 경고(`Task queue depth`)만 있음(페이지가 여러 요청을 동시에 보낼 때 1스레드 대기, 이전 배포에도 있던 경고) |
+
+**공개 사이트 지도 상세 점검 (Chrome · 커밋 `36ed7a6` 배포본, 2026-11-13, 이후 바뀌지 않은 동작)**
 
 | 항목 | 결과 |
 |---|---|
@@ -306,17 +319,18 @@ Render Static Site(프론트엔드) + Docker Web Service(백엔드) + 비공개 
 
 브라우저 테스트는 Playwright `page`를 받는 모듈입니다(`await require('./frontend/tests/navigation.browser.cjs')(page, baseUrl)`). Playwright는 프로젝트 의존성에 포함하지 않았습니다. 카카오맵 SDK 요청은 `frontend/tests/fixtures/kakao-maps-stub.js`로 대신합니다.
 
-**아직 확인하지 않은 항목**: Windows 인쇄 대화상자로 저장한 PDF 실파일, 공개 사이트에서의 CSV·PDF 저장, Firefox·Safari·실제 모바일 기기(390px는 화면 크기 흉내로만 확인), Lighthouse 성능, Render 무료 플랜의 실제 메모리 그래프(유료 플랜 전용).
+**아직 확인하지 않은 항목**: Windows 인쇄 대화상자로 저장한 PDF 실파일, 공개 사이트에서의 CSV·PDF 저장, Firefox·Safari·실제 모바일 기기(390px는 데스크톱 브라우저의 좁은 창으로만 확인), Lighthouse 성능, Render 무료 플랜의 실제 메모리 그래프(유료 플랜 전용). 메모리는 로컬에서 512MiB·CPU 0.15로 제한한 환경에서 최고 346–350MiB(변경 전과 차이 없음, 한도 초과 0회)를 확인했습니다.
 
 ## 배포 상태
 
-2026-11-13 기준입니다.
+2026-11-14 기준입니다.
 
 | 구분 | 내용 | 근거 |
 |---|---|---|
-| 배포 소스 | 백엔드 → 프론트엔드 순서로 모두 커밋 `36ed7a6` 배포 성공 | Render 배포 기록 |
-| 백엔드 공개 주소 | R2 파일 14개 해시 검증 후 Waitress 1스레드로 기동. `/api/charts`·`/api/charger-output/regions`(16개 지역)·`/api/locations/grid` 200, 잘못된 요청은 JSON 400/404 | 배포 로그·브라우저에서 직접 확인(읽기 전용) |
-| 프론트엔드 공개 주소 | 6개 경로 직접 접근 200, 카카오맵 표시, `/python-charts/charts.json`·PNG 10개 200, 없는 경로는 404, 보안 헤더(CSP·X-Frame-Options·Referrer-Policy·HSTS·nosniff) 전송 | 브라우저에서 직접 확인(읽기 전용) |
+| 배포 소스 | 백엔드(2026-11-14 00:33 시작, 1분 32초) → 프론트엔드(00:36, 빌드 캐시 삭제 후 26.7초) 순서로 모두 커밋 `ad022d7` 배포 성공 | Render 배포 기록 |
+| 백엔드 공개 주소 | R2 파일 14개 해시 검증 후 Waitress 1스레드로 기동. `/api/charts`·`/api/charger-output/regions`(16개 지역)·`/api/locations`·`/api/locations/grid` 200, 의심 좌표 충전소 행에만 `coordinate_flag` | 배포 로그·브라우저에서 직접 확인(읽기 전용) |
+| 프론트엔드 공개 주소 | 6개 경로 직접 접근 200, 카카오맵 표시, PNG 10개 표시, 좌표 품질 안내 동작. 보안 헤더(CSP `frame-ancestors 'none'`, `X-Frame-Options: DENY` 등)는 이번 배포에서 바뀌지 않음 | 브라우저에서 직접 확인(읽기 전용) |
+| 되돌리기 | 문제가 생기면 Render 이벤트 화면의 Rollback으로 API `36ed7a6`, 웹 `c7eb0a2` 배포로 복귀. 새 필드는 선택 항목이라 한쪽만 되돌려도 동작함 | — |
 
 커밋 작성자 이메일을 GitHub noreply 주소로 바꾸면서 이력의 커밋 해시가 바뀌었습니다. Render 배포 기록에 표시될 수 있는 이전 해시 `644b938`은 현재 `6249b30`과 파일 내용(트리)이 같은 커밋입니다.
 
@@ -358,5 +372,7 @@ render.yaml               Render 서비스 정의 (수동 배포)
 | [backend/README.md](backend/README.md) · [frontend/README.md](frontend/README.md) | 백엔드·프론트엔드 실행과 구조 |
 | [frontend/docs/CHART_PLAN.md](frontend/docs/CHART_PLAN.md) | 웹 그래프 10종 구성과 API 연결 |
 | [reports/dataset_analysis.md](reports/dataset_analysis.md) · [reports/chart_analysis.md](reports/chart_analysis.md) | 데이터 분석, 그래프 분석 |
+| [reports/coordinate_quality_2026-11-13.md](reports/coordinate_quality_2026-11-13.md) | 충전소 좌표 품질 분석(의심 644곳 판정 기준·목록·영향) |
+| [reports/final_presentation_summary_2026-11-14.md](reports/final_presentation_summary_2026-11-14.md) | 최종 발표용 요약(핵심 성과·데이터 규모·시각화·한계) |
 | [reports/r2_cache_memory_optimization_2026-10-19.md](reports/r2_cache_memory_optimization_2026-10-19.md) | Render 무료 플랜 메모리 측정(512MiB·R2 다운로드 포함) |
 | [reports/github_render_final_readiness_2026-10-19.md](reports/github_render_final_readiness_2026-10-19.md) | 2026-10-19 배포 준비 기록 |
