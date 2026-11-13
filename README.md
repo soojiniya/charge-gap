@@ -17,8 +17,8 @@
 | **분석 규모** | 전기차 **1,191,873대** (2026년 9월) · 충전기 **527,433기** · 충전소 **101,091곳** (2026-10-15 조회) · **16개** 시도 |
 | **페이지** | Overview · EV Registration · Charging Infrastructure · Regional Explorer · Growth Trends · Python Visualization |
 | **분석 기능** | 두 지역 비교 · 16개 지역 충전 인프라 구성 격차(5개 지표, 히트맵) · CSV 내보내기 · A4 PDF 보고서 |
-| **시각화** | 웹 대화형 그래프 10종(Recharts) + 충전소 지도(Leaflet) + Python 고정 그래프 10종(Matplotlib·Seaborn) |
-| **검증** | 백엔드·배포 테스트 204개, 프론트엔드 테스트 135개, Python 그래프 수치 대조 50개 검사 ([검증 기록](#검증-기록)) |
+| **시각화** | 웹 대화형 그래프 10종(Recharts) + 충전소 지도(카카오맵 JavaScript SDK) + Python 고정 그래프 10종(Matplotlib·Seaborn) |
+| **검증** | 백엔드·배포 테스트 290개, 프론트엔드 단위 테스트 156개, Python 그래프 수치 대조 50개 검사, 공개 사이트 실제 브라우저 점검 ([검증 기록](#검증-기록)) |
 
 ### 해결하려는 문제
 
@@ -40,16 +40,16 @@
     <td align="center"><b>지역별 충전 인프라 구성 격차</b> · 전국 기준선과 16개 지역 비교</td>
   </tr>
   <tr>
-    <td width="50%"><img src="docs/images/regional-map.jpg" alt="Regional Explorer 전국 충전소 지도: 시도별 충전소 수 버블과 충전 인프라 요약 패널" width="100%"></td>
+    <td width="50%"><img src="docs/images/regional-map.jpg" alt="Regional Explorer 카카오맵 충전소 지도: 서울 화면 영역 충전소 격자 묶음과 서울 충전 인프라 요약 패널" width="100%"></td>
     <td width="50%"><img src="docs/images/python-visualization.jpg" alt="Python Visualization: Matplotlib·Seaborn 고정 그래프 갤러리" width="100%"></td>
   </tr>
   <tr>
-    <td align="center"><b>Regional Explorer</b> · 충전소 지도와 지역 요약</td>
+    <td align="center"><b>Regional Explorer</b> · 카카오맵 충전소 지도와 지역 요약</td>
     <td align="center"><b>Python Visualization</b> · Matplotlib·Seaborn 그래프 10종</td>
   </tr>
 </table>
 
-<sub>2026-11-05에 커밋 `6249b30`과 같은 소스를 로컬 프로덕션 빌드로 실행해 1600×1000으로 캡처했습니다(사이드바의 API 주소가 로컬 주소로 표시됨). 캡처 환경에서 외부 지도 타일을 불러올 수 없어 지도는 배경을 「끄기」로 두고 촬영했습니다. 실제 사이트의 지도는 OpenStreetMap 배경을 사용합니다.</sub>
+<sub>Overview·지역 격차·Python Visualization은 2026-11-05에 커밋 `6249b30`과 같은 소스를 로컬 프로덕션 빌드로 실행해 1600×1000으로 캡처했습니다(사이드바의 API 주소가 로컬 주소로 표시됨). Regional Explorer 지도는 2026-11-13 공개 사이트(커밋 `36ed7a6` 배포본)에서 1600×1000으로 촬영했으며, 지도의 카카오 로고·저작권 표시를 그대로 두었습니다.</sub>
 
 ## 주요 기능
 
@@ -67,7 +67,8 @@
 ### 분석 기능
 
 - **필터와 URL 공유**: 충전기 지역·유형·삭제 표시 상태·운영기관과 등록 지역 필터를 URL 쿼리로 저장합니다. 페이지를 옮겨도 공통 필터가 유지되며, 잘못된 값은 무시하고 주소에서도 지웁니다.
-- **지도 기반 충전소 탐색**: 줌 11 미만에서는 시도별 충전소 수를, 줌 11 이상에서는 화면 영역(bbox)의 충전소 좌표를 1,000곳 단위로 불러와 묶음·개별로 표시합니다.
+- **지도 기반 충전소 탐색 (카카오맵)**: 줌 11 미만에서는 시도별 충전소 수를 원으로, 줌 11~15에서는 화면 영역(bbox) 안의 **모든** 충전소를 서버가 격자로 집계한 묶음(`/api/locations/grid`)을, 줌 16 이상에서는 개별 충전소(`/api/locations`, 1,000곳 단위·3페이지까지 자동)를 표시합니다. 충전소를 누르면 지도 정보창과 오른쪽 분석 패널에 같은 수치(일치 충전기·비삭제·삭제 표시)가 나타납니다. 표시는 지도 위 캔버스 한 장에 그려 많은 충전소도 가볍게 움직입니다.
+- **지역×출력 히트맵**: 16개 지역의 출력 구성을 `/api/charger-output/regions` **한 번의 요청**으로 받아 그리며, 분석 패널·두 지역 비교도 같은 결과를 재사용합니다(지역 필터와 무관하게 16개 지역 표시, 선택 지역 행 강조).
 - **두 지역 비교**: 전기차 등록(2026-09)과 충전 인프라(2026-10-15)를 **같은 기준일 자료끼리만** 비교합니다(차이·%p·배수·순위). 등록 대수와 충전기 수를 서로 나눈 지표는 만들지 않습니다.
 - **16개 지역 충전 인프라 구성 격차**: 아래 5개 지표를 전국 기준값(전국 분자·분모 합산)과 비교하고, 순위·막대그래프·히트맵·선택 지역 요약·계산 근거를 함께 보여 줍니다. 공급 측 **구성 지표**이며 충전 수요나 부족률을 계산하지 않습니다.
 
@@ -135,7 +136,8 @@
 | 전기차 등록 | [국토교통부 통계누리](https://stat.molit.go.kr/portal/cate/statMetaView.do?hFormId=1244&hRsId=58) · 작성기관 국토교통부, 「2026년 09월 자동차 등록자료 통계」 10.연료별_등록현황 (자동차등록현황보고) | 2026년 9월 말 등록 기준, 파일 저장 2026-10-20. 순수 전기차 1,191,873대, 전남광주 포함 16개 지역. **이용 조건 확인 중** (통계누리 저작권보호정책에 따라 출처 표시). 기존 2025-12 원본·고정 PNG 1~3번(17개 시도)은 기록으로 보존 |
 | 충전기·충전소 | 한국환경공단 ([공공데이터포털](https://www.data.go.kr/data/15076352/openapi.do)), 「전기자동차 충전소 정보」 getChargerInfo | 2026-10-15 조회(04:16–04:19 KST), 충전기 527,433기·고유 충전소 101,091곳, 16개 지역. **공공누리 제1유형(출처표시)** — 포털 이용허락범위에 명시 |
 | 연도별 설치 | [무공해차 통합누리집](https://ev.or.kr/nportal/stats/statsDashboard.do) 데이터·통계 「충전기 설치 성장 추세」, 작성기관 원본 미기재 | 2011–2026, 2026년은 부분 연도. 집계 마감일 원본 미기재(당시 공식 화면 갱신 표시 2026-09-30), 파일 저장 2026-10-15. **이용 조건 확인 중.** 공식 화면은 이후 2026-10-31 갱신에서 과거 연도 수치까지 수정했으며(사유 미확인), 이 프로젝트는 당시 자료를 유지하므로 2026년 누적 540,210기 등은 현재 공식 최신값이 아님 |
-| 참고용 지역 출력 통계 | `우리 지역 급속 충전 여건_2026-10-15.xlsx` | 원본 대조·분석용. 웹 출력 히트맵은 API 집계 사용. 기준일·공개 조건 추가 확인 필요 |
+| 참고용 지역 출력 통계 | `우리 지역 급속 충전 여건_2026-10-15.xlsx` | 원본 대조·분석용. 웹 출력 히트맵은 API 집계 사용. 배포·R2에 포함하지 않음. 기준일·공개 조건 추가 확인 필요 |
+| 지도 배경 | [카카오맵 API](https://developers.kakao.com/docs/latest/ko/kakaomap/common) (Kakao) | 데이터가 아닌 지도 서비스. JavaScript 키를 등록 도메인에서만 사용, 지도 위 카카오 로고·저작권 표시를 가리지 않음. 무료 쿼터(지도 Web SDK 일 300,000건) 안에서 사용 |
 
 **해석 시 주의할 점**
 
@@ -147,6 +149,16 @@
 
 ### 공개 조건: 확인 필요
 
+| 자료 | 이용 조건 (2026-11-13 공식 페이지 재확인) | 상태 |
+|---|---|---|
+| 충전기·충전소 (한국환경공단 API) | 공공데이터포털 이용허락범위 「공공저작물: 출처표시(제1유형)」 | 확인 |
+| 전기차 등록 (통계누리) | 저작권보호정책은 출처 표시 조건의 자유 이용을 안내하지만, 공공누리 표시가 붙은 저작물인지 확인하라고 함. 해당 통계 페이지에서 공공누리 표시를 찾지 못함 | **미확정** |
+| 충전기 설치 추이 (무공해차 통합누리집) | 공개자료 목록은 공공누리 제1유형이지만 설치 추이 표는 그 목록에 없고, 데이터·통계 화면에는 이용 조건 문구가 없음 | **미확정** |
+| 참고용 지역 출력 통계 Excel | 출처 이용 조건 미확인. 배포·R2에 포함하지 않아 공개되지 않음 | 미확인(비공개) |
+| 파생 그래프·보고서 | 입력 자료 조건을 따름. 전기차 등록·설치 추이로 만든 그래프(PY01–03·PY09, 보존 PNG 1–3·9)는 해당 자료 조건이 확정되어야 함 | 일부 미확정 |
+| 지도 배경 (카카오맵) | 데이터가 아닌 지도 서비스. 등록 도메인에서 JavaScript 키 사용, 지도 캡처에는 카카오 로고 유지 | 사용 조건 확인 |
+| 코드 | 저장소에 LICENSE 파일 없음 | 소유자 결정 필요 |
+
 API 포털에는 확인 시점에 공공누리 제1유형 출처표시 조건이 안내됐으나, 이것으로 Excel·파생 CSV·PNG·보고서 전체의 재배포 권리를 일괄 확정하지 않습니다. 각 원본의 이용 조건·제3자 권리·출처와 가공 사실 표기를 검토해야 합니다. **CSV·Excel의 공개 여부, 별도 데이터 제공 URL, 전달 방식과 담당자는 모두 미확정**입니다. 코드 공개 라이선스도 소유자가 별도 결정해야 합니다. 후보에 남은 PNG·보고서도 최종 권리·내용 검토 대상입니다. 격차 분석 CSV에는 이용 조건이 확인된 충전기 API 자료의 집계값만 들어가며, PDF 보고서는 전기차 등록 자료를 결합하지 않고 참고 출처로만 표기합니다. 전기차 등록·연도별 설치 자료의 **이용 조건은 아직 미확인**입니다.
 
 사이트가 공개 주소에서 동작한다는 사실이 데이터와 파생 그래프·보고서의 공개 이용 허락이 확정되었다는 뜻은 아닙니다. 상세 근거: [출처·이용 조건 확인 기록](docs/DATA_SOURCE_RIGHTS.md)
@@ -157,7 +169,7 @@ API 포털에는 확인 시점에 공공누리 제1유형 출처표시 조건이
 |---|---|
 | Frontend | React · TypeScript · Vite · TanStack Query |
 | Visualization | Recharts(웹) · Matplotlib · Seaborn(Python 그래프) |
-| Map | Leaflet · OpenStreetMap 타일 |
+| Map | 카카오맵 JavaScript SDK · Canvas 표시층(자체 구현) |
 | Backend | Python · Flask · Waitress |
 | Data Analysis | Pandas · NumPy |
 | Deployment | Docker · Docker Compose · Nginx(로컬) · Render(Static Site + Web Service) |
@@ -169,14 +181,15 @@ API 포털에는 확인 시점에 공공누리 제1유형 출처표시 조건이
 flowchart LR
     U[브라우저] -->|정적 파일| S["Render Static Site<br/>React 빌드 + Python PNG"]
     U -->|"HTTPS /api/*"| W["Render Web Service<br/>Flask · Waitress (Docker)"]
+    U -->|"지도 SDK·타일"| K["카카오맵<br/>dapi.kakao.com · *.kakaocdn.net"]
     W -->|"기동 시 읽기 전용 다운로드<br/>(manifest SHA-256 검증)"| R[("Cloudflare R2<br/>비공개 버킷")]
     W --> M["메모리 내 스냅샷<br/>Pandas 집계 · 필터 · 순위"]
 ```
 
 | 구성 요소 | 역할 |
 |---|---|
-| **Render Static Site** | React 빌드(`frontend/dist`)와 Python 그래프 정적 파일을 제공합니다. 페이지 경로 5개(`/ev-registration` 등, `/python-visualization` 포함)는 `index.html`로 rewrite합니다. CSP 등 보안 헤더를 전송합니다. |
-| **Render Web Service** | Flask 조회 API **12개 경로**(JSON 11개 + PNG 1개). 기동할 때 CSV를 읽은 고정 스냅샷으로 집계·필터·순위를 계산하고, 요청 값을 검증해 JSON 오류를 반환합니다. |
+| **Render Static Site** | React 빌드(`frontend/dist`)와 Python 그래프 정적 파일을 제공합니다. 페이지 경로 5개(`/ev-registration` 등, `/python-visualization` 포함)는 `index.html`로 rewrite합니다. CSP 등 보안 헤더를 전송하며, CSP는 자체 파일·API와 카카오맵 SDK·지도 이미지 도메인만 허용합니다. |
+| **Render Web Service** | Flask 조회 API **14개 경로**(JSON 13개 + PNG 1개, 지도용 `/api/locations/grid`와 히트맵용 `/api/charger-output/regions` 포함). 기동할 때 CSV를 읽은 고정 스냅샷으로 집계·필터·순위를 계산하고, 요청 값을 검증해 JSON 오류를 반환합니다. Render 무료 플랜 메모리(512MiB)에 맞춰 Waitress 1스레드로 실행합니다. |
 | **Cloudflare R2** | CSV 3개·메타데이터·보존용 PNG 등 14개 파일을 비공개로 보관합니다. 백엔드만 읽기 전용 자격증명으로 접근하며, 프론트엔드 빌드에는 비밀값이 들어가지 않습니다. |
 
 API 명세: [API_SPEC.md](backend/API_SPEC.md) · [openapi.json](backend/openapi.json). 환경변수 이름과 설정 절차는 [공개 배포 안내](docs/RENDER_DEPLOYMENT.md)에 있습니다(실제 값은 저장소에 기록하지 않습니다).
@@ -207,7 +220,7 @@ docker compose up -d --build --wait --wait-timeout 240
 
 접속: **http://localhost:18080** · 종료: `docker compose down`
 
-구조는 `브라우저 :18080 → Nginx → /backend/ 프록시 → Waitress :5000`이며, CSV·PNG는 읽기 전용 바인드 마운트로 공급합니다. Compose에는 인증키나 `env_file`이 없습니다. `.env`와 인증키를 컨테이너·빌드 인수·`VITE_*`로 전달하지 마세요. 자세한 내용: [Docker 검증 기록](docker/VALIDATION.md)
+구조는 `브라우저 :18080 → Nginx → /backend/ 프록시 → Waitress :5000`이며, CSV·PNG는 읽기 전용 바인드 마운트로 공급합니다. Compose 빌드에는 카카오맵 키를 전달하지 않으므로 **지도 자리에는 키 설정 안내가 표시**되고, 그래프·표·분석 패널은 그대로 동작합니다(지도까지 확인하려면 아래 개발 서버를 사용). Compose에는 인증키나 `env_file`이 없습니다. `.env`와 인증키를 컨테이너·빌드 인수·`VITE_*`로 전달하지 마세요. 자세한 내용: [Docker 검증 기록](docker/VALIDATION.md)
 
 ### 3. 개발 서버 (Python 3.12 · Node.js 24)
 
@@ -226,22 +239,47 @@ npm run dev
 
 웹 `http://localhost:5173`, API `http://127.0.0.1:5000`. Linux/macOS는 `python3 -m venv .venv`와 `.venv/bin/python`을 사용합니다. 자세한 내용: [백엔드](backend/README.md) · [프론트엔드](frontend/README.md)
 
+**카카오맵 JavaScript 키 설정 (지도 표시에 필요)**
+
+1. [카카오 Developers](https://developers.kakao.com/console/app)에서 앱을 만들고, 앱 설정의 **카카오맵 → 사용 설정**을 켭니다.
+2. **앱 키**에서 **JavaScript 키**를 확인합니다. REST API 키·Admin 키는 사용하지 않습니다.
+3. **플랫폼 → Web(JavaScript SDK 도메인)**에 실행 주소를 등록합니다: 로컬 `http://localhost:5173`, 배포 `https://charge-gap.onrender.com`.
+4. `frontend/.env.example`을 `frontend/.env`로 복사하고 `VITE_KAKAO_MAP_KEY=<JavaScript 키>`를 적은 뒤 `npm run dev`를 다시 시작합니다. `frontend/.env`는 Git에서 제외됩니다.
+
+JavaScript 키는 빌드 결과(JS)에 포함되어 브라우저에 공개되는 키이므로, 보호는 등록 도메인 제한으로 합니다. 키가 없거나 SDK를 불러오지 못하면 지도 자리에 원인 안내가 표시되고 나머지 화면은 그대로 동작합니다.
+
 `npm run build`는 `VITE_API_BASE_URL`이 비어 있거나 localhost를 가리키면 **실패**합니다. 배포 빌드에는 실제 백엔드 HTTPS origin(또는 Compose의 `/backend`)을 지정하고, 로컬 미리보기 빌드만 `CHARGE_GAP_ALLOW_LOCAL_API_BUILD=1`을 함께 지정합니다.
 
 ### 4. Render 배포
 
 Render Static Site(프론트엔드) + Docker Web Service(백엔드) + 비공개 R2 구성입니다. 환경변수 이름, SPA rewrite 5개, 보안 헤더, 배포 순서, 기동 실패 진단은 [공개 배포 안내](docs/RENDER_DEPLOYMENT.md)를 따릅니다. `render.yaml`은 자동 배포가 꺼져 있어(`autoDeployTrigger: 'off'`) push 뒤에 수동으로 배포해야 합니다.
 
+- 정적 사이트 환경 변수: `VITE_API_BASE_URL`(백엔드 HTTPS origin), `VITE_KAKAO_MAP_KEY`(카카오 JavaScript 키, 값은 대시보드에만 입력), `NODE_VERSION=24`. VITE 값은 빌드할 때 들어가므로 바꾼 뒤에는 다시 빌드합니다.
+- 새 API를 쓰는 프론트엔드를 배포할 때는 **백엔드를 먼저** 배포하고 API가 정상인지 확인한 뒤 프론트엔드를 배포합니다.
+
 ## 검증 기록
 
 | 대상 | 명령 | 결과 | 기록 |
 |---|---|---|---|
-| 백엔드 API · Render 기동 스크립트 | `python -m pytest backend/tests deploy/render/tests -q` | **204 passed** | 2026-11-05 실행 |
-| 프론트엔드 단위·회귀 | `frontend`에서 `npm test` | **135개** 중 Git 저장소 밖 실행에서 134 통과 · 1 건너뜀(줄바꿈 검사). 건너뛴 줄바꿈 검사는 Git 저장소에서 따로 실행해 통과 | 2026-11-05 실행 |
-| TypeScript · 프로덕션 빌드 | `npm run typecheck` · `npm run build` (배포 API 주소 지정) | 통과 | 2026-11-05 실행 |
-| Python 그래프 수치 대조 | `python scripts/verify_python_charts_2026.py` | **50개 검사, 실패 0** (PNG 10개 SHA-256 포함) | 2026-11-05 실행 |
+| 백엔드 API · Render 기동 스크립트 | `python -m pytest backend/tests deploy/render/tests -q` | **290 passed** (backend 205 · deploy 85) | 2026-11-13 실행 |
+| 프론트엔드 단위·회귀 | `frontend`에서 `npm test` | **156개**: Git 저장소 밖 실행에서 155 통과 · 1 건너뜀(줄바꿈 검사). 건너뛴 줄바꿈 검사는 Git 저장소에서 따로 실행해 통과 | 2026-11-13 실행 |
+| TypeScript · 프로덕션 빌드 | `npm run build` (배포 API 주소 지정) | 통과 | 2026-11-13 실행 |
+| Python 그래프 수치 대조 | `python scripts/verify_python_charts_2026.py` | **50개 검사, 실패 0** (PNG 10개 SHA-256 포함) | 2026-11-13 실행 |
 | 원본 CSV 재집계 대조 | 전기차·충전기·충전소·삭제 표시 수, 지역별 16행, 설치 추이 16행을 CSV에서 다시 세어 API와 비교 | 모두 일치 | 2026-11-05 실행 |
-| 데이터 수집기 | `python -m unittest test_collector -v` | 12 passed | 이전 기록(이번에 재실행 안 함) |
+| 히트맵 통합 API | `backend/tests/test_charger_output_regions.py` | 16개 지역 × 40개 이상 필터 조합에서 기존 지역별 응답과 data·meta 동일, 원본 CSV 재계산과 일치 | 2026-11-13 실행(위 290개에 포함) |
+| 데이터 수집기 | `python -m unittest test_collector -v` | 12 passed | 2026-11-13 실행 |
+
+**공개 사이트 실제 브라우저 점검 (Chrome · 커밋 `36ed7a6` 배포본, 2026-11-13)**
+
+| 항목 | 결과 |
+|---|---|
+| 카카오맵 SDK·지도 타일 | SDK 로드, 지도 이미지 19개 모두 표시, 콘솔 오류 0 |
+| 줌 11~18 | 서울·부산·제주 등에서 요청 범위가 화면을 모두 포함, 상태 줄 수 = API 집계, 개별 충전소 누락 0, 표시 위치 차이 0px |
+| 충전소 클릭 | 정보창과 분석 패널 수치가 API와 일치 |
+| 필터 | 지역·유형·삭제 표시·운영기관 조합에서 히트맵·패널 수치 = API |
+| 히트맵 | `/api/charger-output/regions` 1회 요청, 16개 지역 표시, 지역별 개별 요청 0 |
+| 화면 폭 390px | 가로 스크롤 없음, 범례·확대 버튼 겹침 없음 |
+| 페이지·PNG | 6개 경로 직접 접속 200, Python 그래프 PNG 10개 표시·해시 일치 |
 
 **브라우저 동작 검증 (Playwright · 커밋 `6249b30` 소스의 로컬 프로덕션 빌드, 2026-11-05)**
 
@@ -255,20 +293,21 @@ Render Static Site(프론트엔드) + Docker Web Service(백엔드) + 비공개 
 | `region-compare.browser.cjs` | 두 지역 비교 41개 확인 | 단독 실행 3회 모두 통과. 여러 테스트를 연속 실행했을 때 1회 「유형 필터 변경 후 수치 갱신」 확인에서 실패(대기 시간 문제로 추정, 원인 미확정) |
 | Python Visualization | 1920·1440·768·390px에서 4·3·2·1열, PNG 10개 로드, 확대 창 10개(닫기·Escape), 가로 스크롤 없음 | 통과 |
 
-브라우저 테스트는 Playwright `page`를 받는 모듈입니다(`await require('./frontend/tests/navigation.browser.cjs')(page, baseUrl)`). Playwright는 프로젝트 의존성에 포함하지 않았습니다.
+카카오맵 전환 후 추가한 `heatmap-merge.browser.cjs`(히트맵 통합 25개 확인)와 `map-panel-edge.browser.cjs`(가장자리 충전소·분석 패널 163개 확인)는 2026-11-12~13 로컬 프로덕션 빌드에서 통과했습니다. `map-explorer.browser.cjs`·`map-transitions.browser.cjs`는 카카오맵 기준으로 바뀐 뒤의 실행 기록을 이 문서에 남기지 않았습니다.
 
-**아직 확인하지 않은 항목**: Windows 인쇄 대화상자로 저장한 PDF 실파일, 공개 사이트에서의 CSV·PDF 저장과 지도 타일 표시(테스트 환경에서는 외부 타일이 차단됨), Firefox·Safari·실제 모바일 기기, Lighthouse 성능.
+브라우저 테스트는 Playwright `page`를 받는 모듈입니다(`await require('./frontend/tests/navigation.browser.cjs')(page, baseUrl)`). Playwright는 프로젝트 의존성에 포함하지 않았습니다. 카카오맵 SDK 요청은 `frontend/tests/fixtures/kakao-maps-stub.js`로 대신합니다.
+
+**아직 확인하지 않은 항목**: Windows 인쇄 대화상자로 저장한 PDF 실파일, 공개 사이트에서의 CSV·PDF 저장, Firefox·Safari·실제 모바일 기기(390px는 화면 크기 흉내로만 확인), Lighthouse 성능, Render 무료 플랜의 실제 메모리 그래프(유료 플랜 전용).
 
 ## 배포 상태
 
-2026-11-05 기준입니다.
+2026-11-13 기준입니다.
 
 | 구분 | 내용 | 근거 |
 |---|---|---|
-| 배포 소스 | 프론트엔드·백엔드 모두 커밋 `6249b30` 소스로 배포 성공 | Render 배포 기록(저장소 소유자 확인) |
-| 프론트엔드 공개 주소 | 6개 경로 직접 접근 200, 사이드바 6개 메뉴, `/python-charts/charts.json`·PNG 200, 없는 파일은 404, Python 그래프 10개 표시와 확대 창 열기·닫기 확인 | 브라우저에서 직접 확인(읽기 전용) |
-| 백엔드 공개 주소 | JSON API 11개 경로 200, `/api/charts/1/image` PNG 200, 전기차 1,191,873대·충전기 527,433기·충전소 101,091곳·삭제 표시 4,121기가 로컬 재집계와 일치 | 브라우저에서 직접 확인(읽기 전용) |
-| `/python-visualization` rewrite | Render 대시보드에 추가됨, 공개 주소 직접 접근 200 | 소유자 설정 + 직접 확인 |
+| 배포 소스 | 백엔드 → 프론트엔드 순서로 모두 커밋 `36ed7a6` 배포 성공 | Render 배포 기록 |
+| 백엔드 공개 주소 | R2 파일 14개 해시 검증 후 Waitress 1스레드로 기동. `/api/charts`·`/api/charger-output/regions`(16개 지역)·`/api/locations/grid` 200, 잘못된 요청은 JSON 400/404 | 배포 로그·브라우저에서 직접 확인(읽기 전용) |
+| 프론트엔드 공개 주소 | 6개 경로 직접 접근 200, 카카오맵 표시, `/python-charts/charts.json`·PNG 10개 200, 없는 경로는 404, 보안 헤더(CSP·X-Frame-Options·Referrer-Policy·HSTS·nosniff) 전송 | 브라우저에서 직접 확인(읽기 전용) |
 
 커밋 작성자 이메일을 GitHub noreply 주소로 바꾸면서 이력의 커밋 해시가 바뀌었습니다. Render 배포 기록에 표시될 수 있는 이전 해시 `644b938`은 현재 `6249b30`과 파일 내용(트리)이 같은 커밋입니다.
 
@@ -294,8 +333,9 @@ render.yaml               Render 서비스 정의 (수동 배포)
 ## 보안
 
 - `.gitignore`가 `.env`·인증키 파일·가상환경·`node_modules`·캐시·로그·임시 파일과 **모든 CSV·Excel**을 제외합니다. `.env.example`에는 비밀값 없는 공개 설정 예시만 둡니다.
-- R2 endpoint·자격증명은 Render 서버 환경 설정에만 입력하며 `VITE_*`나 코드에 넣지 않습니다. 프론트엔드에 들어가는 값은 공개 API 주소뿐입니다.
-- 정적 사이트는 CSP(`script-src 'self'`, 인라인 스크립트·스타일 없음)·X-Frame-Options·Referrer-Policy·HSTS 헤더를 보냅니다.
+- R2 endpoint·자격증명은 Render 서버 환경 설정에만 입력하며 `VITE_*`나 코드에 넣지 않습니다. 기동 스크립트는 데이터를 내려받은 뒤 Flask 프로세스를 띄우기 전에 R2 환경 변수를 지웁니다.
+- 프론트엔드에 들어가는 값은 공개 API 주소와 카카오맵 **JavaScript 키**뿐입니다. JavaScript 키는 원래 브라우저에 공개되는 키이며 카카오 개발자 콘솔에 등록한 도메인에서만 동작합니다. REST API 키·Admin 키는 사용하지 않습니다.
+- 정적 사이트는 CSP(`script-src`는 자체 파일과 카카오맵 SDK 도메인만, 인라인 스크립트·스타일과 eval 없음)·X-Frame-Options·Referrer-Policy·HSTS 헤더를 보냅니다.
 - 이미 추적된 파일은 `.gitignore`만으로 제외되지 않으므로, 파일을 추가할 때는 `git add .` 대신 경로를 지정하고 `git status`로 확인합니다.
 
 ## 문서
@@ -305,7 +345,7 @@ render.yaml               Render 서비스 정의 (수동 배포)
 | [docs/RENDER_DEPLOYMENT.md](docs/RENDER_DEPLOYMENT.md) | Render·R2 배포 설정, 환경변수, SPA rewrite, 보안 헤더, 배포 순서, 기동 실패 진단 |
 | [docs/DATA_SOURCE_RIGHTS.md](docs/DATA_SOURCE_RIGHTS.md) | 데이터 출처 표기 원칙과 공개 이용 조건 확인 기록 |
 | [docs/GITHUB_READINESS.md](docs/GITHUB_READINESS.md) | GitHub 공개 준비 점검과 제외 규칙 |
-| [backend/API_SPEC.md](backend/API_SPEC.md) · [openapi.json](backend/openapi.json) | API 12개 경로 명세 |
+| [backend/API_SPEC.md](backend/API_SPEC.md) · [openapi.json](backend/openapi.json) | API 14개 경로 명세 |
 | [backend/README.md](backend/README.md) · [frontend/README.md](frontend/README.md) | 백엔드·프론트엔드 실행과 구조 |
 | [frontend/docs/CHART_PLAN.md](frontend/docs/CHART_PLAN.md) | 웹 그래프 10종 구성과 API 연결 |
 | [reports/dataset_analysis.md](reports/dataset_analysis.md) · [reports/chart_analysis.md](reports/chart_analysis.md) | 데이터 분석, 그래프 분석 |

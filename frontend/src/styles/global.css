@@ -2318,7 +2318,8 @@ var(--panel);
   position: absolute;
   z-index: 500;
   left: 12px;
-  bottom: 12px;
+  /* 카카오맵 SDK가 왼쪽 아래(지도 아래 끝에서 약 20px 높이)에 그리는 로고·축척을 가리지 않도록 그 위에 둡니다. */
+  bottom: 28px;
   max-width: min(280px, calc(100% - 24px));
   border-radius: 10px;
   background: rgba(34, 34, 34, 0.94);
