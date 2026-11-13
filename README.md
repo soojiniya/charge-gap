@@ -32,16 +32,16 @@
 
 <table>
   <tr>
-    <td width="50%"><img src="docs/images/overview.jpg" alt="Overview 대시보드: 전기차·충전기·충전소·삭제 표시 KPI와 기준 시점 띠" width="100%"></td>
-    <td width="50%"><img src="docs/images/regional-disparity.jpg" alt="전국 충전 인프라 구성 격차: 전국 기준값과 16개 지역 막대 비교" width="100%"></td>
+    <td width="50%"><img src="docs/images/overview.jpg" alt="Overview 대시보드: 전기차 등록·충전기·충전소·삭제 표시 KPI 4개, 기준 시점 띠, 주요 분석 발견 그래프" width="100%"></td>
+    <td width="50%"><img src="docs/images/regional-disparity.jpg" alt="전국 충전 인프라 구성 격차: 100kW 이상 비중 전국 기준 8.04%, 16개 지역 막대와 지역 격차 히트맵" width="100%"></td>
   </tr>
   <tr>
-    <td align="center"><b>Overview</b> · 핵심 KPI와 대표 그래프</td>
-    <td align="center"><b>지역별 충전 인프라 구성 격차</b> · 전국 기준선과 16개 지역 비교</td>
+    <td align="center"><b>Overview</b> · 핵심 KPI 4개와 주요 분석 발견</td>
+    <td align="center"><b>충전 인프라 구성 격차</b> · 전국 기준선, 16개 지역 막대·히트맵</td>
   </tr>
   <tr>
-    <td width="50%"><img src="docs/images/regional-map.jpg" alt="Regional Explorer 카카오맵 충전소 지도: 서울 화면 영역 충전소 격자 묶음과 서울 충전 인프라 요약 패널" width="100%"></td>
-    <td width="50%"><img src="docs/images/python-visualization.jpg" alt="Python Visualization: Matplotlib·Seaborn 고정 그래프 갤러리" width="100%"></td>
+    <td width="50%"><img src="docs/images/regional-map.jpg" alt="Regional Explorer 카카오맵 충전소 지도: 서울 줌 13 화면 영역 충전소 4,070곳 격자 묶음과 서울 충전 인프라 요약 패널" width="100%"></td>
+    <td width="50%"><img src="docs/images/python-visualization.jpg" alt="Python Visualization: Matplotlib·Seaborn 고정 그래프 갤러리, PY01~PY06 카드" width="100%"></td>
   </tr>
   <tr>
     <td align="center"><b>Regional Explorer</b> · 카카오맵 충전소 지도와 지역 요약</td>
@@ -49,7 +49,7 @@
   </tr>
 </table>
 
-<sub>Overview·지역 격차·Python Visualization은 2026-11-05에 커밋 `6249b30`과 같은 소스를 로컬 프로덕션 빌드로 실행해 1600×1000으로 캡처했습니다(사이드바의 API 주소가 로컬 주소로 표시됨). Regional Explorer 지도는 2026-11-13 공개 사이트(커밋 `36ed7a6` 배포본)에서 1600×1000으로 촬영했으며, 지도의 카카오 로고·저작권 표시를 그대로 두었습니다.</sub>
+<sub>네 장 모두 2026-11-14 공개 사이트 <a href="https://charge-gap.onrender.com">charge-gap.onrender.com</a>(기능 커밋 <code>9bbef7a</code> 배포본)에서 1600×1000 화면으로 촬영했고, 데이터·그래프·지도가 모두 불러와진 뒤 찍었습니다. 사이드바에는 운영 API 주소가 표시됩니다. 충전 인프라 구성 격차 화면은 Regional Explorer 페이지의 해당 구역으로 스크롤한 상태이며, 지도는 충전기 지역을 서울로 고른 뒤 줌 13에서 촬영해 카카오 로고·저작권 표시를 그대로 두었습니다.</sub>
 
 ## 주요 기능
 
