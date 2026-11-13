@@ -156,9 +156,11 @@ while op['meta']['pagination']['has_next']:
     rows += op['data']
     page += 1
 api10 = [r['charger_count'] for r in rows[:20]] + [sum(r['charger_count'] for r in rows[20:])]
-check(10, 'operator pairs count', C['10']['operator_pairs'] == len(rows))
-check(10, 'top20 + other counts and order', C['10']['counts'] == api10
-      and [l.rsplit('[', 1)[1].rstrip(']') for l in C['10']['labels'][:20]] == [r['operator_id'] for r in rows[:20]])
+check(10, 'operator ID count = /api/operators rows', C['10']['operator_ids'] == len(rows))
+check(10, 'ID-name variants = sum of name_variants', C['10']['name_variant_pairs'] == sum(len(r['name_variants']) for r in rows))
+check(10, 'top20 + other counts, order and names', C['10']['counts'] == api10
+      and [l.rsplit('[', 1)[1].rstrip(']') for l in C['10']['labels'][:20]] == [r['operator_id'] for r in rows[:20]]
+      and [l.rsplit(' [', 1)[0] for l in C['10']['labels'][:20]] == [r['operator_name'] for r in rows[:20]])
 
 summary = {'api': args.api, 'checks': len(results), 'failed': [r for r in results if not r['ok']], 'results': results}
 (P / 'reports/python_charts_2026_verification.json').write_text(json.dumps(summary, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')

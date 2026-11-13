@@ -106,6 +106,21 @@ def coordinate_quality_flags(table):
     return result
 
 
+# 운영기관 집계 기준: 원본의 기관 ID(busiId). 운영기관명(busiNm)은 같은 ID 안에서도 표기가
+# 여러 가지(사명 변경·약칭·영문·위탁 운영사 등)이므로 묶지 않고 name_variants로 보존합니다.
+# 같은 ID가 반드시 같은 법인이라는 뜻은 아닙니다(reports/operator_id_grouping_2026-11-14.md).
+OPERATOR_KEY = 'busiId'
+OPERATOR_GROUPING_RULE = ('운영기관 ID(busiId) 기준. 표시 이름은 원본 기관명(bnm), 같은 ID의 운영기관명(busiNm) 표기는 '
+    'name_variants에 충전기 수와 함께 보존합니다. 같은 ID가 반드시 같은 법인이라는 뜻은 아닙니다.')
+
+
+def operator_labels(frame):
+    """{operator ID: display name} from the institution name column (bnm), most frequent per ID."""
+    counts = frame.groupby([OPERATOR_KEY,'bnm'],observed=True).size().reset_index(name='n')
+    counts = counts.sort_values(['n','bnm'],ascending=[False,True],kind='stable').drop_duplicates(OPERATOR_KEY)
+    return {str(k):str(v) for k,v in zip(counts[OPERATOR_KEY],counts.bnm)}
+
+
 def records(frame):
     """Standard JSON nulls, Unicode, and preserved string IDs; no NaN/Infinity."""
     return json.loads(frame.to_json(orient='records',force_ascii=False,double_precision=15))
@@ -120,11 +135,11 @@ class DataStore:
         # stat/statUpdDt are never read; raw lat/lng text and _fetched_at are dropped
         # below once the numeric coordinates and snapshot times are derived from them.
         columns = ['statId','chgerId','statNm','chgerType','addr','lat','lng','zcode','delYn',
-            'busiId','busiNm','output','_fetched_at']
+            'busiId','bnm','busiNm','output','_fetched_at']
         # Repeated IDs/text use shared dictionaries rather than one object array
         # per column. Keep numeric source text and timestamps unchanged.
         categorical = {'statId','chgerId','statNm','addr','chgerType','zcode',
-                       'delYn','busiId','busiNm','output'}
+                       'delYn','busiId','bnm','busiNm','output'}
         with open_snapshot(directory/'charger_info_clean.csv') as source:
             self.chargers = pd.read_csv(source,usecols=columns,
                 dtype={col:'category' if col in categorical else str for col in columns},keep_default_na=False)
@@ -144,10 +159,14 @@ class DataStore:
         self.chart_metadata = json.loads((self.root/'reports/chart_verification.json').read_text(encoding='utf-8'))['charts']
         self.ev_regions = dict(zip(self.ev.region_code,self.ev.region_name))
         self.operator_ids = set(self.chargers.busiId)
+        # Operator label per operator ID (OPERATOR_KEY): the source's institution name (bnm),
+        # the most frequent one if an ID ever carried several. Fixed for the snapshot, so
+        # labels do not change with filters.
+        self.operator_names = operator_labels(self.chargers)
         self.snapshot_start = self.chargers._fetched_at.min()
         self.snapshot_end = self.chargers._fetched_at.max()
-        # Source text kept only to derive _lat/_lng and the snapshot window above.
-        self.chargers.drop(columns=['lat','lng','_fetched_at'],inplace=True)
+        # Source text kept only to derive _lat/_lng, the snapshot window and the operator labels above.
+        self.chargers.drop(columns=['lat','lng','_fetched_at','bnm'],inplace=True)
         if self.chargers[['statId','chgerId']].eq('').any().any() or self.chargers.duplicated(['statId','chgerId']).any():
             raise ValueError('충전기 식별자 결측/중복: 스냅샷 확인 필요')
         if not set(self.chargers.zcode) <= set(REGIONS_2026):
@@ -197,6 +216,18 @@ class DataStore:
         result['share_pct'] = result.charger_count/total*100 if total else None
         return result
 
+    def operator_groups(self, frame):
+        """One row per operator ID (OPERATOR_KEY) with the usual counts, the display name and the
+        source name variants (busiNm) with their charger counts, largest first."""
+        result = self.grouped(frame, OPERATOR_KEY).rename(columns={OPERATOR_KEY:'operator_id'})
+        result.insert(1,'operator_name',result.operator_id.map(self.operator_names))
+        variants = frame.groupby([OPERATOR_KEY,'busiNm'],observed=True).size().reset_index(name='charger_count')
+        variants = variants.sort_values([OPERATOR_KEY,'charger_count','busiNm'],ascending=[True,False,True],kind='stable')
+        names = {key:[{'name':str(n),'charger_count':int(c)} for n,c in zip(part.busiNm,part.charger_count)]
+                 for key,part in variants.groupby(OPERATOR_KEY,observed=True,sort=False)}
+        result['name_variants'] = result.operator_id.map(lambda key: names.get(key,[]))
+        return result.sort_values(['charger_count','operator_id'],ascending=[False,True],kind='stable')
+
     def regional_disparity(self, filters):
         """Aggregate regional infrastructure metrics in one pass per metric family.
 
@@ -211,9 +242,9 @@ class DataStore:
         by_region = output.groupby('zcode', observed=True, sort=True).agg(
             charger_count=('chgerId', 'size'), station_count=('statId', 'nunique'),
             valid_output_count=('_valid', 'sum'), high_output_count=('_high', 'sum'))
-        # Operator counts are retained at operator ID/name granularity, matching /api/operators.
-        operator = frame.groupby(['zcode', 'busiId', 'busiNm'], observed=True, sort=True).chgerId.size()
-        operator_totals = frame.groupby(['busiId', 'busiNm'], observed=True, sort=True).chgerId.size()
+        # Operators are grouped by operator ID (OPERATOR_KEY), the same rule as /api/operators.
+        operator = frame.groupby(['zcode', OPERATOR_KEY], observed=True, sort=True).chgerId.size()
+        operator_totals = frame.groupby(OPERATOR_KEY, observed=True, sort=True).chgerId.size()
         types = frame.groupby(['zcode', 'chgerType'], observed=True, sort=True).chgerId.size()
         deleted = deletion_frame.groupby('zcode', observed=True, sort=True).delYn.agg(
             total='size', deleted=lambda values: int(values.eq('Y').sum()))

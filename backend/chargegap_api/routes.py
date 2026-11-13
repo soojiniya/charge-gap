@@ -6,7 +6,7 @@ from flask import Blueprint, current_app, jsonify, request, send_file
 import numpy as np
 import pandas as pd
 from .cache import ByteLRU, request_key
-from .data import COMMON_PARAMETERS, EV_SOURCE, API_SOURCE, GROWTH_SOURCE, UNITS, WARNINGS, REGIONS_2026, TYPE_DEFINITIONS, COORDINATE_QUALITY_RULE, records
+from .data import COMMON_PARAMETERS, EV_SOURCE, API_SOURCE, GROWTH_SOURCE, UNITS, WARNINGS, REGIONS_2026, TYPE_DEFINITIONS, COORDINATE_QUALITY_RULE, OPERATOR_GROUPING_RULE, records
 from .validation import APIError, allowed_parameters, bounding_box, charger_filters, choice, integer
 
 
@@ -142,7 +142,7 @@ def create_blueprint(store,response_cache=None,locations_cache=None):
              'metric_rules':{'high_100kw':'output_kw >= 100 / positive numeric output count; missing/nonpositive/nonnumeric excluded',
                  'chargers_per_station':'charger count / distinct statId within region',
                  'type_mix':'charger type count / regional charger count',
-                 'operator_hhi':'sum((operator charger count / denominator)^2) * 10000; grouped by (busiId,busiNm)',
+                 'operator_hhi':'sum((operator charger count / denominator)^2) * 10000; operators grouped by operator ID (busiId); name variants (busiNm) of one ID count as one operator',
                  'deletion_share':'delYn=Y / all delYn rows; deletion filter forced to all for this metric'},
              'national_basis':'Nationwide numerator and denominator are summed independently before division; national HHI is recalculated from nationwide operator counts.',
              'region_filter_policy':'region_code is accepted for request compatibility but ignored; always compares all 16 regions.',
@@ -223,11 +223,10 @@ def create_blueprint(store,response_cache=None,locations_cache=None):
     def operators():
         filters,frame=charger_request({'page','limit'})
         page=integer('page',1,1,1000000);limit=integer('limit',50,1,200)
-        result=store.grouped(frame,['busiId','busiNm']).rename(columns={'busiId':'operator_id','busiNm':'operator_name'})
-        result=result.sort_values(['charger_count','operator_id','operator_name'],ascending=[False,True,True],kind='stable')
+        result=store.operator_groups(frame)
         data,pagination=paginated(result,page,limit)
         return reply(data,{'chargers':API_SOURCE},filters,frame,{'pagination':pagination,
-            'grouping':'앞뒤 공백을 정리한 (busiId,busiNm) 조합. 다른 명칭은 자동 통합하지 않습니다.',
+            'grouping':OPERATOR_GROUPING_RULE,
             'station_count_additivity':'운영기관별 고유 충전소 수를 합산하면 같은 충전소가 중복될 수 있습니다.'})
 
     @bp.get('/growth')

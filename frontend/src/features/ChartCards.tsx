@@ -730,20 +730,20 @@ export function OperatorTreemapCard({ span = 12, height = 380 }: { span?: Span; 
   const q = useOperators(params, 1, 20);
   const rows = q.data?.data ?? [];
   const matched = q.data?.meta.matched?.charger_count ?? 0;
-  const combos = q.data?.meta.pagination?.total_items ?? 0;
+  const operatorCount = q.data?.meta.pagination?.total_items ?? 0;
   const topSum = rows.reduce((s, r) => s + r.charger_count, 0);
   const items: TreeItem[] = [
     ...rows.map((r, i) => ({
       tone: rows.length > 1 ? i / (rows.length - 1) : 0,
       rank: i + 1,
-      key: `${r.operator_id}|${r.operator_name}`,
+      key: r.operator_id,
       id: r.operator_id,
       name: r.operator_name,
       size: r.charger_count,
       share: matched ? (r.charger_count / matched) * 100 : 0,
     })),
     ...(matched - topSum > 0
-      ? [{ key: 'etc', name: `기타 ${fmtInt(Math.max(0, combos - rows.length))}개 조합`, size: matched - topSum, share: ((matched - topSum) / matched) * 100, other: true }]
+      ? [{ key: 'etc', name: `기타 ${fmtInt(Math.max(0, operatorCount - rows.length))}개 운영기관 ID`, size: matched - topSum, share: ((matched - topSum) / matched) * 100, other: true }]
       : []),
   ];
   const filtered = activeChargerCount - (state.operator ? 1 : 0) > 0;
@@ -752,11 +752,11 @@ export function OperatorTreemapCard({ span = 12, height = 380 }: { span?: Span; 
       no={10}
       span={span}
       title="운영기관별 충전기 규모"
-      sub="트리맵: 면적 = 충전기 수. 상위 20개 (기관 ID, 명칭) 조합 + 기타. 칸을 누르면 그 기관 ID로 필터합니다."
+      sub="트리맵: 면적 = 충전기 수. 운영기관 ID 기준 상위 20개 + 기타. 칸을 누르면 그 운영기관 ID로 필터합니다."
       scope={{ kind: 'filtered', label: '지역·유형·삭제 필터' }}
       isFetching={q.isFetching && !q.isLoading}
       detail={{ chart: <OperatorTreemap items={items} height={520} ariaLabel="운영기관별 충전기 트리맵" />, meta: q.data?.meta, pythonChartIds: [10] }}
-      insight={rows.length ? <Insight {...insightOperators(rows, matched, combos, filtered, !!state.operator)} /> : undefined}
+      insight={rows.length ? <Insight {...insightOperators(rows, matched, operatorCount, filtered, !!state.operator)} /> : undefined}
     >
       <QueryState isLoading={q.isLoading} error={q.error} onRetry={() => q.refetch()} isEmpty={!rows.length} height={height}>
         <div className="legend" style={{ marginBottom: 8 }}>

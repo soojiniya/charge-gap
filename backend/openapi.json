@@ -2131,7 +2131,7 @@
     "/api/operators": {
       "get": {
         "operationId": "operators",
-        "summary": "공백 정리 후 기관 ID·명칭 조합. 다른 명칭을 합치지 않습니다.",
+        "summary": "운영기관 ID(busiId) 기준 집계. 표시 이름은 원본 기관명(bnm), 같은 ID의 운영기관명(busiNm) 표기는 name_variants에 보존.",
         "parameters": [
           {
             "name": "region_code",
@@ -2243,31 +2243,133 @@
                 "example": {
                   "data": [
                     {
-                      "charger_count": 83138,
+                      "charger_count": 88543,
                       "deleted_charger_count": 6,
-                      "not_deleted_charger_count": 83132,
+                      "name_variants": [
+                        {
+                          "charger_count": 83138,
+                          "name": "GS차지비"
+                        },
+                        {
+                          "charger_count": 5059,
+                          "name": "차지비"
+                        },
+                        {
+                          "charger_count": 292,
+                          "name": "포스코ICT"
+                        },
+                        {
+                          "charger_count": 53,
+                          "name": "GS커넥트"
+                        },
+                        {
+                          "charger_count": 1,
+                          "name": "GS주차장"
+                        }
+                      ],
+                      "not_deleted_charger_count": 88537,
                       "operator_id": "PI",
                       "operator_name": "GS차지비",
-                      "share_pct": 15.762760388523281,
-                      "station_count": 13868
+                      "share_pct": 16.78753509924483,
+                      "station_count": 14970
                     },
                     {
-                      "charger_count": 51327,
-                      "deleted_charger_count": 8,
-                      "not_deleted_charger_count": 51319,
-                      "operator_id": "PL",
-                      "operator_name": "플러그링크",
-                      "share_pct": 9.731473002258106,
-                      "station_count": 4741
-                    },
-                    {
-                      "charger_count": 47638,
+                      "charger_count": 69285,
                       "deleted_charger_count": 0,
-                      "not_deleted_charger_count": 47638,
+                      "name_variants": [
+                        {
+                          "charger_count": 36192,
+                          "name": "파워큐브"
+                        },
+                        {
+                          "charger_count": 24456,
+                          "name": "파워큐브코리아"
+                        },
+                        {
+                          "charger_count": 8568,
+                          "name": "파워큐브(SP)"
+                        },
+                        {
+                          "charger_count": 26,
+                          "name": "주차장"
+                        },
+                        {
+                          "charger_count": 10,
+                          "name": "파워큐브(sp)"
+                        },
+                        {
+                          "charger_count": 9,
+                          "name": "파워큐브코리아(SP)"
+                        },
+                        {
+                          "charger_count": 7,
+                          "name": "043-850-3650"
+                        },
+                        {
+                          "charger_count": 6,
+                          "name": "1833-8017"
+                        },
+                        {
+                          "charger_count": 5,
+                          "name": "ㅈ"
+                        },
+                        {
+                          "charger_count": 3,
+                          "name": "파워큐브(민수)"
+                        },
+                        {
+                          "charger_count": 2,
+                          "name": "파워큨브코리아"
+                        },
+                        {
+                          "charger_count": 1,
+                          "name": "인포텔"
+                        }
+                      ],
+                      "not_deleted_charger_count": 69285,
+                      "operator_id": "PW",
+                      "operator_name": "파워큐브",
+                      "share_pct": 13.136265648907063,
+                      "station_count": 7676
+                    },
+                    {
+                      "charger_count": 55112,
+                      "deleted_charger_count": 0,
+                      "name_variants": [
+                        {
+                          "charger_count": 47638,
+                          "name": "에버온"
+                        },
+                        {
+                          "charger_count": 7454,
+                          "name": "주식회사 에버온"
+                        },
+                        {
+                          "charger_count": 7,
+                          "name": "건강보험"
+                        },
+                        {
+                          "charger_count": 6,
+                          "name": "에버"
+                        },
+                        {
+                          "charger_count": 5,
+                          "name": "주식회사에버온"
+                        },
+                        {
+                          "charger_count": 1,
+                          "name": "아파트"
+                        },
+                        {
+                          "charger_count": 1,
+                          "name": "주식회사 에버"
+                        }
+                      ],
+                      "not_deleted_charger_count": 55112,
                       "operator_id": "EV",
                       "operator_name": "에버온",
-                      "share_pct": 9.032047672405783,
-                      "station_count": 14213
+                      "share_pct": 10.449099696075141,
+                      "station_count": 16355
                     }
                   ],
                   "meta": {
@@ -2278,7 +2380,7 @@
                       "operator_id": null,
                       "region_code": null
                     },
-                    "grouping": "앞뒤 공백을 정리한 (busiId,busiNm) 조합. 다른 명칭은 자동 통합하지 않습니다.",
+                    "grouping": "운영기관 ID(busiId) 기준. 표시 이름은 원본 기관명(bnm), 같은 ID의 운영기관명(busiNm) 표기는 name_variants에 충전기 수와 함께 보존합니다. 같은 ID가 반드시 같은 법인이라는 뜻은 아닙니다.",
                     "matched": {
                       "charger_count": 527433,
                       "deleted_charger_count": 4121,
@@ -2290,8 +2392,8 @@
                       "limit": 3,
                       "next_page": 2,
                       "page": 1,
-                      "total_items": 342,
-                      "total_pages": 114
+                      "total_items": 144,
+                      "total_pages": 48
                     },
                     "same_period_shortage_rate_computed": false,
                     "snapshot_policy": "프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.",
@@ -3607,7 +3709,7 @@
             }
           }
         ],
-        "description": "Always returns all 16 regions (region_code ignored). Metrics: high_100kw = output_kw >= 100 / positive numeric output count (missing, non-positive, non-numeric excluded); chargers_per_station = charger count / distinct statId; type_mix = type count / regional charger count; operator_hhi = sum((operator charger count / charger count)^2) * 10000 grouped by (busiId, busiNm); deletion_share = delYn=Y / all rows, deletion filter forced to all. National values sum numerators and denominators nationwide before division (not an average of regional ratios); national HHI is recalculated from nationwide operator counts. Ranks: descending competition rank, ties share rank, null values unranked (no rank key). Supply-composition indicators only: no demand, shortage or EV-per-charger ratio is computed. Example shows 1 of 16 regions.",
+        "description": "Always returns all 16 regions (region_code ignored). Metrics: high_100kw = output_kw >= 100 / positive numeric output count (missing, non-positive, non-numeric excluded); chargers_per_station = charger count / distinct statId; type_mix = type count / regional charger count; operator_hhi = sum((operator charger count / charger count)^2) * 10000 with operators grouped by operator ID (busiId; name variants of one ID count as one operator); deletion_share = delYn=Y / all rows, deletion filter forced to all. National values sum numerators and denominators nationwide before division (not an average of regional ratios); national HHI is recalculated from nationwide operator counts. Ranks: descending competition rank, ties share rank, null values unranked (no rank key). Supply-composition indicators only: no demand, shortage or EV-per-charger ratio is computed. Example shows 1 of 16 regions.",
         "responses": {
           "200": {
             "description": "성공",
@@ -3635,9 +3737,9 @@
                         "value_pct": 8.04473660253687
                       },
                       "operator_hhi": {
-                        "operator_count": 342,
+                        "operator_count": 144,
                         "scale": "0-10000",
-                        "value": 585.7074915470868
+                        "value": 810.9183170226236
                       },
                       "type_mix": [
                         {
@@ -3725,10 +3827,10 @@
                             "value_pct": 5.479649827407437
                           },
                           "operator_hhi": {
-                            "operator_count": 166,
+                            "operator_count": 97,
                             "rank": 6,
                             "scale": "0-10000",
-                            "value": 701.442869883696
+                            "value": 932.1321261219317
                           },
                           "type_mix": [
                             {
@@ -3831,7 +3933,7 @@
                       "chargers_per_station": "charger count / distinct statId within region",
                       "deletion_share": "delYn=Y / all delYn rows; deletion filter forced to all for this metric",
                       "high_100kw": "output_kw >= 100 / positive numeric output count; missing/nonpositive/nonnumeric excluded",
-                      "operator_hhi": "sum((operator charger count / denominator)^2) * 10000; grouped by (busiId,busiNm)",
+                      "operator_hhi": "sum((operator charger count / denominator)^2) * 10000; operators grouped by operator ID (busiId); name variants (busiNm) of one ID count as one operator",
                       "type_mix": "charger type count / regional charger count"
                     },
                     "national_basis": "Nationwide numerator and denominator are summed independently before division; national HHI is recalculated from nationwide operator counts.",
@@ -4357,14 +4459,35 @@
                 "deleted_charger_count": {
                   "type": "integer"
                 },
+                "name_variants": {
+                  "type": "array",
+                  "description": "같은 운영기관 ID에 기록된 운영기관명(busiNm) 표기와 충전기 수(많은 순). 합계 = charger_count",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "name",
+                      "charger_count"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "charger_count": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
                 "not_deleted_charger_count": {
                   "type": "integer"
                 },
                 "operator_id": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "운영기관 ID(busiId). 집계 단위"
                 },
                 "operator_name": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "대표 이름 = 원본 기관명(bnm). 같은 ID가 반드시 같은 법인이라는 뜻은 아님"
                 },
                 "share_pct": {
                   "type": "number"
@@ -4376,6 +4499,7 @@
               "required": [
                 "charger_count",
                 "deleted_charger_count",
+                "name_variants",
                 "not_deleted_charger_count",
                 "operator_id",
                 "operator_name",
@@ -4917,7 +5041,7 @@
           "operator_count": {
             "type": "integer",
             "minimum": 0,
-            "description": "(busiId, busiNm) 그룹 수"
+            "description": "운영기관 ID(busiId) 수"
           },
           "rank": {
             "type": "integer",

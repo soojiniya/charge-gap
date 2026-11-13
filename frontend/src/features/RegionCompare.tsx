@@ -470,7 +470,7 @@ function CompareBody({ a, b, base, filtered, names }: { a: string; b: string; ba
                   </div>
                 ))}
               </div>
-              <p className="small muted cmp-note">같은 기관도 명칭 표기가 다르면 별도 조합으로 집계됩니다.</p>
+              <p className="small muted cmp-note">운영기관 ID 기준입니다. 같은 ID의 서로 다른 운영기관명 표기는 하나로 셉니다.</p>
             </QueryState>
           </section>
         </div>

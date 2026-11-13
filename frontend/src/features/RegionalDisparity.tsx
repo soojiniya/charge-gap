@@ -264,7 +264,7 @@ export function RegionalDisparitySection() {
                 <dd className="num">{active.format(national)}</dd>
               </div>
               <div className="disparity-stat">
-                <dt>{metric === 'operator_hhi' ? '운영기관 그룹' : `전국 분모 (${denomBasis(metric)})`}</dt>
+                <dt>{metric === 'operator_hhi' ? '운영기관 ID' : `전국 분모 (${denomBasis(metric)})`}</dt>
                 <dd className="num">
                   {fmtInt(nationalDenominator ?? 0)}
                   {metric === 'operator_hhi' ? '개' : denomUnit(metric)}
@@ -587,7 +587,7 @@ function DisparityInsight({
         : metric === 'type_mix'
           ? `${fmtInt(natType?.charger_count ?? 0)}기 ÷ ${fmtInt(nat.chargers_per_station.numerator ?? 0)}기 × 100 = ${o.format(national)}`
           : metric === 'operator_hhi'
-            ? `전국 운영기관 ${fmtInt(nat.operator_hhi.operator_count ?? 0)}개의 점유율로 계산 = ${o.format(national)}`
+            ? `전국 운영기관 ID ${fmtInt(nat.operator_hhi.operator_count ?? 0)}개의 점유율로 계산 = ${o.format(national)}`
             : `${fmtInt(nat.deletion_share.numerator ?? 0)}기 ÷ ${fmtInt(nat.deletion_share.denominator ?? 0)}기 × 100 = ${o.format(national)}`;
   const tech: [string, string | undefined][] = [
     ['계산 규칙', meta?.metric_rules?.[metric]],
@@ -620,7 +620,7 @@ function DisparityInsight({
           <dt>전국 기준값</dt>
           <dd>
             16개 지역 값의 평균이 아닙니다. 전국의 분자와 분모를 각각 모두 더한 뒤 나눕니다
-            {metric === 'operator_hhi' ? '(전국 HHI는 전국 운영기관별 충전기 수로 다시 계산)' : ''}. 현재 전국 값: <span className="num">{natExample}</span>
+            {metric === 'operator_hhi' ? '(전국 HHI는 전국 운영기관 ID별 충전기 수로 다시 계산)' : ''}. 현재 전국 값: <span className="num">{natExample}</span>
           </dd>
         </div>
         <div>

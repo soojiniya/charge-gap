@@ -18,7 +18,7 @@
 | **페이지** | Overview · EV Registration · Charging Infrastructure · Regional Explorer · Growth Trends · Python Visualization |
 | **분석 기능** | 두 지역 비교 · 16개 지역 충전 인프라 구성 격차(5개 지표, 히트맵) · CSV 내보내기 · A4 PDF 보고서 |
 | **시각화** | 웹 대화형 그래프 10종(Recharts) + 충전소 지도(카카오맵 JavaScript SDK) + Python 고정 그래프 10종(Matplotlib·Seaborn) |
-| **검증** | 백엔드·배포 테스트 312개, 프론트엔드 단위 테스트 160개, Python 그래프 수치 대조 50개 검사, 공개 사이트 실제 브라우저 점검 ([검증 기록](#검증-기록)) |
+| **검증** | 백엔드·배포 테스트 321개, 프론트엔드 단위 테스트 160개, Python 그래프 수치 대조 51개 검사, 공개 사이트 실제 브라우저 점검 ([검증 기록](#검증-기록)) |
 
 ### 해결하려는 문제
 
@@ -77,7 +77,7 @@
   | 100kW 이상 비중 | 100kW 이상 충전기 ÷ 출력값이 확인된 충전기 |
   | 충전소당 평균 충전기 | 충전기 수 ÷ 고유 충전소 수 |
   | 충전기 유형별 구성 | 선택 유형 충전기 ÷ 지역 충전기 |
-  | 운영기관 집중도(HHI) | 운영기관별 점유율(%) 제곱의 합(0~10,000) |
+  | 운영기관 집중도(HHI) | 운영기관 ID별 점유율(%) 제곱의 합(0~10,000) |
   | 삭제 표시 비중 | 삭제 표시 충전기 ÷ 삭제 상태 전체 충전기 |
 
 - **내보내기**: 현재 지표·필터의 16개 지역 표를 **CSV**(UTF-8 BOM, Excel 한글 호환)로 저장하고, A4 3페이지 **PDF 보고서**(핵심 요약 · 16개 지역 비교 · 계산 방법·주의사항·출처)를 브라우저 인쇄로 저장합니다.
@@ -146,6 +146,11 @@
 - 삭제 표시 4,121기·비삭제 523,312기를 구분하고, 비삭제를 실제 이용 가능 상태로 해석하지 않습니다.
 - `statUpdDt`는 상태 갱신일시이며 설치일이 아닙니다.
 - 누적 설치 수는 선택한 연도 구간과 관계없이 2011년부터의 전체 누적값입니다.
+- **운영기관 집계 기준**(2026-11-14 변경): 운영기관 순위·트리맵·HHI·두 지역 비교·PY10은 모두 **원본의 운영기관 ID(`busiId`) 기준**입니다.
+  - 표시 이름은 원본 기관명(`bnm`)입니다.
+  - 같은 ID의 서로 다른 운영기관명 표기(예: 파워큐브/파워큐브코리아, 한국전자금융/NICE인프라)는 하나로 세고, API의 `name_variants`에 보존합니다.
+  - 운영기관 ID는 144개, ID·운영기관명 조합은 342개입니다. 이전 조합 기준에서 전국 HHI 586이던 값이 ID 기준으로 811이 되었습니다.
+  - 같은 ID가 반드시 같은 법인이라는 뜻은 아닙니다. 등록 기관과 운영 법인이 다를 수 있는 충전기는 약 1.1%이며, 이를 분리해도 HHI는 최대 6점 이내로 달라집니다. 근거: [`reports/operator_id_grouping_2026-11-14.md`](reports/operator_id_grouping_2026-11-14.md)
 - **충전소 좌표 품질**(2026-11-13 분석): 원본 대표 좌표 중 의심 근거가 있는 충전소가 **644곳, 충전기 3,322기(전체의 0.63%)**입니다.
   - 주소 시군구에서 100km 넘게 떨어진 좌표: 182곳
   - 여러 지역 충전소가 공유하거나 소수 1자리로 끊긴 대체·저정밀 좌표: 508곳
@@ -269,13 +274,14 @@ Render Static Site(프론트엔드) + Docker Web Service(백엔드) + 비공개 
 
 | 대상 | 명령 | 결과 | 기록 |
 |---|---|---|---|
-| 백엔드 API · Render 기동 스크립트 | `python -m pytest backend/tests deploy/render/tests -q` | **312 passed** (backend 227 · deploy 85, 좌표 품질 22개 포함) | 2026-11-14 실행 |
+| 백엔드 API · Render 기동 스크립트 | `python -m pytest backend/tests deploy/render/tests -q` | **321 passed** (backend 236 · deploy 85, 좌표 품질 22개·운영기관 ID 집계 9개 포함) | 2026-11-14 실행 |
 | 프론트엔드 단위·회귀 | `frontend`에서 `npm test` | **160개**: Git 저장소 밖 실행에서 159 통과 · 1 건너뜀(줄바꿈 검사). 건너뛴 줄바꿈 검사는 Git 저장소에서 따로 실행해 통과 | 2026-11-14 실행 |
 | TypeScript · 프로덕션 빌드 | `npm run build` (배포 API 주소 지정) | 통과 | 2026-11-14 실행 |
-| Python 그래프 수치 대조 | `python scripts/verify_python_charts_2026.py` | **50개 검사, 실패 0** (PNG 10개 SHA-256 포함) | 2026-11-14 실행 |
+| Python 그래프 수치 대조 | `python scripts/verify_python_charts_2026.py` | **51개 검사, 실패 0** (PNG 10개 SHA-256, PY10 운영기관 ID·이름·순서 = `/api/operators` 포함) | 2026-11-14 실행 |
 | 원본 CSV 재집계 대조 | 전기차·충전기·충전소·삭제 표시 수, 지역별 16행, 설치 추이 16행을 CSV에서 다시 세어 API와 비교 | 모두 일치 | 2026-11-05 실행 |
-| 히트맵 통합 API | `backend/tests/test_charger_output_regions.py` | 16개 지역 × 40개 이상 필터 조합에서 기존 지역별 응답과 data·meta 동일, 원본 CSV 재계산과 일치 | 2026-11-14 실행(위 312개에 포함) |
+| 히트맵 통합 API | `backend/tests/test_charger_output_regions.py` | 16개 지역 × 40개 이상 필터 조합에서 기존 지역별 응답과 data·meta 동일, 원본 CSV 재계산과 일치 | 2026-11-14 실행(위 321개에 포함) |
 | 데이터 수집기 | `python -m unittest test_collector -v` | 12 passed | 2026-11-14 실행 |
+| 운영기관 ID 집계 | `backend/tests/test_operator_grouping.py` | 운영기관 ID 144개·조합 342개·기관명 1:1, 전국 HHI 811·세종 1,858·경북 636, 상위 20개 89.4%, `name_variants` 합 = 충전기 수, HHI 외 4개 지표는 원본 재계산과 일치 | 2026-11-14 실행(위 321개에 포함) |
 | 좌표 품질 안내 | `backend/tests/test_coordinate_quality.py`, `frontend/tests/coordinate-quality.*` | 508·182·46·644곳 재현, 보고서 목록 일치, 정상 행 응답·집계·캐시 불변, 브라우저 21개 확인(1440px·390px, 의심/정상 충전소 정보창·패널) | 2026-11-14 실행 |
 
 **공개 사이트 실제 브라우저 점검 (Chrome · 커밋 `ad022d7` 배포본, 2026-11-14)**
@@ -373,6 +379,7 @@ render.yaml               Render 서비스 정의 (수동 배포)
 | [frontend/docs/CHART_PLAN.md](frontend/docs/CHART_PLAN.md) | 웹 그래프 10종 구성과 API 연결 |
 | [reports/dataset_analysis.md](reports/dataset_analysis.md) · [reports/chart_analysis.md](reports/chart_analysis.md) | 데이터 분석, 그래프 분석 |
 | [reports/coordinate_quality_2026-11-13.md](reports/coordinate_quality_2026-11-13.md) | 충전소 좌표 품질 분석(의심 644곳 판정 기준·목록·영향) |
+| [reports/operator_id_grouping_2026-11-14.md](reports/operator_id_grouping_2026-11-14.md) | 운영기관 집계 기준(운영기관 ID)의 근거·한계·변경 전후 수치 |
 | [reports/final_presentation_summary_2026-11-14.md](reports/final_presentation_summary_2026-11-14.md) | 최종 발표용 요약(핵심 성과·데이터 규모·시각화·한계) |
 | [reports/r2_cache_memory_optimization_2026-10-19.md](reports/r2_cache_memory_optimization_2026-10-19.md) | Render 무료 플랜 메모리 측정(512MiB·R2 다운로드 포함) |
 | [reports/github_render_final_readiness_2026-10-19.md](reports/github_render_final_readiness_2026-10-19.md) | 2026-10-19 배포 준비 기록 |

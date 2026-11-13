@@ -1,6 +1,6 @@
 {
  "api": "http://127.0.0.1:5000",
- "checks": 50,
+ "checks": 51,
  "failed": [],
  "results": [
   {
@@ -312,12 +312,17 @@
   },
   {
    "chart": 10,
-   "check": "operator pairs count",
+   "check": "operator ID count = /api/operators rows",
    "ok": true
   },
   {
    "chart": 10,
-   "check": "top20 + other counts and order",
+   "check": "ID-name variants = sum of name_variants",
+   "ok": true
+  },
+  {
+   "chart": 10,
+   "check": "top20 + other counts, order and names",
    "ok": true
   }
  ]

@@ -177,9 +177,15 @@ export interface ChargerTypesMeta extends BaseMeta {
   definition_source: string;
   classification_note: string;
 }
+/** 운영기관 ID(busiId) 기준 한 행. operator_name = 원본 기관명(bnm), name_variants = 같은 ID의 운영기관명(busiNm) 표기와 충전기 수 */
+export interface OperatorNameVariant {
+  name: string;
+  charger_count: number;
+}
 export interface OperatorRow extends ShareRow {
   operator_id: string;
   operator_name: string;
+  name_variants: OperatorNameVariant[];
 }
 
 export type DisparityMetricKey = 'high_100kw' | 'chargers_per_station' | 'type_mix' | 'operator_hhi' | 'deletion_share';

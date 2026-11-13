@@ -9,8 +9,8 @@ interface Option {
 }
 
 /**
- * 운영기관 검색 콤보박스. 선택지는 /api/operators 전체 (기관 ID, 명칭) 조합에서 만듭니다.
- * API 필터(operator_id)는 기관 ID 단위이므로 같은 ID의 명칭 변형은 한 선택지로 묶어 보여줍니다.
+ * 운영기관 검색 콤보박스. 선택지는 /api/operators의 운영기관 ID 행(대표 이름 = 원본 기관명)에서 만들고,
+ * 같은 ID의 운영기관명 표기(name_variants)로도 검색할 수 있게 합니다. API 필터(operator_id)도 운영기관 ID 단위입니다.
  */
 export function OperatorPicker({ value, onChange }: { value?: string; onChange: (id?: string) => void }) {
   const q = useAllOperators();
@@ -24,7 +24,9 @@ export function OperatorPicker({ value, onChange }: { value?: string; onChange: 
     const map = new Map<string, Option>();
     for (const row of q.data ?? []) {
       const o = map.get(row.operator_id) ?? { id: row.operator_id, names: [], count: 0 };
-      if (!o.names.includes(row.operator_name)) o.names.push(row.operator_name);
+      for (const name of [row.operator_name, ...(row.name_variants ?? []).map((v) => v.name)]) {
+        if (name && !o.names.includes(name)) o.names.push(name);
+      }
       o.count += row.charger_count;
       map.set(row.operator_id, o);
     }
@@ -125,7 +127,7 @@ export function OperatorPicker({ value, onChange }: { value?: string; onChange: 
             >
               <span title={o.names.join(' / ')}>
                 {o.names[0]}
-                {o.names.length > 1 && <small> 외 명칭 {o.names.length - 1}개</small>} <small>{o.id}</small>
+                {o.names.length > 1 && <small> 외 표기 {o.names.length - 1}개</small>} <small>{o.id}</small>
               </span>
               <small>{fmtInt(o.count)}기</small>
             </li>

@@ -76,7 +76,8 @@ def test_all_filtered_aggregates(client,truth,query):
             assert sum(row['deleted_charger_count'] for row in body['data'])==counts['deleted_charger_count']
             assert math.isclose(sum(row['share_pct'] for row in body['data']),100 if len(expected) else 0)
         if endpoint=='operators':
-            assert body['meta']['pagination']['total_items']==expected[['busiId','busiNm']].drop_duplicates().shape[0]
+            # One row per operator ID; every (ID, name) variant of the filtered rows is kept in name_variants.
+            assert body['meta']['pagination']['total_items']==expected.busiId.nunique()
 
 
 def test_official_type11_and_empty_type09(client):
@@ -121,7 +122,7 @@ def test_regional_disparity_independent_reconciliation(client, truth, query):
         if parameter in query: deletion_base=deletion_base[deletion_base[col]==query[parameter]]
     assert national['deletion_share']['numerator']==int(deletion_base.delYn.eq('Y').sum())
     assert national['deletion_share']['denominator']==len(deletion_base)
-    by_operator=selected.groupby(['busiId','busiNm']).size()
+    by_operator=selected.groupby('busiId').size()
     expected_hhi=sum((int(v)/len(selected))**2 for v in by_operator)*10000 if len(selected) else None
     assert national['operator_hhi']['value']==pytest.approx(expected_hhi) if expected_hhi is not None else national['operator_hhi']['value'] is None
     assert body['meta']['region_filter_policy'].startswith('region_code is accepted')
@@ -171,10 +172,13 @@ def test_regional_disparity_zero_share_tied_rank(client):
 def test_operators_all_pages_and_whitespace(client):
     pages=[client.get('/api/operators',query_string={'page':i,'limit':200}).get_json() for i in [1,2]]
     rows=pages[0]['data']+pages[1]['data']
-    assert len(rows)==342 and sum(r['charger_count'] for r in rows)==527433
-    gs=next(r for r in rows if r['operator_id']=='PI' and r['operator_name']=='GS차지비')
-    assert gs['charger_count']==83138
-    assert len({(r['operator_id'],r['operator_name']) for r in rows})==342
+    assert len(rows)==144 and sum(r['charger_count'] for r in rows)==527433
+    assert len({r['operator_id'] for r in rows})==144
+    gs=next(r for r in rows if r['operator_id']=='PI')
+    assert gs['operator_name']=='GS차지비' and gs['charger_count']==88543
+    assert {'name':'GS차지비','charger_count':83138} in gs['name_variants']
+    # (ID, name) variants after trimming whitespace: 342, each kept once under its ID.
+    assert sum(len(r['name_variants']) for r in rows)==342
     assert pages[1]['meta']['pagination']['has_next'] is False
 
 

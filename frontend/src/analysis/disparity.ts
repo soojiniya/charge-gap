@@ -59,9 +59,9 @@ export const diffText = (n: number | null, o: DisparityOption) =>
     ? '—'
     : `${n >= 0 ? '+' : '−'}${o.key === 'operator_hhi' ? Math.round(Math.abs(n)).toLocaleString('ko-KR') : Math.abs(n).toFixed(2)}${o.diffUnit}`;
 export const regionLabel = (r: { region_code: string; region_name: string }) => (r.region_code === '12' ? '전남광주' : r.region_name);
-export const denomUnit = (key: DisparityMetricKey) => (key === 'operator_hhi' ? '개 기관' : key === 'chargers_per_station' ? '곳' : '기');
+export const denomUnit = (key: DisparityMetricKey) => (key === 'operator_hhi' ? '개' : key === 'chargers_per_station' ? '곳' : '기');
 export const denomBasis = (key: DisparityMetricKey) =>
-  key === 'high_100kw' ? '출력값이 양수인 충전기' : key === 'chargers_per_station' ? '고유 충전소 ID' : key === 'type_mix' ? '지역 충전기' : key === 'operator_hhi' ? '기관 ID·명칭 조합' : '삭제 상태 전체 충전기';
+  key === 'high_100kw' ? '출력값이 양수인 충전기' : key === 'chargers_per_station' ? '고유 충전소 ID' : key === 'type_mix' ? '지역 충전기' : key === 'operator_hhi' ? '운영기관 ID' : '삭제 상태 전체 충전기';
 
 /** 표시 단위로 반올림한 차이가 0이면 '같음'으로 봅니다(화면 숫자와 문장이 어긋나지 않게). */
 export function roundedDiff(n: number, key: DisparityMetricKey) {
@@ -192,7 +192,7 @@ export function narrate(data: RegionalDisparityData, row: RegionalDisparityRow, 
   if (r.status === 'zero-denominator') {
     if (key === 'high_100kw')
       return [`${name}에는 충전기 ${fmtInt(row.charger_count)}기가 있지만 출력값이 확인된 충전기가 0기여서(분모 0) 100kW 이상 비중을 계산할 수 없습니다.`];
-    if (key === 'operator_hhi') return [`${name}의 운영기관 그룹이 0개여서 HHI를 계산할 수 없습니다(분모 0).`];
+    if (key === 'operator_hhi') return [`${name}의 운영기관 ID가 0개여서 HHI를 계산할 수 없습니다(분모 0).`];
     return [`${name}의 이 지표 분모가 0이어서 값을 계산할 수 없습니다.`];
   }
 
@@ -218,7 +218,7 @@ export function narrate(data: RegionalDisparityData, row: RegionalDisparityRow, 
     case 'operator_hhi':
       return [
         `${name}의 운영기관 집중도(HHI)는 ${ro(v)} ${cmp}. ${rank}입니다.`,
-        `HHI는 운영기관 그룹별 충전기 점유율을 제곱해 더한 값(0–10,000)으로, 클수록 충전기가 소수 운영기관에 몰려 있다는 뜻입니다. 이 지역 운영기관 그룹 ${fmtInt(r.count ?? 0)}개 기준입니다.`,
+        `HHI는 운영기관 ID별 충전기 점유율을 제곱해 더한 값(0–10,000)으로, 클수록 충전기가 소수 운영기관에 몰려 있다는 뜻입니다. 이 지역 운영기관 ID ${fmtInt(r.count ?? 0)}개 기준입니다.`,
       ];
     case 'deletion_share':
       return [
@@ -250,7 +250,7 @@ export function detailSentences(data: RegionalDisparityData, row: RegionalDispar
       ];
     case 'operator_hhi':
       return [
-        `HHI는 운영기관 그룹별 충전기 점유율을 제곱해 더한 값(0–10,000)으로, 클수록 충전기가 소수 운영기관에 몰려 있다는 뜻입니다. 이 지역 운영기관 그룹 ${fmtInt(r.count ?? 0)}개 기준입니다.`,
+        `HHI는 운영기관 ID별 충전기 점유율을 제곱해 더한 값(0–10,000)으로, 클수록 충전기가 소수 운영기관에 몰려 있다는 뜻입니다. 이 지역 운영기관 ID ${fmtInt(r.count ?? 0)}개 기준입니다.`,
       ];
     case 'deletion_share':
       return [
@@ -369,11 +369,11 @@ export const DISPARITY_DEFS: Record<
     definition:
       '허핀달-허쉬만 지수(HHI)로 본 운영기관 집중도입니다. 운영기관마다 충전기 점유율(%)을 구해 제곱한 뒤 모두 더한 값(0–10,000)이며, 클수록 충전기가 소수 운영기관에 몰려 있고 작을수록 여러 운영기관에 나뉘어 있습니다.',
     formula: '운영기관별 (그 운영기관의 충전기 수 ÷ 지역 충전기 수 × 100)²을 모두 더함 · 한 기관이 전부 운영하면 10,000',
-    numerator: '운영기관별 충전기 수(운영기관 ID와 이름이 같은 묶음을 한 기관으로 봅니다)',
+    numerator: '운영기관 ID별 충전기 수(같은 ID의 서로 다른 운영기관명 표기는 한 운영기관으로 봅니다)',
     denominator: '지역 충전기 수(점유율의 분모)',
-    caution: '운영기관 수가 적은 지역은 HHI가 크게 나오기 쉽습니다. 운영기관 집중도는 시장 지배력이나 서비스 품질을 직접 나타내지 않습니다.',
+    caution: '운영기관 수가 적은 지역은 HHI가 크게 나오기 쉽습니다. 운영기관 집중도는 시장 지배력이나 서비스 품질을 직접 나타내지 않습니다. 운영기관 ID 기준이며, 같은 ID가 반드시 같은 법인이라는 뜻은 아닙니다(ID와 운영 법인이 다를 수 있는 충전기 약 1.1%).',
     variables: ['지역', '운영기관', '충전기 유형·삭제 표시 (상단 필터)'],
-    fields: ['지역: zcode', '운영기관: busiId · busiNm 조합', '상단 필터: chgerType · delYn'],
+    fields: ['지역: zcode', '운영기관: 운영기관 ID(busiId)', '상단 필터: chgerType · delYn'],
   },
   deletion_share: {
     definition: '원자료에 삭제 표시가 된 충전기의 비중입니다.',

@@ -22,7 +22,7 @@ function OperatorTable() {
     <Card
       span={12}
       title="운영기관 목록"
-      sub={q.data?.meta.pagination ? `(기관 ID, 명칭) 조합 ${fmtInt(q.data.meta.pagination.total_items)}개, 충전기 수 내림차순` : '충전기 수 내림차순'}
+      sub={q.data?.meta.pagination ? `운영기관 ID 기준 ${fmtInt(q.data.meta.pagination.total_items)}개, 충전기 수 내림차순` : '충전기 수 내림차순'}
       scope={{ kind: 'filtered' }}
       isFetching={q.isFetching && !q.isLoading}
     >
@@ -30,7 +30,7 @@ function OperatorTable() {
         <DataTable
           caption="운영기관별 충전기"
           rows={rows}
-          rowKey={(r) => `${r.operator_id}|${r.operator_name}`}
+          rowKey={(r) => r.operator_id}
           isSelected={(r) => r.operator_id === state.operator}
           maxHeight={440}
           columns={[

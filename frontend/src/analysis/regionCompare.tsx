@@ -374,7 +374,7 @@ export function insightChargerCompare(c: ChargerCompare, out: { a: OutputSide; b
         충전기 수는 지역 규모를 반영하지 않은 절대값이며, 전기차 등록 대수와 기준 시점이 달라 서로 나눈 지표로 해석하지 않습니다.
       </>
     ),
-    caution: `삭제 표시(delYn)는 자료상 표기이며 실제 이용 가능 여부를 뜻하지 않습니다. 100kW 이상 비중의 분모는 출력값이 양수인 충전기이며 결측·0 이하·숫자 아님은 제외합니다. 같은 기관도 명칭 표기가 다르면 별도 조합으로 집계됩니다. ${DATE_NOTE}`,
+    caution: `삭제 표시(delYn)는 자료상 표기이며 실제 이용 가능 여부를 뜻하지 않습니다. 100kW 이상 비중의 분모는 출력값이 양수인 충전기이며 결측·0 이하·숫자 아님은 제외합니다. 운영기관은 운영기관 ID 기준이며 같은 ID의 서로 다른 운영기관명 표기는 하나로 셉니다(같은 ID가 반드시 같은 법인이라는 뜻은 아님). ${DATE_NOTE}`,
     source: `${CH_SRC}, /api/charger-regions + /api/charger-output (지역별)`,
     variables: ['region_code', 'charger_count', 'station_count', 'deleted_charger_count', 'output_kw', 'value_status'],
   };

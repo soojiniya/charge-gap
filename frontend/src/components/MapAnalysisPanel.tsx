@@ -119,13 +119,13 @@ export function MapAnalysisPanel({ filters, selected, group, onPick, onClearGrou
   const typeName = filters.charger_type
     ? opts.data?.charger_types.find((t) => t.code === filters.charger_type)?.name ?? filters.charger_type
     : null;
-  // 운영기관 ID 하나에 명칭이 여러 개일 수 있어(API 행 = ID·명칭 조합) 충전기 수가 가장 많은 명칭과 나머지 개수를 함께 표시
+  // 운영기관 ID 기준 한 행: 대표 이름(원본 기관명)과, 같은 ID의 다른 운영기관명 표기 개수를 함께 표시
   const operatorLabel = useMemo(() => {
     if (!filters.operator_id) return null;
-    const names = (opsData?.data ?? []).filter((o) => o.operator_id === filters.operator_id).map((o) => o.operator_name);
-    const total = opsData?.meta.pagination?.total_items ?? names.length;
-    if (!names.length) return filters.operator_id;
-    return `${filters.operator_id} ${names[0]}${total > 1 ? ` 외 ${total - 1}개 명칭` : ''}`;
+    const row = (opsData?.data ?? []).find((o) => o.operator_id === filters.operator_id);
+    if (!row) return filters.operator_id;
+    const others = (row.name_variants ?? []).filter((v) => v.name !== row.operator_name).length;
+    return `${filters.operator_id} ${row.operator_name}${others > 0 ? ` 외 표기 ${others}개` : ''}`;
   }, [filters.operator_id, opsData]);
 
   const counts = ovData?.data.chargers;
@@ -356,7 +356,7 @@ export function MapAnalysisPanel({ filters, selected, group, onPick, onClearGrou
           <BarList
             unit="기"
             items={operatorRows.map((o) => ({
-              key: JSON.stringify([o.operator_id, o.operator_name]),
+              key: o.operator_id,
               label: (
                 <>
                   {o.operator_name} <span className="num muted">{o.operator_id}</span>

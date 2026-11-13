@@ -45,7 +45,7 @@
 | region_code | 두 자리 문자열 / 생략 시 전국 | 현재 16개 지역의 충전기 필터 |
 | charger_type | `01`~`11` 문자열 / 생략 시 전체 | 공식 커넥터 유형 |
 | deletion | `all` / `not_deleted` / `deleted`; 기본 all | 삭제 포함 / 비삭제 / 삭제 표시 |
-| operator_id | 관측된 busiId 문자열 / 생략 시 전체 | 기관 ID 필터. 이름 변형은 집계에서 별도 유지 |
+| operator_id | 관측된 busiId 문자열 / 생략 시 전체 | 운영기관 ID 필터. 같은 ID의 운영기관명 표기는 모두 포함 |
 
 공식 유형: 01 DC차데모, 02 AC완속, 03 DC차데모+AC3상, 04 DC콤보, 05 DC차데모+DC콤보, 06 DC차데모+AC3상+DC콤보, 07 AC3상, 08 DC콤보(완속), 09 NACS, 10 DC콤보+NACS, 11 DC콤보2(버스전용). 09는 정의는 있지만 현재 관측 0건이라 필터 결과가 빈 배열입니다. 타입을 출력 구간으로 자동 변환하지 마세요.
 
@@ -59,7 +59,7 @@
 | `/api/charger-types` | 충전기 공통 필터 | 유형별 건수·공식 정의·정의 확인 여부·구성비 |
 | `/api/charger-output` | 충전기 공통 필터 | output 원문별 건수·수치 kW·검증상태·구성비 |
 | `/api/charger-output/regions` | 충전기 공통 필터 (`region_code`는 무시) | 16개 지역 각각의 `/api/charger-output` 결과를 한 번에 (지역 × 출력 히트맵용, 아래 절) |
-| `/api/operators` | 충전기 공통 필터 + `page`, `limit` | 공백 정리 후 기관 ID·명칭 조합별 건수 |
+| `/api/operators` | 충전기 공통 필터 + `page`, `limit` | 운영기관 ID(busiId)별 건수, 대표 이름(기관명 bnm), 운영기관명 표기(`name_variants`) |
 | `/api/growth` | `year_from`, `year_to` | 연간 설치·누적 통계 및 부분 연도 표시 |
 | `/api/locations` | 충전기 공통 필터 + `page`, `limit`, `bbox` | 충전소별 대표 좌표·일치 충전기 수 |
 | `/api/locations/grid` | 충전기 공통 필터 + **필수** `bbox`, `zoom=11..15` | 화면 영역 전체 충전소를 고정 격자 칸으로 집계 (지도 줌 11~15 묶음용, 아래 절) |
@@ -110,7 +110,9 @@ Regional Explorer의 지역 × 출력 구간 히트맵은 이전에 `/api/charge
 - 지역: `region_code`, `region_name` + 충전기 공통 건수와 `share_pct`.
 - 유형: `charger_type_code`, `official_definition`, `definition_verified` + 공통 건수와 `share_pct`.
 - 출력: `output_raw`, `output_kw`(숫자 또는 null), `value_status`(`positive_numeric/missing/nonpositive/nonnumeric`) + 공통 건수와 `share_pct`. `meta.output_statistics`에는 양수 유효값의 개수·결측/무효값 수·최소·중앙·최대 kW가 있습니다. 빈 집합의 통계 수치는 null입니다.
-- 운영기관: `operator_id`, `operator_name` + 공통 건수와 `share_pct`. 앞뒤 공백만 정리하며 파워큐브/파워큐브코리아 같은 다른 이름은 통합하지 않습니다. 현재 전체 342개 조합입니다.
+- 운영기관: **운영기관 ID(`busiId`) 기준** 한 행. `operator_id`, `operator_name`(대표 이름 = 원본 기관명 `bnm`, ID별 최빈값), 공통 건수, `share_pct`, `name_variants`(같은 ID에 기록된 운영기관명 `busiNm` 표기와 충전기 수, 많은 순; 합계 = `charger_count`). 정렬은 충전기 수 내림차순, 같으면 ID 순. 현재 운영기관 ID 144개, ID·운영기관명 조합 342개(앞뒤 공백 정리 후).
+  - 같은 ID의 서로 다른 운영기관명(사명 변경·약칭·영문·위탁 운영사 등, 예: 파워큐브/파워큐브코리아, 한국전자금융/NICE인프라)은 한 운영기관으로 셉니다. **같은 ID가 반드시 같은 법인이라는 뜻은 아닙니다.** 등록 기관과 운영 법인이 다를 수 있는 충전기는 약 1.1%(약 6,000기)이며, 이를 별도 운영기관으로 떼어도 전국 HHI는 811→810, 지역 HHI 차이는 최대 6점입니다(`reports/operator_id_grouping_2026-11-14.md`).
+  - 지역 격차의 운영기관 집중도(HHI), 두 지역 비교의 상위 운영기관, 웹 트리맵, Python PY10이 모두 이 기준을 씁니다(기준 상수: `backend/chargegap_api/data.py`의 `OPERATOR_KEY`).
 - 연도 통계: `year`, `annual_installed_count`, `cumulative_count`, `completed_calendar_year`, `is_partial_year`, `measurement_cutoff_date`(현재 null). `year_from/to`는 2011~2026 정수, 기본 전체 기간이며 시작≤종료여야 합니다. 누적값은 선택 구간의 누적합으로 다시 계산하지 않고 원본 전체 기간의 누적 통계 그대로 제공합니다.
 - 위치: `station_id`, `station_name`, `address`, `region_code`, `region_name`, `latitude`, `longitude`, `charger_count`, `station_count`(행당 1), `not_deleted_charger_count`, `deleted_charger_count`. 좌표는 WGS84 경위도입니다.
 - 그래프: `id`, `filename`, `title`, `chart_type`, `purpose`, `data`, `reason`, `results`, `caution`, `period`, `metrics`, `image_pixels`, `dpi`, `sha256`, `image_url`, `filters_apply=false`.
@@ -255,7 +257,7 @@ $env:CHARGE_GAP_CORS_ORIGINS='http://localhost:5173,http://localhost:3000'
 | `high_100kw` | 출력 100kW 이상 충전기 수 ÷ 출력값이 확인된 충전기 수 × 100 | 출력(`output`)이 숫자이고 0보다 큰 충전기. 결측·0 이하·숫자 아님은 분자·분모 모두 제외 | `value_pct` (%) |
 | `chargers_per_station` | 충전기 수 ÷ 고유 `statId` 수 | 지역 고유 충전소 수 | `value` (기/곳) |
 | `type_mix` | 유형별 충전기 수 ÷ 지역 충전기 수 × 100 | 지역 충전기 수 | 배열 항목별 `value_pct` (%) |
-| `operator_hhi` | Σ(운영기관 그룹 충전기 수 ÷ 지역 충전기 수)² × 10,000 | 지역 충전기 수. 그룹 = 공백 정리한 `(busiId, busiNm)` | `value` (0–10,000), `operator_count` |
+| `operator_hhi` | Σ(운영기관 ID별 충전기 수 ÷ 지역 충전기 수)² × 10,000 | 지역 충전기 수. 운영기관 = 운영기관 ID(`busiId`) | `value` (0–10,000), `operator_count`(운영기관 ID 수) |
 | `deletion_share` | 삭제 표시(`delYn=Y`) 충전기 수 ÷ 전체 충전기 수 × 100 | 삭제 상태 전체. **이 지표는 `deletion` 필터와 관계없이 all로 계산** | `value_pct` (%) |
 
 응답 구조: `data.regions`는 16개 행(`region_code`, `region_name`, 필터 적용 후 `charger_count`·`station_count`, `metrics`), `data.national`은 같은 5개 지표의 전국 값입니다. 비율 지표는 `numerator`·`denominator`를 함께 제공합니다.
@@ -339,9 +341,9 @@ $env:CHARGE_GAP_CORS_ORIGINS='http://localhost:5173,http://localhost:3000'
         "value_pct": 8.04473660253687
       },
       "operator_hhi": {
-        "operator_count": 342,
+        "operator_count": 144,
         "scale": "0-10000",
-        "value": 585.7074915470868
+        "value": 810.9183170226236
       },
       "type_mix": [
         {

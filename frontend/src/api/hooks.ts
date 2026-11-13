@@ -119,8 +119,8 @@ async function fetchAllOperators({ signal }: { signal: AbortSignal }) {
 }
 
 /**
- * 운영기관 선택지: 필터 없이 전체 (기관 ID, 명칭) 조합을 limit=200으로 모두 받습니다.
- * 현재 342개 조합 → 2회 요청. next_page가 null이 될 때까지 이어서 받습니다.
+ * 운영기관 선택지: 필터 없이 전체 운영기관 ID를 limit=200으로 모두 받습니다.
+ * 현재 운영기관 ID 144개 → 1회 요청. next_page가 null이 될 때까지 이어서 받습니다.
  */
 export function useAllOperators() {
   return useQuery({

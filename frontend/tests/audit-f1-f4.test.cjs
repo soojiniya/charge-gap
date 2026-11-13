@@ -4,9 +4,11 @@ const React = require('react');
 const { renderToStaticMarkup } = require('react-dom/server');
 const { loader } = require('./ts-loader.cjs');
 
-test('F1: operator rows use the API identity (ID and name), not ID alone', () => {
-  const rows = ['GS차지비', '차지비', '포스코ICT', 'GS커넥트', 'GS주차장'].map((name, i) => ({
-    operator_id: 'PI', operator_name: name, charger_count: 5 - i, share_pct: 20,
+test('F1: operator rows are one per operator ID (busiId); name variants stay inside the row', () => {
+  // /api/operators: one row per operator ID, display name = institution name, other spellings in name_variants.
+  const rows = [['PI', 'GS차지비'], ['PW', '파워큐브'], ['EV', '에버온'], ['PL', '플러그링크'], ['LU', 'LG유플러스 볼트업']].map(([id, name], i) => ({
+    operator_id: id, operator_name: name, charger_count: 5 - i, share_pct: 20,
+    name_variants: [{ name, charger_count: 4 - i }, { name: `${name}(주)`, charger_count: 1 }],
   }));
   const panel = loader({
     react: { ...React, useMemo: fn => fn(), useState: initial => [initial, () => {}] },
@@ -29,6 +31,7 @@ test('F1: operator rows use the API identity (ID and name), not ID alone', () =>
   const items = findItems(tree);
   assert.ok(items);
   assert.equal(new Set(items.map(i => i.key)).size, rows.length);
+  assert.deepEqual(items.map(i => i.key), rows.map(r => r.operator_id));
   assert.deepEqual(items.map(i => i.value), rows.map(r => r.charger_count));
 });
 

@@ -22,7 +22,7 @@ const KOREAN_METRIC_RULES: Record<DisparityMetricKey, string> = {
   high_100kw: '출력값이 양수인 충전기 중 100kW 이상인 충전기 수의 비중입니다. 출력 누락·0 이하·숫자가 아닌 값은 계산에서 제외합니다.',
   chargers_per_station: '지역별 충전기 수를 지역 내 고유 충전소 ID(statId) 수로 나눈 값입니다.',
   type_mix: '선택한 충전기 유형의 수를 지역 내 전체 충전기 수로 나눈 비중입니다.',
-  operator_hhi: '운영기관 ID와 명칭별 충전기 수를 집계하고, 기관별 충전기 점유율(%)을 제곱해 합산합니다. 값의 범위는 0~10,000점입니다.',
+  operator_hhi: '운영기관 ID(busiId)별 충전기 수를 집계하고(같은 ID의 서로 다른 운영기관명 표기는 하나로 셈), 운영기관별 충전기 점유율(%)을 제곱해 합산합니다. 값의 범위는 0~10,000점입니다. 같은 ID가 반드시 같은 법인이라는 뜻은 아닙니다.',
   deletion_share: '삭제 표시 충전기 수를 삭제 상태가 확인된 전체 충전기 수로 나눈 비중입니다. 삭제 상태 필터는 이 지표 계산에서 제외합니다.',
 };
 
@@ -165,7 +165,7 @@ export function buildDisparityReportHtml(context: DisparityExportContext) {
   const selected = data.regions.find((row) => row.region_code === selectedRegionCode);
   const effectiveFilters = filters.length ? filters.join(' · ') : '유형·운영기관·삭제 상태 필터 없음';
   const nationalBasisDetail = metric === 'operator_hhi'
-    ? `전국 운영기관 ID·명칭 조합 ${data.national.operator_hhi.operator_count?.toLocaleString('ko-KR') ?? '—'}개 그룹의 충전기 점유율로 별도 재계산`
+    ? `전국 운영기관 ID ${data.national.operator_hhi.operator_count?.toLocaleString('ko-KR') ?? '—'}개의 충전기 점유율로 별도 재계산`
     : metric === 'type_mix'
       ? `선택 유형 ${data.national.type_mix.find((item) => item.charger_type_code === type)?.charger_count.toLocaleString('ko-KR') ?? '0'}기 / 전국 충전기 ${data.national.chargers_per_station.numerator?.toLocaleString('ko-KR') ?? '—'}기`
       : metric === 'high_100kw'

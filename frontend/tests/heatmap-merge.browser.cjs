@@ -1,7 +1,8 @@
 /* Real-browser regression: Regional Explorer region × output heatmap served by ONE /api/charger-output/regions request.
  *   const r = await require(thisFile)(browser, baseUrl, apiUrl)  → { status, checks, failed }
  * Checks
- *  - first load: 1 heatmap request instead of 16 (Regional Explorer 26 → 11 requests);
+ *  - first load: 1 heatmap request instead of 16 (Regional Explorer 26 → 10 requests; the operator list now fits one
+ *    limit=200 page because /api/operators returns one row per operator ID);
  *  - every heatmap cell (aria-label count) equals what the former 16 /api/charger-output requests give, for filter combinations;
  *  - region filter is ignored by the heatmap (all regions, selected row highlighted);
  *  - rapid filter changes with responses arriving in reverse order: only the latest filter is ever drawn;
@@ -54,7 +55,7 @@ module.exports = async function heatmapMergeRegressions(browser, BASE = 'http://
     return { page, reqs };
   }
 
-  // 1) first load: 11 requests, one heatmap request, no per-region output requests
+  // 1) first load: 10 requests, one heatmap request, no per-region output requests
   {
     const { page, reqs } = await open('/regional-explorer');
     await heatReady(page);
@@ -63,7 +64,7 @@ module.exports = async function heatmapMergeRegressions(browser, BASE = 'http://
     const perRegion = reqs.filter((u) => /^\/api\/charger-output\?.*region_code=/.test(u));
     check('first load: exactly one /api/charger-output/regions request', heat.length === 1, heat);
     check('first load: no per-region /api/charger-output requests', perRegion.length === 0, perRegion);
-    check('first load: Regional Explorer sends 11 API requests (was 26)', reqs.length === 11, reqs);
+    check('first load: Regional Explorer sends 10 API requests (was 26)', reqs.length === 10, reqs);
     check('heatmap request carries no region filter', !/region_code=/.test(heat[0] || ''), heat);
     const expected = await expectedRows({});
     check('heatmap cells = former 16 requests (no filter)', JSON.stringify(await drawnRows(page)) === JSON.stringify(expected), { drawn: await drawnRows(page), expected });

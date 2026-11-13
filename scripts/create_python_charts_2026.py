@@ -116,7 +116,7 @@ DPI = 150
 # ---------------------------------------------------------------- data (CSV only)
 DATA = P / 'data/processed'
 raw = pd.read_csv(DATA / 'charger_info_clean.csv', dtype=str, keep_default_na=False,
-                  usecols=['zcode', 'statId', 'chgerId', 'delYn', 'chgerType', 'busiId', 'busiNm', 'output', '_fetched_at'])
+                  usecols=['zcode', 'statId', 'chgerId', 'delYn', 'chgerType', 'busiId', 'bnm', 'busiNm', 'output', '_fetched_at'])
 for column in raw:
     raw[column] = raw[column].str.strip()
 assert set(raw.delYn) <= {'N', 'Y'} and not raw.duplicated(['statId', 'chgerId']).any()
@@ -544,11 +544,19 @@ save(fig, 9, 'cumulative_installations', title='연도별 누적 충전기 설�
              'cumulative': growth.cumulative_count.astype(int).tolist(), 'partial_years': partial.year.astype(int).tolist()})
 
 # ================================================================ 10. 운영기관별 충전기 규모 (트리맵, 상위 20 + 기타)
-ops = (frame.groupby(['busiId', 'busiNm']).size().reset_index(name='charger_count')
-       .sort_values(['charger_count', 'busiId', 'busiNm'], ascending=[False, True, True], kind='stable'))
+# 백엔드 /api/operators와 같은 기준(backend/chargegap_api/data.py OPERATOR_KEY): 운영기관 ID(busiId)별 합계,
+# 표시 이름은 ID별 가장 많은 원본 기관명(bnm). 같은 ID의 운영기관명(busiNm) 표기는 하나로 셉니다.
+# verify_python_charts_2026.py가 순서·건수·이름을 API와 대조합니다.
+name_pairs = frame.groupby(['busiId', 'busiNm']).ngroups
+labels_by_id = (frame.groupby(['busiId', 'bnm']).size().reset_index(name='n')
+                .sort_values(['n', 'bnm'], ascending=[False, True], kind='stable').drop_duplicates('busiId')
+                .set_index('busiId').bnm)
+ops = (frame.groupby('busiId').size().reset_index(name='charger_count')
+       .sort_values(['charger_count', 'busiId'], ascending=[False, True], kind='stable'))
+ops['name'] = ops.busiId.map(labels_by_id)
 top20 = ops.head(20)
 vals10 = list(top20.charger_count.astype(int)) + [int(ops.iloc[20:].charger_count.sum())]
-labels10 = [f'{r.busiNm} [{r.busiId}]' for r in top20.itertuples()] + [f'기타 {len(ops) - 20}개 조합']
+labels10 = [f'{r.name} [{r.busiId}]' for r in top20.itertuples()] + [f'기타 {len(ops) - 20}개 운영기관 ID']
 assert sum(vals10) == N_ALL
 
 
@@ -569,7 +577,7 @@ def rectangles(weights, x=0.0, y=0.0, w=100.0, h=60.0):  # v2와 같은 이분 �
 
 rects = rectangles(vals10)
 assert np.allclose([w * h / 6000 for _, _, w, h in rects], np.array(vals10) / sum(vals10))
-fig, ax = canvas('운영기관별 충전기 규모', f'상위 20개 (기관 ID, 명칭) 조합 + 기타 · 면적 = 충전기 수 · 전체 {len(ops)}개 조합', CH_SOURCE, CH_BASIS, height=8.6)
+fig, ax = canvas('운영기관별 충전기 규모', f'운영기관 ID 기준 상위 20개 + 기타 · 면적 = 충전기 수 · 전체 운영기관 ID {len(ops)}개', CH_SOURCE, CH_BASIS, height=8.6)
 ax.set_position([.03, .16, .55, .69])
 def tm_fill(rank: int) -> str:  # OperatorTreemap.tsx 와 같은 순위 위계
     if rank == 1:
@@ -602,11 +610,11 @@ ax.axis('off')
 first10 = top20.iloc[0]
 save(fig, 10, 'operator_treemap', title='운영기관별 충전기 규모', technique='트리맵 (면적 비례)', libraries=['Matplotlib patches', 'Seaborn 팔레트'],
      data_date=CH_DATE, basis=CH_BASIS, regions='전국 (16개 지역 합계)', deletion='전체 (삭제 표시 포함)',
-     results=[f"(기관 ID, 명칭) 조합은 {len(ops)}개이며, 가장 큰 곳은 {first10.busiNm} [{first10.busiId}] {int(first10.charger_count):,}기({first10.charger_count / N_ALL * 100:.2f}%)입니다.",
-              f"상위 20개 조합이 {sum(vals10[:-1]):,}기({sum(vals10[:-1]) / N_ALL * 100:.1f}%), 나머지 {len(ops) - 20}개 조합이 {vals10[-1]:,}기입니다."],
-     caution='앞뒤 공백만 정리했고 명칭이 다른 기관을 자동으로 합치지 않습니다. 면적은 충전기 수이며 법적 소유 관계가 아닙니다.',
+     results=[f"운영기관 ID는 {len(ops)}개(ID·운영기관명 조합 {name_pairs}개)이며, 가장 큰 곳은 {first10['name']} [{first10.busiId}] {int(first10.charger_count):,}기({first10.charger_count / N_ALL * 100:.2f}%)입니다.",
+              f"상위 20개 운영기관이 {sum(vals10[:-1]):,}기({sum(vals10[:-1]) / N_ALL * 100:.1f}%), 나머지 {len(ops) - 20}개가 {vals10[-1]:,}기입니다."],
+     caution='운영기관 ID(busiId) 기준으로, 같은 ID의 서로 다른 운영기관명(사명 변경·약칭·위탁 운영사 등)을 하나로 셉니다. 같은 ID가 반드시 같은 법인이라는 뜻은 아니며, ID와 운영 법인이 다를 수 있는 충전기는 약 1.1%입니다. 면적은 충전기 수이며 법적 소유 관계가 아닙니다.',
      web={'graph': 10, 'title': '운영기관별 충전기 규모'},
-     metric={'operator_pairs': int(len(ops)), 'labels': labels10, 'counts': vals10})
+     metric={'operator_ids': int(len(ops)), 'name_variant_pairs': int(name_pairs), 'labels': labels10, 'counts': vals10})
 
 # ---------------------------------------------------------------- outputs
 assert [c['id'] for c in charts] == list(range(1, 11))

@@ -82,7 +82,7 @@ test('no national value -> no comparison sentence', () => {
 
 test('HHI is explained as operator concentration; deletion is not called a fault', () => {
   assert.match(text(seoul, 'operator_hhi'), /점유율을 제곱해 더한 값\(0–10,000\).*소수 운영기관에 몰려/);
-  assert.match(text(seoul, 'operator_hhi'), /운영기관 그룹 5개/);
+  assert.match(text(seoul, 'operator_hhi'), /운영기관 ID 5개/);
   const del = text(seoul, 'deletion_share');
   assert.match(del, /110기 중 삭제 표시 충전기는 5기로 4\.55%/);
   assert.match(del, /실제 고장이나 사용 불가를 뜻하지 않습니다/);

@@ -1076,7 +1076,7 @@ export function insightCumulative(
 export function insightOperators(
   top: OperatorRow[],
   matchedTotal: number,
-  combos: number,
+  operatorCount: number,
   filtered: boolean,
   operatorSelected = false,
 ): InsightProps {
@@ -1092,7 +1092,7 @@ export function insightOperators(
     purpose:
       "충전기 운영이 소수 기관에 집중되어 있는지, 여러 기관에 분산되어 있는지 확인합니다.",
     reason:
-      '수백 개 기관의 점유 규모를 면적으로 한 번에 비교하기 위해 트리맵을 썼습니다. 상위 20개 조합만 칸으로 그리고 나머지는 "기타" 한 칸으로 묶었습니다.',
+      '100개가 넘는 운영기관의 점유 규모를 면적으로 한 번에 비교하기 위해 트리맵을 썼습니다. 운영기관 ID 기준 상위 20개만 칸으로 그리고 나머지는 "기타" 한 칸으로 묶었습니다.',
     findings:
       top.length && matchedTotal
         ? [
@@ -1103,16 +1103,16 @@ export function insightOperators(
             </>,
             <>
               상위 5개 <B>{pct(s(5), matchedTotal)}</B>, 상위 10개{" "}
-              <B>{pct(s(10), matchedTotal)}</B>, 기관 ID·명칭 조합{" "}
-              {fmtInt(combos)}개.
+              <B>{pct(s(10), matchedTotal)}</B>, 운영기관 ID{" "}
+              {fmtInt(operatorCount)}개.
             </>,
           ]
         : [],
     interpretation:
       top.length && matchedTotal ? (
         <>
-          상위 10개 조합이 전체의 {pct(s(10), matchedTotal)}를 운영하고, 나머지{" "}
-          {fmtInt(Math.max(0, combos - 10))}개 조합이{" "}
+          상위 10개 운영기관이 전체의 {pct(s(10), matchedTotal)}를 운영하고, 나머지{" "}
+          {fmtInt(Math.max(0, operatorCount - 10))}개 운영기관이{" "}
           {pct(matchedTotal - s(10), matchedTotal)}를 나눠 갖습니다. 대형 사업자
           중심이지만 소규모 운영 주체도 매우 많은 구조입니다.
         </>
@@ -1120,7 +1120,7 @@ export function insightOperators(
         "—"
       ),
     caution:
-      "같은 기관도 명칭 표기가 다르면 별도 조합으로 집계됩니다(예: 파워큐브/파워큐브코리아). 운영기관별 충전소 수는 합산하지 않습니다. 운영기관 필터를 선택해도 이 그래프의 계산에는 적용하지 않고 선택한 기관을 강조만 합니다(지역·유형·삭제 필터만 적용).",
+      "운영기관 ID(busiId) 기준입니다. 같은 ID의 서로 다른 운영기관명 표기(예: 파워큐브/파워큐브코리아, 사명 변경·위탁 운영사)는 하나로 셉니다. 같은 ID가 반드시 같은 법인이라는 뜻은 아니며, ID와 운영 법인이 다를 수 있는 충전기는 약 1.1%입니다. 운영기관별 충전소 수는 합산하지 않습니다. 운영기관 필터를 선택해도 이 그래프의 계산에는 적용하지 않고 선택한 기관을 강조만 합니다(지역·유형·삭제 필터만 적용).",
     source: `${CH_SRC}, /api/operators (상위 20개) + meta.matched`,
     variables: ["operator_id", "operator_name", "charger_count", "share_pct"],
   };
