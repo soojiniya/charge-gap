@@ -1,0 +1,342 @@
+{
+  "title": "Python 원본 그래프 (처음 제작한 PNG 10개)",
+  "generator": "초기 Python 그래프 세트 (원본 outputs/charts/ · 생성 기록 reports/chart_verification.json · 생성 스크립트는 저장소에 없음)",
+  "generated_at": "2026-10-14",
+  "libraries": {
+    "python": "3.12.10",
+    "pandas": "2.3.3",
+    "numpy": "2.5.4",
+    "matplotlib": "3.11.2",
+    "seaborn": "0.13.2"
+  },
+  "font": "Malgun Gothic",
+  "fixed_notice": "처음 Python으로 제작한 원본 PNG를 수정 없이 보여 줍니다. 전기차 등록 그래프(01–03)는 2025년 12월 자료(899,101대, 17개 시도) 기준이라 현재 웹사이트의 2026년 9월 자료와 수치가 다릅니다. 웹사이트 필터에 따라 바뀌지 않습니다.",
+  "data": {
+    "ev_registration": {
+      "date": "2025년 12월",
+      "total": 899101,
+      "regions": 17,
+      "source": "2025년 12월 자동차 등록자료 · 전처리 ev_registration_by_region_2025.csv"
+    },
+    "chargers": {
+      "date": "2026-10-15 조회",
+      "snapshot": "2026-10-15 04:16–04:19 KST",
+      "total": 527433,
+      "not_deleted": 523312,
+      "deleted": 4121,
+      "basis": "그래프별로 전체 또는 비삭제 표시 (각 그래프 설명 참조)",
+      "source": "한국환경공단 getChargerInfo · 정제 CSV 및 검증된 집계 CSV"
+    },
+    "growth": {
+      "years": [
+        2011,
+        2026
+      ],
+      "partial_years": [
+        2026
+      ]
+    }
+  },
+  "charts": [
+    {
+      "id": 1,
+      "file": "01_ev_registration_top10.png",
+      "title": "지역별 전기차 등록 대수 TOP 10",
+      "technique": "가로 막대",
+      "libraries": [
+        "Matplotlib",
+        "Seaborn"
+      ],
+      "data_date": "2025년 12월 등록",
+      "basis": "순수 전기차 899,101대 · 2025년 당시 17개 시도 · 등록 자료",
+      "regions": "2025년 당시 17개 시도 중 상위 10개 (광주·전남 분리)",
+      "deletion": "해당 없음 (등록 자료)",
+      "results": [
+        "경기 207,075대가 전국의 23.03%로 가장 많습니다.",
+        "TOP 10 합계는 744,793대입니다."
+      ],
+      "caution": "2025-12 등록 재고이며 2026년 충전기 수와 같은 시점의 공급 적정성을 뜻하지 않습니다.",
+      "web": null,
+      "source": "2025년 12월 자동차 등록자료 · 전처리 ev_registration_by_region_2025.csv",
+      "purpose": "지역별 전기차 등록 규모 비교",
+      "reason": "긴 지역 이름과 순위를 읽기 쉽고 0 기준으로 크기를 비교할 수 있습니다.",
+      "data_files": "ev_registration_by_region_2025.csv",
+      "relation": "처음 제작한 원본 그래프입니다. 현재 웹 그래프와 기준 시점·지역 체계·삭제 기준이 다를 수 있어 수치를 직접 대조하지 않았습니다.",
+      "image_pixels": [
+        2400,
+        1500
+      ],
+      "sha256": "0e96ad7970496e425ed9a8488e719de3fdc77f370ced2042bbbdb8f825cde787"
+    },
+    {
+      "id": 2,
+      "file": "02_ev_vehicle_type_donut.png",
+      "title": "전기차 차종별 등록 비율",
+      "technique": "도넛 차트",
+      "libraries": [
+        "Matplotlib",
+        "Seaborn"
+      ],
+      "data_date": "2025년 12월 등록",
+      "basis": "순수 전기차 899,101대 · 2025년 당시 17개 시도 · 등록 자료",
+      "regions": "전국 (2025년 당시 17개 시도 합계)",
+      "deletion": "해당 없음 (등록 자료)",
+      "results": [
+        "승용 713,835대 (79.39%)",
+        "승합 14,779대 (1.64%)",
+        "화물 169,744대 (18.88%)",
+        "특수 743대 (0.08%)."
+      ],
+      "caution": "차종과 충전기 커넥터 유형은 다른 개념입니다. 아주 작은 특수차 비중은 범례의 수치로 확인합니다.",
+      "web": null,
+      "source": "2025년 12월 자동차 등록자료 · 전처리 ev_registration_by_region_2025.csv",
+      "purpose": "전기차 차종 구성 파악",
+      "reason": "전국 합계 안에서 4개 차종의 비중을 보여 주고 가운데 합계를 표시합니다.",
+      "data_files": "ev_registration_by_region_2025.csv",
+      "relation": "처음 제작한 원본 그래프입니다. 현재 웹 그래프와 기준 시점·지역 체계·삭제 기준이 다를 수 있어 수치를 직접 대조하지 않았습니다.",
+      "image_pixels": [
+        2600,
+        1500
+      ],
+      "sha256": "cfafa37c02d0743e8337f7c64922e7dc81eb443b1f1e2dee4cf551866cfea4a9"
+    },
+    {
+      "id": 3,
+      "file": "03_ev_commercial_stacked.png",
+      "title": "사업용·비사업용 전기차 등록 비교",
+      "technique": "누적 막대",
+      "libraries": [
+        "Matplotlib",
+        "Seaborn"
+      ],
+      "data_date": "2025년 12월 등록",
+      "basis": "순수 전기차 899,101대 · 2025년 당시 17개 시도 · 등록 자료 · 막대 높이 = 지역 전체 등록 대수",
+      "regions": "2025년 당시 17개 시도 (광주·전남 분리)",
+      "deletion": "해당 없음 (등록 자료)",
+      "results": [
+        "전국 비사업용 730,309대 (81.23%), 사업용 168,792대 (18.77%)입니다."
+      ],
+      "caution": "막대는 비율이 아닌 대수입니다. 리스·사업용 등록지 등의 원인 자료 없이 거주·실제 이용 수요로 해석하지 않습니다.",
+      "web": null,
+      "source": "2025년 12월 자동차 등록자료 · 전처리 ev_registration_by_region_2025.csv",
+      "purpose": "지역별 사업용·비사업용 구성과 규모 비교",
+      "reason": "전체 규모와 두 용도 집단의 기여를 동시에 보여 줍니다.",
+      "data_files": "ev_registration_by_region_2025.csv",
+      "relation": "처음 제작한 원본 그래프입니다. 현재 웹 그래프와 기준 시점·지역 체계·삭제 기준이 다를 수 있어 수치를 직접 대조하지 않았습니다.",
+      "image_pixels": [
+        2800,
+        1600
+      ],
+      "sha256": "efd05bf2b5896aa24d2e18034071a9d3903480a72c6f8517569bfa5f829316c3"
+    },
+    {
+      "id": 4,
+      "file": "04_chargers_by_region.png",
+      "title": "지역별 충전기 현황",
+      "technique": "세로 막대",
+      "libraries": [
+        "Matplotlib",
+        "Seaborn"
+      ],
+      "data_date": "2026-10-15 조회 (04:16–04:19 KST)",
+      "basis": "전체 527,433기 = 비삭제 523,312기 + 삭제 표시 4,121기",
+      "regions": "16개 시도 (전남광주통합특별시 포함)",
+      "deletion": "전체 527,433기, 비삭제·삭제 표시를 색으로 구분",
+      "results": [
+        "경기 155,001기(비삭제 154,877기), 서울 76,202기(비삭제 75,506기) 순입니다.",
+        "전남광주통합특별시는 32,913기입니다."
+      ],
+      "caution": "API 현황은 설치량 통계와 다르며 삭제 포함 총수를 운영 중 대수로 해석하지 않습니다.",
+      "web": null,
+      "source": "한국환경공단 getChargerInfo · 정제 CSV 및 검증된 집계 CSV",
+      "purpose": "현재 지역별 충전기 규모와 삭제 표시 구분",
+      "reason": "16개 지역의 총수를 비교하면서 삭제 포함 총수의 구성도 구분합니다.",
+      "data_files": "charger_region_summary.csv; charger_info_clean.csv",
+      "relation": "처음 제작한 원본 그래프입니다. 현재 웹 그래프와 기준 시점·지역 체계·삭제 기준이 다를 수 있어 수치를 직접 대조하지 않았습니다.",
+      "image_pixels": [
+        2800,
+        1600
+      ],
+      "sha256": "d7b6121823427748218e42b23fedea289d48b2f54456e01ed21b7d8ffadf3144"
+    },
+    {
+      "id": 5,
+      "file": "05_station_location_scatter.png",
+      "title": "전국 충전소 위치 분포",
+      "technique": "경위도 산점도 지도",
+      "libraries": [
+        "Matplotlib",
+        "Seaborn"
+      ],
+      "data_date": "2026-10-15 조회 (04:16–04:19 KST)",
+      "basis": "고유 충전소별 대표 좌표 1개 (충전기별 점 아님)",
+      "regions": "전국 (경위도 좌표, 행정경계 없음)",
+      "deletion": "고유 충전소 101,091곳: 비삭제 충전기 있음 100,590곳 / 삭제 표시만 501곳 구분",
+      "results": [
+        "유효 좌표를 가진 고유 충전소 101,091곳을 표시했습니다.",
+        "비삭제 충전기가 있는 곳은 100,590곳, 삭제 표시 충전기만 있는 곳은 501곳입니다."
+      ],
+      "caution": "행정경계 지도·접근성 분석이 아닙니다. 서로 다른 좌표 쌍이 있는 statId 9개는 비삭제 행 우선 첫 유효 좌표로 대표했습니다. 비삭제 표시는 이용 가능을 뜻하지 않습니다.",
+      "web": null,
+      "source": "한국환경공단 getChargerInfo · 정제 CSV 및 검증된 집계 CSV",
+      "purpose": "전국 충전소의 지리적 분포 확인",
+      "reason": "고유 충전소의 실제 경위도 위치를 직접 보여 주며 충전기 다수인 곳의 중복 표시를 줄입니다.",
+      "data_files": "charger_info_clean.csv; statId별 대표 좌표",
+      "relation": "처음 제작한 원본 그래프입니다. 현재 웹 그래프와 기준 시점·지역 체계·삭제 기준이 다를 수 있어 수치를 직접 대조하지 않았습니다.",
+      "image_pixels": [
+        2400,
+        1800
+      ],
+      "sha256": "e0314e3bafcacc294fdbe15f07298d6b2080276ddda90b15d2a39719cdf6e151"
+    },
+    {
+      "id": 6,
+      "file": "06_charger_type_pie.png",
+      "title": "충전기 유형별 구성",
+      "technique": "파이 차트",
+      "libraries": [
+        "Matplotlib",
+        "Seaborn"
+      ],
+      "data_date": "2026-10-15 조회 (04:16–04:19 KST)",
+      "basis": "비삭제 표시 523,312기 · 공식 커넥터 유형 정의 (한국환경공단 활용가이드 v1.25 §3.3)",
+      "regions": "전국",
+      "deletion": "비삭제 표시만 (삭제 표시 4,121기 제외)",
+      "results": [
+        "AC완속(02)은 465,025기로 비삭제의 88.86%입니다.",
+        "DC콤보2 버스전용(11)은 5,584기입니다."
+      ],
+      "caution": "08은 DC콤보(완속)이며 11은 버스전용입니다. 커넥터 유형만으로 급속/완속을 재분류하지 않았습니다. 09 NACS는 이번 조회에 0건이라 조각을 만들지 않았습니다.",
+      "web": null,
+      "source": "한국환경공단 getChargerInfo · 정제 CSV 및 검증된 집계 CSV",
+      "purpose": "공식 충전기 커넥터 유형별 비중 확인",
+      "reason": "합계가 정해진 비삭제 충전기 모집단의 유형 비중을 표시하며 작은 조각은 범례에 정확한 수치를 적습니다.",
+      "data_files": "charger_type_summary.csv; 공식 유형 정의",
+      "relation": "처음 제작한 원본 그래프입니다. 현재 웹 그래프와 기준 시점·지역 체계·삭제 기준이 다를 수 있어 수치를 직접 대조하지 않았습니다.",
+      "image_pixels": [
+        3000,
+        1600
+      ],
+      "sha256": "1915096a40fb0f3447f08d3494760449136c5eb7b1fada646d93eebf49a18f6f"
+    },
+    {
+      "id": 7,
+      "file": "07_charger_output_histogram.png",
+      "title": "충전기 출력(kW) 분포",
+      "technique": "히스토그램",
+      "libraries": [
+        "Matplotlib",
+        "Seaborn"
+      ],
+      "data_date": "2026-10-15 조회 (04:16–04:19 KST)",
+      "basis": "비삭제 양수 출력 523,143기 · 10kW 폭 구간 · 세로축 로그 눈금",
+      "regions": "전국",
+      "deletion": "비삭제 표시의 양수 출력만 (출력 결측 169기 제외)",
+      "results": [
+        "유효 양수 출력 523,143기, 결측 169기입니다.",
+        "중앙값 7kW, 최빈값 7kW(402,997기), 95백분위 100kW, 범위 3~400kW입니다."
+      ],
+      "caution": "로그 눈금의 막대 높이 차이는 선형 대수 차이가 아닙니다. 정격 출력은 실제 충전 속도·동시 공급전력·이용량이 아닙니다.",
+      "web": null,
+      "source": "한국환경공단 getChargerInfo · 정제 CSV 및 검증된 집계 CSV",
+      "purpose": "개별 충전기의 정격 출력 분포 확인",
+      "reason": "연속 수치인 출력 분포를 고정 폭 구간에 집계합니다. 드문 고출력 구간도 보이도록 로그 세로축을 사용했습니다.",
+      "data_files": "charger_info_clean.csv output; charger_output_summary.csv로 구간 검산",
+      "relation": "처음 제작한 원본 그래프입니다. 현재 웹 그래프와 기준 시점·지역 체계·삭제 기준이 다를 수 있어 수치를 직접 대조하지 않았습니다.",
+      "image_pixels": [
+        2600,
+        1600
+      ],
+      "sha256": "7da76317a77cff919d8922e35fb6316c8db6e63ef60a0c64f4fdc05f5bb2c2b7"
+    },
+    {
+      "id": 8,
+      "file": "08_operator_chargers_top10.png",
+      "title": "운영기관별 충전기 등록 현황 TOP 10",
+      "technique": "가로 막대",
+      "libraries": [
+        "Matplotlib",
+        "Seaborn"
+      ],
+      "data_date": "2026-10-15 조회 (04:16–04:19 KST)",
+      "basis": "기관 ID·운영기관명 조합 342개 중 상위 10개 · 같은 ID의 다른 이름은 원문대로 구분",
+      "regions": "전국",
+      "deletion": "전체 (막대 길이 = 삭제 포함 총수), 비삭제·삭제 표시를 색으로 구분",
+      "results": [
+        "GS차지비 [PI]는 전체 83,138기, 비삭제 83,132기입니다.",
+        "정제된 ID·명칭 조합 342개 중 상위 10개를 표시했습니다."
+      ],
+      "caution": "PW의 파워큐브와 파워큐브코리아 등 표기 변형을 임의 합치지 않았습니다. 충전소 고유 수는 운영기관 간 단순 합산하지 않습니다.",
+      "web": null,
+      "source": "한국환경공단 getChargerInfo · 정제 CSV 및 검증된 집계 CSV",
+      "purpose": "운영기관별 API 등록 충전기 규모 비교",
+      "reason": "기관명이 길고 순위 비교가 필요하여 가로 막대를 사용했습니다.",
+      "data_files": "charger_info_clean.csv; charger_operator_summary.csv의 공백 정리 후 건수 대조",
+      "relation": "처음 제작한 원본 그래프입니다. 현재 웹 그래프와 기준 시점·지역 체계·삭제 기준이 다를 수 있어 수치를 직접 대조하지 않았습니다.",
+      "image_pixels": [
+        2800,
+        1600
+      ],
+      "sha256": "637a4fdaaa344f1cebd5687020afffa1b82ce6b9a06a443d9f3e24a1f573d319"
+    },
+    {
+      "id": 9,
+      "file": "09_annual_charger_installation_trend.png",
+      "title": "연도별 충전기 설치 추이",
+      "technique": "선 그래프",
+      "libraries": [
+        "Matplotlib",
+        "Seaborn"
+      ],
+      "data_date": "2011~2026년 연도 통계 (2026년 부분 연도, 파일명 날짜 2026-10-15)",
+      "basis": "연도별 공식 설치 통계 · API 조회 충전기 수와 모집단이 다름",
+      "regions": "전국 (연도 통계)",
+      "deletion": "해당 없음 (설치 통계)",
+      "results": [
+        "연간 설치 통계 최고는 2023년 111,981기입니다.",
+        "2025년 누적 478,802기, 2026년 표기 누적 540,210기이며 2026년 연간 칸의 값은 61,408기입니다."
+      ],
+      "caution": "2026년은 부분 연도이고 정확한 마감일·삭제 처리·집계 범위는 미확인입니다. 2025년 12월 API 재고를 복원하거나 현재 API 총수와 동일시하지 않습니다.",
+      "web": null,
+      "source": "충전기 설치 성장 추세_2026-10-15.xlsx → charger_installation_trend.csv",
+      "purpose": "원본 통계의 연간 설치량과 누적 변화 확인",
+      "reason": "시간의 순서와 변화 흐름을 표현하고 연간·누적을 같은 단위의 별도 선으로 구분합니다.",
+      "data_files": "charger_installation_trend.csv",
+      "relation": "처음 제작한 원본 그래프입니다. 현재 웹 그래프와 기준 시점·지역 체계·삭제 기준이 다를 수 있어 수치를 직접 대조하지 않았습니다.",
+      "image_pixels": [
+        2600,
+        1600
+      ],
+      "sha256": "687dd3cb95079dfba3e622783f9c19b8c46843eebcb3cfe79111a90b9a86507e"
+    },
+    {
+      "id": 10,
+      "file": "10_regional_output_heatmap.png",
+      "title": "지역별 충전 출력 구성 비교",
+      "technique": "히트맵",
+      "libraries": [
+        "Matplotlib",
+        "Seaborn"
+      ],
+      "data_date": "2026-10-15 조회 (04:16–04:19 KST)",
+      "basis": "지역 내 비삭제 표시 충전기 대비 비율 · 괄호 안은 실제 충전기 수",
+      "regions": "16개 시도 (전남광주통합특별시 포함)",
+      "deletion": "비삭제 표시만 (출력 미상 포함)",
+      "results": [
+        "비삭제 중 30kW 미만 양수 출력은 465,877기(89.02%), 200kW 이상은 12,587기(2.41%), 출력 미상은 169기입니다."
+      ],
+      "caution": "색은 지역 내 비율이므로 전국 대수 순위가 아닙니다. 출력 구간은 정책상 속도 분류를 자동 대체하지 않습니다. 전남광주통합특별시를 분할하지 않았습니다.",
+      "web": null,
+      "source": "한국환경공단 getChargerInfo · 정제 CSV 및 검증된 집계 CSV",
+      "purpose": "지역별 충전 출력 구성비 비교",
+      "reason": "지역별 총규모 차이를 분리하기 위해 행 기준 비율을 색으로, 실제 건수를 주석으로 함께 보여 줍니다.",
+      "data_files": "charger_region_summary.csv; charger_info_clean.csv로 16개 지역 재검산",
+      "relation": "처음 제작한 원본 그래프입니다. 현재 웹 그래프와 기준 시점·지역 체계·삭제 기준이 다를 수 있어 수치를 직접 대조하지 않았습니다.",
+      "image_pixels": [
+        2800,
+        2200
+      ],
+      "sha256": "a6d622b0d61516e42c3954fb48d5f98b4dbd6718b6b296ac020ce013ccd3d424"
+    }
+  ]
+}

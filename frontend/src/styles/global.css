@@ -3971,6 +3971,8 @@ var(--panel);
 .python-charts .thumb { min-width: 0; height: 100%; padding: 10px 10px 12px; gap: 10px; }
 /* 그래프마다 가로세로 비율이 달라(1.28–1.67) 같은 3:2 틀 안에 원본 비율 그대로 맞춤: 잘림·왜곡 없음, 카드 높이는 통일 */
 .python-charts .thumb img { aspect-ratio: 3 / 2; height: auto; object-fit: contain; background: var(--panel); border-radius: 8px; }
+/* 원본(흰 배경) PNG: 비율이 3:2와 달라 남는 여백도 흰색으로 채워 원본 바탕과 이어지게 함 (이미지 자체는 그대로) */
+.python-charts-original .thumb img { background: #fff; }
 .python-charts .thumb > span { min-height: 2.9em; font-size: var(--t-sm); line-height: 1.45; overflow-wrap: anywhere; word-break: keep-all; }
 .python-charts .thumb-meta { margin-top: auto; padding-top: 8px; border-top: 1px solid var(--line); }
 .python-charts .thumb-meta > div { grid-template-columns: 62px minmax(0, 1fr); gap: 6px; }

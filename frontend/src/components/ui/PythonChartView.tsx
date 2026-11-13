@@ -11,10 +11,22 @@ export function gwa(word: string) {
 }
 
 /** Python 그래프 1개의 확대 이미지 + 기준 + 주요 분석 결과 (갤러리 확대 보기와 웹 그래프 상세 탭에서 공용) */
-export function PythonChartBody({ chart, notice, fromWebGraph = false }: { chart: PythonChart; notice: string; fromWebGraph?: boolean }) {
+export function PythonChartBody({
+  chart,
+  notice,
+  fromWebGraph = false,
+  imageUrl = pythonChartUrl,
+}: {
+  chart: PythonChart;
+  notice: string;
+  fromWebGraph?: boolean;
+  /** 이미지 경로 (기본: 다시 그린 그래프 public/python-charts) */
+  imageUrl?: (file: string) => string;
+}) {
   const source = chart.id <= 3 ? DATA_SOURCES.ev : chart.id === 9 ? DATA_SOURCES.growth : DATA_SOURCES.chargers;
   const facts: [string, string][] = [
-    ['데이터 출처', `${source.provider} · ${source.dataset}`],
+    // 원본 그래프는 PNG에 적힌 출처를 그대로 씁니다 (현재 웹사이트 자료와 기준이 다를 수 있음)
+    ['데이터 출처', chart.source ?? `${source.provider} · ${source.dataset}`],
     ['데이터 기준일', chart.data_date],
     ['지역 체계', chart.regions],
     ['삭제 기준', chart.deletion],
@@ -31,7 +43,7 @@ export function PythonChartBody({ chart, notice, fromWebGraph = false }: { chart
         </span>
       </p>
       <figure className="pyc-figure">
-        <img src={pythonChartUrl(chart.file)} alt={`${chart.title} (${chart.technique}, ${chart.data_date})`} width={chart.image_pixels[0]} height={chart.image_pixels[1]} loading="lazy" decoding="async" />
+        <img src={imageUrl(chart.file)} alt={`${chart.title} (${chart.technique}, ${chart.data_date})`} width={chart.image_pixels[0]} height={chart.image_pixels[1]} loading="lazy" decoding="async" />
       </figure>
       <dl className="pyc-facts" aria-label="그래프 데이터 기준">
         {facts.map(([k, v], i) => (
@@ -43,6 +55,18 @@ export function PythonChartBody({ chart, notice, fromWebGraph = false }: { chart
       </dl>
       <div className="prose pyc-text">
         <div className="pyc-results">
+          {chart.purpose && (
+            <>
+              <h4>분석 목적</h4>
+              <p>{chart.purpose}</p>
+            </>
+          )}
+          {chart.reason && (
+            <>
+              <h4>그래프 선택 이유</h4>
+              <p>{chart.reason}</p>
+            </>
+          )}
           <h4>주요 분석 결과</h4>
           <ul>
             {chart.results.map((r) => (
@@ -55,12 +79,19 @@ export function PythonChartBody({ chart, notice, fromWebGraph = false }: { chart
           <p>{chart.caution}</p>
           <h4>현재 웹 그래프와의 관계</h4>
           <p>
-            {chart.web
+            {chart.relation ??
+              (chart.web
               ? `웹 그래프 ${chart.web.graph} “${chart.web.title}”${gwa(chart.web.title)} 같은 자료·같은 기준(웹 기본 필터)에서 수치를 대조해 일치함을 확인했습니다.`
-              : '대응하는 현재 웹 그래프가 없습니다.'}
+              : '대응하는 현재 웹 그래프가 없습니다.')}
           </p>
           <h4>기준</h4>
           <p>{chart.basis}</p>
+          {chart.data_files && (
+            <>
+              <h4>사용 파일</h4>
+              <p>{chart.data_files}</p>
+            </>
+          )}
         </div>
       </div>
     </div>

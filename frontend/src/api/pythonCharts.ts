@@ -21,6 +21,12 @@ export interface PythonChart {
   web: { graph: number; title: string } | null;
   image_pixels: [number, number];
   sha256: string;
+  /** 원본 그래프 세트(python-charts-original)에만 있는 선택 항목: PNG에 적힌 출처, 분석 목적, 선택 이유, 사용 파일, 웹 그래프와의 관계 */
+  source?: string;
+  purpose?: string;
+  reason?: string;
+  data_files?: string;
+  relation?: string;
 }
 
 export interface PythonChartsMeta {
@@ -41,14 +47,29 @@ export interface PythonChartsMeta {
 const BASE = `${import.meta.env.BASE_URL ?? '/'}python-charts/`;
 export const pythonChartUrl = (file: string) => BASE + file;
 
-export function usePythonCharts() {
-  return useQuery({
-    queryKey: ['python-charts'],
-    queryFn: async ({ signal }) => {
-      const res = await fetch(BASE + 'charts.json', { signal, headers: { Accept: 'application/json' } });
+/**
+ * 처음 Python으로 제작한 원본 그래프 10개(outputs/charts/ PNG를 바이트 그대로 복사한 public/python-charts-original).
+ * 전기차 등록 그래프는 2025년 12월 자료 기준입니다. Python Visualization 페이지가 이 세트를 표시합니다.
+ */
+const ORIGINAL_BASE = `${import.meta.env.BASE_URL ?? '/'}python-charts-original/`;
+export const originalPythonChartUrl = (file: string) => ORIGINAL_BASE + file;
+
+function chartsQuery(base: string, key: string) {
+  return {
+    queryKey: [key],
+    queryFn: async ({ signal }: { signal: AbortSignal }) => {
+      const res = await fetch(base + 'charts.json', { signal, headers: { Accept: 'application/json' } });
       if (!res.ok) throw new Error(`Python 그래프 정보를 불러오지 못했습니다 (${res.status}).`);
       return (await res.json()) as PythonChartsMeta;
     },
     staleTime: Infinity,
-  });
+  };
+}
+
+export function usePythonCharts() {
+  return useQuery(chartsQuery(BASE, 'python-charts'));
+}
+
+export function useOriginalPythonCharts() {
+  return useQuery(chartsQuery(ORIGINAL_BASE, 'python-charts-original'));
 }

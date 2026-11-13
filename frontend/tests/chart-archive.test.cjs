@@ -56,7 +56,7 @@ test('web graph details link each Python chart once; the annual-installation car
 
 test('the gallery lives on its own page (always open); Overview keeps only a shortcut; legacy PNGs are kept', () => {
   const page = src('src/pages/PythonVisualization.tsx');
-  assert.match(page, /<PythonChartGallery \/>/);
+  assert.match(page, /<PythonChartGallery variant="original" \/>/);
   assert.match(page, /title="Python Visualization"/);
   assert.match(src('src/App.tsx'), /<Route path="python-visualization" element={<PythonVisualizationPage \/>} \/>/);
   const nav = src('src/components/layout/AppShell.tsx');
@@ -85,4 +85,30 @@ test('gallery columns favour readability (4 / 3 / 2 / 1) and keep each PNG uncro
   const body = src('src/components/ui/PythonChartView.tsx');
   for (const k of ['데이터 출처', '데이터 기준일', '지역 체계', '삭제 기준', '시각화 기법', '사용 라이브러리']) assert.match(body, new RegExp(`\\['${k}'`));
   assert.ok(body.indexOf('pyc-results') < body.indexOf('pyc-notes'), 'results come before cautions');
+});
+
+/* Python Visualization 페이지는 처음 제작한 원본 PNG(outputs/charts/)를 그대로 보여 줍니다. */
+test('page shows the original Python PNGs byte-for-byte, with their own (2025-12 EV) dates', () => {
+  const odir = path.join(root, 'public/python-charts-original');
+  const om = JSON.parse(fs.readFileSync(path.join(odir, 'charts.json'), 'utf8'));
+  assert.deepEqual(om.charts.map((c) => c.id), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  const legacy = path.resolve(root, '../outputs/charts');
+  const hasLegacy = fs.existsSync(legacy);
+  for (const c of om.charts) {
+    const buf = fs.readFileSync(path.join(odir, c.file));
+    const sha = crypto.createHash('sha256').update(buf).digest('hex');
+    assert.equal(sha, c.sha256, `${c.file} sha256`);
+    if (hasLegacy) assert.ok(buf.equals(fs.readFileSync(path.join(legacy, c.file))), `${c.file} is an unmodified copy of outputs/charts`);
+    for (const k of ['title', 'technique', 'data_date', 'basis', 'regions', 'deletion', 'caution', 'source']) assert.ok(c[k] && c[k].length > 1, `${c.id} ${k}`);
+    assert.ok(c.results.length >= 1, `${c.id} results`);
+  }
+  for (const c of om.charts.filter((x) => x.id <= 3)) {
+    assert.match(c.data_date, /2025년 12월/, `chart ${c.id} keeps its 2025-12 basis`);
+    assert.doesNotMatch(JSON.stringify(c), /2026년 9월/, `chart ${c.id} is not labelled as 2026-09`);
+  }
+  assert.equal(om.data.ev_registration.total, 899101);
+  assert.match(om.fixed_notice, /2025년 12월/);
+  // 다시 그린 다크 테마 세트는 보존되고 웹 그래프 상세 보기의 Python 탭이 계속 사용
+  assert.equal(fs.readdirSync(dir).filter((f) => f.endsWith('.png')).length, 10);
+  assert.match(src('src/components/ui/PythonChartView.tsx'), /export function PythonChartsById[\s\S]*usePythonCharts\(\)/);
 });
