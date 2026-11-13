@@ -6,7 +6,7 @@ from flask import Blueprint, current_app, jsonify, request, send_file
 import numpy as np
 import pandas as pd
 from .cache import ByteLRU, request_key
-from .data import COMMON_PARAMETERS, EV_SOURCE, API_SOURCE, GROWTH_SOURCE, UNITS, WARNINGS, REGIONS_2026, TYPE_DEFINITIONS, records
+from .data import COMMON_PARAMETERS, EV_SOURCE, API_SOURCE, GROWTH_SOURCE, UNITS, WARNINGS, REGIONS_2026, TYPE_DEFINITIONS, COORDINATE_QUALITY_RULE, records
 from .validation import APIError, allowed_parameters, bounding_box, charger_filters, choice, integer
 
 
@@ -256,6 +256,19 @@ def create_blueprint(store,response_cache=None,locations_cache=None):
             locations_cache.put(key,entry,table_bytes(result,shared_dictionaries))
         return entry
 
+    def annotate_coordinate_quality(rows,filters,table):
+        """Add coordinate_flag to suspicious station rows only; other rows are left exactly as they were.
+        Flags come from the unfiltered table and are attached only when the row shows the same
+        coordinate that was judged. Counts, grid cells, caches and coordinates are not touched."""
+        unfiltered=table if all(filters.get(k) is None for k in ('region_code','charger_type','operator_id')) and filters.get('deletion')=='all' else None
+        flags=store.coordinate_flags(unfiltered)
+        for row in rows:
+            if row is None:continue
+            hit=flags.get(row.get('station_id'))
+            if hit and abs(row['latitude']-hit[1])<=1e-6 and abs(row['longitude']-hit[2])<=1e-6:
+                row['coordinate_flag']=hit[0]
+        return rows
+
     def table_counts(result):
         return {'charger_count':int(result.charger_count.sum()),'station_count':len(result),
             'not_deleted_charger_count':int(result.not_deleted_charger_count.sum()),
@@ -272,15 +285,16 @@ def create_blueprint(store,response_cache=None,locations_cache=None):
         # The per-station representative table depends only on the validated charger
         # filters; bbox and pagination are applied to it below on every request, exactly
         # as before.
-        result,invalid_rows,excluded_stations=representative_table(filters,frame)
-        if bbox:
-            result=in_bbox(result,bbox)
+        table,invalid_rows,excluded_stations=representative_table(filters,frame)
+        result=in_bbox(table,bbox) if bbox else table
         matched=table_counts(result)
         data,pagination=paginated(result,page,limit)
+        annotate_coordinate_quality(data,filters,table)
         return reply(data,{'chargers':API_SOURCE},{**filters,'bbox':bbox},
             extra={'matched':matched,'pagination':pagination,'coordinate_reference_system':'WGS84 geographic latitude/longitude',
             'invalid_coordinate_rows_excluded_from_representative_selection':invalid_rows,
             'stations_without_valid_coordinates_excluded':excluded_stations,
+            'coordinate_quality_rule':COORDINATE_QUALITY_RULE,
             'representative_coordinate_rule':'충전기 필터 적용 → statId별 N 우선/충전기 ID 순 첫 유효 좌표 → 대표 좌표에 bbox → statId 순 페이지네이션. 각 행의 건수는 해당 충전소의 필터 일치 충전기 수입니다.'})
 
     @bp.get('/locations/grid')
@@ -320,7 +334,8 @@ def create_blueprint(store,response_cache=None,locations_cache=None):
                 south=('lat','min'),north=('lat','max'),west=('lng','min'),east=('lng','max')).reset_index()
             size=g.groupby(['iy','ix']).lat.transform('size').to_numpy()
             singles=np.flatnonzero(size==1)
-            station_rows={(int(iy[i]),int(ix[i])):row for i,row in zip(singles,records(sub.iloc[singles]))}
+            single_rows=annotate_coordinate_quality(records(sub.iloc[singles]),filters,table)
+            station_rows={(int(iy[i]),int(ix[i])):row for i,row in zip(singles,single_rows)}
             for row in records(agg):
                 key=(row.pop('iy'),row.pop('ix'))
                 row['cell']=[key[1],key[0]]
@@ -336,6 +351,7 @@ def create_blueprint(store,response_cache=None,locations_cache=None):
             'coordinate_reference_system':'WGS84 geographic latitude/longitude',
             'invalid_coordinate_rows_excluded_from_representative_selection':invalid_rows,
             'stations_without_valid_coordinates_excluded':excluded_stations,
+            'coordinate_quality_rule':COORDINATE_QUALITY_RULE,
             'aggregation_rule':'/api/locations와 같은 대표 좌표(충전기 필터 → statId별 N 우선/충전기 ID 순 첫 유효 좌표). '
                 '격자 칸 = floor(경도/칸 경도폭), floor(위도/칸 위도폭). bbox를 감싸는 모든 칸의 충전소를 빠짐없이 집계하며, '
                 'matched는 요청 bbox 안(경계 포함) 충전소만 셉니다. 칸에 충전소가 1곳이면 station에 그 행을 넣습니다.'})

@@ -212,6 +212,8 @@ export interface GrowthMeta extends BaseMeta {
 }
 
 /* ---------- /api/locations ---------- */
+/** 원본 좌표 품질 의심 근거(서버 판정). 정상 좌표 행에는 필드 자체가 없습니다. */
+export type CoordinateFlag = 'placeholder' | 'far_from_address' | 'placeholder_far_from_address';
 export interface LocationRow extends ChargerCounts {
   station_id: string;
   station_name: string;
@@ -220,6 +222,7 @@ export interface LocationRow extends ChargerCounts {
   region_name: string;
   latitude: number;
   longitude: number;
+  coordinate_flag?: CoordinateFlag;
 }
 export interface LocationsMeta extends BaseMeta {
   matched: ChargerCounts;

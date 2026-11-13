@@ -7,6 +7,7 @@ import { chargerRegionLabel } from './FilterBar';
 import { OUTPUT_BANDS, bandIndex } from '../features/ChartCards';
 import { ErrorState } from './ui/QueryState';
 import { Icon } from './ui/Icon';
+import { CoordinateNote } from './geo/CoordinateNote';
 
 /**
  * 지도 오른쪽 분석 패널. 모든 숫자는 기존 API 응답 값 그대로이며(현재 충전기 필터 적용),
@@ -234,6 +235,7 @@ export function MapAnalysisPanel({ filters, selected, group, onPick, onClearGrou
           </div>
           <div className="geo-station-name">{selected.station_name}</div>
           <div className="geo-station-addr">{selected.address || '주소 정보 없음'}</div>
+          <CoordinateNote flag={selected.coordinate_flag} />
           <dl className="geo-station-stats">
             <div>
               <dt>일치 충전기</dt>

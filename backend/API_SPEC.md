@@ -78,6 +78,17 @@
 - 400: `bbox` 또는 `zoom` 누락, `zoom`이 11~15 밖, bbox가 이 줌에서 40,000칸 초과, 그 밖의 공통 검증 오류.
 - `/api/locations`(페이지 방식)는 그대로이며, 지도는 줌 16 이상(개별 충전소)과 목록에서 계속 사용합니다.
 
+### 좌표 품질 안내 `coordinate_flag` (locations · locations/grid 선택 필드)
+
+- `/api/locations`의 행과 `/api/locations/grid`의 `station` 행 중 **원본 좌표 품질이 의심되는 충전소에만** 붙는 선택 필드입니다. 정상 행에는 키가 없습니다(`null`도 넣지 않음). 실제 위치 오류를 확정하는 값이 아닙니다.
+- 값: `placeholder`(대체·저정밀 좌표), `far_from_address`(주소 시군구에서 100km 초과), `placeholder_far_from_address`(둘 다).
+- 판정: 서버 프로세스에서 처음 필요할 때 필터 없는 대표 좌표 표(101,091곳)로 한 번 계산해 재사용합니다. 주소 시군구는 앞 두 단어이며 시도 약칭을 정식 명칭으로 맞춥니다.
+  - `placeholder`: 대표 좌표(소수 6자리)를 주소 시군구가 2개 이상 다른 충전소 3곳 이상이 공유하거나, 위도·경도가 모두 소수 1자리 이하.
+  - `far_from_address`: 같은 주소 시군구 충전소 대표 좌표의 중앙값에서 100km 초과(위도 1° = 110.57km, 경도 1° = cos 36° × 111.32km).
+  - 2026-10-15 스냅샷: placeholder 508곳, far_from_address 182곳, 둘 다 46곳, 합계 644곳(충전기 3,322기). 목록과 근거: `reports/coordinate_quality_2026-11-13.md`.
+- 필터 응답에서는 행 좌표가 판정 때 좌표와 같을 때만 붙입니다(대표 좌표가 바뀐 행에는 붙이지 않음).
+- 좌표, 건수, `matched`, 페이지, 격자 칸, bbox 판정, 캐시는 이 필드와 무관하게 이전과 같습니다. 판정 설명은 `meta.coordinate_quality_rule`에 있습니다.
+
 ### charger-output/regions (지역 × 출력 히트맵용)
 
 Regional Explorer의 지역 × 출력 구간 히트맵은 이전에 `/api/charger-output?{지역 외 필터}&region_code=R`을 16개 지역마다 요청했습니다. 이 경로는 같은 결과를 한 번에 돌려줍니다. 기존 `/api/charger-output`은 그대로입니다.

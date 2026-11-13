@@ -4430,6 +4430,18 @@ var(--panel);
 .geo-infowin-foot {
   font-size: 12px;
 }
+/* 좌표 품질 안내(의심 좌표 충전소에만 렌더링). 경고색·상자 없이 보조 글씨 한 줄. */
+.geo-coord-note {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.geo-coord-note::before {
+  content: 'ⓘ ';
+}
 /* SDK 불러오는 중 / 실패 안내 */
 .geo-map-state {
   position: absolute;
@@ -4644,7 +4656,7 @@ var(--panel);
 .timeline-tick, .insight-meta code, .spec, .evidence-no, .side-panel .modal-eyebrow { font-size: 0.8125rem; }
 .thumb .thumb-meta, .thumb .thumb-basis, .pyc-facts dt, .pyc-notes h4 { font-size: var(--t-aux); }
 .cmp-mix-title .muted, .cmp-scroll-hint { font-size: var(--t-aux); }
-.geo-infowin-stats dt, .geo-infowin-foot { font-size: 0.8125rem; }
+.geo-infowin-stats dt, .geo-infowin-foot, .geo-coord-note { font-size: 0.8125rem; }
 
 /* 선택 지역 요약: 전국 대비 차이 16px (핵심 값 24px은 그대로) */
 .disparity-region-diff b { font-size: 1rem; }

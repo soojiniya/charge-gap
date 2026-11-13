@@ -45,7 +45,7 @@ npm run preview    # http://localhost:5173 에서 빌드 결과 확인
 
 production 빌드는 `VITE_API_BASE_URL`이 비어 있거나 localhost(`127.0.0.1`, `localhost` 등)를 가리키면 실패합니다. 배포 사이트에서 모든 API 요청이 방문자 PC의 localhost로 가는 것을 막기 위해서입니다. 로컬 미리보기용 빌드만 `$env:CHARGE_GAP_ALLOW_LOCAL_API_BUILD='1'; npm run build`처럼 명시적으로 허용합니다. 이 변수는 `VITE_` 접두사가 아니어서 번들에 들어가지 않습니다.
 
-**테스트**: `npm test`는 `tests/*.test.cjs` 26개 파일(156개 테스트: API 주소 검사, API 연결 오류 안내, 서버 절전 복귀 대기, URL 필터 검증, 사이드바 필터 유지, 줄바꿈, 히트맵 통합 요청·출력 해석 회귀, 보안 헤더, 폰트 자산, 지도 클러스터·캔버스 표시층·bbox 경계, SPA 직접 URL rewrite 설정 등)를 Node 내장 테스트 러너로 실행합니다. `tests/*.browser.cjs` 17개는 실행 중인 로컬 서버와 Playwright `page`가 필요한 브라우저 회귀 모듈이며, 카카오맵 SDK는 `tests/fixtures/kakao-maps-stub.js`로 대신합니다.
+**테스트**: `npm test`는 `tests/*.test.cjs` 27개 파일(160개 테스트: API 주소 검사, API 연결 오류 안내, 서버 절전 복귀 대기, URL 필터 검증, 사이드바 필터 유지, 줄바꿈, 히트맵 통합 요청·출력 해석 회귀, 보안 헤더, 폰트 자산, 지도 클러스터·캔버스 표시층·bbox 경계, 좌표 품질 안내, SPA 직접 URL rewrite 설정 등)를 Node 내장 테스트 러너로 실행합니다. `tests/*.browser.cjs` 18개는 실행 중인 로컬 서버와 Playwright `page`가 필요한 브라우저 회귀 모듈이며, 카카오맵 SDK는 `tests/fixtures/kakao-maps-stub.js`로 대신합니다.
 
 **서버 절전 복귀**: 연결 실패나 JSON이 아닌 응답이 오면 요청마다 오류를 띄우지 않고 `src/api/readiness.ts`의 공용 대기열에서 기다립니다. 상태 확인 요청 하나만 2·4·8초 뒤, 이후 10초마다 최대 3분 보내고, 화면 위에 안내 하나(`src/components/ServerWakeNotice.tsx`)를 보여 줍니다. 서버가 응답하면 현재 화면·필터 그대로 다시 불러오고, 3분이 지나면 '다시 시도'를 안내합니다. 400·404·500처럼 API가 JSON으로 보낸 오류는 기존 카드 오류로 표시합니다.
 
@@ -104,6 +104,7 @@ production 빌드는 `VITE_API_BASE_URL`이 비어 있거나 localhost(`127.0.0.
 - 충전소를 누르면 지도 정보창(이름·주소·일치 충전기·비삭제/삭제 표시·ID)과 오른쪽 분석 패널의 "선택한 충전소"에 같은 값이 표시됩니다. 지역을 바꾸는 동안 패널은 이전 지역 수치 대신 불러오는 중 표시를 보여 줍니다.
 - 요청하는 `bbox`는 화면보다 작아지지 않도록 바깥쪽으로 소수 5자리에 맞춥니다(`components/geo/bbox.ts`). 표시는 지도 위 캔버스 한 장(`components/geo/MarkCanvasLayer.ts`)에 그립니다.
 - 지도 좌표는 원본 API 값을 그대로 씁니다. 일부 충전소는 원본 좌표가 주소와 다른 곳(대체 좌표 포함)에 있어 실제와 다른 위치에 보일 수 있습니다. 지역 집계는 좌표가 아닌 지역 코드로 계산하므로 영향을 받지 않습니다.
+- 서버가 좌표 품질을 의심한 충전소(응답의 선택 필드 `coordinate_flag`, 2026-10-15 스냅샷 644곳)를 고르면 정보창과 "선택한 충전소" 패널의 주소 아래에 안내 한 줄이 나옵니다(`components/geo/CoordinateNote.tsx`, 문구는 `lib/coordinateQuality.ts`). 정상 충전소에는 나오지 않으며, 지도 점의 위치·색·모양과 묶음·집계는 바꾸지 않습니다. 같은 위치 묶음 목록에는 표시하지 않습니다.
 
 ## 데이터 정확성 원칙 (API_SPEC 준수)
 

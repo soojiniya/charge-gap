@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import json
+import numpy as np
 import pandas as pd
 from .file_cache import open_snapshot
 
@@ -50,6 +51,60 @@ GROWTH_SOURCE = {'provider':'무공해차 통합누리집','author':'원본 미�
     'file':'charger_installation_trend.csv','source':'충전기 설치 성장 추세_2026-10-15.xlsx',
     'period':'2011–2026','source_filename_date':'2026-10-15','measurement_cutoff_date':None,
     'partial_year':2026,'unit':'기','geography':'전국 (지역 세분 없음)'}
+
+# 좌표 품질 안내(reports/coordinate_quality_2026-11-13.md). 원본 좌표는 바꾸지 않고, 의심 근거가 있는
+# 충전소 행에만 coordinate_flag를 붙이는 표시용 판정입니다. 실제 위치 오류를 확정하지 않습니다.
+COORDINATE_FAR_KM = 100.0             # 주소 시군구 대표 좌표 중앙값에서 이보다 멀면 far_from_address
+COORDINATE_SHARED_MIN_STATIONS = 3    # 같은 좌표를 이만큼 이상의 충전소가 공유하고
+COORDINATE_SHARED_MIN_SGG = 2         # 그 충전소들의 주소 시군구가 이만큼 이상 다르면 placeholder
+COORDINATE_KM_PER_DEG_LAT = 110.57
+COORDINATE_KM_PER_DEG_LNG = 111.32*0.8090169943749475  # cos(36°)
+COORDINATE_FLAGS = ('placeholder','far_from_address','placeholder_far_from_address')
+COORDINATE_QUALITY_RULE = ('coordinate_flag는 원본 좌표 품질이 의심되는 충전소 행에만 붙습니다(실제 위치 오류 확정 아님). '
+    'placeholder: 주소 시군구가 2개 이상 다른 충전소 3곳 이상이 같은 좌표를 공유하거나 위도·경도가 모두 소수 1자리 이하. '
+    'far_from_address: 주소 시군구 충전소 대표 좌표 중앙값에서 100km 초과. 필터 없는 대표 좌표로 판정하며 좌표·건수·집계는 바꾸지 않습니다.')
+# 주소 첫 단어(시도) 약칭 → 정식 명칭. 시군구 비교 전에 표기를 맞춥니다.
+SIDO_ALIASES = {'서울':'서울특별시','부산':'부산광역시','대구':'대구광역시','인천':'인천광역시',
+    '광주':'전남광주통합특별시','광주광역시':'전남광주통합특별시','전남':'전남광주통합특별시','전라남도':'전남광주통합특별시',
+    '대전':'대전광역시','울산':'울산광역시','세종':'세종특별자치시','경기':'경기도',
+    '강원':'강원특별자치도','강원도':'강원특별자치도','충북':'충청북도','충남':'충청남도',
+    '전북':'전북특별자치도','전라북도':'전북특별자치도','경북':'경상북도','경남':'경상남도',
+    '제주':'제주특별자치도','제주도':'제주특별자치도'}
+
+
+def address_sgg(address):
+    """'시도 시군구' from an address with the province spelling normalized ('' if empty)."""
+    parts = str(address).split()
+    return ' '.join([SIDO_ALIASES.get(parts[0],parts[0])]+parts[1:2]) if parts else ''
+
+
+def coordinate_quality_flags(table):
+    """{station_id: (flag, latitude, longitude)} for suspicious representative coordinates only.
+    `table` is the unfiltered per-station representative table (DataStore.locations)."""
+    if not len(table):
+        return {}
+    address = table.address.astype('category')
+    # Parse each distinct address once (≈70k), not each station row.
+    names = np.array([address_sgg(a) for a in address.cat.categories],dtype=object)
+    sgg = pd.Series(names[address.cat.codes.to_numpy()],index=table.index)
+    lat = table.latitude.to_numpy(dtype=float)
+    lng = table.longitude.to_numpy(dtype=float)
+    frame = pd.DataFrame({'sgg':sgg.to_numpy(),'lat':lat,'lng':lng,'lat6':lat.round(6),'lng6':lng.round(6)})
+    shared = frame.groupby(['lat6','lng6'],sort=False).sgg.agg(['size','nunique'])
+    shared = shared.loc[(shared['size']>=COORDINATE_SHARED_MIN_STATIONS)&(shared['nunique']>=COORDINATE_SHARED_MIN_SGG)]
+    on_shared = pd.MultiIndex.from_arrays([frame.lat6,frame.lng6]).isin(shared.index)
+    one_decimal = lambda v: np.abs(v*10-np.round(v*10))<1e-9
+    placeholder = on_shared | (one_decimal(lat) & one_decimal(lng))
+    median = frame.groupby('sgg',sort=False)[['lat','lng']].median().reindex(frame.sgg)
+    km = np.hypot((lng-median.lng.to_numpy())*COORDINATE_KM_PER_DEG_LNG,(lat-median.lat.to_numpy())*COORDINATE_KM_PER_DEG_LAT)
+    far = km>COORDINATE_FAR_KM
+    ids = table.station_id.to_numpy()
+    result = {}
+    for i in np.flatnonzero(placeholder|far):
+        flag = 'placeholder_far_from_address' if placeholder[i] and far[i] else 'placeholder' if placeholder[i] else 'far_from_address'
+        result[str(ids[i])] = (flag,float(lat[i]),float(lng[i]))
+    return result
+
 
 def records(frame):
     """Standard JSON nulls, Unicode, and preserved string IDs; no NaN/Infinity."""
@@ -334,3 +389,13 @@ class DataStore:
         selected['region_name'] = selected.region_code.map(REGIONS_2026)
         selected = selected.drop(columns='share_pct')
         return selected.sort_values('station_id',kind='stable'), int((~valid).sum())
+
+    def coordinate_flags(self, unfiltered_table=None):
+        """Coordinate-quality flags, computed once per process on first use (not at startup,
+        to keep cold starts short) from the unfiltered representative table and then reused.
+        Pass that table when the caller already has it; otherwise it is built here and dropped."""
+        flags = getattr(self,'_coordinate_flags',None)
+        if flags is None:
+            table = unfiltered_table if unfiltered_table is not None else self.locations(self.chargers)[0]
+            flags = self._coordinate_flags = coordinate_quality_flags(table[['station_id','address','latitude','longitude']])
+        return flags

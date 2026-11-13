@@ -9,6 +9,7 @@ import { MAP_COLORS, MarkCanvasLayer, type Mark, type MarkLayerState, type Regio
 import { CLUSTER_OFF_ZOOM, REGION_SIZE_LEGEND } from './geo/cluster';
 import { loadKakaoMaps, KakaoLoadError } from './geo/kakaoLoader';
 import { coverBBox } from './geo/bbox';
+import { CoordinateNote } from './geo/CoordinateNote';
 import { MAX_LEVEL, MIN_LEVEL, levelOfZoom, zoomOfLevel, type KakaoMaps, type KMap } from './geo/kakao';
 
 /**
@@ -790,6 +791,7 @@ function StationInfo({ info, onClose }: { info: { row: LocationRow; x: number; y
         </button>
       </div>
       <div className="geo-infowin-addr">{row.address || '주소 정보 없음'}</div>
+      <CoordinateNote flag={row.coordinate_flag} />
       <dl className="geo-infowin-stats">
         <div>
           <dt>필터 일치 충전기</dt>
