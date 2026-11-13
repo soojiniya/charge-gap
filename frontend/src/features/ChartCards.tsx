@@ -10,7 +10,6 @@ import { Insight } from '../components/ui/Insight';
 import { HBarChart, type HBarDatum } from '../charts/HBarChart';
 import { DonutChart, type DonutSlice } from '../charts/DonutChart';
 import { StackedHBar } from '../charts/StackedHBar';
-import { CommercialDotPlot, toCommercialData } from '../charts/CommercialDotPlot';
 import { RegionScatter } from '../charts/RegionScatter';
 import { BoxLegend, BoxPlot } from '../charts/BoxPlot';
 import { HistKde } from '../charts/HistKde';
@@ -37,7 +36,6 @@ import {
   insightAnnual,
   insightCumulative,
   insightEvCommercial,
-  insightCommercialDot,
   insightCommercialCount,
   insightEvRegions,
   insightEvTypes,
@@ -254,76 +252,66 @@ export function EvTypesCard({ span = 5 }: { span?: Span }) {
   );
 }
 
-/* ======================= G3 사업용·비사업용 (기본: 사업용 비율 점 그래프) ======================= */
-type CommercialView = 'dot' | 'percent' | 'count';
+/* ======================= G3 사업용·비사업용 (기본: 100% 누적 가로 막대, Python PY03과 같은 기준) ======================= */
+type CommercialView = 'percent' | 'count';
+const COMMERCIAL_TITLE = '지역별 사업용·비사업용 전기차 구성';
 const COMMERCIAL_VIEWS: { id: CommercialView; label: string; sub: string }[] = [
-  { id: 'dot', label: '비율 점', sub: '지역별 사업용 비율, 높은 순. 점선은 전국 비율, 가장 높은 지역만 강조' },
-  { id: 'percent', label: '100% 누적', sub: '각 지역을 100%로 맞춘 사업용·비사업용 구성, 사업용 비율이 높은 순' },
+  { id: 'percent', label: '비율', sub: '지역별 등록 대수를 100%로 맞춘 구성, 사업용 비율이 높은 순. 밝은 막대 안 숫자가 사업용 비율' },
   { id: 'count', label: '대수', sub: '사업용·비사업용 등록 대수 누적, 전체 등록 대수 순' },
 ];
+const commercialShare = (r: EvRegistrationRow) => (r.ev_registration_count ? r.ev_commercial_count / r.ev_registration_count : 0);
 
 export function EvCommercialCard({ span = 12 }: { span?: Span }) {
   const { state, update } = useFilters();
   const q = useEvRegistration(undefined);
-  const [view, setView] = useState<CommercialView>('dot');
+  const [view, setView] = useState<CommercialView>('percent');
   const rows = q.data?.data ?? [];
-  const dots = useMemo(() => toCommercialData(rows), [rows]);
-  const totals = rows.reduce((a, r) => ({ c: a.c + r.ev_commercial_count, t: a.t + r.ev_registration_count }), { c: 0, t: 0 });
-  const national = totals.t ? (totals.c / totals.t) * 100 : 0;
   const sorted = useMemo(
     () =>
       [...rows].sort((a, b) =>
         view === 'count'
-          ? b.ev_registration_count - a.ev_registration_count
-          : b.ev_commercial_count / b.ev_registration_count - a.ev_commercial_count / a.ev_registration_count,
+          ? b.ev_registration_count - a.ev_registration_count || a.region_code.localeCompare(b.region_code)
+          : // Python PY03과 같은 순서: 사업용 비율 내림차순, 같으면 지역 코드 오름차순
+            commercialShare(b) - commercialShare(a) || a.region_code.localeCompare(b.region_code),
       ),
     [rows, view],
   );
   const select = (k: string) => update({ evRegion: state.evRegion === k ? undefined : k });
-  const chart =
-    view === 'dot' ? (
-      <CommercialDotPlot
-        data={dots}
-        nationalShare={national}
-        highlightKey={state.evRegion}
-        onSelect={select}
-        ariaLabel="지역별 사업용 전기차 비율 점 그래프"
-      />
-    ) : (
-      <StackedHBar
-        data={sorted.map(r => ({ ...r, display_region_name: r.region_code === '12' ? '전남광주' : r.region_name }))}
-        labelKey="display_region_name"
-        idKey="region_code"
-        series={[
-          { key: 'ev_commercial_count', label: '사업용', color: C.s3 },
-          { key: 'ev_noncommercial_count', label: '비사업용', color: C.s2 },
-        ]}
-        unit="대"
-        normalized={view === 'percent'}
-        highlightId={state.evRegion}
-        onSelect={select}
-        labelWidth={64}
-        ariaLabel={view === 'percent' ? '지역별 사업용·비사업용 100% 누적 막대 그래프' : '지역별 사업용·비사업용 등록 대수 누적 막대 그래프'}
-      />
-    );
+  const chart = (
+    <StackedHBar
+      data={sorted.map((r) => ({ ...r, display_region_name: short(r.region_code, r.region_name) }))}
+      labelKey="display_region_name"
+      idKey="region_code"
+      series={[
+        { key: 'ev_commercial_count', label: '사업용', color: C.s3 },
+        { key: 'ev_noncommercial_count', label: '비사업용', color: C.s2 },
+      ]}
+      unit="대"
+      normalized={view === 'percent'}
+      firstShareLabel
+      xLabel={view === 'percent' ? '지역 내 등록 구성비 (%)' : undefined}
+      highlightId={state.evRegion}
+      onSelect={select}
+      labelWidth={64}
+      ariaLabel={view === 'percent' ? '지역별 사업용·비사업용 전기차 구성 100% 누적 가로 막대 그래프' : '지역별 사업용·비사업용 등록 대수 누적 가로 막대 그래프'}
+    />
+  );
   const insight = !rows.length
     ? undefined
-    : view === 'dot'
-      ? insightCommercialDot(rows, state.evRegion)
-      : view === 'percent'
-        ? insightEvCommercial(rows, state.evRegion)
-        : insightCommercialCount(rows, state.evRegion);
+    : view === 'percent'
+      ? insightEvCommercial(rows, state.evRegion)
+      : insightCommercialCount(rows, state.evRegion);
   const current = COMMERCIAL_VIEWS.find((v) => v.id === view)!;
   return (
     <Card
       no={3}
       span={span}
-      title={view === 'dot' ? '지역별 사업용 전기차 비율' : '지역별 사업용·비사업용 구성'}
-      sub={`${current.sub}. 점이나 막대를 누르면 그 지역을 선택합니다.`}
+      title={COMMERCIAL_TITLE}
+      sub={`${current.sub}. 막대를 누르면 그 지역을 선택합니다.`}
       scope={{ kind: 'fixed', label: '전국 16개 지역' }}
       isFetching={q.isFetching && !q.isLoading}
       actions={
-        <div className="segmented" role="group" aria-label="그래프 형태" style={{ height: 30 }}>
+        <div className="segmented" role="group" aria-label="그래프 값 기준" style={{ height: 30 }}>
           {COMMERCIAL_VIEWS.map((v) => (
             <button key={v.id} type="button" aria-pressed={view === v.id} onClick={() => setView(v.id)}>
               {v.label}

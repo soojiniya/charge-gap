@@ -2149,43 +2149,6 @@ var(--panel);
   }
 }
 
-/* 사업용 비율 점 그래프 */
-.dot-row circle {
-  transition: r var(--hover) ease-out, filter var(--hover) ease-out;
-}
-.dot-row.is-hover circle {
-  filter: brightness(1.18);
-}
-.dot-row rect {
-  transition: fill var(--hover) ease-out;
-}
-.dot-stem {
-  transform-box: view-box;
-}
-.dot-stem.enter {
-  animation: stem-in 480ms ease-out both;
-}
-@keyframes stem-in {
-  from {
-    transform: scaleX(0);
-  }
-}
-.dot-mark.enter {
-  animation: dot-in 480ms ease-out both;
-}
-@keyframes dot-in {
-  from {
-    opacity: 0;
-    transform: translateX(var(--dx, 0px));
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .dot-stem.enter,
-  .dot-mark.enter {
-    animation: none;
-  }
-}
-
 /* 좁은 화면에서 SVG 차트가 카드 안쪽 폭보다 넓을 때 카드 안에서만 가로 스크롤 */
 .chart-hscroll {
   max-width: 100%;

@@ -188,125 +188,72 @@ export function insightEvTypes(
   };
 }
 
-/* ---------------- G3 사업용·비사업용 ---------------- */
+/* ---------------- G3 사업용·비사업용 구성 (100% 누적 가로 막대, Python PY03과 같은 기준) ---------------- */
 export function insightEvCommercial(
   rows: EvRegistrationRow[],
   selected?: string,
 ): InsightProps {
-  const withShare = rows
-    .map((r) => ({
-      r,
-      share: r.ev_registration_count
-        ? (r.ev_commercial_count / r.ev_registration_count) * 100
-        : 0,
-    }))
-    .sort((a, b) => b.share - a.share);
-  const total = sum(rows.map((r) => r.ev_registration_count));
-  const comm = sum(rows.map((r) => r.ev_commercial_count));
-  const hi = withShare[0];
-  const lo = withShare[withShare.length - 1];
-  const sel = withShare.find((w) => w.r.region_code === selected);
-  const findings: ReactNode[] = hi
-    ? [
-        <>
-          전국 사업용 비중 <B>{pct(comm, total)}</B> ({fmtInt(comm)}대).
-        </>,
-        <>
-          사업용 비중이 가장 높은 지역은 {hi.r.region_name}{" "}
-          <B>{fmtPct(hi.share)}</B>, 가장 낮은 지역은 {lo.r.region_name}{" "}
-          <B>{fmtPct(lo.share)}</B>입니다.
-        </>,
-      ]
-    : [];
-  if (sel)
-    findings.push(
-      <>
-        선택한 {sel.r.region_name}의 사업용 비중:{" "}
-        <B>{fmtPct(sel.share)}</B>.
-      </>,
-    );
-  return {
-    mode: "fixed",
-    purpose:
-      "지역마다 사업용(택시·화물운송 등 영업용)과 비사업용 등록의 비율이 어떻게 다른지 비교합니다.",
-    reason:
-      '각 지역을 100%로 맞춰 사업용과 비사업용이 전체를 어떻게 나누는지 부분과 전체의 관계로 보여 줍니다. 비율 차이만 빠르게 비교하려면 "비율 점" 보기가 더 적합합니다.',
-    findings,
-    interpretation: hi ? (
-      <>
-        사업용 비중은 {fmtPct(lo.share)}~{fmtPct(hi.share)}로 지역 간 차이가{" "}
-        {(hi.share - lo.share).toFixed(1)}%p입니다. 등록 대수가 비슷한
-        지역이라도 용도 구성은 크게 다를 수 있음을 보여 줍니다.
-      </>
-    ) : (
-      "—"
-    ),
-    caution:
-      "2026년 9월 기준. 사업용 여부는 등록 용도 구분이며 실제 운행 용도와 다를 수 있습니다.",
-    source: EV_SRC,
-    variables: [
-      "ev_commercial_count",
-      "ev_noncommercial_count",
-      "ev_registration_count",
-    ],
-  };
-}
-
-/* ---------------- G3 (기본) 사업용 비율 점 그래프 ---------------- */
-export function insightCommercialDot(
-  rows: EvRegistrationRow[],
-  selected?: string,
-): InsightProps {
+  // 그래프와 같은 순서: 사업용 비율 내림차순, 같으면 지역 코드 오름차순. 분모는 지역별 전체 등록 대수.
   const d = rows
     .map((r) => ({
       r,
+      name: shortRegion(r.region_code, r.region_name),
       share: r.ev_registration_count
         ? (r.ev_commercial_count / r.ev_registration_count) * 100
         : 0,
     }))
-    .sort((a, b) => b.share - a.share);
+    .sort(
+      (a, b) =>
+        b.share - a.share || a.r.region_code.localeCompare(b.r.region_code),
+    );
   const total = sum(rows.map((r) => r.ev_registration_count));
   const comm = sum(rows.map((r) => r.ev_commercial_count));
   const nat = total ? (comm / total) * 100 : 0;
   const hi = d[0];
   const lo = d[d.length - 1];
   const above = d.filter((x) => x.share > nat);
+  const byComm = [...d].sort(
+    (a, b) => b.r.ev_commercial_count - a.r.ev_commercial_count,
+  );
   const sel = d.find((x) => x.r.region_code === selected);
-  const medianShare = d.length ? (d[Math.floor((d.length - 1) / 2)].share + d[Math.floor(d.length / 2)].share) / 2 : undefined;
+  const names = (xs: typeof d) => xs.map((x) => x.name).join("·");
   const findings: ReactNode[] = hi
     ? [
         <>
-          사업용 비율 1위{" "}
-          <B>
-            {hi.r.region_name} {fmtPct(hi.share)}
-          </B>
-          , 최하위{" "}
-          <B>
-            {lo.r.region_name} {fmtPct(lo.share)}
-          </B>
-          로 <B>{(hi.share - lo.share).toFixed(1)}%p</B> 차이(약{" "}
-          {(hi.share / lo.share).toFixed(1)}배)입니다.
+          전국 전기차 {fmtInt(total)}대 중 사업용은 {fmtInt(comm)}대로 사업용
+          비율 <B>{fmtPct(nat)}</B>, 비사업용 비율{" "}
+          <B>{fmtPct(100 - nat)}</B>입니다.
         </>,
         <>
-          전국 사업용 비율 <B>{fmtPct(nat)}</B>보다 높은 지역은 {above.length}
-          곳({above.map((x) => x.r.region_name).join("·")}), 나머지{" "}
-          {d.length - above.length}곳은 전국보다 낮습니다.
+          사업용 비율이 가장 높은 지역은{" "}
+          <B>
+            {hi.name} {fmtPct(hi.share)}
+          </B>
+          , 가장 낮은 지역은{" "}
+          <B>
+            {lo.name} {fmtPct(lo.share)}
+          </B>
+          로 <B>{(hi.share - lo.share).toFixed(1)}%p</B> 차이가 납니다.
         </>,
-        ...(medianShare !== undefined
-          ? [
-              <>
-                {d.length}개 지역 사업용 비율의 중앙값은 {fmtPct(medianShare)}입니다.
-              </>,
-            ]
-          : []),
+        <>
+          사업용 비율 상위 3곳은 {names(d.slice(0, 3))}, 하위 3곳은{" "}
+          {names(d.slice(-3))}입니다.
+        </>,
+        <>
+          전국 사업용 비율보다 높은 지역은 {above.length}곳(
+          {names(above)}), 나머지 {d.length - above.length}곳은 전국보다
+          낮습니다.
+        </>,
       ]
     : [];
   if (sel) {
     const rank = d.findIndex((x) => x === sel) + 1;
     findings.push(
       <>
-        선택한 {sel.r.region_name}: <B>{fmtPct(sel.share)}</B>, 16개 지역
-        중 {rank}위 (전국 대비{" "}
+        선택한 {sel.name}: 사업용 <B>{fmtPct(sel.share)}</B>(
+        {fmtInt(sel.r.ev_commercial_count)}대) · 비사업용{" "}
+        {fmtPct(100 - sel.share)}({fmtInt(sel.r.ev_noncommercial_count)}대),
+        16개 지역 중 {rank}위 (전국 대비{" "}
         {(sel.share - nat >= 0 ? "+" : "") + (sel.share - nat).toFixed(1)}%p).
       </>,
     );
@@ -317,27 +264,30 @@ export function insightCommercialDot(
       ? "전국 16개 지역 기준 고정 분석 (선택 지역 순위 표시)"
       : undefined,
     purpose:
-      "지역마다 전기차 중 사업용(영업용) 등록이 차지하는 비율을 비교해, 사업용 비중이 높은 지역과 낮은 지역의 차이를 확인합니다.",
+      "지역마다 전기차 등록이 사업용(택시·화물운송 등 영업용)과 비사업용으로 어떻게 나뉘는지 비교해, 구성 차이가 큰 지역을 확인합니다.",
     reason:
-      "100% 누적 막대는 모든 막대 길이가 같고 비사업용이 대부분을 차지해 비율 차이가 잘 보이지 않습니다. 비율 하나만 비교하므로 지역별 점 하나로 표시하는 점 그래프(Cleveland dot plot)를 기본으로 했습니다. 축은 0에서 시작해 차이를 과장하지 않습니다.",
+      "각 지역의 전체 등록 대수를 100%로 맞춘 누적 가로 막대라 등록 규모와 관계없이 구성비를 같은 길이에서 비교할 수 있습니다. 밝은 막대(사업용)가 끝나는 위치가 곧 사업용 비율이며, 막대 안에 그 값을 적었습니다. Python 그래프 PY03과 같은 정렬·색·축 기준입니다.",
     findings,
     interpretation: hi ? (
       <>
-        점들이 {fmtPct(lo.share)}에서 {fmtPct(hi.share)}까지 넓게 퍼져 있어,
-        같은 전기차라도 지역에 따라 사업용 비중이 크게 다릅니다.{" "}
-        {hi.r.region_name}은 전국 평균의 {(hi.share / nat).toFixed(1)}배
-        수준으로 두드러집니다.{" "}
+        사업용 비율은 {fmtPct(lo.share)}에서 {fmtPct(hi.share)}까지 퍼져
+        있어, 같은 전기차라도 지역에 따라 용도 구성이 크게 다릅니다.{" "}
+        {hi.name}의 사업용 비율은 전국 {fmtPct(nat)}의{" "}
+        {(hi.share / nat).toFixed(1)}배이고, 가장 낮은 {lo.name}의 비율은
+        전국보다 {(nat - lo.share).toFixed(1)}%p 낮습니다.{" "}
         {above.length < d.length / 2
-          ? `전국선보다 높은 지역은 ${above.length}곳뿐이라 소수 지역이 전국 사업용 비율을 끌어올리는 구조입니다.`
-          : `전국선보다 높은 지역이 ${above.length}곳으로 절반 이상입니다.`}{" "}
-        비율은 등록 대수 규모를 반영하지 않으므로 절대 대수는 "대수" 보기에서
-        함께 확인합니다.
+          ? `전국보다 높은 지역은 ${above.length}곳뿐이어서 일부 지역이 전국 사업용 비율을 끌어올립니다.`
+          : `전국보다 높은 지역이 ${above.length}곳으로 절반 이상입니다.`}{" "}
+        구성비만으로는 지역별 절대 차량 대수를 알 수 없습니다.{" "}
+        {byComm[0].r.region_code === hi.r.region_code
+          ? `사업용 대수 1위도 같은 지역(${byComm[0].name}, ${fmtInt(byComm[0].r.ev_commercial_count)}대)이지만, 지역 간 규모 차이는 "대수" 보기에서 함께 확인합니다.`
+          : `사업용 대수 1위는 ${byComm[0].name}(${fmtInt(byComm[0].r.ev_commercial_count)}대)로 비율 1위 지역과 다르므로, 규모는 "대수" 보기에서 함께 확인합니다.`}
       </>
     ) : (
       "—"
     ),
     caution:
-      "2026년 9월 기준, 전남광주를 포함한 16개 지역. 사업용 여부는 등록 용도 구분이며 실제 운행 용도와 다를 수 있습니다. 전국선은 16개 지역 합계로 계산한 비율입니다.",
+      "2026년 9월 기준, 전남광주를 포함한 16개 지역. 비율의 분모는 지역별 전체 전기차 등록 대수이고, 전국 비율은 16개 지역 합계로 계산했습니다. 구성비는 등록 대수 규모를 반영하지 않습니다. 사업용 여부는 등록 용도 구분이며 실제 운행 용도와 다를 수 있습니다.",
     source: EV_SRC,
     variables: [
       "ev_commercial_count",

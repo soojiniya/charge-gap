@@ -9,7 +9,7 @@ API로 만들 수 없는 그래프는 가짜 값을 만들지 않고 **미완료
 |---|---|---|---|---|---|---|
 | 1 | 지역별 전기차 등록 대수 | 가로 막대 | `barh`, `countplot(y=)` | Overview, EV | `/api/ev-registration` 17행 | 완료 |
 | 2 | 차종별 등록 구성 | 도넛 | `pie` | EV | 같은 응답의 차종 4종 (등록 지역 필터 반영) | 완료 |
-| 3 | 사업용·비사업용 구성 | 기본: 사업용 비율 점 그래프(전국선·최고/최저 차이 표시). 토글로 100% 누적 막대, 대수 누적 막대 | `stripplot`/`pointplot`, `barh(stacked)` | EV | `ev_commercial_count`, `ev_noncommercial_count` | 완료 |
+| 3 | 지역별 사업용·비사업용 전기차 구성 | 기본: 100% 누적 가로 막대(사업용 비율 내림차순, 막대 안 사업용 비율, Python PY03과 같은 기준). 토글로 대수 누적 막대 | `barh(stacked)` | EV | `ev_commercial_count`, `ev_noncommercial_count` | 완료 |
 | 4 | 지역별 충전소 수 대 충전기 수 | 산점도 + 최소제곱 회귀선 | `scatter`, `regplot`/`lmplot` | Overview, Regional | `/api/charger-regions` 16행 (회귀·상관은 프론트 계산) | 완료 |
 | 5 | 충전소당 충전기 수 분포 | 지역별 가로 박스플롯 (로그/선형 축) | `boxplot` | Infra | `/api/station-size-distribution` (v2 추가) | 완료 |
 | 6 | 충전기 유형별 구성 | 도넛 (상위 4 + 기타) | `pie` | Overview, Infra | `/api/charger-types` | 완료 |
@@ -20,7 +20,7 @@ API로 만들 수 없는 그래프는 가짜 값을 만들지 않고 **미완료
 | 보조 | 연간 설치 수 | 세로 막대 (부분 연도 빗금) | `bar` | Growth | `/api/growth` | 완료 |
 | 보조 | 충전소 지도 | 시도 버블 / bbox 충전소 점 | — | Regional | `/api/charger-regions`, `/api/locations` | 완료 |
 
-서로 다른 그래프 형태: 가로 막대, 도넛, 점 그래프(Cleveland dot plot), 100% 누적 막대, 산점도+회귀선, 박스플롯, 히스토그램+KDE, 히트맵, 영역, 트리맵, 세로 막대, 지도 — **11종**.
+서로 다른 그래프 형태: 가로 막대, 도넛, 100% 누적 막대, 산점도+회귀선, 박스플롯, 히스토그램+KDE, 히트맵, 영역, 트리맵, 세로 막대, 지도 — **11종**.
 
 ### 프론트엔드에서 하는 계산 (모두 실제 응답 기반)
 

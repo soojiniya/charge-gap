@@ -1,7 +1,7 @@
 {
   "title": "Python 데이터 시각화 그래프",
   "generator": "scripts/create_python_charts_2026.py",
-  "generated_at": "2026-11-14T02:16:03+09:00",
+  "generated_at": "2026-11-14T06:38:58+09:00",
   "libraries": {
     "matplotlib": "3.11.2",
     "seaborn": "0.13.2",
@@ -114,7 +114,7 @@
       "caution": "구성비 비교이며 지역별 절대 규모는 서로 다릅니다. 사업용 여부만으로 주행거리나 충전 수요를 추정하지 않습니다.",
       "web": {
         "graph": 3,
-        "title": "지역별 사업용 전기차 비율"
+        "title": "지역별 사업용·비사업용 전기차 구성"
       },
       "image_pixels": [
         1800,

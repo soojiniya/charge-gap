@@ -308,7 +308,7 @@ save(fig, 3, 'ev_commercial_share', title='지역별 사업용·비사업용 전
      results=[f"전국 사업용 비율은 {nat:.2f}%({int(ev.ev_commercial_count.sum()):,}대)입니다.",
               f"사업용 비율이 가장 높은 곳은 {NAME[hi.region_code]} {hi.commercial_pct:.2f}%, 가장 낮은 곳은 {NAME[lo.region_code]} {lo.commercial_pct:.2f}%입니다."],
      caution='구성비 비교이며 지역별 절대 규모는 서로 다릅니다. 사업용 여부만으로 주행거리나 충전 수요를 추정하지 않습니다.',
-     web={'graph': 3, 'title': '지역별 사업용 전기차 비율'},
+     web={'graph': 3, 'title': '지역별 사업용·비사업용 전기차 구성'},
      metric={'national_commercial_pct': nat, 'order_top_to_bottom': c3.region_code.tolist(),
              'regions_commercial_pct': dict(zip(c3.region_code, c3.commercial_pct.astype(float)))})
 

@@ -35,7 +35,8 @@ test('every source string in insights.tsx and regionCompare.tsx round-trips unch
       else sources.push(raw.slice(1, -1).replace('${CH_SRC}', consts.CH_SRC).replace(/\$\{fmtInt\(\w+\)\}/, '100,590'));
     }
   }
-  assert.ok(sources.length >= 15, `found ${sources.length} sources`);
+  // 그래프 3의 점 그래프 분석(insightCommercialDot)을 100% 누적 막대 분석으로 통합하면서 출처 문자열이 15 → 14개가 됨
+  assert.ok(sources.length >= 14, `found ${sources.length} sources`);
   for (const s of sources) {
     const parts = parseSource(s);
     assert.equal(joinSourceParts(parts), s);

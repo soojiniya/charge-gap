@@ -63,7 +63,7 @@ production 빌드는 `VITE_API_BASE_URL`이 비어 있거나 localhost(`127.0.0.
 | 경로 | 페이지 | 그래프 |
 |---|---|---|
 | `/` | Overview | 기준 시점 띠, KPI 4개, 그래프 9(누적 영역), 6(유형 도넛), 4(산점도+회귀선), 1(지역 막대), 해석 기준, Python Visualization 바로가기 |
-| `/ev-registration` | EV Registration | 등록 요약, 그래프 1(가로 막대), 2(차종 도넛), 3(사업용 비율 점 그래프, 100% 누적·대수 보기 전환), 등록 표 |
+| `/ev-registration` | EV Registration | 등록 요약, 그래프 1(가로 막대), 2(차종 도넛), 3(사업용·비사업용 100% 누적 가로 막대, 대수 보기 전환), 등록 표 |
 | `/charging-infrastructure` | Charging Infrastructure | 요약, 그래프 6(유형 도넛)과 유형 표, 7(히스토그램+KDE), 5(충전소당 충전기 수 박스플롯), 10(운영기관 트리맵), 운영기관 표 |
 | `/regional-explorer` | Regional Explorer | 충전소 지도, 두 지역 비교(`cmp_a`·`cmp_b`), 전국 충전 인프라 구성 격차(5개 지표, CSV·PDF 내보내기), 그래프 8(지역×출력 히트맵), 4(산점도), 지역 표, 충전소 목록 |
 | `/growth-trends` | Growth Trends | 구간 요약, 연간 설치 막대, 그래프 9(누적 영역), 연도 표 |

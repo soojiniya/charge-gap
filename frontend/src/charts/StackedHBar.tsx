@@ -1,8 +1,11 @@
 import { MOTION, useMotion } from '../lib/motion';
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { axisLine, axisTick, C } from './theme';
 import { TipBox } from './Tooltip';
 import { fmtCompact, fmtInt, fmtPct } from '../lib/format';
+
+/** 밝은 막대 위 글씨 (tokens.css --btn-ink, Python 그래프 DARK_INK와 같은 값) */
+const DARK_INK = '#171717';
 
 export interface StackSeries {
   key: string;
@@ -21,10 +24,15 @@ interface Props<T extends object> {
   /** true면 각 행을 100%로 정규화해 구성비를 비교 */
   normalized?: boolean;
   labelWidth?: number;
+  /** normalized일 때 첫 계열 비율(%)을 막대 안에 표시 (좁으면 막대 바로 오른쪽) */
+  firstShareLabel?: boolean;
+  /** x축 제목 (선택) */
+  xLabel?: string;
   ariaLabel: string;
 }
 
-/** 두 계열 누적 가로 막대. 세그먼트 사이 2px 표면 간격. 범례는 차트 위에 항상 표시. */
+/** 두 계열 누적 가로 막대. 세그먼트 사이 2px 표면 간격. 범례는 차트 위에 항상 표시.
+ *  firstShareLabel: 100% 정규화일 때 첫 계열 비율을 막대 안에 표기 (Python PY03과 같은 표현). */
 export function StackedHBar<T extends object>({
   data,
   labelKey,
@@ -35,6 +43,8 @@ export function StackedHBar<T extends object>({
   onSelect,
   normalized,
   labelWidth = 92,
+  firstShareLabel,
+  xLabel,
   ariaLabel,
 }: Props<T>) {
   const m = useMotion();
@@ -52,7 +62,8 @@ export function StackedHBar<T extends object>({
       __total: total,
     };
   });
-  const height = Math.max(140, rows.length * 28 + 40);
+  const showShare = Boolean(normalized && firstShareLabel);
+  const height = Math.max(140, rows.length * (showShare ? 30 : 28) + 40 + (xLabel ? 22 : 0));
   const dimmed = (id: unknown) => highlightId !== undefined && rows.some((r) => (r as Record<string, unknown>)[idKey] === highlightId) && id !== highlightId;
 
   return (
@@ -67,7 +78,7 @@ export function StackedHBar<T extends object>({
       </div>
       <div role="img" aria-label={ariaLabel} style={{ width: '100%', height }}>
         <ResponsiveContainer>
-          <BarChart data={rows} layout="vertical" margin={{ top: 0, right: 16, bottom: 4, left: 0 }} barCategoryGap={7}>
+          <BarChart data={rows} layout="vertical" margin={{ top: 0, right: 16, bottom: xLabel ? 22 : 4, left: 0 }} barCategoryGap={7}>
             <CartesianGrid horizontal={false} stroke={C.grid} />
             <XAxis
               type="number"
@@ -75,6 +86,8 @@ export function StackedHBar<T extends object>({
               axisLine={axisLine}
               tickLine={false}
               domain={normalized ? [0, 100] : [0, 'auto']}
+              ticks={normalized ? [0, 20, 40, 60, 80, 100] : undefined}
+              label={xLabel ? { value: xLabel, position: 'insideBottom', offset: -16, fill: C.muted, fontSize: 13 } : undefined}
               tickFormatter={(v: number) => (normalized ? `${v}%` : fmtCompact(v))}
             />
             <YAxis type="category" dataKey={labelKey} width={labelWidth} tick={{ fill: C.ink2, fontSize: 14 }} axisLine={false} tickLine={false} interval={0} />
@@ -129,7 +142,42 @@ export function StackedHBar<T extends object>({
                     />
                   );
                 }}
-              />
+              >
+                {/* 두 번째 계열 막대 위에 그려야 가려지지 않으므로 마지막 계열에 붙이고, 첫 계열 구간은 비율로 되짚어 계산 */}
+                {i === 1 && showShare && (
+                  <LabelList
+                    dataKey="__a"
+                    content={(props: unknown) => {
+                      const p = props as { x?: number | string; y?: number | string; width?: number | string; height?: number | string; value?: number | string; index?: number };
+                      const bx = Number(p.x), y = Number(p.y), bw = Number(p.width), h = Number(p.height), v = Number(p.value);
+                      const rest = 100 - v; // 두 번째 계열 비율 (normalized)
+                      if (!Number.isFinite(v) || !Number.isFinite(bx) || !Number.isFinite(bw) || rest <= 0) return null;
+                      const w = (bw / rest) * v; // 첫 계열 막대 폭
+                      const x = bx - w;
+                      const text = `${v.toFixed(1)}%`;
+                      const inside = w >= text.length * 7.6 + 8; // 12px 굵은 숫자 폭 근사
+                      const row = p.index !== undefined ? rows[p.index] : undefined;
+                      const op = row && dimmed((row as Record<string, unknown>)[idKey]) ? 0.45 : 1;
+                      return (
+                        <text
+                          x={inside ? x + w / 2 : x + w + 8}
+                          y={y + h / 2}
+                          dy="0.35em"
+                          textAnchor={inside ? 'middle' : 'start'}
+                          fill={inside ? DARK_INK : C.ink}
+                          fontSize={12}
+                          fontWeight={700}
+                          fontFamily="var(--font-num)"
+                          opacity={op}
+                          pointerEvents="none"
+                        >
+                          {text}
+                        </text>
+                      );
+                    }}
+                  />
+                )}
+              </Bar>
             ))}
           </BarChart>
         </ResponsiveContainer>

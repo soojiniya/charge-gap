@@ -89,7 +89,7 @@
 |---|---|---|
 | 1 | 지역별 전기차 등록 대수 | 가로 막대 |
 | 2 | 차종별 전기차 등록 구성 | 도넛 |
-| 3 | 사업용·비사업용 구성 | 비율 점, 100% 누적·대수 보기 전환 |
+| 3 | 지역별 사업용·비사업용 전기차 구성 | 100% 누적 가로 막대(Python PY03과 같은 기준), 대수 보기 전환 |
 | 4 | 지역별 충전소 수와 충전기 수 관계 | 산점도·회귀선 |
 | 5 | 충전소당 충전기 수 분포 | 지역별 박스플롯 |
 | 6 | 충전기 유형별 구성 | 도넛 |
@@ -117,7 +117,17 @@
 | PY09 | 연도별 누적 충전기 설치 추이 | 누적 영역 + 연간 막대 | Matplotlib fill_between · Seaborn lineplot |
 | PY10 | 운영기관별 충전기 규모 | 트리맵(면적 비례) | Matplotlib patches · Seaborn 팔레트 |
 
-`scripts/verify_python_charts_2026.py`가 그래프 계산값을 실행 중인 API와 대조합니다. 백엔드 `/api/charts`가 제공하는 보존용 PNG 10개(`outputs/charts/`)는 이 그래프와 별개의 이전 자료입니다.
+`scripts/verify_python_charts_2026.py`가 그래프 계산값을 실행 중인 API와 대조합니다.
+
+**그래프 폴더 구분.** Python Visualization 페이지가 쓰는 최종본은 `frontend/public/python-charts/`뿐입니다. 아래 두 폴더는 이전 버전으로 보존만 하며 페이지에 표시되지 않습니다.
+
+| 폴더 | 구분 | 생성 | 데이터 기준 | 쓰는 곳 |
+|---|---|---|---|---|
+| `frontend/public/python-charts/` | **최종** (PY01–PY10, 다크 테마) | `scripts/create_python_charts_2026.py` | 전기차 등록 2026년 9월(1,191,873대·16개 지역), 충전기 2026-10-15 전체 527,433기 | Python Visualization 페이지 |
+| `outputs/charts/` | 구버전 (01–10, 첫 그래프 세트) | 2026-10-14, 저장소 밖 초기 스크립트 (`reports/chart_verification.json`) | 전기차 등록 2025년 12월(899,101대), 충전기 2026-10-15 | 백엔드 `/api/charts` 보존용 PNG |
+| `outputs/charts_v2_report/` | 구버전 (보고서용 v2) | 2026-10-16, `scripts/create_report_charts_v2.py` | 전기차 등록 2025년 12월(17개 시도), 충전기 2026-10-15 | 사용처 없음 (보관) |
+
+구버전은 전기차 등록 기준월과 그래프 구성이 달라 최종본과 수치·형태가 다릅니다. 예를 들어 03번은 최종본이 사업용 비율 순 100% 누적 가로 막대이고, `outputs/charts/`는 대수 누적 막대입니다.
 
 ## 데이터
 
@@ -365,7 +375,8 @@ frontend/                 React 앱 · 그래프 · 지도 · Nginx 설정 · Do
 deploy/render/            Render 백엔드 Dockerfile · R2 다운로드 · data-manifest.json
 scripts/                  Python 그래프 생성·검증 코드
 reports/                  분석 · 데이터 품질 · 그래프 · 배포 검증 보고서
-outputs/charts/           /api/charts 보존용 PNG 10개
+outputs/charts/           /api/charts 보존용 PNG 10개 (구버전, 2025년 12월 등록 기준)
+outputs/charts_v2_report/ 보고서용 v2 PNG 10개 (구버전, 보관)
 docs/                     배포 안내 · 데이터 출처·이용 조건 · GitHub 공개 준비
 docker/                   Docker 실행 검증 기록
 data/                     로컬 CSV·Excel (Git 제외)
