@@ -35,10 +35,11 @@ function useWidth<T extends HTMLElement>() {
   return [ref, Math.max(240, width || 320)] as const;
 }
 
-/** 16개 지역 값을 한 줄에 점으로 찍고 전국 기준선을 표시 (최고 = 보라, 최저 = 민트) */
+/** 16개 지역 값을 한 줄에 점으로 찍고 전국 기준선을 표시 (최고 = 포인트 색, 최저 = 속이 빈 밝은 회색 원, 나머지 = 회색) */
 function DotStrip({ data, format, label }: { data: Extremes; format: (n: number) => string; label: string }) {
   const [ref, W] = useWidth<HTMLDivElement>();
-  const H = 60;
+  const H = 78;
+  const cy = 38;
   const vals = data.points.map((p) => p.value).concat(data.national);
   const lo = Math.min(...vals);
   const hi = Math.max(...vals);
@@ -56,27 +57,27 @@ function DotStrip({ data, format, label }: { data: Extremes; format: (n: number)
         role="img"
         aria-label={`${label}: 16개 지역 분포. 최고 ${data.max.name} ${format(data.max.value)}, 최저 ${data.min.name} ${format(data.min.value)}, 전국 ${format(data.national)}`}
       >
-        <line x1={14} x2={W - 14} y1={30} y2={30} stroke={C.axis} strokeWidth={1} />
-        <line x1={nx} x2={nx} y1={15} y2={44} stroke={C.muted} strokeWidth={1} strokeDasharray="3 3" />
-        <text x={nx} y={10} textAnchor={anchor(nx)} className="kf-svg-note">
+        <line x1={14} x2={W - 14} y1={cy} y2={cy} stroke={C.axis} strokeWidth={1} />
+        <line x1={nx} x2={nx} y1={cy - 17} y2={cy + 17} stroke={C.muted} strokeWidth={1.25} strokeDasharray="3 3" />
+        <text x={nx} y={12} textAnchor={anchor(nx)} className="kf-svg-note">
           전국 {format(data.national)}
         </text>
         {data.points
           .filter((p) => p.code !== data.max.code && p.code !== data.min.code)
           .map((p) => (
-            <circle key={p.code} cx={x(p.value)} cy={30} r={4.5} fill={C.dim} stroke={C.surface} strokeWidth={1}>
+            <circle key={p.code} cx={x(p.value)} cy={cy} r={5.5} fill={C.s4} stroke={C.surface} strokeWidth={1.5}>
               <title>{`${p.name} ${format(p.value)}`}</title>
             </circle>
           ))}
         {[
-          { p: data.min, fill: C.compare },
-          { p: data.max, fill: C.point },
-        ].map(({ p, fill }) => (
+          { p: data.min, fill: C.surface, stroke: C.ink2, ink: C.ink2 },
+          { p: data.max, fill: C.accent, stroke: C.surface, ink: C.accent },
+        ].map(({ p, fill, stroke, ink }) => (
           <g key={p.code}>
-            <circle cx={x(p.value)} cy={30} r={6.5} fill={fill} stroke={C.surface} strokeWidth={1.5}>
+            <circle cx={x(p.value)} cy={cy} r={7.5} fill={fill} stroke={stroke} strokeWidth={2}>
               <title>{`${p.name} ${format(p.value)}`}</title>
             </circle>
-            <text x={x(p.value)} y={56} textAnchor={anchor(x(p.value))} className="kf-svg-label" fill={fill}>
+            <text x={x(p.value)} y={H - 4} textAnchor={anchor(x(p.value))} className="kf-svg-label" fill={ink}>
               {p.name}
             </text>
           </g>
@@ -89,7 +90,7 @@ function DotStrip({ data, format, label }: { data: Extremes; format: (n: number)
 /** 16개 지역 산점도: x = 충전소당 충전기, y = 100kW 이상 비중, 점선 = 전국 기준, 실선 = 최소제곱 추세선 */
 function MiniScatter({ data }: { data: Correlation }) {
   const [ref, W] = useWidth<HTMLDivElement>();
-  const H = 176;
+  const H = 220;
   const L = 40;
   const R = 14;
   const T = 24;
@@ -118,8 +119,8 @@ function MiniScatter({ data }: { data: Correlation }) {
       >
         <line x1={L} x2={W - R} y1={H - B} y2={H - B} stroke={C.axis} />
         <line x1={L} x2={L} y1={T} y2={H - B} stroke={C.axis} />
-        <line x1={px(data.national.x)} x2={px(data.national.x)} y1={T} y2={H - B} stroke={C.muted} strokeDasharray="3 3" />
-        <line x1={L} x2={W - R} y1={py(data.national.y)} y2={py(data.national.y)} stroke={C.muted} strokeDasharray="3 3" />
+        <line x1={px(data.national.x)} x2={px(data.national.x)} y1={T} y2={H - B} stroke={C.s4} strokeWidth={1.25} strokeDasharray="3 3" />
+        <line x1={L} x2={W - R} y1={py(data.national.y)} y2={py(data.national.y)} stroke={C.s4} strokeWidth={1.25} strokeDasharray="3 3" />
         {data.fit && (
           <line
             x1={px(xLo)}
@@ -128,18 +129,19 @@ function MiniScatter({ data }: { data: Correlation }) {
             y2={py(data.fit.intercept + data.fit.slope * xHi)}
             stroke={C.compare}
             strokeWidth={1.5}
-            opacity={0.85}
+            strokeDasharray="6 4"
+            opacity={0.7}
           />
         )}
         {data.points.map((p) => (
-          <circle key={p.code} cx={px(p.x)} cy={py(p.y)} r={isLabelled(p.code) ? 5.5 : 4.5} fill={C.point} fillOpacity={isLabelled(p.code) ? 1 : 0.7} stroke={C.surface}>
+          <circle key={p.code} cx={px(p.x)} cy={py(p.y)} r={isLabelled(p.code) ? 7.5 : 6} fill={isLabelled(p.code) ? C.accent : C.s1} stroke={C.surface} strokeWidth={2}>
             <title>{`${p.name}: 충전소당 ${fmtCps(p.x)}, 100kW 이상 ${fmtPct(p.y, 2)}`}</title>
           </circle>
         ))}
         {labelled.map((p) => {
           const right = p.code === data.xMin.code;
           return (
-            <text key={p.code} x={px(p.x) + (right ? 9 : -9)} y={py(p.y) + 4} textAnchor={right ? 'start' : 'end'} className="kf-svg-label kf-halo" fill={C.ink}>
+            <text key={p.code} x={px(p.x) + (right ? 11 : -11)} y={py(p.y) + 4} textAnchor={right ? 'start' : 'end'} className="kf-svg-label kf-halo" fill={C.accent}>
               {p.name}
             </text>
           );

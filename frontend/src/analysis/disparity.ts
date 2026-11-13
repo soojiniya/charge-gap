@@ -229,6 +229,38 @@ export function narrate(data: RegionalDisparityData, row: RegionalDisparityRow, 
 }
 
 /**
+ * 선택 지역 요약 카드의 '상세 분석 보기' 문장. 카드에 이미 보이는 값·전국 대비 차이·순위는 되풀이하지 않고,
+ * 그 값의 근거(분자·분모, 개수, 해석 주의)만 담습니다. 계산 불가 상태는 카드에 짧은 상태 문구만 있으므로 전체 문장을 그대로 씁니다.
+ * 문장과 숫자는 narrate()와 같은 값·같은 형식에서 만듭니다.
+ */
+export function detailSentences(data: RegionalDisparityData, row: RegionalDisparityRow, key: DisparityMetricKey, type: string, ctx: NarrativeContext = {}): string[] {
+  const r = readingOf(data, row, key, type);
+  if (r.status !== 'ok') return narrate(data, row, key, type, ctx);
+  const name = regionLabel(row);
+  const typeLabel = `유형 ${type}${ctx.typeName ? ` ${ctx.typeName}` : ''}`;
+  switch (key) {
+    case 'high_100kw':
+      return [`출력값이 확인된 충전기 ${fmtInt(r.denominator ?? 0)}기 중 ${fmtInt(r.numerator ?? 0)}기가 100kW 이상입니다.`];
+    case 'chargers_per_station':
+      return [`충전기 ${fmtInt(r.numerator ?? 0)}기를 고유 충전소 ${fmtInt(r.denominator ?? 0)}곳으로 나눈 값입니다.`];
+    case 'type_mix':
+      return [
+        `${name} 충전기 ${fmtInt(r.denominator ?? 0)}기 중 ${typeLabel} 충전기는 ${fmtInt(r.count ?? 0)}기입니다.`,
+        ...(r.count === 0 ? [`이 지역에는 ${typeLabel} 충전기가 없어 비중이 0%입니다.`] : []),
+      ];
+    case 'operator_hhi':
+      return [
+        `HHI는 운영기관 그룹별 충전기 점유율을 제곱해 더한 값(0–10,000)으로, 클수록 충전기가 소수 운영기관에 몰려 있다는 뜻입니다. 이 지역 운영기관 그룹 ${fmtInt(r.count ?? 0)}개 기준입니다.`,
+      ];
+    case 'deletion_share':
+      return [
+        `${name} 충전기 ${fmtInt(r.denominator ?? 0)}기 중 삭제 표시 충전기는 ${fmtInt(r.numerator ?? 0)}기입니다.`,
+        '삭제 표시는 자료상 표기이며 실제 고장이나 사용 불가를 뜻하지 않습니다.',
+      ];
+  }
+}
+
+/**
  * 요약 카드의 핵심 분석 한 줄. 상세 문장(narrate)과 같은 값·같은 규칙에서 만듭니다.
  * 예: "전국 기준(8.04%)보다 2.57%p 낮습니다."
  */
@@ -254,8 +286,9 @@ export const NARRATIVE_NOTE =
 
 /* ---------------- 히트맵 색 규칙 (셀·범례 공용) ---------------- */
 
-export const HEAT_UP_RGB = '129, 211, 203';
-export const HEAT_DOWN_RGB = '177, 157, 255';
+/** 무채색: 높음 = 밝은 흰색 틴트(단색), 낮음 = 회색 틴트 + 빗금(CSS [data-heat='down']). 부호(+/−)도 셀에 함께 표시 */
+export const HEAT_UP_RGB = '200, 200, 200';
+export const HEAT_DOWN_RGB = '140, 140, 140';
 export const HEAT_MIN_ALPHA = 0.1;
 export const HEAT_ALPHA_RANGE = 0.35;
 /** 색 강도의 기준(이 크기 이상의 차이면 가장 진함) = |전국 기준값|, 전국 기준값이 0 또는 없음이면 1 */
@@ -263,7 +296,7 @@ export const heatScale = (national: number | null | undefined) => Math.abs(natio
 export function heatIntensity(delta: number | null, national: number | null | undefined) {
   return delta == null ? 0 : Math.min(1, Math.abs(delta) / heatScale(national));
 }
-/** 차이 ≥ 0(같음 포함)은 청록, 음수는 라벤더. 차이 없음(null)은 색 없음. */
+/** 차이 ≥ 0(같음 포함)은 밝은 틴트, 음수는 회색 틴트(+빗금). 차이 없음(null)은 색 없음. */
 export function heatColor(delta: number | null, national: number | null | undefined): string | undefined {
   if (delta == null) return undefined;
   const a = HEAT_MIN_ALPHA + heatIntensity(delta, national) * HEAT_ALPHA_RANGE;

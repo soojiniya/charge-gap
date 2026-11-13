@@ -41,10 +41,10 @@ export function ColumnChart({ data, unit, height = 260, log, xTitle, ariaLabel, 
   return (
     <div role="img" aria-label={ariaLabel} style={{ width: '100%', height }}>
       <ResponsiveContainer>
-        <BarChart data={rows} margin={{ top: 22, right: 8, bottom: xTitle ? 18 : 0, left: 0 }} barCategoryGap={many ? 2 : '22%'}>
+        <BarChart data={rows} margin={{ top: 26, right: 20, bottom: xTitle ? 18 : 0, left: 0 }} barCategoryGap={many ? 2 : '22%'}>
           <defs>
             <pattern id="hatch-partial" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-              <rect width="6" height="6" fill="rgba(219,170,94,0.18)" />
+              <rect width="6" height="6" fill="rgba(245,245,245,0.12)" />
               <line x1="0" y1="0" x2="0" y2="6" stroke={C.s3} strokeWidth="2.2" />
             </pattern>
           </defs>
@@ -54,9 +54,10 @@ export function ColumnChart({ data, unit, height = 260, log, xTitle, ariaLabel, 
             tick={axisTick}
             axisLine={axisLine}
             tickLine={false}
-            interval={many ? 'preserveStartEnd' : 0}
-            minTickGap={many ? 4 : 0}
-            label={xTitle ? { value: xTitle, position: 'insideBottom', offset: -12, fill: C.muted, fontSize: 11 } : undefined}
+            // 좁은 화면에서 연도 눈금이 겹치면 일부만 표시(데스크톱은 모두 표시됨)
+            interval="preserveStartEnd"
+            minTickGap={4}
+            label={xTitle ? { value: xTitle, position: 'insideBottom', offset: -12, fill: C.muted, fontSize: 13 } : undefined}
           />
           <YAxis
             tick={axisTick}
@@ -90,7 +91,7 @@ export function ColumnChart({ data, unit, height = 260, log, xTitle, ariaLabel, 
               />
             ))}
             {labelPolicy !== 'none' && (
-              <LabelList dataKey="lbl" position="top" style={{ fill: C.ink2, fontSize: 11, fontFamily: 'var(--font-num)' }} />
+              <LabelList dataKey="lbl" position="top" style={{ fill: C.ink2, fontSize: 13, fontFamily: 'var(--font-num)' }} />
             )}
           </Bar>
         </BarChart>

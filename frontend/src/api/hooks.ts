@@ -1,4 +1,4 @@
-import { keepPreviousData, useInfiniteQuery, useQueries, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useInfiniteQuery, useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query';
 import { api } from './endpoints';
 import type { BBox, ChargerFilterParams } from './types';
 
@@ -74,10 +74,25 @@ export function useChargerTypes(f: ChargerFilterParams) {
   });
 }
 
-export function useChargerOutput(f: ChargerFilterParams) {
+/**
+ * 충전기 출력 구성(/api/charger-output). 키·옵션은 그대로입니다.
+ * shareRegionRequest: Regional Explorer의 지역 비교·분석 패널처럼 히트맵과 같은 화면에서 지역 하나를 볼 때,
+ * 같은 지역 외 필터의 통합 요청(/api/charger-output/regions, 히트맵과 같은 쿼리)을 함께 써서 그 지역 값을 꺼냅니다.
+ * 화면을 처음 열 때(URL에 지역·비교 지역이 있을 때) 히트맵 요청이 끝나기 전이어도 지역별 요청을 따로 보내지 않습니다.
+ * 꺼낸 값은 /api/charger-output?region_code=…와 같습니다. 지역이 없거나 옵션이 없으면 기존과 같이 단일 요청입니다.
+ */
+export function useChargerOutput(f: ChargerFilterParams, opts: { shareRegionRequest?: boolean } = {}) {
+  const queryClient = useQueryClient();
+  const viaRegions = !!opts.shareRegionRequest && !!f.region_code;
   return useQuery({
     queryKey: ['charger-output', norm(f)],
-    queryFn: ({ signal }) => api.chargerOutput(f, signal),
+    queryFn: async ({ signal }) => {
+      if (!viaRegions) return api.chargerOutput(f, signal);
+      const base = { ...f, region_code: undefined };
+      const list = await queryClient.fetchQuery({ queryKey: regionOutputsKey(base), queryFn: (ctx) => loadRegionOutputs(queryClient, base, ctx.signal) });
+      const hit = list.find((x) => x.code === f.region_code);
+      return hit ? hit.res : api.chargerOutput(f, signal);
+    },
     placeholderData: keepPreviousData,
   });
 }
@@ -157,6 +172,15 @@ export function useMapLocations(f: ChargerFilterParams, bbox: BBox | null, enabl
   });
 }
 
+/** 지도 줌 11~15용: 화면 영역(bbox) 전체 충전소의 격자 집계. 지도 줌이 바뀌면 칸 크기도 바뀌므로 줌을 키에 포함 */
+export function useMapGrid(f: ChargerFilterParams, bbox: BBox | null, zoom: number, enabled: boolean) {
+  return useQuery({
+    queryKey: ['locations-grid', norm(f), bbox, zoom],
+    enabled: enabled && bbox !== null,
+    queryFn: ({ signal }) => api.locationGrid({ ...f, bbox: bbox as BBox, zoom }, signal),
+  });
+}
+
 export function useStaticCharts() {
   return useQuery({
     queryKey: ['charts'],
@@ -165,29 +189,69 @@ export function useStaticCharts() {
   });
 }
 
+type ChargerOutputResponse = Awaited<ReturnType<typeof api.chargerOutput>>;
+/** 히트맵 한 행의 원본: 지역 코드와 그 지역의 /api/charger-output 응답 */
+export interface RegionOutput {
+  code: string;
+  res: ChargerOutputResponse;
+}
+
 /**
- * 지역 × 출력 히트맵: /api/charger-output을 16개 지역 코드별로 각각 요청합니다.
+ * /api/charger-output/regions 응답 → 지역별 /api/charger-output 응답 목록(서버의 16개 지역 순서).
+ * 각 응답은 { data, meta: { ...common_meta, filters, matched, count, output_statistics } }로, 같은 필터의
+ * 지역별 요청 응답과 data·meta가 같습니다(backend/tests/test_charger_output_regions.py).
+ */
+export function regionOutputResponses(res: Awaited<ReturnType<typeof api.chargerOutputRegions>>): RegionOutput[] {
+  const common = res.data.common_meta;
+  return res.data.regions.map((r) => ({
+    code: r.region_code,
+    res: { data: r.data, meta: { ...common, filters: r.filters, matched: r.matched, count: r.count, output_statistics: r.output_statistics } },
+  }));
+}
+
+/** 요청한 지역 순서로 고릅니다. 한 지역이라도 없으면 undefined(일부 지역만으로 그리지 않음). 순서가 같으면 같은 배열을 그대로 돌려줍니다. */
+export function pickRegions(list: RegionOutput[] | undefined, codes: readonly string[]): RegionOutput[] | undefined {
+  if (!list || !codes.length) return undefined;
+  if (list.length === codes.length && list.every((x, i) => x.code === codes[i])) return list;
+  const byCode = new Map(list.map((x) => [x.code, x]));
+  const picked = codes.map((c) => byCode.get(c));
+  return picked.every((x): x is RegionOutput => !!x) ? picked : undefined;
+}
+
+/**
+ * 지역 × 출력 히트맵: 16개 지역의 출력 구성을 /api/charger-output/regions 한 번으로 받습니다(이전: 지역마다 1회, 16회).
  * region_code를 제외한 충전기 필터(유형·삭제 표시·운영기관)는 그대로 적용합니다.
- * 각 요청은 단일 지역 캐시 키를 써서, 다른 화면의 지역 필터 요청과 캐시를 공유합니다.
+ *  - 이전 필터 결과(placeholder)를 쓰지 않아, 필터를 바꾸면 새 필터 응답이 올 때까지 로딩으로 보입니다.
+ *  - 쿼리 키에 필터가 들어가므로 늦게 도착한 이전 필터 응답은 이전 필터의 캐시에만 들어가 최신 화면을 덮지 않습니다.
+ *  - 받은 결과로 지역별 캐시(['charger-output', 지역 필터])를 채워, 지역 비교·분석 패널·Charging Infrastructure가
+ *    이전과 같이 추가 요청 없이 재사용합니다(값은 지역별 요청 응답과 같음).
  */
 export function useRegionOutputMatrix(f: ChargerFilterParams, regionCodes: string[]) {
+  const queryClient = useQueryClient();
   const base = { ...f, region_code: undefined };
-  return useQueries({
-    queries: regionCodes.map((code) => ({
-      queryKey: ['charger-output', norm({ ...base, region_code: code })],
-      queryFn: ({ signal }: { signal: AbortSignal }) => api.chargerOutput({ ...base, region_code: code }, signal),
-      // Never mix previous-filter regions with completed current-filter regions.
-    })),
-    combine: (results) => ({
-      data: results.length > 0 && results.every((r) => r.data && !r.isPlaceholderData)
-        ? results.map((r, i) => ({ code: regionCodes[i], res: r.data as Awaited<ReturnType<typeof api.chargerOutput>> }))
-        : undefined,
-      isLoading: results.some((r) => r.isLoading || r.isPlaceholderData),
-      isFetching: results.some((r) => r.isFetching),
-      error: results.find((r) => r.error)?.error ?? null,
-      refetch: () => results.forEach((r) => r.error && r.refetch()),
-    }),
+  const q = useQuery({
+    queryKey: regionOutputsKey(base),
+    enabled: regionCodes.length > 0,
+    queryFn: ({ signal }) => loadRegionOutputs(queryClient, base, signal),
   });
+  return {
+    data: q.isPlaceholderData ? undefined : pickRegions(q.data, regionCodes),
+    isLoading: q.isLoading,
+    isFetching: q.isFetching,
+    error: q.error ?? null,
+    refetch: () => {
+      void q.refetch();
+    },
+  };
+}
+
+const regionOutputsKey = (base: ChargerFilterParams) => ['charger-output-regions', norm(base)] as const;
+
+/** 통합 요청 1회 → 지역별 응답 목록. 받은 결과로 지역별 캐시(['charger-output', 지역 필터])도 채웁니다. */
+async function loadRegionOutputs(queryClient: QueryClient, base: ChargerFilterParams, signal: AbortSignal) {
+  const list = regionOutputResponses(await api.chargerOutputRegions(base, signal));
+  list.forEach(({ code, res }) => queryClient.setQueryData<ChargerOutputResponse>(['charger-output', norm({ ...base, region_code: code })], res));
+  return list;
 }
 
 /** 박스플롯: 충전소당 충전기 수 분포. 전달한 충전기 필터를 그대로 요청변수로 사용합니다. */

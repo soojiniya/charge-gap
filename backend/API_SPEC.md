@@ -58,13 +58,35 @@
 | `/api/charger-regions` | 충전기 공통 필터 | 지역별 충전기·충전소·N/Y 건수·구성비 |
 | `/api/charger-types` | 충전기 공통 필터 | 유형별 건수·공식 정의·정의 확인 여부·구성비 |
 | `/api/charger-output` | 충전기 공통 필터 | output 원문별 건수·수치 kW·검증상태·구성비 |
+| `/api/charger-output/regions` | 충전기 공통 필터 (`region_code`는 무시) | 16개 지역 각각의 `/api/charger-output` 결과를 한 번에 (지역 × 출력 히트맵용, 아래 절) |
 | `/api/operators` | 충전기 공통 필터 + `page`, `limit` | 공백 정리 후 기관 ID·명칭 조합별 건수 |
 | `/api/growth` | `year_from`, `year_to` | 연간 설치·누적 통계 및 부분 연도 표시 |
 | `/api/locations` | 충전기 공통 필터 + `page`, `limit`, `bbox` | 충전소별 대표 좌표·일치 충전기 수 |
+| `/api/locations/grid` | 충전기 공통 필터 + **필수** `bbox`, `zoom=11..15` | 화면 영역 전체 충전소를 고정 격자 칸으로 집계 (지도 줌 11~15 묶음용, 아래 절) |
 | `/api/charts` | 선택 `chart_id=1..10` | 기존 그래프의 목적·종류·기간·분석·주의·수치·이미지 메타데이터 |
 | `/api/charts/{id}/image` | 경로 id=1..10; query 없음 | 기존 PNG 이미지. JSON이 아닌 image/png |
 | `/api/station-size-distribution` | 충전기 공통 필터 | 지역별 충전소당 충전기 수 박스플롯 통계 (아래 추가 API 절) |
 | `/api/regional-disparity` | 충전기 공통 필터 (`region_code`는 무시) | 16개 시도의 구성 격차 5개 지표·전국 기준·순위 (아래 추가 API 절) |
+
+### locations/grid (지도 충전소 묶음용 격자 집계)
+
+- 목적: 지도 줌 11~15에서 화면 영역의 **모든** 충전소를 반영해 묶음을 그립니다. 이전에는 `/api/locations`를 충전소 ID 순으로 최대 3,000곳만 받아 묶어, 밀집 지역에서 운영기관(ID 접두사) 쪽으로 치우쳤습니다.
+- 대표 좌표는 `/api/locations`와 같습니다(충전기 필터 → statId별 N 우선/충전기 ID 순 첫 유효 좌표).
+- 칸 크기: 지도 화면 32px 상당 = `32 × 2^(17−zoom)` m. 위도 칸 = m / 111,320°, 경도 칸 = m / (111,320 × cos 36°)°. 칸 번호는 `floor(경도/경도 칸)`, `floor(위도/위도 칸)`로 bbox와 무관한 고정 격자입니다.
+- 응답 `data`: 요청 bbox를 감싸는 칸 중 충전소가 있는 칸마다 `cell`, `station_count`, `charger_count`, `not_deleted_charger_count`, `deleted_charger_count`, 대표 좌표 평균 `latitude`/`longitude`, 범위 `south`/`west`/`north`/`east`, 칸에 충전소가 1곳이면 그 행 `station`(아니면 null).
+- `meta.matched`: 요청 bbox 안(경계 포함) 충전소 집계 = 같은 bbox의 `/api/locations` `meta.matched`. `meta.grid`: 칸 크기, 칸 정렬 bbox(`snapped_bbox`), 칸 수와 칸 합계.
+- 400: `bbox` 또는 `zoom` 누락, `zoom`이 11~15 밖, bbox가 이 줌에서 40,000칸 초과, 그 밖의 공통 검증 오류.
+- `/api/locations`(페이지 방식)는 그대로이며, 지도는 줌 16 이상(개별 충전소)과 목록에서 계속 사용합니다.
+
+### charger-output/regions (지역 × 출력 히트맵용)
+
+Regional Explorer의 지역 × 출력 구간 히트맵은 이전에 `/api/charger-output?{지역 외 필터}&region_code=R`을 16개 지역마다 요청했습니다. 이 경로는 같은 결과를 한 번에 돌려줍니다. 기존 `/api/charger-output`은 그대로입니다.
+
+- 요청변수: 충전기 공통 필터(`charger_type`, `deletion`, `operator_id`)와 같은 검증. `region_code`는 받되 무시하고 항상 16개 지역을 반환합니다(`meta.region_filter_policy`).
+- `data.common_meta`: 모든 지역에 공통인 meta(`api_version`, `sources`, `units`, `warnings`, `same_period_shortage_rate_computed`, `snapshot_policy`, `output_note`).
+- `data.regions[i]`: `region_code`, `data`(행 형식은 `/api/charger-output`과 같음), `filters`, `matched`, `count`, `output_statistics`. 순서는 16개 지역 코드 순.
+- 지역 R의 응답 재구성: `{data: regions[R].data, meta: {...common_meta, filters, matched, count, output_statistics}}` = 같은 지역 외 필터의 `/api/charger-output?region_code=R` 응답(data·meta 모두 동일, `backend/tests/test_charger_output_regions.py`).
+- 계산: 필터 선택 1회 → (지역, output) 그룹 집계 1회. 지역 안 구성비 = 충전기 수 ÷ 그 지역 충전기 수 × 100(지역별 요청과 같은 계산). 지역별 일치 건수·출력 통계도 필요한 열만 그룹 집계합니다.
 
 ### overview 필터 범위
 

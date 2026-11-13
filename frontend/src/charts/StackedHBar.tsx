@@ -77,7 +77,7 @@ export function StackedHBar<T extends object>({
               domain={normalized ? [0, 100] : [0, 'auto']}
               tickFormatter={(v: number) => (normalized ? `${v}%` : fmtCompact(v))}
             />
-            <YAxis type="category" dataKey={labelKey} width={labelWidth} tick={{ fill: C.ink2, fontSize: 12 }} axisLine={false} tickLine={false} interval={0} />
+            <YAxis type="category" dataKey={labelKey} width={labelWidth} tick={{ fill: C.ink2, fontSize: 14 }} axisLine={false} tickLine={false} interval={0} />
             <Tooltip
               cursor={{ fill: 'rgba(255,255,255,0.04)' }}
               content={({ active, payload }) => {

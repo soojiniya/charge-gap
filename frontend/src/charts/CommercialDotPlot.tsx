@@ -15,14 +15,14 @@ import { MOTION, useMotion } from "../lib/motion";
  * 지역별 사업용 전기차 비율 점 그래프 (Cleveland dot plot / Seaborn stripplot·pointplot에 대응).
  *  - 사업용 비율 높은 순 정렬, 행 간격 32px
  *  - 0에서 점까지 가는 줄기와 점, 점 오른쪽에 비율 직접 표기
- *  - 최고 지역만 포인트 색(라벤더), 나머지는 세이지 민트
+ *  - 최고 지역만 흰색(포인트), 나머지는 회색 점
  *  - 전국 사업용 비율 기준선 + 최고·최저 차이 구간 표시
  *  - x축은 0부터 실제 최대값에 맞춘 범위 (0~100% 고정 아님, 0은 항상 포함)
  */
 
 const ROW_H = 32;
 const TOP = 58; // 상단 차이 구간 주석 영역
-const AXIS_H = 34;
+const AXIS_H = 38;
 const PAD_R = 64; // 오른쪽 비율 라벨 공간
 
 export interface CommercialDatum {
@@ -89,7 +89,7 @@ export function CommercialDotPlot({
   // 카드 안쪽 실제 폭을 그대로 쓰고, 그보다 좁으면 카드 안에서만 가로 스크롤 (페이지 가로 스크롤 방지)
   const svgW = Math.max(260, width || 260);
   const narrow = svgW < 520;
-  const labelW = narrow ? 52 : 64;
+  const labelW = narrow ? 68 : 72; // 14px 지역명(전남광주)이 왼쪽에서 잘리지 않도록
   const plotW = Math.max(120, svgW - labelW - PAD_R);
   const maxShare = Math.max(0, ...data.map((d) => d.share));
   const xMax = niceMax(maxShare);
@@ -149,7 +149,7 @@ export function CommercialDotPlot({
                 x={x(t)}
                 y={TOP + plotH + 16}
                 fill={C.muted}
-                fontSize={12}
+                fontSize={13}
                 textAnchor="middle"
                 fontFamily="var(--font-num)"
               >
@@ -161,7 +161,7 @@ export function CommercialDotPlot({
             x={labelW + plotW / 2}
             y={TOP + plotH + 32}
             fill={C.muted}
-            fontSize={12}
+            fontSize={13}
             textAnchor="middle"
           >
             전체 전기차 등록 중 사업용 비율 (%)
@@ -184,7 +184,7 @@ export function CommercialDotPlot({
                 x2={x(bottom.share)}
                 y1={TOP - 34}
                 y2={TOP - 20}
-                stroke={C.s2}
+                stroke={C.s1}
                 strokeWidth={1.5}
               />
               <line
@@ -192,14 +192,14 @@ export function CommercialDotPlot({
                 x2={x(top.share)}
                 y1={TOP - 34}
                 y2={TOP - 20}
-                stroke={C.s1}
+                stroke={C.accent}
                 strokeWidth={1.5}
               />
               <text
                 x={(x(bottom.share) + x(top.share)) / 2}
                 y={TOP - 42}
                 fill={C.ink}
-                fontSize={12.5}
+                fontSize={13}
                 fontWeight={600}
                 textAnchor="middle"
               >
@@ -222,7 +222,7 @@ export function CommercialDotPlot({
             x={x(nationalShare) + 5}
             y={TOP - 9}
             fill={C.ink2}
-            fontSize={11.5}
+            fontSize={13}
             fontFamily="var(--font-num)"
           >
             전국 {nationalShare.toFixed(1)}%
@@ -233,7 +233,7 @@ export function CommercialDotPlot({
             const isTop = i === 0;
             const sel = highlightKey === d.code;
             const isHover = hover?.d.code === d.code;
-            const color = isTop ? C.point : C.s2;
+            const color = isTop ? C.accent : C.s1;
             const xv = x(d.share);
             const enter: CSSProperties | undefined = motion.animate
               ? ({
@@ -259,8 +259,8 @@ export function CommercialDotPlot({
                 <text
                   x={labelW - 10}
                   y={cy + 4.5}
-                  fill={sel ? C.s3 : isTop ? C.ink : C.ink2}
-                  fontSize={13}
+                  fill={sel ? C.accent : isTop ? C.ink : C.ink2}
+                  fontSize={14}
                   fontWeight={sel || isTop ? 600 : 400}
                   textAnchor="end"
                 >
@@ -294,14 +294,14 @@ export function CommercialDotPlot({
                     cy={cy}
                     r={isTop ? 7.5 : 6}
                     fill={color}
-                    stroke={sel ? C.s3 : C.surface}
+                    stroke={sel ? C.accent : C.surface}
                     strokeWidth={sel ? 2.5 : 2}
                   />
                   <text
                     x={xv + 12}
                     y={cy + 4.5}
-                    fill={isTop ? C.point : C.ink}
-                    fontSize={12.5}
+                    fill={isTop ? C.accent : C.ink}
+                    fontSize={13}
                     fontWeight={isTop ? 700 : 500}
                     fontFamily="var(--font-num)"
                   >
@@ -337,7 +337,7 @@ export function CommercialDotPlot({
               {
                 label: "사업용",
                 value: `${fmtInt(hover.d.commercial)}대`,
-                color: C.s2,
+                color: C.s1,
               },
               {
                 label: "비사업용",
@@ -347,7 +347,7 @@ export function CommercialDotPlot({
               {
                 label: "사업용 비율",
                 value: `${hover.d.share.toFixed(1)}%`,
-                color: hover.d.code === top?.code ? C.point : C.s2,
+                color: hover.d.code === top?.code ? C.accent : C.s1,
               },
             ]}
             note={`전국 ${nationalShare.toFixed(1)}% 대비 ${(hover.d.share - nationalShare >= 0 ? "+" : "") + (hover.d.share - nationalShare).toFixed(1)}%p`}

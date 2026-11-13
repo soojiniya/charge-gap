@@ -3,6 +3,8 @@ import type {
   BBox,
   ChargerFilterParams,
   ChargerOutputMeta,
+  ChargerOutputRegionsData,
+  ChargerOutputRegionsMeta,
   ChargerOutputRow,
   ChargerRegionRow,
   ChargerTypeRow,
@@ -11,7 +13,9 @@ import type {
   EvRegistrationMeta,
   EvRegistrationRow,
   GrowthMeta,
+  GridCell,
   GrowthRow,
+  LocationGridMeta,
   LocationRow,
   LocationsMeta,
   OperatorRow,
@@ -24,6 +28,15 @@ import type {
   StationSizeMeta,
   StationSizeRow,
 } from './types';
+
+/**
+ * bbox 요청변수. 받은 좌표의 정밀도를 줄이지 않습니다(소수 7자리 ≈ 1cm까지, 부동소수점 잔여값만 정리).
+ * 지도 화면 bbox는 이미 바깥쪽으로 맞춘 소수 5자리 값이라 그대로 전달됩니다(geo/bbox.ts).
+ * 이전의 toFixed(4)는 가장 가까운 값으로 반올림해 바깥쪽으로 맞춘 범위를 다시 안쪽으로 줄일 수 있었습니다.
+ */
+export function bboxParam(b: BBox): string {
+  return b.map((v) => String(Number(v.toFixed(7)))).join(',');
+}
 
 /** deletion 기본값(all)은 서버 기본값과 같으므로 생략해 URL을 짧게 유지합니다. */
 function chargerParams(f: ChargerFilterParams) {
@@ -55,6 +68,10 @@ export const api = {
   chargerOutput: (f: ChargerFilterParams, signal?: AbortSignal) =>
     apiGet<ChargerOutputRow[], ChargerOutputMeta>('/api/charger-output', chargerParams(f), signal),
 
+  /** 16개 지역의 /api/charger-output 결과를 한 번에 (지역 × 출력 히트맵). 지역 필터는 보내지 않습니다(서버도 무시). */
+  chargerOutputRegions: (f: ChargerFilterParams, signal?: AbortSignal) =>
+    apiGet<ChargerOutputRegionsData, ChargerOutputRegionsMeta>('/api/charger-output/regions', chargerParams({ ...f, region_code: undefined }), signal),
+
   /** limit 1~200 (기본 50) */
   operators: (f: ChargerFilterParams & { page?: number; limit?: number }, signal?: AbortSignal) =>
     apiGet<OperatorRow[]>('/api/operators', { ...chargerParams(f), page: f.page, limit: f.limit }, signal),
@@ -70,7 +87,15 @@ export const api = {
   ) =>
     apiGet<LocationRow[], LocationsMeta>(
       '/api/locations',
-      { ...chargerParams(f), page: f.page, limit: f.limit, bbox: f.bbox ? f.bbox.map((v) => v.toFixed(4)).join(',') : undefined },
+      { ...chargerParams(f), page: f.page, limit: f.limit, bbox: f.bbox ? bboxParam(f.bbox) : undefined },
+      signal,
+    ),
+
+  /** 지도 줌 11~15: 화면 영역 전체 충전소를 고정 격자 칸으로 집계 (bbox·zoom 필수) */
+  locationGrid: (f: ChargerFilterParams & { bbox: BBox; zoom: number }, signal?: AbortSignal) =>
+    apiGet<GridCell[], LocationGridMeta>(
+      '/api/locations/grid',
+      { ...chargerParams(f), bbox: bboxParam(f.bbox), zoom: f.zoom },
       signal,
     ),
 

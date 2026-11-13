@@ -15,10 +15,10 @@ import { RegionScatter } from '../charts/RegionScatter';
 import { BoxLegend, BoxPlot } from '../charts/BoxPlot';
 import { HistKde } from '../charts/HistKde';
 import { Heatmap, type HeatRow } from '../charts/Heatmap';
-import { OperatorTreemap, type TreeItem } from '../charts/OperatorTreemap';
+import { OperatorTreemap, TREEMAP_OTHER, type TreeItem } from '../charts/OperatorTreemap';
 import { ColumnChart, type ColumnDatum } from '../charts/ColumnChart';
 import { CumulativeChart } from '../charts/CumulativeChart';
-import { C } from '../charts/theme';
+import { C, CHARGER_TYPE_OTHER, VEHICLE_COLORS, chargerTypeColor } from '../charts/theme';
 import {
   useChargerOutput,
   useChargerRegions,
@@ -184,7 +184,7 @@ export function EvRegionsCard({ span = 7, rowHeight = 26 }: { span?: Span; rowHe
       data={data}
       unit="대"
       rowHeight={h}
-      labelWidth={52}
+      labelWidth={64}
       highlightKey={state.evRegion}
       onSelect={(k) => update({ evRegion: state.evRegion === k ? undefined : k })}
       ariaLabel="지역별 전기차 등록 대수 가로 막대 그래프"
@@ -223,11 +223,12 @@ export function EvTypesCard({ span = 5 }: { span?: Span }) {
     }),
     { total: 0, passenger: 0, truck: 0, bus: 0, special: 0 },
   );
+  // 차종별 고정 색(theme.ts VEHICLE_COLORS): 도넛 조각·범례·툴팁이 같은 색을 씁니다.
   const slices: DonutSlice[] = [
-    { key: 'p', label: '승용', value: s.passenger, color: C.s1 },
-    { key: 't', label: '화물', value: s.truck, color: C.s2 },
-    { key: 'b', label: '승합', value: s.bus, color: C.s3 },
-    { key: 's', label: '특수', value: s.special, color: C.s4 },
+    { key: 'p', label: '승용', value: s.passenger, color: VEHICLE_COLORS.passenger },
+    { key: 't', label: '화물', value: s.truck, color: VEHICLE_COLORS.truck },
+    { key: 'b', label: '승합', value: s.bus, color: VEHICLE_COLORS.bus },
+    { key: 's', label: '특수', value: s.special, color: VEHICLE_COLORS.special },
   ];
   const name = state.evRegion ? rows[0]?.region_name ?? state.evRegion : '전국';
   return (
@@ -294,14 +295,14 @@ export function EvCommercialCard({ span = 12 }: { span?: Span }) {
         labelKey="display_region_name"
         idKey="region_code"
         series={[
-          { key: 'ev_commercial_count', label: '사업용', color: C.s2 },
-          { key: 'ev_noncommercial_count', label: '비사업용', color: C.s1 },
+          { key: 'ev_commercial_count', label: '사업용', color: C.s3 },
+          { key: 'ev_noncommercial_count', label: '비사업용', color: C.s2 },
         ]}
         unit="대"
         normalized={view === 'percent'}
         highlightId={state.evRegion}
         onSelect={select}
-        labelWidth={52}
+        labelWidth={64}
         ariaLabel={view === 'percent' ? '지역별 사업용·비사업용 100% 누적 막대 그래프' : '지역별 사업용·비사업용 등록 대수 누적 막대 그래프'}
       />
     );
@@ -428,7 +429,7 @@ export function StationBoxplotCard({ span = 12 }: { span?: Span }) {
   const sampleTotal = q.data?.meta.sample_count ?? 0;
   const chart = (
     <>
-      <BoxLegend />
+      <BoxLegend selectedName={state.region ? (state.region === '12' ? '전남광주' : rows.find((r) => r.region_code === state.region)?.region_name) : undefined} />
       <BoxPlot rows={rows} log={log} highlightKey={state.region} ariaLabel="지역별 충전소당 충전기 수 박스플롯" />
     </>
   );
@@ -485,12 +486,12 @@ export function TypesDonutCard({ span = 5, size = 200 }: { span?: Span; size?: n
   const q = useChargerTypes(chargerParams);
   const rows = q.data?.data ?? [];
   const sorted = [...rows].sort((a, b) => b.charger_count - a.charger_count);
-  const colors = [C.s1, C.s2, C.s3, C.s4];
+  // 색은 순위가 아니라 유형 코드에 고정(theme.ts CHARGER_TYPE_COLORS): 필터를 바꿔도 같은 유형은 같은 색
   const top = sorted.slice(0, 4);
   const rest = sorted.slice(4);
   const slices: DonutSlice[] = [
-    ...top.map((r, i) => ({ key: r.charger_type_code, label: `${r.charger_type_code} ${r.official_definition}`, value: r.charger_count, color: colors[i] })),
-    ...(rest.length ? [{ key: 'etc', label: `기타 ${rest.length}개 유형`, value: rest.reduce((s, r) => s + r.charger_count, 0), color: C.other }] : []),
+    ...top.map((r) => ({ key: r.charger_type_code, label: `${r.charger_type_code} ${r.official_definition}`, value: r.charger_count, color: chargerTypeColor(r.charger_type_code) })),
+    ...(rest.length ? [{ key: 'etc', label: `기타 ${rest.length}개 유형`, value: rest.reduce((s, r) => s + r.charger_count, 0), color: CHARGER_TYPE_OTHER }] : []),
   ];
   return (
     <Card
@@ -734,6 +735,7 @@ export function OperatorTreemapCard({ span = 12, height = 380 }: { span?: Span; 
   const items: TreeItem[] = [
     ...rows.map((r, i) => ({
       tone: rows.length > 1 ? i / (rows.length - 1) : 0,
+      rank: i + 1,
       key: `${r.operator_id}|${r.operator_name}`,
       id: r.operator_id,
       name: r.operator_name,
@@ -759,15 +761,32 @@ export function OperatorTreemapCard({ span = 12, height = 380 }: { span?: Span; 
       <QueryState isLoading={q.isLoading} error={q.error} onRetry={() => q.refetch()} isEmpty={!rows.length} height={height}>
         <div className="legend" style={{ marginBottom: 8 }}>
           <span className="legend-item">
-            <span className="swatch" style={{ width: 54, background: 'linear-gradient(90deg, rgb(216,211,238), rgb(104,97,150))' }} />
-            밝을수록 순위가 높은 기관 (면적 = 충전기 수)
+            <span className="swatch" style={{ background: C.accent }} />
+            1위 (기관을 선택하면 선택한 기관)
           </span>
           <span className="legend-item">
-            <span className="swatch" style={{ background: C.other }} />
+            <span className="swatch" style={{ background: '#d4d4d4' }} />
+            2·3위 (번호 표시)
+          </span>
+          <span className="legend-item">
+            <span className="swatch" style={{ background: '#8c8c8c' }} />
+            4–6위
+          </span>
+          <span className="legend-item">
+            <span className="swatch" style={{ background: '#727272' }} />
+            7–10위
+          </span>
+          <span className="legend-item">
+            <span className="swatch" style={{ background: '#5a5a5a' }} />
+            11–20위
+          </span>
+          <span className="legend-item">
+            <span className="swatch" style={{ background: TREEMAP_OTHER, outline: '1px solid #4a4a4a' }} />
             기타
           </span>
+          <span className="legend-item muted">면적 = 충전기 수</span>
           <span className="legend-item">
-            <span className="swatch" style={{ background: C.s3 }} />
+            <span className="swatch" style={{ background: C.accent, boxShadow: 'inset 0 0 0 2px #171717' }} />
             선택한 기관
           </span>
         </div>

@@ -6,7 +6,7 @@ import {
   type MouseEvent,
 } from "react";
 import { createPortal } from "react-dom";
-import { seqColor, seqInk } from "./theme";
+import { seqColor, seqInk, seqWeight } from "./theme";
 import { TipBox } from "./Tooltip";
 import { fmtInt, fmtPct } from "../lib/format";
 
@@ -146,7 +146,7 @@ export function Heatmap({
                     key={ci}
                     tabIndex={0}
                     aria-label={`${r.label} ${columns[ci]}: ${fmtPct(pct[ri][ci], 1)}, ${fmtInt(v)}기`}
-                    style={{ background: seqColor(t), color: seqInk(t) }}
+                    style={{ background: seqColor(t), color: seqInk(t), fontWeight: seqWeight(t) }}
                     onMouseEnter={(e) => show(ri, ci, e)}
                     onFocus={(e) => show(ri, ci, e)}
                     onBlur={() => setHover(null)}

@@ -22,7 +22,8 @@ module.exports = async function directUrlRegressions(page, baseUrl = 'http://127
   };
   const base = new URL(baseUrl).origin;
   const api = new URL(apiUrl).origin;
-  const isTile = (u) => /tile\.openstreetmap\.org/.test(u);
+  // 외부 지도(카카오맵 SDK·지도 이미지)는 이 검사 대상이 아님(등록 도메인에서만 동작) → 요청을 끊고 기록에서 제외
+  const isTile = (u) => /dapi\.kakao\.com|kakaocdn\.net|daumcdn\.net/.test(u);
   await page.route(isTile, (r) => r.abort());
   await page.setViewportSize({ width: 1440, height: 1000 });
 

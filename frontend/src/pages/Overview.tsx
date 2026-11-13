@@ -44,7 +44,7 @@ function Kpis() {
   const evName = base.data?.meta.filter_options.ev_regions.find((r) => r.code === state.evRegion)?.name;
   const busy = q.isFetching && !q.isLoading;
   const tile = (key: string, title: string, scope: string, body: React.ReactNode) => (
-    <Card key={key} span={3} title={title} scope={{ kind: 'filtered', label: scope }} isFetching={busy}>
+    <Card key={key} span={3} className="kpi-card" title={title} scope={{ kind: 'filtered', label: scope }} isFetching={busy}>
       <QueryState isLoading={q.isLoading} error={q.error} onRetry={() => q.refetch()} height={86}>
         {body}
       </QueryState>
@@ -188,6 +188,21 @@ function NotesCard() {
   );
 }
 
+/**
+ * 자료명 앞의 낫표(「)는 글꼴에서 글자 칸 오른쪽에 그려져(IBM Plex Sans KR 14px 기준 잉크 시작 약 10px) 다른 행보다 들여 쓴 것처럼 보입니다.
+ * 표시할 때만 첫 낫표를 감싸 그 빈 폭만큼 당겨, 열의 글자 시작선을 헤더와 맞춥니다(자료명 문자열은 그대로).
+ */
+function alignLeadBracket(text: string) {
+  return text.startsWith('「') ? (
+    <>
+      <span className="lead-bracket">「</span>
+      {text.slice(1)}
+    </>
+  ) : (
+    text
+  );
+}
+
 /** 데이터 출처: 제공기관·작성기관·자료명·자료 기준·수집 시점·이용 조건 (공공누리 제1유형은 공식 확인된 자료에만) */
 function DataSourcesTable() {
   const rows = [DATA_SOURCES.ev, DATA_SOURCES.chargers, DATA_SOURCES.growth];
@@ -220,7 +235,7 @@ function DataSourcesTable() {
                   {'platform' in r && r.platform ? ` (${r.platform})` : ''}
                   <span className="muted"> · 작성기관 {r.author}</span>
                 </td>
-                <td data-label="자료명">{r.dataset}</td>
+                <td data-label="자료명">{alignLeadBracket(r.dataset)}</td>
                 <td data-label="자료 기준">{r.basis}</td>
                 <td data-label="수집 시점">
                   {r.collectedLabel} <span className="notes-sources-date">{r.collected}</span>
@@ -253,8 +268,8 @@ export function OverviewPage() {
         <KeyFindingsSection />
         <CumulativeCard span={7} height={280} />
         <TypesDonutCard span={5} size={180} />
-        <StationChargerCard span={7} height={320} />
-        <EvRegionsCard span={5} rowHeight={22} />
+        <StationChargerCard span={7} height={380} />
+        <EvRegionsCard span={5} rowHeight={24} />
         <NotesCard />
         <PythonChartsShortcut />
       </div>

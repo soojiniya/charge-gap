@@ -19,16 +19,10 @@ const NAV: { to: string; label: string; ko: string; icon: IconName }[] = [
 function BrandMark() {
   return (
     <svg className="brand-mark" viewBox="0 0 36 36" aria-hidden="true">
-      <defs>
-        <linearGradient id="bm" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#c9c3e3" />
-          <stop offset="1" stopColor="#81ada8" />
-        </linearGradient>
-      </defs>
-      <rect x="0.5" y="0.5" width="35" height="35" rx="10" fill="#1b2230" stroke="rgba(255,255,255,.1)" />
-      {/* a bolt split by a gap */}
-      <path d="M20.5 6 11 19.5h6.2" fill="none" stroke="url(#bm)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M19.2 16.5h6L15.5 30" fill="none" stroke="url(#bm)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="0.5" y="0.5" width="35" height="35" rx="10" fill="#222222" stroke="#383838" />
+      {/* a bolt split by a gap — 단색(무채색) */}
+      <path d="M20.5 6 11 19.5h6.2" fill="none" stroke="#f5f5f5" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M19.2 16.5h6L15.5 30" fill="none" stroke="#a3a3a3" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

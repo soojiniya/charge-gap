@@ -2,7 +2,7 @@ import { useMemo, useState, type ReactNode } from 'react';
 import { useChargerOutput, useChargerTypes, useFilterOptions, useOperators, useOverview } from '../api/hooks';
 import type { ChargerFilterParams, LocationRow } from '../api/types';
 import { DELETION_LABEL, fmtInt, fmtPct } from '../lib/format';
-import { C } from '../charts/theme';
+import { C, CHARGER_TYPE_OTHER, chargerTypeColor } from '../charts/theme';
 import { chargerRegionLabel } from './FilterBar';
 import { OUTPUT_BANDS, bandIndex } from '../features/ChartCards';
 import { ErrorState } from './ui/QueryState';
@@ -30,6 +30,10 @@ interface Props {
 }
 
 const TOP_OPERATORS = 5;
+
+/** 지금 필터의 응답인지: 이전 필터 결과(placeholder)로 화면을 채우는 동안은 '불러오는 중'으로 봅니다. */
+const pending = (q: { isLoading: boolean; isPlaceholderData: boolean }) => q.isLoading || q.isPlaceholderData;
+const current = <T,>(q: { data: T | undefined; isPlaceholderData: boolean }) => (q.isPlaceholderData ? undefined : q.data);
 const TOP_TYPES = 5;
 
 function Section({ title, aside, children }: { title: string; aside?: ReactNode; children: ReactNode }) {
@@ -73,15 +77,18 @@ function BarList({ items, unit }: { items: BarItem[]; unit: string }) {
     <ul className="geo-bars">
       {items.map((i) => (
         <li key={i.key}>
+          {/* 이름 | 수량(오른쪽 정렬) | 비율(고정 폭, 오른쪽 정렬) */}
           <div className="geo-bar-label">
             <span className="geo-bar-name">{i.label}</span>
-            <span className="num">
+            <span className="num geo-bar-count">
               {fmtInt(i.value)}
-              {unit} <span className="muted">{fmtPct(i.share)}</span>
+              {unit}
             </span>
+            <span className="num muted geo-bar-share">{fmtPct(i.share)}</span>
           </div>
           <span className="geo-bar-track" aria-hidden="true">
-            <i style={{ width: `${(i.value / max) * 100}%`, background: i.color }} />
+            {/* 0보다 큰 값은 최소 4px로 그려 작은 비중도 색을 알아볼 수 있게 함(길이 비교는 4px 이상 구간에서 그대로) */}
+            <i style={{ width: `${(i.value / max) * 100}%`, minWidth: i.value > 0 ? 4 : 0, background: i.color }} />
           </span>
         </li>
       ))}
@@ -93,9 +100,15 @@ export function MapAnalysisPanel({ filters, selected, group, onPick, onClearGrou
   const opts = useFilterOptions();
   const overview = useOverview(filters);
   const types = useChargerTypes(filters);
-  const output = useChargerOutput(filters);
+  const output = useChargerOutput(filters, { shareRegionRequest: true });
   const operators = useOperators(filters, 1, TOP_OPERATORS);
   const [mix, setMix] = useState<'type' | 'output'>('type');
+  // 필터를 바꾸면 새 필터 응답이 올 때까지 쿼리가 이전 필터의 결과(placeholder)를 돌려줍니다.
+  // 제목·조건 칩은 새 필터를 바로 보여 주므로, 그동안 수치는 그리지 않고 로딩 표시를 씁니다(이전 필터 수치를 새 결과처럼 보이지 않게).
+  const ovData = current(overview);
+  const typesData = current(types);
+  const outputData = current(output);
+  const opsData = current(operators);
 
   const regionName = useMemo(() => {
     if (!filters.region_code) return null;
@@ -108,19 +121,19 @@ export function MapAnalysisPanel({ filters, selected, group, onPick, onClearGrou
   // 운영기관 ID 하나에 명칭이 여러 개일 수 있어(API 행 = ID·명칭 조합) 충전기 수가 가장 많은 명칭과 나머지 개수를 함께 표시
   const operatorLabel = useMemo(() => {
     if (!filters.operator_id) return null;
-    const names = (operators.data?.data ?? []).filter((o) => o.operator_id === filters.operator_id).map((o) => o.operator_name);
-    const total = operators.data?.meta.pagination?.total_items ?? names.length;
+    const names = (opsData?.data ?? []).filter((o) => o.operator_id === filters.operator_id).map((o) => o.operator_name);
+    const total = opsData?.meta.pagination?.total_items ?? names.length;
     if (!names.length) return filters.operator_id;
     return `${filters.operator_id} ${names[0]}${total > 1 ? ` 외 ${total - 1}개 명칭` : ''}`;
-  }, [filters.operator_id, operators.data]);
+  }, [filters.operator_id, opsData]);
 
-  const counts = overview.data?.data.chargers;
+  const counts = ovData?.data.chargers;
   const perStation = counts && counts.station_count > 0 ? counts.charger_count / counts.station_count : null;
 
   const typeItems = useMemo<BarItem[]>(() => {
-    const rows = [...(types.data?.data ?? [])].filter((r) => r.charger_count > 0).sort((a, b) => b.charger_count - a.charger_count);
-    const palette = [C.s1, C.compare, C.s3, C.s4, C.s2];
-    const top = rows.slice(0, TOP_TYPES).map((r, i) => ({
+    const rows = [...(typesData?.data ?? [])].filter((r) => r.charger_count > 0).sort((a, b) => b.charger_count - a.charger_count);
+    // 유형별 고정 색(theme.ts CHARGER_TYPE_COLORS, 그래프 6 도넛과 같은 매핑): 필터·지역이 바뀌어도 같은 유형은 같은 색
+    const top = rows.slice(0, TOP_TYPES).map((r) => ({
       key: r.charger_type_code,
       label: (
         <>
@@ -129,7 +142,7 @@ export function MapAnalysisPanel({ filters, selected, group, onPick, onClearGrou
       ),
       value: r.charger_count,
       share: r.share_pct,
-      color: palette[i % palette.length],
+      color: chargerTypeColor(r.charger_type_code),
     }));
     const rest = rows.slice(TOP_TYPES);
     if (rest.length) {
@@ -138,20 +151,20 @@ export function MapAnalysisPanel({ filters, selected, group, onPick, onClearGrou
         label: <>기타 {rest.length}개 유형</>,
         value: rest.reduce((n, r) => n + r.charger_count, 0),
         share: rest.every((r) => r.share_pct !== null) ? rest.reduce((n, r) => n + (r.share_pct ?? 0), 0) : null,
-        color: C.other,
+        color: CHARGER_TYPE_OTHER,
       });
     }
     return top;
-  }, [types.data]);
+  }, [typesData]);
 
   const outputItems = useMemo<BarItem[]>(() => {
-    const rows = output.data?.data ?? [];
+    const rows = outputData?.data ?? [];
     const sums = OUTPUT_BANDS.map(() => 0);
     rows.forEach((r) => {
       sums[bandIndex(r)] += r.charger_count;
     });
     const total = sums.reduce((a, b) => a + b, 0);
-    const palette = [C.s2, C.compare, C.s1, C.s3, C.s4, C.other];
+    const palette = [C.s1, C.s1, C.s1, C.s1, C.s1, C.other]; // 마지막 '미상'만 어둡게
     return OUTPUT_BANDS.map((band, i) => ({
       key: band,
       label: band === '미상' ? '미상 (결측·0 이하·숫자 아님)' : /kW/.test(band) ? band : `${band}kW`,
@@ -159,12 +172,12 @@ export function MapAnalysisPanel({ filters, selected, group, onPick, onClearGrou
       share: total ? (sums[i] / total) * 100 : null,
       color: palette[i],
     })).filter((x) => x.value > 0);
-  }, [output.data]);
+  }, [outputData]);
 
   const mixQuery = mix === 'type' ? types : output;
   const mixItems = mix === 'type' ? typeItems : outputItems;
-  const operatorRows = operators.data?.data ?? [];
-  const operatorTotal = operators.data?.meta.pagination?.total_items;
+  const operatorRows = opsData?.data ?? [];
+  const operatorTotal = opsData?.meta.pagination?.total_items;
 
   return (
     <aside className="geo-panel" aria-label="지도 분석 패널">
@@ -257,8 +270,8 @@ export function MapAnalysisPanel({ filters, selected, group, onPick, onClearGrou
         </section>
       )}
 
-      <Section title="충전 인프라 요약" aside={overview.isFetching && !overview.isLoading ? <span className="muted small">갱신 중</span> : undefined}>
-        {overview.isLoading ? (
+      <Section title="충전 인프라 요약" aside={overview.isFetching && !pending(overview) ? <span className="muted small">갱신 중</span> : undefined}>
+        {pending(overview) ? (
           <LoadingRows rows={3} />
         ) : overview.error ? (
           <ErrorState error={overview.error} onRetry={() => overview.refetch()} height={120} />
@@ -316,7 +329,7 @@ export function MapAnalysisPanel({ filters, selected, group, onPick, onClearGrou
           </div>
         }
       >
-        {mixQuery.isLoading ? (
+        {pending(mixQuery) ? (
           <LoadingRows />
         ) : mixQuery.error ? (
           <ErrorState error={mixQuery.error} onRetry={() => mixQuery.refetch()} height={120} />
@@ -331,7 +344,7 @@ export function MapAnalysisPanel({ filters, selected, group, onPick, onClearGrou
         title="주요 운영기관"
         aside={operatorTotal !== undefined ? <span className="muted small num">전체 {fmtInt(operatorTotal)}개 중 상위</span> : undefined}
       >
-        {operators.isLoading ? (
+        {pending(operators) ? (
           <LoadingRows />
         ) : operators.error ? (
           <ErrorState error={operators.error} onRetry={() => operators.refetch()} height={120} />

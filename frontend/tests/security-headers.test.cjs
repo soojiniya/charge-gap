@@ -1,6 +1,6 @@
 /* Regression: security headers for the Render static site (render.yaml) and the local Compose Nginx.
- * CSP allows only what the app loads (own files, data: fonts/images in CSS, OSM tiles, the API) with no
- * 'unsafe-inline'/'unsafe-eval'; clickjacking is blocked; Referrer-Policy keeps the origin for OSM tiles;
+ * CSP allows only what the app loads (own files, data: fonts/images in CSS, the Kakao Maps SDK + its tiles, the API)
+ * with no 'unsafe-inline'/'unsafe-eval'; clickjacking is blocked; Referrer-Policy keeps the origin (Kakao domain check);
  * X-Content-Type-Options stays; HSTS only on the HTTPS Render site. */
 const assert = require('node:assert/strict');
 const test = require('node:test');
@@ -29,10 +29,11 @@ test('Render static site sends CSP, clickjacking, referrer, nosniff and HSTS hea
   assert.match(h['Strict-Transport-Security'], /^max-age=\d{7,}$/);
   const d = directives(h['Content-Security-Policy']);
   assert.deepEqual(d['frame-ancestors'], ["'none'"]);
-  assert.deepEqual(d['script-src'], ["'self'"]);
+  assert.deepEqual(d['script-src'], ["'self'", 'https://dapi.kakao.com', 'https://t1.kakaocdn.net', 'https://t1.daumcdn.net'], 'own scripts + Kakao Maps SDK only');
   assert.deepEqual(d['style-src'], ["'self'"]);
   assert.deepEqual(d['object-src'], ["'none'"]);
-  assert.ok(d['img-src'].includes('https://tile.openstreetmap.org'), 'OSM tiles allowed');
+  assert.ok(d['img-src'].includes('https://*.kakaocdn.net') && d['img-src'].includes('https://*.daumcdn.net'), 'Kakao map tiles/logo allowed');
+  assert.ok(!d['img-src'].includes('https://tile.openstreetmap.org'), 'OSM tiles no longer loaded');
   assert.ok(d['img-src'].includes('data:') && d['font-src'].includes('data:'), 'CSS data: fonts/images allowed');
   const api = d['connect-src'].filter((s) => s.startsWith('https://'));
   assert.equal(api.length, 1, 'exactly one API origin');

@@ -9,17 +9,17 @@
 @import '@fontsource/ibm-plex-sans-kr/600.css';
 
 :root {
-  --ink: #141a26;
-  --ink-2: #3a4355;
-  --muted: #687185;
-  --line: #e1e5ec;
-  --line-strong: #c3cad6;
-  --soft: #f5f6f9;
-  --point: #574b9c;
-  --point-soft: #f1eff9;
-  --up: #17766d;
-  --down: #574b9c;
-  --bar: #b9b1de;
+  --ink: #171717;
+  --ink-2: #3a3a3a;
+  --muted: #6b6b6b;
+  --line: #e2e2e2;
+  --line-strong: #c8c8c8;
+  --soft: #f5f5f5;
+  --point: #262626;
+  --point-soft: #f0f0f0;
+  --up: #262626;
+  --down: #6b6b6b;
+  --bar: #bdbdbd;
 }
 
 @page {
@@ -28,12 +28,12 @@
   @bottom-left {
     content: 'CHARGE GAP · 전국 충전 인프라 구성 격차 분석 보고서';
     font: 7.5pt 'IBM Plex Sans KR', 'Malgun Gothic', sans-serif;
-    color: #687185;
+    color: #6b6b6b;
   }
   @bottom-right {
     content: counter(page) ' / ' counter(pages);
     font: 7.5pt 'IBM Plex Sans KR', 'Malgun Gothic', sans-serif;
-    color: #687185;
+    color: #6b6b6b;
   }
 }
 
@@ -50,7 +50,7 @@ body {
 }
 /* 화면 미리보기: A4 폭 종이처럼 */
 @media screen {
-  html { background: #eef0f4; }
+  html { background: #efefef; }
   body { max-width: 210mm; margin: 24px auto; padding: 16mm 15mm 18mm; box-shadow: 0 0 0 1px var(--line); }
 }
 
@@ -139,10 +139,10 @@ td.muted { color: var(--muted); }
 .rpt-compare td.rank small { display: block; font-size: 7pt; color: var(--muted); line-height: 1.3; }
 .rpt-compare tr.is-national td { background: var(--point-soft); border-bottom: 1px solid var(--line-strong); font-weight: 600; }
 .rpt-compare tr.is-national td.region { color: var(--point); }
-.rpt-compare tr.is-selected td { background: #f7f6fc; font-weight: 600; }
+.rpt-compare tr.is-selected td { background: #f4f4f4; font-weight: 600; }
 .rpt-compare tr.is-selected td.region::after { content: '선택'; margin-left: 6px; padding: 0 5px; font-size: 7pt; font-weight: 600; color: var(--point); border: 1px solid var(--point); vertical-align: 1px; }
 .rpt-bar { display: block; width: 100%; height: 10px; }
-.rpt-bar .track { fill: #eef0f4; }
+.rpt-bar .track { fill: #efefef; }
 .rpt-bar .fill { fill: var(--bar); }
 tr.is-selected .rpt-bar .fill, tr.is-national .rpt-bar .fill { fill: var(--point); }
 .rpt-bar .mark { fill: var(--ink); }
@@ -272,7 +272,7 @@ tr.is-selected .rpt-bar .fill, tr.is-national .rpt-bar .fill { fill: var(--point
 .rpt-ext-row .v, .rpt-ext-row .d { text-align: right; white-space: nowrap; }
 .rpt-ext-row .d { padding-right: 8px; font-weight: 600; }
 .rpt-ext-bar { display: block; width: 100%; height: 10px; }
-.rpt-ext-bar .track { fill: #f3f4f7; }
+.rpt-ext-bar .track { fill: #f3f3f3; }
 .rpt-ext-bar .fill { fill: var(--bar); }
 .rpt-ext-bar .fill.up { fill: var(--up); }
 .rpt-ext-bar .fill.down { fill: var(--point); }

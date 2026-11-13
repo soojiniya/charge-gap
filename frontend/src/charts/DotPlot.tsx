@@ -45,7 +45,7 @@ export function DotPlot({
             reversed
             ticks={rows.map((r) => r.y)}
             tickFormatter={(v: number) => rows[v]?.label ?? ''}
-            tick={{ fill: C.ink2, fontSize: 12 }}
+            tick={{ fill: C.ink2, fontSize: 14 }}
             axisLine={false}
             tickLine={false}
             width={70}
@@ -56,7 +56,7 @@ export function DotPlot({
               x={reference}
               stroke={C.compare}
               strokeDasharray="5 4"
-              label={{ value: referenceLabel ?? '기준', position: 'top', fill: C.compare, fontSize: 12 }}
+              label={{ value: referenceLabel ?? '기준', position: 'top', fill: C.compare, fontSize: 13 }}
             />
           )}
           <Tooltip
@@ -73,7 +73,7 @@ export function DotPlot({
             shape={(p: unknown) => {
               const s = p as { cx: number; cy: number; payload: DotDatum };
               const sel = s.payload.key === highlightKey;
-              return <circle cx={s.cx} cy={s.cy} r={sel ? 7 : 5.5} fill={sel ? C.s3 : C.s1} stroke={C.surface} strokeWidth={2} />;
+              return <circle cx={s.cx} cy={s.cy} r={sel ? 7 : 5.5} fill={sel ? C.accent : C.s1} stroke={C.surface} strokeWidth={2} />;
             }}
           />
         </ScatterChart>

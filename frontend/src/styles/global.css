@@ -43,7 +43,7 @@ a {
 }
 
 :focus-visible {
-  outline: 2px solid var(--point);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
   border-radius: 6px;
 }
@@ -70,8 +70,8 @@ a {
   left: 12px;
   top: -60px;
   z-index: 100;
-  background: var(--point);
-  color: #fff;
+  background: var(--btn);
+  color: var(--btn-ink);
   padding: 8px 14px;
   border-radius: var(--r-ctl);
   text-decoration: none;
@@ -295,7 +295,7 @@ a {
   margin: 0 -12px 22px;
   padding: 12px;
   border-radius: 14px;
-  background: rgba(16, 20, 28, 0.94);
+  background: rgba(17, 17, 17, 0.94);
   backdrop-filter: blur(14px);
   border: 1px solid transparent;
 }
@@ -340,8 +340,8 @@ a {
   border-color: rgba(255, 255, 255, 0.3);
 }
 .select.is-set {
-  border-color: rgba(164, 155, 200, 0.65);
-  background-color: rgba(164, 155, 200, 0.1);
+  border-color: rgba(163, 163, 163, 0.65);
+  background-color: rgba(163, 163, 163, 0.1);
 }
 .select option {
   background: var(--panel);
@@ -370,8 +370,8 @@ a {
   color: var(--ink);
 }
 .segmented button[aria-pressed='true'] {
-  background: var(--point);
-  color: #141821;
+  background: var(--selected);
+  color: var(--btn-ink);
   font-weight: 600;
 }
 
@@ -399,14 +399,14 @@ a {
   cursor: not-allowed;
 }
 .btn-primary {
-  background: var(--point);
-  border-color: var(--point);
-  color: #141821;
+  background: var(--btn);
+  border-color: var(--btn);
+  color: var(--btn-ink);
   font-weight: 600;
 }
 .btn-primary:hover:not(:disabled) {
-  background: #9188b8;
-  border-color: #9188b8;
+  background: var(--ink);
+  border-color: var(--ink);
 }
 .btn-ghost {
   border-color: transparent;
@@ -449,7 +449,7 @@ a {
 .grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 18px;
+  gap: 20px;
 }
 /* 같은 행의 카드는 위·아래 경계를 맞춥니다(행 높이 = 가장 긴 카드). 남는 높이는 .card-body가 차트를 세로 가운데 두어 흡수합니다. */
 .grid > .card,
@@ -531,7 +531,7 @@ a {
   background: var(--muted);
 }
 .scope.on {
-  border-color: rgba(164, 155, 200, 0.45);
+  border-color: rgba(163, 163, 163, 0.45);
   color: var(--point);
 }
 .scope.on::before {
@@ -617,7 +617,7 @@ var(--panel);
   top: 14px;
   height: 16px;
   border-radius: 8px;
-  background: repeating-linear-gradient(135deg, rgba(164, 155, 200, 0.28) 0 2px, transparent 2px 7px);
+  background: repeating-linear-gradient(135deg, rgba(163, 163, 163, 0.28) 0 2px, transparent 2px 7px);
   border: 1px solid rgba(255, 255, 255, 0.25);
 }
 .timeline-gap-label {
@@ -811,8 +811,8 @@ var(--panel);
   gap: 12px;
   padding: 12px 14px;
   border-radius: 12px;
-  background: rgba(164, 155, 200, 0.07);
-  border: 1px solid rgba(164, 155, 200, 0.22);
+  background: rgba(163, 163, 163, 0.07);
+  border: 1px solid rgba(163, 163, 163, 0.22);
   font-size: var(--t-sm);
   color: var(--ink-2);
 }
@@ -828,8 +828,8 @@ var(--panel);
   font-weight: 600;
 }
 .notice.warn {
-  background: rgba(217, 168, 95, 0.07);
-  border-color: rgba(217, 168, 95, 0.28);
+  background: rgba(212, 212, 212, 0.07);
+  border-color: rgba(212, 212, 212, 0.28);
 }
 .notice.warn svg {
   color: var(--warn);
@@ -952,7 +952,8 @@ var(--panel);
   background: rgba(255, 255, 255, 0.035);
 }
 .table tbody tr.is-selected {
-  background: rgba(164, 155, 200, 0.12);
+  background: var(--accent-soft);
+  box-shadow: inset 3px 0 0 var(--accent);
 }
 .table tbody tr:last-child td {
   border-bottom: 0;
@@ -987,7 +988,7 @@ var(--panel);
 }
 .badge.partial {
   color: var(--warn);
-  border-color: rgba(217, 168, 95, 0.45);
+  border-color: rgba(212, 212, 212, 0.45);
 }
 
 .pagination {
@@ -1021,7 +1022,7 @@ var(--panel);
   min-width: 170px;
   padding: 10px 12px;
   border-radius: 10px;
-  background: rgba(34, 42, 57, 0.97);
+  background: rgba(45, 45, 45, 0.97);
   border: 1px solid var(--line-strong);
   box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.7);
   font-size: var(--t-xs);
@@ -1075,7 +1076,7 @@ var(--panel);
   place-items: center;
   grid-template-columns: minmax(0, 1fr);
   padding: 24px;
-  background: rgba(8, 10, 15, 0.72);
+  background: rgba(8, 8, 8, 0.72);
   backdrop-filter: blur(6px);
   animation: fade 0.18s var(--ease);
 }
@@ -1229,7 +1230,7 @@ var(--panel);
 }
 .combo-option[aria-selected='true'],
 .combo-option.active {
-  background: rgba(164, 155, 200, 0.18);
+  background: rgba(163, 163, 163, 0.18);
 }
 .combo-empty {
   padding: 10px;
@@ -1244,12 +1245,12 @@ var(--panel);
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid var(--line);
-  background: #141a24;
+  background: #171717;
 }
 .map-wrap .leaflet-container {
   width: 100%;
   height: 100%;
-  background: #141a24;
+  background: #171717;
   font-family: var(--font-ui);
 }
 .map-progress {
@@ -1284,7 +1285,7 @@ var(--panel);
   border-color: var(--line-strong) !important;
 }
 .leaflet-control-attribution {
-  background: rgba(16,20,28,0.8) !important;
+  background: rgba(17, 17, 17, 0.8) !important;
   color: var(--muted) !important;
 }
 .leaflet-control-attribution a {
@@ -1370,7 +1371,7 @@ var(--panel);
   transition: border-color 0.15s, transform 0.2s var(--ease);
 }
 .thumb:hover {
-  border-color: rgba(164, 155, 200, 0.5);
+  border-color: rgba(163, 163, 163, 0.5);
   transform: translateY(-2px);
 }
 .thumb img {
@@ -1425,7 +1426,7 @@ var(--panel);
     top: 0;
     z-index: 30;
     padding: 10px 16px;
-    background: rgba(16, 20, 28, 0.94);
+    background: rgba(17, 17, 17, 0.94);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--line);
   }
@@ -1607,7 +1608,7 @@ var(--panel);
 
 .kpi {
   display: grid;
-  gap: 6px;
+  gap: 10px;
 }
 .kpi-label {
   font-size: var(--t-sm);
@@ -1615,17 +1616,18 @@ var(--panel);
 }
 .kpi-value {
   font-stretch: 100%;
-  font-size: 1.875rem;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.025em;
 }
 .kpi-meta {
   margin-top: 0;
   font-size: var(--t-xs);
 }
-.kpi.point .kpi-value {
-  color: var(--point);
-}
+.kpi.point .kpi-value,
 .kpi.compare .kpi-value {
-  color: var(--compare);
+  color: var(--accent); /* 핵심 KPI 2개(전기차 등록·충전기)만 포인트 색 */
 }
 
 /* analysis panel under each chart */
@@ -1707,7 +1709,7 @@ var(--panel);
 /* pending (needs backend aggregate) */
 .card.pending {
   border-style: dashed;
-  border-color: rgba(217, 168, 95, 0.35);
+  border-color: rgba(212, 212, 212, 0.35);
 }
 .pending-badge {
   display: inline-flex;
@@ -1718,7 +1720,7 @@ var(--panel);
   font-size: var(--t-xs);
   color: var(--warn);
   background: var(--warn-soft);
-  border: 1px solid rgba(217, 168, 95, 0.35);
+  border: 1px solid rgba(212, 212, 212, 0.35);
   white-space: nowrap;
 }
 .spec {
@@ -1770,7 +1772,7 @@ var(--panel);
   outline-color: var(--ink-2);
 }
 .heatmap tr.is-selected th[scope='row'] {
-  color: var(--point);
+  color: var(--accent);
   font-weight: 600;
 }
 .heat-legend {
@@ -1796,7 +1798,7 @@ var(--panel);
 
 .section-title {
   grid-column: 1 / -1;
-  margin: 14px 0 -4px;
+  margin: 18px 0 -6px;
   font-size: var(--t-lg);
   font-weight: 600;
   color: var(--ink);
@@ -1824,9 +1826,9 @@ var(--panel);
   }
 }
 
-/* OSM 표준 타일을 어두운 톤으로 (원본 타일은 변경하지 않고 표시만 필터) */
+/* OSM 표준 타일을 어두운 무채색 톤으로 (원본 타일은 변경하지 않고 표시만 필터) */
 .leaflet-tile-pane .osm-dark {
-  filter: invert(1) hue-rotate(185deg) brightness(0.9) contrast(0.92) saturate(0.4);
+  filter: grayscale(1) invert(1) brightness(0.82) contrast(0.92);
 }
 
 .card-body {
@@ -2128,7 +2130,7 @@ var(--panel);
 }
 .tm-cell:hover rect {
   filter: brightness(1.12);
-  stroke: #e7eaf0;
+  stroke: #f5f5f5;
   stroke-width: 1.5;
 }
 
@@ -2229,7 +2231,7 @@ var(--panel);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(27, 34, 48, 0.94) !important;
+  background: rgba(34, 34, 34, 0.94) !important;
   border-bottom: 1px solid var(--line) !important;
   font-size: 17px;
 }
@@ -2241,7 +2243,7 @@ var(--panel);
 }
 .geo-map .leaflet-control-zoom a.leaflet-disabled {
   color: var(--muted) !important;
-  background: rgba(27, 34, 48, 0.94) !important;
+  background: rgba(34, 34, 34, 0.94) !important;
 }
 .geo-topbar {
   position: absolute;
@@ -2267,7 +2269,7 @@ var(--panel);
   max-width: 640px;
   padding: 5px 6px 5px 6px;
   border-radius: 10px;
-  background: rgba(27, 34, 48, 0.94);
+  background: rgba(34, 34, 34, 0.94);
   backdrop-filter: blur(10px);
   border: 1px solid var(--line-strong);
   font-size: var(--t-xs);
@@ -2281,7 +2283,7 @@ var(--panel);
 .geo-status-mode {
   padding: 3px 8px;
   border-radius: 6px;
-  background: rgba(164, 155, 200, 0.16);
+  background: rgba(163, 163, 163, 0.16);
   color: var(--point);
   font-weight: 600;
   white-space: nowrap;
@@ -2305,7 +2307,7 @@ var(--panel);
 .geo-basemap.segmented {
   flex: none;
   height: 32px;
-  background: rgba(27, 34, 48, 0.94);
+  background: rgba(34, 34, 34, 0.94);
   box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.8);
 }
 .geo-basemap.segmented button {
@@ -2319,7 +2321,7 @@ var(--panel);
   bottom: 12px;
   max-width: min(280px, calc(100% - 24px));
   border-radius: 10px;
-  background: rgba(27, 34, 48, 0.94);
+  background: rgba(34, 34, 34, 0.94);
   backdrop-filter: blur(10px);
   border: 1px solid var(--line-strong);
   font-size: var(--t-xs);
@@ -2374,31 +2376,32 @@ var(--panel);
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: var(--s1);
-  box-shadow: 0 0 0 3px rgba(164, 155, 200, 0.2);
-  color: #141924;
+  background: #7fd1b4; /* MAP_COLORS.cluster */
+  box-shadow: inset 0 0 0 1.5px #0f3d30, 0 0 0 3px rgba(47, 164, 127, 0.28);
+  color: #08241c;
   font-family: var(--font-num);
   font-size: 10px;
-  font-weight: 650;
+  font-weight: 700;
 }
 .geo-key-count.is-selected {
-  background: var(--compare);
-  box-shadow: 0 0 0 3px rgba(129, 173, 168, 0.28);
+  background: #1f6f58; /* MAP_COLORS.select */
+  box-shadow: inset 0 0 0 1.5px #ffffff, 0 0 0 3px rgba(31, 111, 88, 0.3);
+  color: #ffffff;
 }
 .geo-key-dot {
   width: 10px;
   height: 10px;
   margin: 0 6px;
   border-radius: 50%;
-  border: 1px solid #10141c;
+  border: 1px solid #111111;
 }
 .geo-key-ring {
   width: 16px;
   height: 16px;
   margin: 0 3px;
   border-radius: 50%;
-  border: 2px solid var(--compare);
-  background: rgba(129, 173, 168, 0.28);
+  border: 2.5px solid #1f6f58; /* MAP_COLORS.select: 선택 충전소 고리 + 민트 후광 */
+  background: rgba(31, 111, 88, 0.3);
 }
 .geo-tooltip {
   position: absolute;
@@ -2644,7 +2647,7 @@ var(--panel);
   padding: 12px;
 }
 .geo-station {
-  background: rgba(129, 173, 168, 0.06);
+  background: rgba(163, 163, 163, 0.06);
   border-left: 2px solid var(--compare);
 }
 .geo-station-name {
@@ -2749,7 +2752,7 @@ var(--panel);
 .geo-group-item[aria-pressed='true'] {
   border-color: var(--compare);
   color: var(--ink);
-  background: rgba(129, 173, 168, 0.12);
+  background: rgba(163, 163, 163, 0.12);
 }
 
 @media (max-width: 1100px) {
@@ -2875,7 +2878,7 @@ var(--panel);
 .panel-backdrop {
   place-items: stretch end;
   padding: 0;
-  background: rgba(8, 10, 15, 0.5);
+  background: rgba(8, 8, 8, 0.5);
   backdrop-filter: none;
 }
 .modal.side-panel {
@@ -2904,7 +2907,7 @@ var(--panel);
   font-size: var(--t-xs);
   font-weight: 600;
   color: var(--compare);
-  background: rgba(129, 173, 168, 0.12);
+  background: rgba(163, 163, 163, 0.12);
 }
 @keyframes panel-in {
   from { opacity: 0; transform: translateX(24px); }
@@ -3119,7 +3122,7 @@ var(--panel);
 .evidence-caution {
   padding: 14px 16px;
   border-radius: 10px;
-  background: rgba(219, 170, 94, 0.07);
+  background: rgba(212, 212, 212, 0.07);
 }
 .evidence-caution .evidence-title svg {
   color: var(--s3);
@@ -3214,9 +3217,9 @@ var(--panel);
 }
 
 /* ================= 두 지역 비교 (Regional Explorer) =================
-   지역 A = 라벤더(--point), 지역 B = 청록(--compare). 막대는 장식이며 수치는 같은 행의 텍스트·표에 있습니다. */
-.cmp-a { --cmp: var(--point); --cmp-soft: var(--point-soft); }
-.cmp-b { --cmp: var(--compare); --cmp-soft: var(--compare-soft); }
+   지역 A = 흰색(#F5F5F5), 지역 B = 회색(#A3A3A3) + A·B 글자 표기. 막대는 장식이며 수치는 같은 행의 텍스트·표에 있습니다. */
+.cmp-a { --cmp: var(--g-1); --cmp-soft: rgba(255, 255, 255, 0.08); }
+.cmp-b { --cmp: var(--g-3); --cmp-soft: rgba(255, 255, 255, 0.04); }
 .cmp-dot {
   display: inline-block;
   width: 9px;
@@ -3256,12 +3259,12 @@ var(--panel);
   max-width: 340px;
 }
 .cmp-select.is-set.cmp-a {
-  border-color: rgba(164, 155, 200, 0.65);
-  background-color: rgba(164, 155, 200, 0.1);
+  border-color: rgba(163, 163, 163, 0.65);
+  background-color: rgba(163, 163, 163, 0.1);
 }
 .cmp-select.is-set.cmp-b {
-  border-color: rgba(129, 173, 168, 0.65);
-  background-color: rgba(129, 173, 168, 0.1);
+  border-color: rgba(163, 163, 163, 0.65);
+  background-color: rgba(163, 163, 163, 0.1);
 }
 .cmp-select:focus-visible {
   outline: 2px solid var(--cmp);
@@ -3498,7 +3501,7 @@ var(--panel);
   opacity: 1;
 }
 .cmp-scroll .cmp-table-wrap:focus-visible {
-  outline: 2px solid var(--point);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 /* 분석 근거의 출처 항목: 작성기관·자료명·자료 기준·파일 저장일·이용 조건을 줄마다 구분 */
@@ -3681,13 +3684,13 @@ var(--panel);
 }
 .disparity-stat dt { font-size: var(--t-xs); color: var(--muted); }
 .disparity-stat dd { margin: 0; font-size: var(--t-lg); font-weight: 600; color: var(--ink); }
-.disparity-stat.is-key dd { font-size: var(--t-xl); color: var(--point); }
+.disparity-stat.is-key dd { font-size: var(--t-xl); font-weight: 700; color: var(--accent); }
 /* 선택 지역 요약 */
 .disparity-region-summary {
   display: grid;
   gap: 12px;
   padding: 14px 16px;
-  border: 1px solid rgba(164, 155, 200, 0.28);
+  border: 1px solid rgba(163, 163, 163, 0.28);
   border-radius: 12px;
   background: var(--point-soft);
 }
@@ -3726,9 +3729,10 @@ var(--panel);
 .disparity-bars { min-width: 0; display: grid; grid-auto-rows: 40px; }
 .disparity-bar-row { min-width: 0; height: 40px; padding: 0 6px; border-radius: 8px; }
 .disparity-bar-row:hover { background: rgba(255, 255, 255, 0.03); }
-.disparity-bar-row.is-selected { background: var(--point-soft); }
+.disparity-bar-row.is-selected { background: var(--accent-soft); }
 .disparity-region { border: 0; padding: 6px 4px; border-radius: 6px; color: var(--ink-2); background: transparent; text-align: left; cursor: pointer; font-size: var(--t-sm); line-height: 1.35; white-space: nowrap; }
-.disparity-region:hover, .disparity-bar-row.is-selected .disparity-region { color: var(--point); }
+.disparity-region:hover { color: var(--point); }
+.disparity-bar-row.is-selected .disparity-region { color: var(--accent); }
 .disparity-bar-row.is-selected .disparity-region { font-weight: 600; }
 .disparity-track { position: relative; height: 14px; border: 0; padding: 0; background: var(--panel-3); border-radius: 3px; cursor: pointer; overflow: visible; }
 .disparity-track > span { display: block; height: 100%; min-width: 2px; border-radius: 3px; background: var(--point); }
@@ -3751,13 +3755,13 @@ var(--panel);
 .disparity-heat-row span:first-child { font-family: var(--font-ui); font-size: var(--t-sm); font-weight: 500; }
 .disparity-heat-row span { padding: 3px 6px; border-radius: 4px; }
 .disparity-heat-row:hover, .disparity-heat-row[aria-pressed="true"] { outline: 1px solid var(--point); outline-offset: -1px; }
-.disparity-heat-row:focus-visible { outline: 2px solid var(--point); outline-offset: -2px; border-radius: 0; }
+.disparity-heat-row:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; border-radius: 0; }
 /* 순위표 */
 .disparity-table-title { margin: 4px 0 0; font-size: var(--t-sm); font-weight: 600; color: var(--ink); }
 .disparity-table-wrap { max-width: 100%; overflow-x: auto; }
 .disparity-table { min-width: 620px; }
 .disparity-table .btn-sm { height: 28px; }
-.disparity-table .btn[aria-pressed="true"] { color: var(--point); border-color: rgba(164, 155, 200, 0.5); }
+.disparity-table .btn[aria-pressed="true"] { color: var(--point); border-color: rgba(163, 163, 163, 0.5); }
 .disparity-foot { margin: 0; max-width: 100ch; line-height: 1.6; }
 @media (max-width: 1280px) {
   .disparity-layout { grid-template-columns: minmax(0, 1fr); gap: 20px; }
@@ -3844,7 +3848,7 @@ var(--panel);
 .disparity-region-more summary::-webkit-details-marker { display: none; }
 .disparity-region-more summary::before { content: ''; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(-45deg); transition: transform 0.15s; }
 .disparity-region-more[open] summary::before { transform: rotate(45deg); }
-.disparity-region-more summary:focus-visible { outline: 2px solid var(--point); outline-offset: 2px; border-radius: 4px; }
+.disparity-region-more summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
 .disparity-region-more[open] summary { margin-bottom: 4px; }
 .disparity-region-note { margin: 0; font-size: var(--t-sm); line-height: 1.65; color: var(--ink-2); overflow-wrap: anywhere; word-break: keep-all; }
 @media (max-width: 768px) {
@@ -3861,6 +3865,18 @@ var(--panel);
 .disparity-heat-legend .heat-ramp { width: 64px; }
 .disparity-heat-legend .heat-swatch { width: 12px; margin-inline: 26px; }
 .disparity-heat-legend .heat-swatch.is-none { border: 1px dashed var(--line-strong); }
+/* 전국보다 낮음: 같은 색 강도 규칙 위에 어두운 빗금을 겹쳐 명도만으로 구분하지 않게 함 */
+.disparity-heat-row [data-heat='down'] {
+  background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.32) 0 2px, transparent 2px 6px) !important;
+}
+.disparity-heat-legend .heat-ramp.is-down { position: relative; }
+.disparity-heat-legend .heat-ramp.is-down::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.32) 0 2px, transparent 2px 6px);
+}
 .disparity-heat-legend p { margin: 0; line-height: 1.6; }
 .evidence-method { display: grid; gap: 10px; margin-bottom: 8px; }
 .evidence-method-list, .evidence-tech-list { display: grid; gap: 8px; margin: 0; }
@@ -3872,7 +3888,7 @@ var(--panel);
 .evidence-tech summary::before { content: ''; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(-45deg); transition: transform 0.15s; }
 .evidence-tech[open] summary::before { transform: rotate(45deg); }
 .evidence-tech summary:hover { color: var(--ink-2); }
-.evidence-tech summary:focus-visible { outline: 2px solid var(--point); outline-offset: 2px; border-radius: 4px; }
+.evidence-tech summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
 .evidence-tech-list { padding-top: 6px; font-size: var(--t-xs); line-height: 1.6; }
 .evidence-tech-list dd { display: flex; flex-wrap: wrap; gap: 4px 8px; }
 .evidence-tech-list code { overflow-wrap: anywhere; }
@@ -3895,7 +3911,7 @@ var(--panel);
   font-size: var(--t-xs);
   font-weight: 500;
   text-decoration: underline;
-  text-decoration-color: rgba(164, 155, 200, 0.45);
+  text-decoration-color: rgba(163, 163, 163, 0.45);
   text-underline-offset: 4px;
 }
 .disparity-region-more summary:hover { color: var(--ink); text-decoration-color: currentColor; }
@@ -3999,7 +4015,7 @@ var(--panel);
 /* Python 그래프 확대 보기: ① 그래프 ② 바로 아래 출처·기준 정보(간결) ③ 주요 분석 결과(먼저 읽힘) | 해석 주의(보조)
  * 웹 그래프 상세 보기의 "Python 그래프 (고정)" 탭에서도 같은 구성을 씁니다. */
 .pyc-body { display: grid; gap: 12px; min-width: 0; }
-.pyc-notice { margin: 0; display: flex; align-items: flex-start; gap: 8px; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(217, 168, 95, 0.3); background: var(--warn-soft); font-size: var(--t-xs); line-height: 1.5; color: var(--ink-2); }
+.pyc-notice { margin: 0; display: flex; align-items: flex-start; gap: 8px; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(212, 212, 212, 0.3); background: var(--warn-soft); font-size: var(--t-xs); line-height: 1.5; color: var(--ink-2); }
 .pyc-notice svg { flex: none; width: 15px; height: 15px; margin-top: 2px; color: var(--warn); }
 .pyc-figure { margin: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--panel); display: flex; justify-content: center; }
 /* 그래프가 화면 대부분을 차지하되, 아래 기준 정보가 첫 화면에서 보이도록 높이 상한을 둠(원본 비율 유지) */
@@ -4013,7 +4029,7 @@ var(--panel);
 .pyc-text { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; gap: 12px 22px; max-width: none; }
 .pyc-results, .pyc-notes { min-width: 0; }
 .pyc-text li, .pyc-text p { word-break: keep-all; overflow-wrap: anywhere; }
-/* 주요 분석 결과: 본문 색·한 단계 큰 제목과 보라 표시로 먼저 읽히게 */
+/* 주요 분석 결과: 본문 색·한 단계 큰 제목과 밝은 표시로 먼저 읽히게 */
 .pyc-results { padding: 2px 0 0; }
 .pyc-results h4 { margin: 0; display: flex; align-items: center; gap: 8px; font-size: var(--t-sm); font-weight: 600; color: var(--ink); }
 .pyc-results h4::before { content: ''; width: 3px; height: 14px; border-radius: 2px; background: var(--point); }
@@ -4052,20 +4068,20 @@ var(--panel);
 .kf-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin: 6px 0 -4px; }
 .kf-title { margin: 0; font-size: var(--t-lg); font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
 .kf-basis { margin: 0; font-size: var(--t-xs); color: var(--muted); line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
-.kf-body { display: grid; gap: 10px; min-width: 0; }
-.kf-figures { display: flex; flex-wrap: wrap; gap: 6px 22px; }
-.kf-figures > div { display: grid; gap: 2px; min-width: 0; }
+.kf-body { display: grid; gap: 14px; min-width: 0; }
+.kf-figures { display: flex; flex-wrap: wrap; gap: 8px 28px; }
+.kf-figures > div { display: grid; gap: 4px; min-width: 0; }
 .kf-k { font-size: var(--t-xs); color: var(--muted); }
-.kf-v { font-family: var(--font-num); font-size: var(--t-xl); font-weight: 650; line-height: 1.1; color: var(--ink); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
-.kf-v.is-max { color: var(--point); }
-.kf-v.is-min { color: var(--compare); }
+.kf-v { font-family: var(--font-num); font-size: 1.625rem; font-weight: 700; line-height: 1.1; color: var(--ink); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.kf-v.is-max { color: var(--accent); }
+.kf-v.is-min { color: var(--muted); }
 .kf-v-sm { font-size: var(--t-md); font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
 .kf-chart { width: 100%; min-width: 0; overflow: hidden; }
 .kf-strip, .kf-scatter { display: block; }
 .kf-halo { paint-order: stroke; stroke: var(--panel); stroke-width: 3px; stroke-linejoin: round; }
 .kf-card .card-body { justify-content: flex-start; }
-.kf-svg-note { font-size: 11px; fill: var(--muted); font-family: var(--font-num); }
-.kf-svg-label { font-size: 11.5px; font-weight: 600; font-family: var(--font-ui); }
+.kf-svg-note { font-size: 13px; fill: var(--muted); font-family: var(--font-num); }
+.kf-svg-label { font-size: 13px; font-weight: 600; font-family: var(--font-ui); }
 .kf-text { margin: 0; font-size: var(--t-sm); line-height: 1.6; color: var(--ink-2); word-break: keep-all; overflow-wrap: anywhere; }
 .kf-caution { color: var(--muted); }
 .kf-note { margin: 0; font-size: var(--t-xs); line-height: 1.55; color: var(--ink-2); word-break: keep-all; overflow-wrap: anywhere; }
@@ -4088,3 +4104,547 @@ var(--panel);
 }
 /* 해석 문단: 문장이 여러 줄로 감길 때도 다음 문장이 새 문장임을 알아볼 수 있게 문장 사이 간격을 조금 넓힘 */
 .insight-interp .sentence-line + .sentence-line { margin-top: 6px; }
+
+
+/* ================= v3.2: 시각적 위계 (명도 단계 · KPI · 분석 박스 · 구조) =================
+ * 색은 무채색 + 포인트 #C7D8CF 하나. 장식·글로우·그라데이션 없이 크기·굵기·여백·명도로만 위계를 만듭니다.
+ */
+.grid { gap: 24px; }
+@media (max-width: 960px) { .grid { gap: 16px; } }
+
+/* 차트 카드: 제목 크게, 제목 영역 아래 얇은 구분선 */
+.card-title { font-size: 1.125rem; font-weight: 650; letter-spacing: -0.01em; text-wrap: balance; word-break: keep-all; }
+.card:has(> .card-head .chart-no) > .card-head {
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.chart-no { color: var(--ink-2); background: rgba(255, 255, 255, 0.06); }
+
+/* 섹션 제목(주요 분석 발견) */
+.kf-head { margin: 14px 0 -6px; }
+.kf-title { font-size: 1.25rem; font-weight: 650; }
+
+/* KPI 타일: 라벨은 작은 캡션, 숫자가 가장 먼저 보이도록 */
+.kpi-card > .card-head { margin-bottom: 10px; }
+.kpi-card .card-title { font-size: var(--t-sm); font-weight: 500; color: var(--muted); letter-spacing: 0; }
+.kpi-card .kpi { gap: 12px; }
+.kpi-card .kpi-value {
+  font-size: 2.5rem;
+  white-space: nowrap;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+/* 4열(1281px 이상)에서는 카드 폭에 맞춰 숫자 크기를 줄여 단위가 줄바꿈되지 않게 함 */
+@media (min-width: 1281px) {
+  .kpi-card .kpi-value { font-size: clamp(2rem, 5.2vw - 36px, 2.5rem); }
+}
+.kpi-card .kpi-value small { font-size: var(--t-md); color: var(--muted); margin-left: 4px; }
+.kpi-card .kpi-meta { color: var(--muted); word-break: keep-all; }
+
+/* 주요 분석 결과: 회색 면 대신 얇은 세로선 + 캡션 제목, 수치 중심 */
+.insight-key {
+  padding: 2px 0 2px 16px;
+  border-radius: 0;
+  background: none;
+  border-left: 2px solid var(--line-strong);
+}
+.insight-key-head { margin-bottom: 6px; }
+.insight-key h3,
+.insight-interp h3 {
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+.insight-key ul { gap: 4px; color: var(--ink-2); font-size: var(--t-sm); line-height: 1.7; }
+.insight-key li { padding-left: 14px; }
+.insight-key li::before { top: 0.7em; width: 5px; height: 5px; background: var(--faint); }
+.insight-key b {
+  color: var(--ink);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.insight-interp { padding-left: 18px; }
+.insight-interp p { margin-top: 2px; font-size: var(--t-sm); line-height: 1.75; color: var(--muted); }
+.insight-interp b { color: var(--ink-2); font-size: inherit; }
+
+/* v3.3 그래프 5: 이상치는 옅게 두고, 가리킨 점만 또렷하게 (툴팁 값은 그대로) */
+.bx-out-pt { transition: fill-opacity var(--hover) ease-out; }
+.bx-out-pt:hover { fill-opacity: 0.9; }
+
+/* v3.3 가독성: 화면에서 11px 이하로 보이던 보조 글씨를 12px 이상으로 */
+.scope { height: 24px; font-size: 0.75rem; }
+.badge { font-size: 0.75rem; }
+.nav-ko, .brand-sub { font-size: 0.75rem; }
+.thumb .thumb-meta { font-size: 12px; }
+
+/* v3.3 필터 변경 직후: 새 응답이 올 때까지 이전 값은 흐리게 표시해 최신 값으로 오인하지 않게 함(값·요청 로직은 그대로) */
+.card[aria-busy='true'] > .card-body { opacity: 0.5; transition: opacity 120ms ease-out; }
+.card > .card-body { transition: opacity 200ms ease-out; }
+/* 390px: 범위 칩(12px로 확대)과 보기 전환이 한 줄을 넘으면 줄바꿈 (가로 넘침 방지) */
+@media (max-width: 560px) {
+  .card-actions { flex: 0 1 auto; max-width: 100%; }
+}
+
+/* v3.4 두 지역 비교: 막대그래프와 지표 표 사이 여백, 표 행 간격 (이 섹션에만 적용) */
+.cmp-card .cmp-duo + .cmp-scroll { margin-top: 22px; }
+.cmp-card .cmp-table thead th { padding-top: 14px; padding-bottom: 14px; }
+.cmp-card .cmp-table tbody th,
+.cmp-card .cmp-table tbody td { padding-top: 12px; padding-bottom: 12px; }
+@media (max-width: 560px) {
+  .cmp-card .cmp-duo + .cmp-scroll { margin-top: 20px; }
+}
+
+/* ================= v3.5 타이포그래피 위계 =================
+ * 페이지 제목 26 > 카드·그래프 제목 18 > 주요 분석 결과 15 > 본문·표·필터·해석 14 > 축·그래프 라벨·표 헤더 13 > 출처·보조 12~13
+ * 보조 텍스트 색은 tokens.css --muted(#B0B0B0)로 한 단계 밝혀 대비를 높였습니다.
+ */
+.page-title { font-size: 1.625rem; }
+@media (max-width: 560px) { .page-title { font-size: 1.375rem; } }
+
+/* 표: 행 간격과 셀 패딩을 조금 넓힘 (글씨 크기는 헤더 13 / 본문 14 유지) */
+.table th, .table td { padding-left: 16px; padding-right: 16px; }
+.table td { height: 46px; padding-top: 11px; padding-bottom: 11px; }
+@media (max-width: 560px) { .table th, .table td { padding-left: 12px; padding-right: 12px; } }
+
+/* 주요 분석 결과: 문장 15px, 핵심 수치는 17px 굵게·숫자 글꼴로 문장과 구분 / 해석 14px */
+.insight-key ul { font-size: 0.9375rem; line-height: 1.75; }
+.insight-key b { font-family: var(--font-num); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.insight-interp p { font-size: var(--t-sm); color: var(--muted); }
+/* 두 지역 비교 표는 열 너비를 유지하도록 기존 좌우 패딩(14px / 모바일 10px) 그대로 */
+.cmp-card .cmp-table th, .cmp-card .cmp-table td { padding-left: 14px; padding-right: 14px; }
+@media (max-width: 560px) { .cmp-card .cmp-table th, .cmp-card .cmp-table td { padding-left: 10px; padding-right: 10px; } }
+
+/* v3.6 도넛: 범례 색 표시 확대, 가리킨 항목 강조(작은 조각도 범례로 쉽게 찾기) */
+.donut-legend .swatch { width: 14px; height: 14px; border-radius: 4px; }
+.donut-legend li { padding: 3px 6px; margin: -3px -6px; }
+.donut-legend li.is-active { background: rgba(255, 255, 255, 0.06); }
+.donut-dim .recharts-pie-sector path { opacity: 0.35; }
+.donut-dim .recharts-pie-sector.is-active path,
+.donut-dim .recharts-active-shape path { opacity: 1; }
+
+/* v3.7 지도 상세 패널 막대 목록(유형/출력 구성): 이름 | 수량 | 비율 열 정렬, 막대 두께·행 간격 확대 */
+.geo-bars { gap: 13px; }
+.geo-bar-label {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 3.6em;
+  align-items: baseline;
+  column-gap: 12px;
+  margin-bottom: 6px;
+}
+.geo-bar-label .geo-bar-count { text-align: right; }
+.geo-bar-label .geo-bar-share { text-align: right; color: var(--muted); }
+.geo-bar-track { height: 8px; border-radius: 4px; }
+.geo-bar-track i { border-radius: 4px; }
+.geo-bar-label .geo-bar-name { white-space: normal; overflow: visible; text-overflow: clip; word-break: keep-all; overflow-wrap: anywhere; line-height: 1.35; }
+
+/* ================= v3.8 주요 분석 결과·해석 타이포그래피 (그래프 1~10 공통, Insight 컴포넌트) =================
+ * 제목 16px/600 · 본문 15px/1.7 · 강조 수치 16px/700 · 그래프 설명 보기 14px
+ * 본문 색은 한 단계 밝게(주요 결과 #E2E2E2 > 해석 #D0D0D0), 제목↔본문 11px, 주요 결과↔해석 24px
+ */
+.insight, .insight.stack { gap: 24px; }
+.insight .insight-key h3,
+.insight .insight-interp h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+.insight .insight-key-head { margin-bottom: 11px; }
+.insight .insight-interp h3 { margin-bottom: 11px; }
+.insight .insight-key ul {
+  gap: 8px;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: #e2e2e2;
+}
+.insight .insight-key li::before { top: 0.68em; }
+.insight .insight-interp p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: #d0d0d0;
+}
+.insight .insight-interp .sentence-line + .sentence-line { margin-top: 8px; }
+.insight .insight-key b,
+.insight .insight-interp b {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.insight .evidence-btn { font-size: 0.875rem; }
+.insight .evidence-btn-detail { font-size: 0.8125rem; }
+@media (max-width: 560px) {
+  .insight, .insight.stack { gap: 20px; }
+}
+
+/* ================= v4.0 카카오맵 (Regional Explorer 지도) ================= */
+.geo-map .geo-kakao {
+  position: absolute;
+  inset: 0;
+  background: #e9ecef; /* 타일이 오기 전 잠깐 보이는 바탕 (카카오 원본 지도 톤) */
+  font-family: var(--font-ui);
+}
+/* 카카오 지도 그림(타일)에는 CSS 필터를 적용하지 않습니다(바다·도로·공원·행정구역 색 그대로).
+   '어둡게'를 고르면 지도 위에 반투명 막만 얹어 밝기를 낮춥니다(색상 구분은 유지, 클릭은 통과). */
+.geo-map .geo-dim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(14, 18, 16, 0.5);
+  pointer-events: none;
+}
+.geo-map .geo-kakao.is-pointer,
+.geo-map .geo-kakao.is-pointer * {
+  cursor: pointer !important;
+}
+.geo-map .cg-mark-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+/* 확대·축소·전국 보기 */
+.geo-zoom {
+  position: absolute;
+  z-index: 500;
+  right: 12px;
+  bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(34, 34, 34, 0.94);
+  box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.8);
+}
+.geo-zoom button {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  font: 500 18px/1 var(--font-num);
+  cursor: pointer;
+}
+.geo-zoom button:last-child {
+  border-bottom: 0;
+}
+.geo-zoom button:hover:not(:disabled) {
+  background: var(--panel-3);
+}
+.geo-zoom button:disabled {
+  color: var(--faint);
+  cursor: default;
+}
+.geo-zoom button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+/* 충전소 정보창 */
+.geo-infowin {
+  position: absolute;
+  z-index: 550;
+  width: 280px;
+  max-width: calc(100% - 24px);
+  padding: 12px 14px 11px;
+  border-radius: 12px;
+  background: rgba(34, 34, 34, 0.97);
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 18px 44px -12px rgba(0, 0, 0, 0.85);
+  color: var(--ink);
+  font-size: var(--t-xs);
+  line-height: 1.55;
+}
+.geo-infowin-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.geo-infowin-name {
+  font-size: var(--t-sm);
+  font-weight: 650;
+  line-height: 1.4;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.geo-infowin-close {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin: -3px -5px 0 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.geo-infowin-close:hover {
+  background: var(--panel-3);
+  color: var(--ink);
+}
+.geo-infowin-addr {
+  margin-top: 3px;
+  color: var(--ink-2);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.geo-infowin-stats {
+  margin: 10px 0 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.geo-infowin-stats div {
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+}
+.geo-infowin-stats dt {
+  color: var(--muted);
+  font-size: 12px;
+}
+.geo-infowin-stats dd {
+  margin: 2px 0 0;
+  font-size: var(--t-sm);
+  font-weight: 650;
+  color: var(--accent);
+}
+.geo-infowin-stats div + div dd {
+  color: var(--ink);
+}
+.geo-infowin-foot {
+  font-size: 12px;
+}
+/* SDK 불러오는 중 / 실패 안내 */
+.geo-map-state {
+  position: absolute;
+  z-index: 600;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 6px;
+  padding: 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: var(--t-sm);
+  background: #171717;
+}
+.geo-map-state.is-error p {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--ink-2);
+}
+.geo-map-state-title {
+  color: var(--ink);
+  font-size: var(--t-md);
+  font-weight: 650;
+}
+.geo-map-state .btn {
+  margin-top: 8px;
+}
+@media (max-width: 560px) {
+  .geo-zoom {
+    bottom: 24px;
+  }
+  .geo-infowin {
+    width: 248px;
+  }
+  /* 범례를 펼쳐도 오른쪽 확대·축소 버튼(36px + 여백)을 덮지 않도록 폭만 줄입니다. 모양·색은 그대로. */
+  .geo-legend {
+    max-width: calc(100% - 80px);
+  }
+}
+
+/* ================= v4.1 표·분석 패널 가독성 =================
+ * 글씨 크기만 키우고 색·구성은 그대로. 크기는 tokens.css의 --t-table-* / --t-aux 한곳에서 정합니다.
+ * 표 헤더 14 · 항목 14 · 숫자·비율 15 · 보조 설명 13 · 카드 제목 18(기존 유지)
+ */
+/* 공통 표(.table: 충전소 목록·순위표·두 지역 비교·출처 표) */
+.table { font-size: var(--t-table-cell); line-height: 1.5; }
+.table th { height: 46px; font-size: var(--t-table-head); padding-top: 12px; padding-bottom: 12px; }
+.table td { height: 50px; padding-top: 12px; padding-bottom: 12px; }
+.table th, .table td { padding-left: 16px; padding-right: 16px; }
+.table td.n, .table td .num { font-size: var(--t-table-num); }
+.table .muted, .table small { font-size: var(--t-aux); }
+.table td.n.muted { font-size: var(--t-table-num); }
+/* 긴 항목명(행 제목)은 줄바꿈해 잘리지 않게 */
+.table tbody th[scope='row'] { white-space: normal; word-break: keep-all; overflow-wrap: anywhere; font-size: var(--t-table-cell); }
+@media (max-width: 560px) { .table th, .table td { padding-left: 12px; padding-right: 12px; } }
+
+/* 두 지역 비교: A·B 값과 차이 열을 구분(차이 열은 왼쪽 구분선 + 옅은 바탕), 보조 수치 13px */
+.cmp-table th:last-child, .cmp-table td:last-child { border-left: 1px solid var(--line); background: rgba(255, 255, 255, 0.025); }
+.cmp-table td:last-child { color: var(--ink-2); }
+.cmp-times { margin-top: 2px; font-size: var(--t-aux); font-weight: 400; color: var(--muted); white-space: normal; word-break: keep-all; }
+.cmp-tag-key, .cmp-mix-count { font-size: var(--t-aux); }
+.cmp-mix-count { margin-left: 8px; }
+@media (max-width: 560px) { .cmp-card .cmp-table th, .cmp-card .cmp-table td { padding-left: 10px; padding-right: 10px; } }
+
+/* 히트맵 표: 지역명·수치 14px, 칸 높이 확대 */
+.heatmap { font-size: var(--t-table-cell); }
+.heatmap th { font-size: var(--t-table-head); padding: 6px 8px; }
+.heatmap td { height: 36px; min-width: 68px; padding: 0 8px; }
+
+/* 지도 분석 패널: 구획 제목 15 · 막대 이름·수량·비율 14 · 지역 수치(KPI) 22 */
+.geo-panel-section { padding: 16px 18px; }
+.geo-panel-section-head { margin-bottom: 12px; }
+.geo-panel-section-head h4 { font-size: 0.9375rem; }
+.geo-bars { gap: 14px; }
+.geo-bar-label { font-size: var(--t-table-cell); column-gap: 14px; margin-bottom: 7px; }
+.geo-bar-label .num { font-size: var(--t-table-cell); }
+.geo-bar-label .geo-bar-count { font-weight: 600; color: var(--ink); }
+.geo-bar-label .geo-bar-share { font-size: var(--t-aux); }
+.geo-bar-label .geo-bar-name { line-height: 1.4; }
+.geo-kpi { padding: 12px 12px 11px; }
+.geo-kpi-value { margin-top: 6px; font-size: 1.375rem; font-weight: 700; }
+.geo-kpi-value small { margin-left: 0; font-size: var(--t-aux); }
+.geo-station-meta div, .geo-station-meta dt { font-size: var(--t-table-cell); }
+
+/* 주요 분석 결과: 항목·문단 간격을 조금 더 확보 (글씨 15px·굵은 핵심 수치는 v3.8 그대로) */
+.insight .insight-key ul { gap: 10px; }
+.insight .insight-interp .sentence-line + .sentence-line { margin-top: 10px; }
+
+/* ================= v4.2 선택 지역 요약 카드: 간결한 기본 상태 + 펼친 카드만 높아짐 =================
+ * 카드: 지표명 → 값 → 전국 대비 차이 → 순위·전국 기준값 → 상세 분석 보기(기본 접힘)
+ * 행 높이를 맞추던 규칙(grid-auto-rows: 1fr, 아래쪽 정렬)을 풀어, 한 카드를 펼쳐도 같은 줄의 다른 카드는 그대로입니다.
+ */
+.disparity-region-metrics,
+.disparity-region-metrics:not(:has(details[open])) { grid-auto-rows: auto; align-items: start; }
+.disparity-region-metrics > div { gap: 4px; padding: 14px 16px 10px; }
+.disparity-region-metrics dd { flex: none; gap: 4px; }
+.disparity-region-metrics .disparity-region-value { margin: 2px 0 2px; }
+.disparity-region-diff { font-size: var(--t-sm); line-height: 1.5; color: var(--ink-2); }
+.disparity-region-diff b { display: block; font-size: 0.9375rem; font-weight: 700; color: var(--ink); }
+.disparity-region-rank { font-size: var(--t-xs); line-height: 1.5; gap: 0 10px; }
+.disparity-region-headline { margin: 0; }
+.disparity-region-more { margin-top: 4px; padding-top: 0; }
+.disparity-region-more summary { min-height: 30px; }
+.disparity-region-more[open] { padding-top: 6px; border-top: 1px solid var(--line); }
+.disparity-region-note { font-size: var(--t-sm); line-height: 1.65; }
+
+/* ================= v4.3 도넛 그래프(그래프 2 차종별 등록 구성 · 그래프 8 충전기 유형별 구성) =================
+ * 조각 바깥 강조 링·확대 없음(다른 조각만 흐리게). 범례는 '색 | 항목명 | 수량 | 비율' 열을 모든 행이 공유(subgrid)해
+ * 수량·비율이 같은 왼쪽 시작점에 정렬되고, 범례 폭은 내용만큼이라 카드 오른쪽 끝으로 밀려나지 않습니다.
+ * 선택·호버 강조는 범례 배경 + 글씨 밝기·굵게(글자 폭이 변하지 않는 방식이라 열 정렬 유지).
+ */
+.donut-chart { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 24px; }
+.donut-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: 14px minmax(3em, max-content) max-content max-content;
+  column-gap: 12px;
+  row-gap: 10px;
+  font-size: var(--t-sm);
+}
+.donut-legend li { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: baseline; padding: 4px 8px; margin: -4px -8px; }
+.donut-legend .swatch { align-self: center; }
+.donut-legend-name { min-width: 0; color: var(--ink-2); line-height: 1.4; word-break: keep-all; overflow-wrap: anywhere; }
+.donut-legend-count, .donut-legend-share { text-align: left; white-space: nowrap; }
+.donut-legend li.is-active .donut-legend-name,
+.donut-legend li.is-active .donut-legend-count { color: var(--ink); text-shadow: 0 0 0.7px currentColor; }
+/* 마우스로 누를 때 생기는 도넛 포커스 테두리는 숨기고, 키보드 포커스 표시는 유지 */
+.donut-chart .recharts-pie:focus:not(:focus-visible),
+.donut-chart .recharts-sector:focus:not(:focus-visible),
+.donut-chart .recharts-surface:focus:not(:focus-visible) { outline: none; }
+.donut-chart .recharts-pie:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* ================= v4.4 선택 지역 요약 카드: 같은 행 높이 통일 · 항목 위치 정렬 · '상세 분석 보기' 밑줄 제거 =================
+ * 카드마다 5줄(지표명 / 값 / 전국 대비 차이 / 순위 / 구분선+상세 분석 보기)을 부모 격자의 행에 맞춰(subgrid) 배치합니다.
+ * 같은 행의 카드는 각 줄 높이와 카드 전체 높이가 같고, 상세 분석을 펼치면 그 행의 마지막 줄이 가장 긴 설명에 맞춰 늘어납니다.
+ * 고정 높이는 쓰지 않으며, 한 열(모바일)일 때는 카드마다 내용 높이 그대로입니다.
+ */
+.disparity-region-metrics,
+.disparity-region-metrics:not(:has(details[open])) { grid-auto-rows: auto; align-items: stretch; row-gap: 12px; }
+.disparity-region-metrics > div {
+  display: grid;
+  grid-row: span 5;
+  grid-template-rows: subgrid;
+  row-gap: 4px;
+  align-content: start;
+  padding: 14px 16px 12px;
+}
+.disparity-region-metrics > div > dd { display: contents; }
+.disparity-region-metrics .disparity-region-value { margin: 2px 0; }
+.disparity-region-more,
+.disparity-region-more[open] { margin-top: 6px; padding-top: 8px; border-top: 1px solid var(--line); min-width: 0; }
+.disparity-region-note { overflow-wrap: anywhere; }
+/* '상세 분석 보기': 밑줄 없이 글씨 색·호버 배경·화살표 방향으로 누를 수 있음을 표시 (이 카드의 summary에만 적용) */
+.disparity-region-more summary,
+.disparity-region-more summary:hover,
+.disparity-region-more summary:active,
+.disparity-region-more summary:focus,
+.disparity-region-more summary:focus-visible,
+.disparity-region-more[open] summary { text-decoration: none; }
+.disparity-region-more summary { margin: 0 -6px; padding: 2px 6px; border-radius: 6px; width: fit-content; transition: background var(--hover) ease-out, color var(--hover) ease-out; }
+.disparity-region-more summary:hover { background: rgba(255, 255, 255, 0.06); color: var(--ink); }
+.disparity-region-more[open] summary { margin-bottom: 6px; }
+
+/* ================= v4.5 왼쪽 시작선 맞춤 (지역 체계 상자 · 데이터 출처 자료명) ================= */
+/* 지역 체계: 지역명 칩의 안쪽 여백(7px)과 바탕을 없애 제목·'16개 시도'와 같은 시작선에 둠 (글씨 색은 그대로) */
+.region-codes .code { padding-left: 0; padding-right: 0; background: none; }
+/* 데이터 출처 자료명: 맨 앞 낫표(「)의 글리프 왼쪽 빈 폭(약 0.64em)만큼 당겨 헤더 '자료명'과 시작선을 맞춤 */
+.notes-sources-table .lead-bracket { margin-left: -0.64em; }
+/* 좁은 화면(카드형 출처 표): 뒤쪽 공통 표 규칙(고정 행 높이·좌우 여백)이 덮어써 글자가 겹치고 들여 써지던 것을 되돌림 */
+@media (max-width: 560px) {
+  .notes-sources-table th,
+  .notes-sources-table td { height: auto; padding: 3px 0; }
+}
+
+/* ================= v4.6 도넛 범례 배치(그래프 2·8) =================
+ * 도넛+범례 묶음을 카드 안에서 가운데에 두고(범례 폭은 내용만큼), 도넛↔범례 간격은 카드 폭에 비례(24~72px).
+ * 열 간격: 색↔항목명 10px · 항목명↔수량 28px · 수량↔비율 18px. 좁으면 범례가 도넛 아래로 내려가 가운데 정렬됩니다.
+ */
+.donut-chart { justify-content: center; column-gap: clamp(24px, 6%, 72px); row-gap: 20px; }
+.donut-legend { column-gap: 0; }
+.donut-legend-name { padding-left: 10px; }
+.donut-legend-count { padding-left: 28px; font-variant-numeric: tabular-nums; }
+.donut-legend-share { padding-left: 18px; font-variant-numeric: tabular-nums; }
+
+/* ================= v4.7 전체 가독성 + 도넛(그래프 2·6) 왼쪽 배치 =================
+ * 크기 기준(tokens.css): 본문 --t-sm 15 · 보조/범례/라벨 --t-xs 14 · 표 헤더 14 / 항목·숫자 15 · 카드·섹션 제목 --t-title 17.
+ * 핵심 KPI 숫자(--t-xl·--t-2xl 등)는 그대로. 크기만 바꾸고 카드 폭·차트 크기·배치 규칙은 그대로 둡니다.
+ */
+/* 도넛: v4.6의 가운데 정렬을 되돌려 도넛은 카드 왼쪽, 범례는 그 오른쪽(간격 카드 폭의 5%, 20~44px). 공간이 모자랄 때만 범례가 도넛 아래로(왼쪽 정렬) */
+.donut-chart { justify-content: flex-start; column-gap: clamp(20px, 5%, 44px); row-gap: 20px; }
+.donut-legend { row-gap: 12px; font-size: var(--t-sm); }
+.donut-legend-name { font-size: var(--t-sm); }
+.donut-legend-count { padding-left: 24px; font-size: var(--t-table-num); font-weight: 600; color: var(--ink); }
+.donut-legend-share { padding-left: 16px; font-size: var(--t-xs); }
+
+/* 제목 */
+.card-title { font-size: var(--t-title); }
+.disparity-panel-head h3,
+.disparity-table-title,
+.notes-sources-title { font-size: var(--t-title); }
+
+/* 작은 칩·배지·보조 글씨(12px 이하이던 것) → 13~14px */
+.scope { font-size: 0.8125rem; }
+.badge { font-size: 0.8125rem; }
+.brand-sub, .nav-ko { font-size: 0.8125rem; }
+.timeline-tick, .insight-meta code, .spec, .evidence-no, .side-panel .modal-eyebrow { font-size: 0.8125rem; }
+.thumb .thumb-meta, .thumb .thumb-basis, .pyc-facts dt, .pyc-notes h4 { font-size: var(--t-aux); }
+.cmp-mix-title .muted, .cmp-scroll-hint { font-size: var(--t-aux); }
+.geo-infowin-stats dt, .geo-infowin-foot { font-size: 0.8125rem; }
+
+/* 선택 지역 요약: 전국 대비 차이 16px (핵심 값 24px은 그대로) */
+.disparity-region-diff b { font-size: 1rem; }
+.disparity-region-caveat { font-size: var(--t-xs); }

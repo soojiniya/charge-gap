@@ -10,7 +10,7 @@ module.exports = async function regionalDisparityRegressions(page, baseUrl = 'ht
     if (!value) throw new Error(`${name}${detail !== undefined ? ` ${JSON.stringify(detail)}` : ''}`);
     checks.push(name);
   };
-  await page.route(/tile\.openstreetmap\.org/, (r) => r.abort());
+  await page.route(/dapi\.kakao\.com|kakaocdn\.net|daumcdn\.net/, (r) => r.abort());
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(`${baseUrl}/regional-explorer`);
   const card = page.locator('.disparity-card');
@@ -51,15 +51,29 @@ module.exports = async function regionalDisparityRegressions(page, baseUrl = 'ht
   await card.locator('.disparity-region-summary:not(.is-empty)').waitFor();
   const summary = await card.locator('.disparity-region-summary').innerText();
   check('selected-region summary names the region and shows all 5 metrics', /서울/.test(summary) && (await card.locator('.disparity-region-metrics > div').count()) === 5, summary);
-  check('selected-region summary shows rank and 전국 대비', /16개 지역 중 \d+위/.test(summary) && /전국 대비/.test(summary));
-  check('each card shows value, rank line, one-line headline and a closed detail toggle',
-    (await card.locator('.disparity-region-metrics > div').evaluateAll((els) => els.every((e) => e.querySelector('.disparity-region-value') && e.querySelector('.disparity-region-rank')
-      && e.querySelector('.disparity-region-headline')?.textContent.trim() && e.querySelector('details.disparity-region-more:not([open]) summary')?.textContent === '상세 분석 보기'))));
-  const fonts = await card.locator('.disparity-region-headline, .disparity-region-value').evaluateAll((els) => els.map((e) => [e.className, parseFloat(getComputedStyle(e).fontSize)]));
-  check('headline ≥ 13px and the key value is larger than the headline', fonts.every(([c, f]) => (/headline/.test(c) ? f >= 13 : f >= 20)), fonts);
+  check('selected-region summary shows rank and 전국 대비', /16개 지역 중 \d+위/.test(summary) && /전국 \S+ 대비/.test(summary));
+  check('each card shows name, value, 전국 대비 차이, rank and a closed 상세 분석 보기 (no repeated headline sentence)',
+    (await card.locator('.disparity-region-metrics > div').evaluateAll((els) => els.every((e) => e.querySelector('dt')?.textContent.trim() && e.querySelector('.disparity-region-value')
+      && /전국 .+ 대비/.test(e.querySelector('.disparity-region-diff')?.textContent || '') && /지역 중 \d+위/.test(e.querySelector('.disparity-region-rank')?.textContent || '')
+      && !e.querySelector('.disparity-region-headline') && e.querySelector('details.disparity-region-more:not([open]) summary')?.textContent === '상세 분석 보기'))));
+  const fonts = await card.locator('.disparity-region-diff b, .disparity-region-value').evaluateAll((els) => els.map((e) => [e.className || 'diff', parseFloat(getComputedStyle(e).fontSize)]));
+  check('diff ≥ 14px and the key value is larger', fonts.every(([c, f]) => (/value/.test(c) ? f >= 20 : f >= 14)), fonts);
+  const sizes = async () => card.locator('.disparity-region-metrics > div').evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().height)));
+  const closedH = await sizes();
   const more = card.locator('[data-metric="high_100kw"] details.disparity-region-more');
   await more.locator('summary').click();
-  check('상세 분석 보기 opens the full sentence', (await more.evaluate((e) => e.open)) && /출력값이 확인된 충전기/.test(await more.innerText()));
+  const moreText = await more.innerText();
+  check('상세 분석 보기 opens the basis (분자·분모) without repeating the card value or rank', (await more.evaluate((e) => e.open)) && /출력값이 확인된 충전기/.test(moreText)
+    && !moreText.includes(await card.locator('[data-metric="high_100kw"] .disparity-region-value').textContent()) && !/위입니다|지역 중/.test(moreText), moreText);
+  const openH = await sizes();
+  const rowAlign = await card.locator('.disparity-region-metrics > div').evaluateAll((els) => {
+    const rows = {};
+    els.forEach((e) => { const r = e.getBoundingClientRect(); (rows[Math.round(r.top)] ||= []).push({ b: Math.round(r.bottom), s: Math.round(e.querySelector('summary').getBoundingClientRect().top), over: e.scrollHeight > e.clientHeight + 1 }); });
+    return Object.values(rows).map((r) => ({ bottoms: new Set(r.map((x) => x.b)).size, sums: new Set(r.map((x) => x.s)).size, over: r.some((x) => x.over) }));
+  });
+  check('opening one card: cards in the same row keep equal height and aligned 상세 분석 보기, no overflow', openH[0] > closedH[0] && rowAlign.every((r) => r.bottoms === 1 && r.sums === 1 && !r.over), { closedH, openH, rowAlign });
+  const deco = await card.locator('.disparity-region-metrics summary').evaluateAll((els) => els.map((e) => getComputedStyle(e).textDecorationLine));
+  check('상세 분석 보기 has no underline', deco.every((d) => d === 'none'), deco);
   await more.locator('summary').click();
   check('selected bar row is highlighted', (await card.locator('.disparity-bar-row.is-selected').count()) === 1);
   check('bar tracks are not separate tab stops', (await card.locator('.disparity-track[tabindex="-1"]').count()) === 16);
@@ -88,7 +102,9 @@ module.exports = async function regionalDisparityRegressions(page, baseUrl = 'ht
     for (const key of ['high_100kw', 'chargers_per_station', 'type_mix', 'operator_hhi', 'deletion_share']) {
       const box = card.locator(`.disparity-region-metrics > div[data-metric="${key}"]`);
       const note = await box.locator('.disparity-region-note').textContent();
-      const head = await box.locator('.disparity-region-headline').textContent();
+      const head = (await box.locator('.disparity-region-headline').count()) ? await box.locator('.disparity-region-headline').textContent() : '';
+      const valueText = await box.locator('.disparity-region-value').textContent();
+      const diffLine = (await box.locator('.disparity-region-diff').count()) ? await box.locator('.disparity-region-diff').textContent() : '';
       const rankText = await box.locator('.disparity-region-rank').textContent();
       let m = r.metrics[key], nat = api.data.national[key], f = fmt[key];
       if (key === 'type_mix') {
@@ -101,10 +117,12 @@ module.exports = async function regionalDisparityRegressions(page, baseUrl = 'ht
       const d = Math.round((val(m) - val(nat)) * scale) / scale;
       const dir = d > 0 ? '높습니다' : d < 0 ? '낮습니다' : '같은 수준';
       const tied = api.data.regions.filter((x) => (key === 'type_mix' ? x.metrics.type_mix.find((t) => t.charger_type_code === '04')?.rank : x.metrics[key].rank) === m.rank).length;
-      check(`${r.region_code} ${key}: sentence carries API value, national, direction and rank`,
-        note.includes(f(m)) && note.includes(`(${f(nat)})`) && note.includes(dir) && note.includes(`중 ${m.rank}위`) && (tied > 1) === /공동/.test(note), { note, value: f(m), dir, rank: m.rank, tied });
-      check(`${r.region_code} ${key}: headline and rank line match the API`,
-        head.includes(`(${f(nat)})`) && head.includes(dir) && rankText.includes(`지역 중 ${m.rank}위`) && (tied > 1) === /공동/.test(rankText) && !/(부족|위험|좋음|나쁨|좋습니다|나쁩니다)/.test(head), { head, rankText });
+      const absTxt = key === 'operator_hhi' ? `${Math.abs(d).toLocaleString('ko-KR')}점` : key === 'chargers_per_station' ? `${Math.abs(d).toFixed(2)}기/곳` : `${Math.abs(d).toFixed(2)}%p`;
+      const sign = d > 0 ? '+' : d < 0 ? '−' : '';
+      check(`${r.region_code} ${key}: card carries API value, national, signed difference and rank`,
+        valueText.trim() === f(m) && diffLine.includes(f(nat)) && diffLine.includes(`${sign}${absTxt}`) && rankText.includes(`지역 중 ${m.rank}위`) && (tied > 1) === /공동/.test(rankText), { valueText, diffLine, rankText, value: f(m), nat: f(nat), d, rank: m.rank, tied });
+      check(`${r.region_code} ${key}: detail text does not repeat the card value, rank or direction (${dir})`,
+        !note.includes(f(m)) && !/지역 중 \d+위/.test(note) && !/보다 .*(높습니다|낮습니다)/.test(note) && note.trim().length > 0 && !/(부족|위험|좋음|나쁨)/.test(diffLine), note);
       if (m.numerator != null && key !== 'chargers_per_station') check(`${r.region_code} ${key}: numerator/denominator`, note.includes(`${m.numerator.toLocaleString('ko-KR')}기`) && note.includes(`${m.denominator.toLocaleString('ko-KR')}기`), note);
       check(`${r.region_code} ${key}: no good/bad or shortage wording`, !/(부족합니다|부족한|좋습니다|나쁩니다|우수|열악|취약|고장입니다)/.test(note), note);
       sentenceChecks++;
@@ -116,12 +134,12 @@ module.exports = async function regionalDisparityRegressions(page, baseUrl = 'ht
   await page.goto(`${baseUrl}/regional-explorer?region=11`);
   await card.locator('.disparity-region-summary:not(.is-empty)').waitFor({ timeout: 60000 });
   const before = await card.locator('[data-metric="high_100kw"] .disparity-region-note').textContent();
-  const beforeHead = await card.locator('[data-metric="high_100kw"] .disparity-region-headline').textContent();
+  const beforeHead = await card.locator('[data-metric="high_100kw"] .disparity-region-diff').textContent();
   await page.goto(`${baseUrl}/regional-explorer?region=11&type=02`);
   await card.locator('.disparity-region-summary:not(.is-empty)').waitFor({ timeout: 60000 });
   await page.waitForFunction((b) => document.querySelector('[data-metric="high_100kw"] .disparity-region-note')?.textContent !== b, before, { timeout: 30000 });
   check('changing the charger-type filter rewrites the sentences and headline', (await card.locator('[data-metric="high_100kw"] .disparity-region-note').textContent()) !== before
-    && (await card.locator('[data-metric="high_100kw"] .disparity-region-headline').textContent()) !== beforeHead);
+    && (await card.locator('[data-metric="high_100kw"] .disparity-region-diff').textContent()) !== beforeHead);
 
   /* ---- 0건 지역(필터로 충전기 0기)과 0값·공동 순위: 운영기관 PA로 좁혀 실제 응답에서 확인 ---- */
   const pa = await (await fetch(`${apiBase}/api/regional-disparity?operator_id=PA`)).json();
@@ -192,7 +210,7 @@ module.exports = async function regionalDisparityRegressions(page, baseUrl = 'ht
   const natHhi = Math.round(api.data.national.operator_hhi.value).toLocaleString('ko-KR');
   check('legend states the full-intensity threshold in the metric unit', legend.includes(`(${natHhi}점) 이상이면 가장 진합니다`), legend);
   const cells = await card.locator('.disparity-heat-row span[data-heat]').evaluateAll((els) => els.map((e) => ({ t: e.textContent, h: e.dataset.heat, bg: getComputedStyle(e).backgroundColor })));
-  check('heat cell color family matches the sign of the difference', cells.length === 16 && cells.every((c) => (c.h === 'up') === c.t.startsWith('+') && (c.h === 'up' ? /129, 211, 203/ : /177, 157, 255/).test(c.bg)), cells);
+  check('heat cell color family matches the sign of the difference', cells.length === 16 && cells.every((c) => (c.h === 'up') === c.t.startsWith('+') && (c.h === 'up' ? /200, 200, 200/ : /140, 140, 140/).test(c.bg)), cells);
 
   /* ---- 설명(i) 패널: 5개 지표 모두 한국어 계산 설명 + 접힌 기술 상세 ---- */
   const internal = /(output_kw|statId|chgerType|busiId|busiNm|delYn|zcode|numerator|denominator|Nationwide|nationwide|positive numeric|Descending competition)/;

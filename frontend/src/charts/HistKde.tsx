@@ -44,7 +44,7 @@ export function HistKde({ items, height = 300, ariaLabel, logY = false }: { item
             tick={axisTick}
             axisLine={axisLine}
             tickLine={false}
-            label={{ value: '정격 출력 (kW, 로그 눈금)', position: 'insideBottom', offset: -14, fill: C.muted, fontSize: 12 }}
+            label={{ value: '정격 출력 (kW, 로그 눈금)', position: 'insideBottom', offset: -14, fill: C.muted, fontSize: 14 }}
           />
           <YAxis
             tick={axisTick}

@@ -240,6 +240,56 @@ class DataStore:
                 prev = value
         return rows, national, frame, deletion_frame
 
+    def output_by_region(self, filters):
+        """Every region's /api/charger-output result in one pass (Regional Explorer heatmap).
+
+        Region selection is ignored: the 16 regions are always returned, like the heatmap's former
+        16 requests (non-region filters + region_code=each). One selection and one (region, output)
+        group-by replace 16 selections; per-region totals and output statistics are group-bys over
+        the needed columns only (no per-region frame copies). Each region's rows, matched counts,
+        count and output_statistics equal that region's /api/charger-output response
+        (backend/tests/test_charger_output_regions.py).
+        """
+        base = {**filters, 'region_code': None}
+        frame = self.select(base)
+        grouped = self.grouped(frame, ['zcode', 'output']).rename(columns={'output': 'output_raw'})
+        # Share within the region: same arithmetic as the per-region request (count / regional total * 100).
+        grouped['share_pct'] = grouped.charger_count / grouped.groupby('zcode', sort=False).charger_count.transform('sum') * 100
+        grouped['output_kw'] = pd.to_numeric(grouped.output_raw, errors='coerce')
+        grouped['value_status'] = 'positive_numeric'
+        grouped.loc[grouped.output_kw.le(0), 'value_status'] = 'nonpositive'
+        grouped.loc[grouped.output_kw.isna(), 'value_status'] = 'nonnumeric'
+        grouped.loc[grouped.output_raw.eq(''), 'value_status'] = 'missing'
+        # Per-region order of the single request: output_kw, then output_raw, missing last (stable).
+        grouped = grouped.sort_values(['zcode', 'output_kw', 'output_raw'], na_position='last', kind='stable')
+        columns = ['output_raw', 'charger_count', 'station_count', 'not_deleted_charger_count',
+                   'deleted_charger_count', 'share_pct', 'output_kw', 'value_status']
+        parts = {code: part[columns] for code, part in grouped.groupby('zcode', sort=False, observed=True)}
+        totals = self.grouped(frame, 'zcode').set_index('zcode')
+        positive = frame.loc[frame._output_kw.gt(0), ['zcode', '_output_kw']]
+        stats = positive.groupby('zcode', observed=True)._output_kw.agg(['size', 'median', 'min', 'max'])
+        regions = []
+        for code in REGIONS_2026:
+            part = parts.get(code)
+            row = totals.loc[code] if code in totals.index else None
+            total = int(row.charger_count) if row is not None else 0
+            valid = int(stats.loc[code, 'size']) if code in stats.index else 0
+            regions.append({
+                'region_code': code,
+                'data': records(part) if part is not None else [],
+                'filters': {**base, 'region_code': code},
+                'matched': {'charger_count': total,
+                            'station_count': int(row.station_count) if row is not None else 0,
+                            'not_deleted_charger_count': int(row.not_deleted_charger_count) if row is not None else 0,
+                            'deleted_charger_count': int(row.deleted_charger_count) if row is not None else 0},
+                'count': len(part) if part is not None else 0,
+                'output_statistics': {
+                    'valid_positive_count': valid, 'invalid_or_missing_count': total - valid,
+                    'median_kw': float(stats.loc[code, 'median']) if valid else None,
+                    'min_kw': float(stats.loc[code, 'min']) if valid else None,
+                    'max_kw': float(stats.loc[code, 'max']) if valid else None}})
+        return regions, frame
+
     def filter_options(self):
         return {'charger_regions':[{'code':k,'name':v} for k,v in REGIONS_2026.items()],
             'ev_regions':[{'code':k,'name':v} for k,v in self.ev_regions.items()],

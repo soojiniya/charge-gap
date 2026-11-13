@@ -1961,6 +1961,173 @@
         }
       }
     },
+    "/api/charger-output/regions": {
+      "get": {
+        "operationId": "charger_output_regions",
+        "summary": "16개 지역의 /api/charger-output 결과를 한 번에 (지역 × 출력 히트맵용). region_code는 받되 무시합니다.",
+        "parameters": [
+          {
+            "name": "region_code",
+            "in": "query",
+            "required": false,
+            "description": "충전기 현재 16개 시도 코드",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "11",
+                "12",
+                "26",
+                "27",
+                "28",
+                "30",
+                "31",
+                "36",
+                "41",
+                "43",
+                "44",
+                "47",
+                "48",
+                "50",
+                "51",
+                "52"
+              ]
+            }
+          },
+          {
+            "name": "charger_type",
+            "in": "query",
+            "required": false,
+            "description": "공식 커넥터 코드. 09는 관측 0건",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "01",
+                "02",
+                "03",
+                "04",
+                "05",
+                "06",
+                "07",
+                "08",
+                "09",
+                "10",
+                "11"
+              ]
+            }
+          },
+          {
+            "name": "deletion",
+            "in": "query",
+            "required": false,
+            "description": "모든 집계에 적용되는 삭제 필터",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "not_deleted",
+                "deleted"
+              ],
+              "default": "all"
+            }
+          },
+          {
+            "name": "operator_id",
+            "in": "query",
+            "required": false,
+            "description": "CSV에 관측된 busiId 기관 ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "data.common_meta와 data.regions[i]로 지역 R의 응답을 다시 만들면 {data: regions[i].data, meta: {...common_meta, filters, matched, count, output_statistics}} = /api/charger-output?{지역 외 필터}&region_code=R 와 data·meta가 같습니다. 알 수 없는 변수·반복 변수·빈 값은 400.",
+        "responses": {
+          "200": {
+            "description": "성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "meta"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "common_meta",
+                        "regions"
+                      ],
+                      "properties": {
+                        "common_meta": {
+                          "type": "object",
+                          "description": "모든 지역에 공통인 meta (api_version, sources, units, warnings, same_period_shortage_rate_computed, snapshot_policy, output_note)"
+                        },
+                        "regions": {
+                          "type": "array",
+                          "minItems": 16,
+                          "maxItems": 16,
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "region_code",
+                              "data",
+                              "filters",
+                              "matched",
+                              "count",
+                              "output_statistics"
+                            ],
+                            "properties": {
+                              "region_code": {
+                                "type": "string"
+                              },
+                              "data": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                },
+                                "description": "/api/charger-output data 행과 같은 형식"
+                              },
+                              "filters": {
+                                "type": "object"
+                              },
+                              "matched": {
+                                "type": "object"
+                              },
+                              "count": {
+                                "type": "integer"
+                              },
+                              "output_statistics": {
+                                "type": "object"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "description": "공통 meta + region_count, region_filter_policy, per_region_response_rule"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "요청변수 검증 실패",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/operators": {
       "get": {
         "operationId": "operators",
@@ -2549,6 +2716,361 @@
           },
           "500": {
             "description": "내부 오류. 내부 정보는 노출하지 않음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/locations/grid": {
+      "get": {
+        "operationId": "locations_grid",
+        "summary": "지도 줌 11~15 충전소 묶음용: 화면 bbox 안 모든 충전소를 고정 격자 칸으로 집계 (bbox·zoom 필수).",
+        "parameters": [
+          {
+            "name": "region_code",
+            "in": "query",
+            "required": false,
+            "description": "충전기 현재 16개 시도 코드",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "11",
+                "12",
+                "26",
+                "27",
+                "28",
+                "30",
+                "31",
+                "36",
+                "41",
+                "43",
+                "44",
+                "47",
+                "48",
+                "50",
+                "51",
+                "52"
+              ]
+            }
+          },
+          {
+            "name": "charger_type",
+            "in": "query",
+            "required": false,
+            "description": "공식 커넥터 코드. 09는 관측 0건",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "01",
+                "02",
+                "03",
+                "04",
+                "05",
+                "06",
+                "07",
+                "08",
+                "09",
+                "10",
+                "11"
+              ]
+            }
+          },
+          {
+            "name": "deletion",
+            "in": "query",
+            "required": false,
+            "description": "모든 집계에 적용되는 삭제 필터",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "not_deleted",
+                "deleted"
+              ],
+              "default": "all"
+            }
+          },
+          {
+            "name": "operator_id",
+            "in": "query",
+            "required": false,
+            "description": "CSV에 관측된 busiId 기관 ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "bbox",
+            "in": "query",
+            "required": true,
+            "description": "최소경도,최소위도,최대경도,최대위도. 필수. 유한 좌표·범위·순서 검사, 경계 포함. 이 줌에서 bbox를 감싸는 칸이 40,000칸을 넘으면 400",
+            "schema": {
+              "type": "string",
+              "example": "126.8,37.4,127.2,37.7"
+            }
+          },
+          {
+            "name": "zoom",
+            "in": "query",
+            "required": true,
+            "description": "지도 줌 11~15. 칸 크기 = 지도 화면 32px 상당 = 32 × 2^(17−zoom) m",
+            "schema": {
+              "type": "integer",
+              "minimum": 11,
+              "maximum": 15
+            }
+          }
+        ],
+        "description": "대표 좌표는 /api/locations와 같습니다(충전기 필터 → statId별 N 우선/충전기 ID 순 첫 유효 좌표). bbox를 감싸는 칸 중 충전소가 있는 칸만 반환하며 페이지네이션은 없습니다. meta.matched는 요청 bbox 안(경계 포함) 충전소 집계로 같은 bbox의 /api/locations meta.matched와 같습니다. meta.grid: zoom, cell_px, cell_meters, cell_degrees, origin, snapped_bbox, cell_count, station_count, charger_count. 알 수 없는 변수·반복 변수·빈 값, bbox·zoom 누락, zoom 범위 밖, 칸 수 초과는 400.",
+        "responses": {
+          "200": {
+            "description": "성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "meta"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "cell",
+                          "station_count",
+                          "charger_count",
+                          "not_deleted_charger_count",
+                          "deleted_charger_count",
+                          "latitude",
+                          "longitude",
+                          "south",
+                          "west",
+                          "north",
+                          "east",
+                          "station"
+                        ],
+                        "properties": {
+                          "cell": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            },
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "description": "격자 칸 번호 [floor(경도/칸 경도폭), floor(위도/칸 위도폭)] (bbox와 무관한 고정 격자)"
+                          },
+                          "station_count": {
+                            "type": "integer"
+                          },
+                          "charger_count": {
+                            "type": "integer"
+                          },
+                          "not_deleted_charger_count": {
+                            "type": "integer"
+                          },
+                          "deleted_charger_count": {
+                            "type": "integer"
+                          },
+                          "latitude": {
+                            "type": "number",
+                            "description": "칸 안 충전소 대표 좌표 평균"
+                          },
+                          "longitude": {
+                            "type": "number",
+                            "description": "칸 안 충전소 대표 좌표 평균"
+                          },
+                          "south": {
+                            "type": "number"
+                          },
+                          "west": {
+                            "type": "number"
+                          },
+                          "north": {
+                            "type": "number"
+                          },
+                          "east": {
+                            "type": "number"
+                          },
+                          "station": {
+                            "type": "object",
+                            "nullable": true,
+                            "description": "칸에 충전소가 1곳이면 그 행(/api/locations data 행과 같은 형식), 아니면 null"
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "required": [
+                        "matched",
+                        "grid",
+                        "aggregation_rule"
+                      ],
+                      "properties": {
+                        "matched": {
+                          "type": "object",
+                          "description": "요청 bbox 안(경계 포함) 충전소의 charger_count, station_count, not_deleted_charger_count, deleted_charger_count"
+                        },
+                        "grid": {
+                          "type": "object",
+                          "required": [
+                            "zoom",
+                            "cell_px",
+                            "cell_meters",
+                            "cell_degrees",
+                            "snapped_bbox",
+                            "cell_count",
+                            "station_count",
+                            "charger_count"
+                          ],
+                          "properties": {
+                            "zoom": {
+                              "type": "integer"
+                            },
+                            "cell_px": {
+                              "type": "integer"
+                            },
+                            "cell_meters": {
+                              "type": "number"
+                            },
+                            "cell_degrees": {
+                              "type": "object",
+                              "properties": {
+                                "lat": {
+                                  "type": "number"
+                                },
+                                "lng": {
+                                  "type": "number"
+                                }
+                              }
+                            },
+                            "origin": {
+                              "type": "array",
+                              "items": {
+                                "type": "number"
+                              }
+                            },
+                            "snapped_bbox": {
+                              "type": "array",
+                              "items": {
+                                "type": "number"
+                              },
+                              "minItems": 4,
+                              "maxItems": 4
+                            },
+                            "cell_count": {
+                              "type": "integer"
+                            },
+                            "station_count": {
+                              "type": "integer"
+                            },
+                            "charger_count": {
+                              "type": "integer"
+                            }
+                          }
+                        },
+                        "aggregation_rule": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": true
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "cell": [
+                        89370,
+                        32604
+                      ],
+                      "charger_count": 5,
+                      "deleted_charger_count": 0,
+                      "east": 127.0204583,
+                      "latitude": 37.4900875,
+                      "longitude": 127.0201397,
+                      "north": 37.490285,
+                      "not_deleted_charger_count": 5,
+                      "south": 37.48989,
+                      "station": null,
+                      "station_count": 2,
+                      "west": 127.0198211
+                    },
+                    {
+                      "cell": [
+                        89372,
+                        32604
+                      ],
+                      "charger_count": 1,
+                      "deleted_charger_count": 0,
+                      "east": 127.0232022,
+                      "latitude": 37.4897723,
+                      "longitude": 127.0232022,
+                      "north": 37.4897723,
+                      "not_deleted_charger_count": 1,
+                      "south": 37.4897723,
+                      "station": {
+                        "address": "서울특별시 서초구 효령로67길 52",
+                        "charger_count": 1,
+                        "deleted_charger_count": 0,
+                        "latitude": 37.4897723,
+                        "longitude": 127.0232022,
+                        "not_deleted_charger_count": 1,
+                        "region_code": "11",
+                        "region_name": "서울",
+                        "station_count": 1,
+                        "station_id": "KE001033",
+                        "station_name": "서울서초두진한아름아파트"
+                      },
+                      "station_count": 1,
+                      "west": 127.0232022
+                    }
+                  ],
+                  "meta": {
+                    "matched": {
+                      "charger_count": 824,
+                      "deleted_charger_count": 21,
+                      "not_deleted_charger_count": 803,
+                      "station_count": 213
+                    },
+                    "grid": {
+                      "cell_count": 123,
+                      "cell_degrees": {
+                        "lat": 0.0011498383039885017,
+                        "lng": 0.0014212783068628554
+                      },
+                      "cell_meters": 128.0,
+                      "cell_px": 32,
+                      "charger_count": 967,
+                      "origin": [
+                        0,
+                        0
+                      ],
+                      "snapped_bbox": [
+                        127.01964228433339,
+                        37.48932806324111,
+                        127.04096145893634,
+                        37.510025152712906
+                      ],
+                      "station_count": 232,
+                      "zoom": 15
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "요청변수 검증 실패",
             "content": {
               "application/json": {
                 "schema": {

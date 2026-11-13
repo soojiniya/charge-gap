@@ -13,21 +13,34 @@ export interface TreeItem {
   id?: string;
   /** 0 = 가장 큰 기관(밝음) … 1 = 가장 작은 기관(어두움). 순위 기반 명도 단계 */
   tone?: number;
+  /** 1부터 시작하는 순위(기타 제외). 1~3위는 별도 위계로 표시 */
+  rank?: number;
 }
 
-/** 라벤더 단일 색상 순위 램프: 큰 기관일수록 밝게. 인접 칸의 경계를 분명히 하려는 보조 표현입니다. */
-const RAMP = [
-  [0xd8, 0xd3, 0xee],
-  [0xb3, 0xab, 0xd9],
-  [0x8c, 0x84, 0xbc],
-  [0x68, 0x61, 0x96],
+/**
+ * 순위 위계(면적 = 충전기 수는 그대로, 색은 순위 보조 표현이며 칸마다 기관명·비율을 함께 씁니다):
+ * 1위 = 포인트 색, 2·3위 = 밝은 회색 + 순위 배지, 4위 이하는 순위 구간별 회색 3단계, 기타 = 가장 어두운 회색.
+ * 다른 기관을 선택하면 포인트 색은 선택 칸으로 옮겨 가고 1위는 밝은 회색이 됩니다.
+ */
+const TOP_FILL = ['#e5e5e5', '#d4d4d4', '#bdbdbd'];
+/** 4위 이하 순위 구간: [마지막 순위, 회색 값]. 구간 사이 명도 차를 키워 칸 경계를 분명히 함 */
+export const TREEMAP_BANDS: [number, number][] = [
+  [6, 0x8c], // 4–6위: 검정 글씨 5.3:1
+  [10, 0x72], // 7–10위: 흰 글씨 4.8:1
+  [Infinity, 0x5a], // 11위 이하: 흰 글씨 6.6:1
 ];
-function rampColor(t: number) {
-  const x = Math.max(0, Math.min(1, t)) * (RAMP.length - 1);
-  const i = Math.min(RAMP.length - 2, Math.floor(x));
-  const k = x - i;
-  const c = RAMP[i].map((v, j) => Math.round(v + (RAMP[i + 1][j] - v) * k));
-  return `rgb(${c[0]},${c[1]},${c[2]})`;
+export const TREEMAP_OTHER = '#363636';
+const bandValue = (rank: number) => (TREEMAP_BANDS.find(([last]) => rank <= last) ?? TREEMAP_BANDS[TREEMAP_BANDS.length - 1])[1];
+/** 이 회색 값 이상인 칸은 검정 글씨 */
+const DARK_FROM = 0x80;
+/** 한글 기준 대략적인 글자 폭(px) */
+const charW = (size: number) => size * 0.98;
+function fit(name: string | undefined, avail: number, size: number) {
+  if (!name) return '';
+  const n = Math.floor(avail / charW(size));
+  if (name.length <= n) return name;
+  if (n < 3) return '';
+  return `${name.slice(0, n - 1)}…`;
 }
 
 interface CellProps {
@@ -40,33 +53,87 @@ interface CellProps {
   other?: boolean;
   id?: string;
   tone?: number;
+  rank?: number;
   highlight?: string;
   index?: number;
   depth?: number;
   animate?: boolean;
 }
 
-function Cell({ x = 0, y = 0, width = 0, height = 0, name, share, other, id, tone = 0, highlight, index = 0, animate }: CellProps) {
+function Cell({ x = 0, y = 0, width = 0, height = 0, name, share, other, id, tone = 0, rank, highlight, index = 0, animate }: CellProps) {
   if (width <= 0 || height <= 0) return null;
   const selected = !!highlight && id === highlight;
-  const fill = other ? C.other : selected ? C.s3 : rampColor(tone);
-  const showName = width > 64 && height > 34;
-  const showShare = width > 52 && height > 52;
-  const ink = other || (!selected && tone > 0.62) ? C.ink : '#141821';
+  const top = !other && rank !== undefined && rank <= 3;
+  // 포인트 색은 한 칸에만: 선택한 기관, 선택이 없으면 1위
+  const accent = selected || (!highlight && rank === 1 && !other);
+  let fill: string;
+  let darkInk: boolean;
+  if (other) {
+    fill = TREEMAP_OTHER;
+    darkInk = false;
+  } else if (accent) {
+    fill = C.accent;
+    darkInk = true;
+  } else if (top) {
+    fill = TOP_FILL[(rank ?? 1) - 1];
+    darkInk = true;
+  } else {
+    const v = bandValue(rank ?? Math.round(4 + tone * 16));
+    fill = `rgb(${v},${v},${v})`;
+    darkInk = v >= DARK_FROM;
+  }
+  const big = top && width > 120 && height > 70;
+  const nameSize = big ? 15 : 13;
+  const ink = darkInk ? '#171717' : C.ink;
+  const badge = top && width > 40 && height > 40;
+  const lx = x + (badge ? 34 : 9);
+  // 글씨는 칸 안쪽에만: 이름은 남는 폭에 맞춰 줄이고(3글자 미만이면 생략), 두 줄이 안 되는 칸은 비율만 한 줄로.
+  const label = height >= 26 && width >= 40 ? fit(name, x + width - lx - 6, nameSize) : '';
+  const twoLines = height >= (big ? 64 : 46);
+  const showShare = share !== undefined && width >= 40 && height >= 22 && (twoLines || !label);
+  const shareText = share !== undefined ? fmtPct(share, 1) : '';
+  const clipId = `tm-clip-${index}-${Math.round(x)}-${Math.round(y)}`;
   return (
     <g className={`tm-cell ${animate ? 'enter' : ''}`} style={animate ? { animationDelay: `${Math.min(index, 20) * 18}ms` } : undefined}>
       {/* 1px 표면 간격으로 칸 구분 */}
       <rect x={x + 1} y={y + 1} width={Math.max(0, width - 2)} height={Math.max(0, height - 2)} rx={4} fill={fill} stroke={C.surface} strokeWidth={1} />
-      {showName && (
-        <text className="tm-label" x={x + 9} y={y + 21} fill={ink} fontSize={13} fontWeight={600}>
-          {name && name.length * 13 > width - 16 ? `${name.slice(0, Math.max(1, Math.floor((width - 16) / 13) - 1))}…` : name}
-        </text>
+      {/* 선택 칸: 흰색 채움 + 안쪽 진한 테두리로 이웃 밝은 칸과 구분 */}
+      {selected && (
+        <rect x={x + 3} y={y + 3} width={Math.max(0, width - 6)} height={Math.max(0, height - 6)} rx={3} fill="none" stroke="#171717" strokeWidth={2} />
       )}
-      {showShare && share !== undefined && (
-        <text className="tm-label" x={x + 9} y={y + 40} fill={ink} fontSize={12} opacity={0.85}>
-          {fmtPct(share, 1)}
-        </text>
+      {/* 1~3위 순위 배지 */}
+      {badge && (
+        <g aria-hidden="true">
+          <circle cx={x + 19} cy={y + 20} r={10} fill="#171717" />
+          <text className="tm-label" x={x + 19} y={y + 24.5} textAnchor="middle" fill={C.ink} fontSize={12} fontWeight={700}>
+            {rank}
+          </text>
+        </g>
       )}
+      <clipPath id={clipId}>
+        <rect x={x + 2} y={y + 2} width={Math.max(0, width - 4)} height={Math.max(0, height - 4)} />
+      </clipPath>
+      <g clipPath={`url(#${clipId})`}>
+        {label && (
+          <text className="tm-label" x={lx} y={y + (big ? 25 : 21)} fill={ink} fontSize={nameSize} fontWeight={big ? 700 : 600}>
+            {label}
+          </text>
+        )}
+        {showShare && (
+          <text
+            className="tm-label"
+            x={big ? x + 12 : label ? lx : x + 8}
+            y={label ? y + (big ? 54 : 40) : y + Math.min(21, height / 2 + 5)}
+            fill={ink}
+            fontSize={big ? 20 : 13}
+            fontWeight={big ? 700 : 500}
+            opacity={big ? 1 : 0.9}
+            fontFamily="var(--font-num)"
+          >
+            {shareText}
+          </text>
+        )}
+      </g>
     </g>
   );
 }

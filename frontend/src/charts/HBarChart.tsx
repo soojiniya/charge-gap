@@ -26,6 +26,7 @@ interface Props {
 /**
  * 가로 막대. 끝은 4px 둥글게, 기준선은 각지게. 막대 두께는 최대 18px.
  * onSelect가 있으면 막대를 클릭해 해당 항목으로 필터를 바꿉니다.
+ * 포인트 색(C.accent)은 한 막대에만: 선택한 항목, 선택이 없으면 최댓값 막대.
  */
 export function HBarChart({
   data,
@@ -40,6 +41,9 @@ export function HBarChart({
   const m = useMotion();
   const height = Math.max(120, data.length * rowHeight + 36);
   const anyHighlight = highlightKey !== undefined && data.some((d) => d.key === highlightKey);
+  const maxKey = data.reduce<HBarDatum | undefined>((m, d) => (!m || d.value > m.value ? d : m), undefined)?.key;
+  const fillOf = (d: HBarDatum) =>
+    anyHighlight ? (d.key === highlightKey ? C.accent : C.dim) : d.key === maxKey ? C.accent : C.s1;
   return (
     <div role="img" aria-label={ariaLabel} style={{ width: '100%', height }}>
       <ResponsiveContainer>
@@ -50,7 +54,7 @@ export function HBarChart({
             type="category"
             dataKey="label"
             width={labelWidth}
-            tick={{ fill: C.ink2, fontSize: 12 }}
+            tick={{ fill: C.ink2, fontSize: 14 }}
             axisLine={false}
             tickLine={false}
             interval={0}
@@ -78,14 +82,14 @@ export function HBarChart({
             onClick={onSelect ? (d: { payload?: HBarDatum }) => d.payload && onSelect(d.payload.key) : undefined}
           >
             {data.map((d) => (
-              <Cell key={d.key} fill={!anyHighlight || d.key === highlightKey ? C.s1 : C.dim} />
+              <Cell key={d.key} fill={fillOf(d)} />
             ))}
             {showValues && (
               <LabelList
                 dataKey="value"
                 position="right"
                 formatter={(v: number) => fmtInt(v)}
-                style={{ fill: C.ink2, fontSize: 11, fontFamily: 'var(--font-num)' }}
+                style={{ fill: C.ink2, fontSize: 14, fontFamily: 'var(--font-num)' }}
               />
             )}
           </Bar>

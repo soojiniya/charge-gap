@@ -1,5 +1,5 @@
 /* Run with Playwright against a local production preview and the real local API.
- * No external tiles are required. The delayed request exercises the filter race.
+ * No external map (Kakao SDK) is required. The delayed request exercises the filter race.
  */
 module.exports = async function auditMapFilters(page, BASE, API) {
   const checks = [];
@@ -7,7 +7,7 @@ module.exports = async function auditMapFilters(page, BASE, API) {
     checks.push({ name, ok: !!ok, detail });
     if (!ok) throw new Error(name + ': ' + JSON.stringify(detail));
   };
-  await page.route(/tile\.openstreetmap\.org/, r => r.abort());
+  await page.route(/dapi\.kakao\.com|kakaocdn\.net|daumcdn\.net/, r => r.abort());
   const panel = () => page.locator('.geo-panel-section').filter({
     has: page.getByRole('heading', { name: '주요 운영기관', exact: true }),
   });

@@ -3,6 +3,7 @@ from functools import wraps
 import math
 from pathlib import Path
 from flask import Blueprint, current_app, jsonify, request, send_file
+import numpy as np
 import pandas as pd
 from .cache import ByteLRU, request_key
 from .data import COMMON_PARAMETERS, EV_SOURCE, API_SOURCE, GROWTH_SOURCE, UNITS, WARNINGS, REGIONS_2026, TYPE_DEFINITIONS, records
@@ -15,6 +16,24 @@ RESPONSE_ENTRY_OVERHEAD=512
 # (measured RSS); budget conservatively so the 48 MiB limit holds for real memory.
 TABLE_SAFETY_FACTOR=1.3
 TABLE_ENTRY_OVERHEAD=64*1024
+
+# /api/locations/grid: map cluster grid (zoom 11–15). One cell is GRID_CELL_PX screen pixels
+# of the Kakao map at that zoom (level = 20 − zoom, 2^(level−3) m/px), i.e. half the
+# client's 64px cluster cell, so the client merges neighbouring cells exactly as before.
+GRID_CELL_PX=32
+GRID_MIN_ZOOM=11
+GRID_MAX_ZOOM=15
+# Upper bound on cells the requested bbox may span (≈ 4K screen at zoom 11 needs ~10k).
+GRID_MAX_CELLS=40000
+METERS_PER_DEGREE_LAT=111320.0
+# Fixed reference latitude (central Korea) so cell edges never depend on the bbox.
+GRID_REFERENCE_COS=math.cos(math.radians(36.0))
+
+
+def grid_cell_degrees(zoom):
+    """Cell size (lat°, lng°) for a map zoom; a fixed global grid per zoom."""
+    meters=GRID_CELL_PX*2.0**(17-zoom)
+    return meters/METERS_PER_DEGREE_LAT,meters/(METERS_PER_DEGREE_LAT*GRID_REFERENCE_COS),meters
 
 
 def table_bytes(frame,shared_dictionaries):
@@ -175,6 +194,30 @@ def create_blueprint(store,response_cache=None,locations_cache=None):
         return reply(records(result),{'chargers':API_SOURCE},filters,frame,{'count':len(result),'output_statistics':stats,
             'output_note':'output(kW)을 수치화했습니다. powerType은 전체 결측이며 실제 동시 공급전력/실측 충전속도를 뜻하지 않습니다.'})
 
+    # Same text as /api/charger-output's output_note (each region's rebuilt response must equal that request).
+    OUTPUT_NOTE='output(kW)을 수치화했습니다. powerType은 전체 결측이며 실제 동시 공급전력/실측 충전속도를 뜻하지 않습니다.'
+
+    @bp.get('/charger-output/regions')
+    @cached
+    def charger_output_regions():
+        """All 16 regions' /api/charger-output results in one request (Regional Explorer heatmap).
+        data.common_meta + data.regions[i] rebuild exactly the response of
+        /api/charger-output?{non-region filters}&region_code={region}:
+        {data: regions[i].data, meta: {...common_meta, filters, matched, count, output_statistics}}."""
+        allowed_parameters(COMMON_PARAMETERS)
+        filters=charger_filters(store)
+        regions,frame=store.output_by_region(filters)
+        sources={'chargers':{**API_SOURCE,'snapshot_start_at':store.snapshot_start,'snapshot_end_at':store.snapshot_end}}
+        common={'api_version':'1.0','sources':sources,'units':UNITS,'warnings':WARNINGS,
+            'same_period_shortage_rate_computed':False,
+            'snapshot_policy':'프로세스 시작 시 CSV를 읽은 고정 스냅샷. 갱신은 서버 재시작으로 반영.',
+            'output_note':OUTPUT_NOTE}
+        return reply({'common_meta':common,'regions':regions},{'chargers':API_SOURCE},{**filters,'region_code':None},frame,
+            {'count':len(regions),'region_count':len(REGIONS_2026),
+             'region_filter_policy':'region_code is accepted for request compatibility but ignored; always returns all 16 regions.',
+             'per_region_response_rule':'For region R, {data: regions[R].data, meta: {...common_meta, filters, matched, count, output_statistics}} '
+                 'equals /api/charger-output with the same non-region filters and region_code=R.'})
+
     @bp.get('/operators')
     @cached
     def operators():
@@ -201,13 +244,9 @@ def create_blueprint(store,response_cache=None,locations_cache=None):
         return reply(data,{'growth':GROWTH_SOURCE},{'year_from':first,'year_to':last},extra={'count':len(data),
             'growth_warning':'2026년은 부분 연도이며 정확한 집계 마감일 미기재. API 현황과 모집단이 달라 합치거나 과거 API 재고로 간주하지 않습니다.'})
 
-    @bp.get('/locations')
-    def locations():
-        filters,frame=charger_request({'page','limit','bbox'})
-        page=integer('page',1,1,1000000);limit=integer('limit',200,1,1000);bbox=bounding_box()
-        # The per-station representative table depends only on the validated charger
-        # filters; bbox and pagination are applied to it below on every request, exactly
-        # as before. Cached tables are only read (filtered copies/slices), never modified.
+    def representative_table(filters,frame):
+        """Per-station representative table for validated charger filters (cached).
+        Shared by /locations and /locations/grid; cached tables are only read, never modified."""
         key=tuple(sorted(filters.items()))
         entry=locations_cache.get(key)
         if entry is None:
@@ -215,19 +254,91 @@ def create_blueprint(store,response_cache=None,locations_cache=None):
             excluded_stations=int(frame.statId.nunique())-len(result)
             entry=(result,invalid_rows,excluded_stations)
             locations_cache.put(key,entry,table_bytes(result,shared_dictionaries))
-        result,invalid_rows,excluded_stations=entry
-        if bbox:
-            west,south,east,north=bbox
-            result=result.loc[result.longitude.between(west,east)&result.latitude.between(south,north)]
-        matched={'charger_count':int(result.charger_count.sum()),'station_count':len(result),
+        return entry
+
+    def table_counts(result):
+        return {'charger_count':int(result.charger_count.sum()),'station_count':len(result),
             'not_deleted_charger_count':int(result.not_deleted_charger_count.sum()),
             'deleted_charger_count':int(result.deleted_charger_count.sum())}
+
+    def in_bbox(result,bbox):
+        west,south,east,north=bbox
+        return result.loc[result.longitude.between(west,east)&result.latitude.between(south,north)]
+
+    @bp.get('/locations')
+    def locations():
+        filters,frame=charger_request({'page','limit','bbox'})
+        page=integer('page',1,1,1000000);limit=integer('limit',200,1,1000);bbox=bounding_box()
+        # The per-station representative table depends only on the validated charger
+        # filters; bbox and pagination are applied to it below on every request, exactly
+        # as before.
+        result,invalid_rows,excluded_stations=representative_table(filters,frame)
+        if bbox:
+            result=in_bbox(result,bbox)
+        matched=table_counts(result)
         data,pagination=paginated(result,page,limit)
         return reply(data,{'chargers':API_SOURCE},{**filters,'bbox':bbox},
             extra={'matched':matched,'pagination':pagination,'coordinate_reference_system':'WGS84 geographic latitude/longitude',
             'invalid_coordinate_rows_excluded_from_representative_selection':invalid_rows,
             'stations_without_valid_coordinates_excluded':excluded_stations,
             'representative_coordinate_rule':'충전기 필터 적용 → statId별 N 우선/충전기 ID 순 첫 유효 좌표 → 대표 좌표에 bbox → statId 순 페이지네이션. 각 행의 건수는 해당 충전소의 필터 일치 충전기 수입니다.'})
+
+    @bp.get('/locations/grid')
+    @cached
+    def location_grid():
+        """All matching stations of the requested view aggregated into a fixed grid (map zoom 11–15).
+        Unlike /locations pages, every station whose representative coordinate falls in the
+        (cell-snapped) bbox is counted, so map clusters reflect the full spatial distribution."""
+        filters,frame=charger_request({'bbox','zoom'})
+        if 'zoom' not in request.args:raise APIError('zoom이 필요합니다.','zoom')
+        zoom=integer('zoom',GRID_MIN_ZOOM,GRID_MIN_ZOOM,GRID_MAX_ZOOM)
+        bbox=bounding_box()
+        if bbox is None:raise APIError('bbox가 필요합니다.','bbox')
+        dlat,dlng,meters=grid_cell_degrees(zoom)
+        west,south,east,north=bbox
+        ix0,ix1=math.floor(west/dlng),math.floor(east/dlng)
+        iy0,iy1=math.floor(south/dlat),math.floor(north/dlat)
+        span=(ix1-ix0+1)*(iy1-iy0+1)
+        if span>GRID_MAX_CELLS:
+            raise APIError(f'이 줌에서 bbox가 너무 넓습니다(격자 {span}칸, 최대 {GRID_MAX_CELLS}칸).','bbox')
+        table,invalid_rows,excluded_stations=representative_table(filters,frame)
+        matched=table_counts(in_bbox(table,bbox))
+        # Cheap rectangular prefilter, then exact cell membership with the same floor() as the bounds.
+        loose=table.loc[table.longitude.between((ix0-1)*dlng,(ix1+2)*dlng)&table.latitude.between((iy0-1)*dlat,(iy1+2)*dlat)]
+        ix=np.floor(loose.longitude.to_numpy(dtype=float)/dlng).astype(np.int64)
+        iy=np.floor(loose.latitude.to_numpy(dtype=float)/dlat).astype(np.int64)
+        keep=(ix>=ix0)&(ix<=ix1)&(iy>=iy0)&(iy<=iy1)
+        sub=loose.iloc[np.flatnonzero(keep)]
+        ix,iy=ix[keep],iy[keep]
+        cells=[]
+        if len(sub):
+            g=pd.DataFrame({'ix':ix,'iy':iy,'lat':sub.latitude.to_numpy(dtype=float),'lng':sub.longitude.to_numpy(dtype=float),
+                'c':sub.charger_count.to_numpy(),'nd':sub.not_deleted_charger_count.to_numpy(),'d':sub.deleted_charger_count.to_numpy()})
+            agg=g.groupby(['iy','ix'],sort=True).agg(station_count=('lat','size'),charger_count=('c','sum'),
+                not_deleted_charger_count=('nd','sum'),deleted_charger_count=('d','sum'),
+                latitude=('lat','mean'),longitude=('lng','mean'),
+                south=('lat','min'),north=('lat','max'),west=('lng','min'),east=('lng','max')).reset_index()
+            size=g.groupby(['iy','ix']).lat.transform('size').to_numpy()
+            singles=np.flatnonzero(size==1)
+            station_rows={(int(iy[i]),int(ix[i])):row for i,row in zip(singles,records(sub.iloc[singles]))}
+            for row in records(agg):
+                key=(row.pop('iy'),row.pop('ix'))
+                row['cell']=[key[1],key[0]]
+                for name in ('latitude','longitude','south','west','north','east'):row[name]=round(row[name],7)
+                row['station']=station_rows.get(key)
+                cells.append(row)
+        totals={'cell_count':len(cells),'station_count':sum(c['station_count'] for c in cells),
+            'charger_count':sum(c['charger_count'] for c in cells)}
+        return reply(cells,{'chargers':API_SOURCE},{**filters,'bbox':bbox,'zoom':zoom},
+            extra={'matched':matched,
+            'grid':{'zoom':zoom,'cell_px':GRID_CELL_PX,'cell_meters':meters,'cell_degrees':{'lat':dlat,'lng':dlng},
+                'origin':[0,0],'snapped_bbox':[ix0*dlng,iy0*dlat,(ix1+1)*dlng,(iy1+1)*dlat],**totals},
+            'coordinate_reference_system':'WGS84 geographic latitude/longitude',
+            'invalid_coordinate_rows_excluded_from_representative_selection':invalid_rows,
+            'stations_without_valid_coordinates_excluded':excluded_stations,
+            'aggregation_rule':'/api/locations와 같은 대표 좌표(충전기 필터 → statId별 N 우선/충전기 ID 순 첫 유효 좌표). '
+                '격자 칸 = floor(경도/칸 경도폭), floor(위도/칸 위도폭). bbox를 감싸는 모든 칸의 충전소를 빠짐없이 집계하며, '
+                'matched는 요청 bbox 안(경계 포함) 충전소만 셉니다. 칸에 충전소가 1곳이면 station에 그 행을 넣습니다.'})
 
     def chart_record(item):
         return {'id':item['number'],'filename':item['file'],'title':item['purpose'],'chart_type':item['kind'],

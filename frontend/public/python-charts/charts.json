@@ -1,7 +1,7 @@
 {
   "title": "Python 데이터 시각화 그래프",
   "generator": "scripts/create_python_charts_2026.py",
-  "generated_at": "2026-11-05T16:57:03+09:00",
+  "generated_at": "2026-11-11T21:24:53+09:00",
   "libraries": {
     "matplotlib": "3.11.2",
     "seaborn": "0.13.2",
@@ -64,7 +64,7 @@
         1800,
         1200
       ],
-      "sha256": "40b01158b84d3ee85a49fbb8222ca5c6e7514d993b4890aef11e3204e920158f"
+      "sha256": "3fcef694c78cff0d4933f9915fa6138d8859f279d24442b4d07662c6cd50af78"
     },
     {
       "id": 2,
@@ -92,7 +92,7 @@
         1800,
         1080
       ],
-      "sha256": "ceac2188489d04127f02f5165e1abc43b98a8c7dc89582c02e1a39881f418afe"
+      "sha256": "7a0f51a69d5f0d64c580c4cab1111041f24310d09939de1eec8be69b9e9e8ff2"
     },
     {
       "id": 3,
@@ -120,7 +120,7 @@
         1800,
         1200
       ],
-      "sha256": "18b5534dfb234b91df63df6119724353b40826bb4327af8a7ba2628417e11034"
+      "sha256": "8d421531202792f9b359d87d72f1f7c5d7666af3fc9b9d4125c0ddb52acf97fa"
     },
     {
       "id": 4,
@@ -150,7 +150,7 @@
         1800,
         1140
       ],
-      "sha256": "288bf01700636d53f2a0b96fe7a109b897d832e90745767788a8ef7e830603bb"
+      "sha256": "993d2358fb5a5e7fe7cbdfe3d9c0bddce9915f16c355b72b5ca275071beaa4c7"
     },
     {
       "id": 5,
@@ -179,7 +179,7 @@
         1800,
         1410
       ],
-      "sha256": "ba9ec57e64efe2a69164462bbf8b53c76273bc1feb2420721414ae725892f363"
+      "sha256": "6f908f591ba99aa7939d648fc75c139496d0f07a95b3540f386220d8a8706a0f"
     },
     {
       "id": 6,
@@ -207,7 +207,7 @@
         1800,
         1080
       ],
-      "sha256": "7a410b049b3fca8b33a77c468615189ebc6f98b7589ca06976a7345808e2d569"
+      "sha256": "f556bc5ce18ff3bb35e8f189a8ebee8725bb7bb4bed4bbf4c23722da02e02bef"
     },
     {
       "id": 7,
@@ -236,7 +236,7 @@
         1800,
         1080
       ],
-      "sha256": "d43221804e9145dbe4a7071e6ee84277b6b39f31e589e987c5137d9482ed49a0"
+      "sha256": "00c9858858c9e90b272377046ade96bd3d6c8153aafd02be68f850917e098173"
     },
     {
       "id": 8,
@@ -264,7 +264,7 @@
         1800,
         1350
       ],
-      "sha256": "3d75cb46964bba25f0976b2e1b552adb9a49566e5f411412e49b8655ae6f256a"
+      "sha256": "b0bc58e264fc70ac4a7b37ade1d504c48fbd3faadb270de0ef8fde66fb6101aa"
     },
     {
       "id": 9,
@@ -292,7 +292,7 @@
         1800,
         1110
       ],
-      "sha256": "afc36a85cb3be08bf82c4f8c179b7d490713554df5c79ffa79beae62469f6a15"
+      "sha256": "b8a6ce8ca17047baa8dae5b67a94520d32974db617c0a451abf815e8bb051d4f"
     },
     {
       "id": 10,
@@ -320,7 +320,7 @@
         1800,
         1290
       ],
-      "sha256": "043b6671f013007e19df15bf85b66c71557fb95fcf8b315bed86e5d23f2fea78"
+      "sha256": "cb2ea7ae2f1e9d3f013517739d0187c1b41bd27334b499486fe9da18c8d57939"
     }
   ]
 }

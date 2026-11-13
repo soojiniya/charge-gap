@@ -1,6 +1,6 @@
 /**
  * Regional Explorer: 두 지역 비교.
- * - 지역 A(라벤더)·B(청록)를 URL cmp_a·cmp_b로 저장합니다. 잘못된 값은 URL에서 지우고, 같은 지역이면 B를 비우고 안내합니다.
+ * - 지역 A(흰색)·B(회색)를 URL cmp_a·cmp_b로 저장합니다. 잘못된 값은 URL에서 지우고, 같은 지역이면 B를 비우고 안내합니다.
  * - 전기차 등록(2026-09)과 충전기(2026-10-15)는 각각 같은 기준일 자료끼리만 비교합니다.
  * - 기존 API와 React Query 캐시를 그대로 씁니다. 지역별 출력 요청은 출력 히트맵(그래프 8)과 같은 캐시 키를 공유합니다.
  */
@@ -281,8 +281,8 @@ const diffInt = (a: number, b: number, unit: string, na: string, nb: string) => 
 function CompareBody({ a, b, base, filtered, names }: { a: string; b: string; base: ChargerFilterParams; filtered: boolean; names: Record<string, string> }) {
   const ev = useEvRegistration(undefined);
   const regions = useChargerRegions(base);
-  const outA = useChargerOutput({ ...base, region_code: a });
-  const outB = useChargerOutput({ ...base, region_code: b });
+  const outA = useChargerOutput({ ...base, region_code: a }, { shareRegionRequest: true });
+  const outB = useChargerOutput({ ...base, region_code: b }, { shareRegionRequest: true });
   const typA = useChargerTypes({ ...base, region_code: a });
   const typB = useChargerTypes({ ...base, region_code: b });
   const opA = useOperators({ ...base, region_code: a }, 1, 3);

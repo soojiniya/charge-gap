@@ -19,6 +19,7 @@ import {
   denomBasis,
   denomUnit,
   denominator,
+  detailSentences,
   diffFor,
   diffText,
   heatColor,
@@ -420,7 +421,7 @@ export function RegionalDisparitySection() {
 
 /**
  * 선택 지역 요약: API가 이미 돌려준 5개 지표의 값·순위·전국 기준을 한 곳에 모아 보여 줍니다(새 계산 없음).
- * 각 지표 아래에는 같은 값으로 만든 규칙 기반 분석 문장(analysis/disparity.ts narrate)을 붙입니다. 지역을 고르지 않았으면 사용 안내만 표시합니다.
+ * 카드에는 값·전국 대비 차이·순위·전국 기준값만 두고, '상세 분석 보기'에는 그 근거(분자·분모 등, analysis/disparity.ts detailSentences)만 담아 같은 수치를 되풀이하지 않습니다.
  */
 function RegionSummary({
   row,
@@ -463,23 +464,25 @@ function RegionSummary({
           const v = metricValue(row, o.key, type);
           const n = nationalValue(data, o.key, type);
           const name = o.key === 'type_mix' ? `유형 ${type}${typeName(type) ? ` ${typeName(type)}` : ''} 비중` : o.label;
-          const sentences = narrate(data, row, o.key, type, { typeName: typeName(type) });
+          const details = detailSentences(data, row, o.key, type, { typeName: typeName(type) });
           const reading = metricReading(data, row, o.key, type);
+          const ok = reading.status === 'ok';
           return (
             <div key={o.key} data-metric={o.key} data-status={reading.status}>
               <dt>{name}</dt>
               <dd>
                 <span className="num disparity-region-value">{o.format(v)}</span>
-                <span className="disparity-region-rank">
-                  <span>{rankLine(data, row, o.key, type)}</span>
-                  <span>
-                    전국 대비 <span className="num">{diffText(diffFor(v, n), o)}</span>
+                {ok ? (
+                  <span className="disparity-region-diff">
+                    전국 <span className="num">{o.format(n)}</span> 대비 <b className="num">{diffText(diffFor(v, n), o)}</b>
                   </span>
-                </span>
-                <p className="disparity-region-headline">{headline(data, row, o.key, type)}</p>
+                ) : (
+                  <p className="disparity-region-headline">{headline(data, row, o.key, type)}</p>
+                )}
+                <span className="disparity-region-rank">{rankLine(data, row, o.key, type)}</span>
                 <details className="disparity-region-more">
                   <summary>상세 분석 보기</summary>
-                  <p className="disparity-region-note">{sentences.join(' ')}</p>
+                  <p className="disparity-region-note">{details.join(' ')}</p>
                 </details>
               </dd>
             </div>
@@ -501,15 +504,15 @@ function HeatLegend({ option, national }: { option: DisparityOption; national: n
       <ul>
         <li>
           <i className="heat-ramp" style={{ background: ramp(1) }} aria-hidden="true" />
-          <span>전국보다 높음 (+, 청록)</span>
+          <span>전국보다 높음 (+, 밝은 단색)</span>
         </li>
         <li>
-          <i className="heat-ramp" style={{ background: ramp(-1) }} aria-hidden="true" />
-          <span>전국보다 낮음 (−, 보라)</span>
+          <i className="heat-ramp is-down" style={{ background: ramp(-1) }} aria-hidden="true" />
+          <span>전국보다 낮음 (−, 회색 + 빗금)</span>
         </li>
         <li>
           <i className="heat-swatch" style={{ background: heatColor(0, national) }} aria-hidden="true" />
-          <span>차이 0: 가장 옅은 청록 (+0 표시)</span>
+          <span>차이 0: 가장 옅은 밝은 단색 (+0 표시)</span>
         </li>
         <li>
           <i className="heat-swatch is-none" aria-hidden="true" />

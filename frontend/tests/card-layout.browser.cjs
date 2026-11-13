@@ -13,7 +13,7 @@ module.exports = async function cardLayoutRegressions(page, baseUrl = 'http://12
     if (!value) throw new Error(`${name}${detail !== undefined ? ` ${JSON.stringify(detail).slice(0, 400)}` : ''}`);
     checks.push(name);
   };
-  await page.route(/tile\.openstreetmap\.org/, (r) => r.abort());
+  await page.route(/dapi\.kakao\.com|kakaocdn\.net|daumcdn\.net/, (r) => r.abort());
   await page.setViewportSize({ width: 1440, height: 900 });
 
   const rows = () => page.evaluate(() => {
@@ -106,6 +106,6 @@ module.exports = async function cardLayoutRegressions(page, baseUrl = 'http://12
   const text = await notes.innerText();
   check('Overview 자료 해석 기준: dates, no-ratio rule and region mapping kept',
     ['2026-09', '2026-10-15', '서로 나누지 않습니다', '12 전남광주 (원본 명칭)', '12 전남광주통합특별시'].every((t) => text.includes(t)));
-  await page.unroute(/tile\.openstreetmap\.org/);
+  await page.unroute(/dapi\.kakao\.com|kakaocdn\.net|daumcdn\.net/);
   return { status: 'PASS', checks: checks.length, details: checks };
 };

@@ -23,10 +23,28 @@ interface SectorShape {
   fill: string;
 }
 
-/** 활성 조각: 바깥 반지름을 4px만 키우는 미세 강조 */
+/**
+ * 활성 조각: 크기·색은 그대로 두고(바깥 확대·표시 호 없음) 다른 조각만 흐리게 해서 구분합니다(.donut-dim CSS).
+ * 어떤 항목인지는 중앙의 항목명·수치와 범례 강조로 보여 줍니다.
+ */
 function ActiveSlice(props: unknown) {
   const p = props as SectorShape;
-  return <Sector {...p} outerRadius={p.outerRadius + 4} stroke={C.surface} strokeWidth={2} />;
+  return <Sector {...p} stroke={C.surface} strokeWidth={2} />;
+}
+
+/** 긴 유형명은 '+' 뒤에서 줄바꿈할 수 있게(예: 06 DC차데모+AC3상+DC콤보) */
+function breakable(label: string) {
+  const parts = label.split('+');
+  return parts.map((t, i) => (
+    <span key={i}>
+      {t}
+      {i < parts.length - 1 && (
+        <>
+          +<wbr />
+        </>
+      )}
+    </span>
+  ));
 }
 
 /**
@@ -68,7 +86,7 @@ export function DonutChart({
     }
     const pad = 4;
     const bounds: TipRect = { x: l - b.left + pad, y: t - b.top + pad, w: r - l - pad * 2, h: btm - t - pad * 2 };
-    const next = placeDonutTip(pointer.current, tipSize.current, size, (size / 2) * 0.68, bounds);
+    const next = placeDonutTip(pointer.current, tipSize.current, size, (size / 2) * 0.64, bounds);
     setTipPos((cur) => (cur && Math.abs(cur.x - next.x) < 0.5 && Math.abs(cur.y - next.y) < 0.5 ? cur : next));
   };
   const trackPointer = (e: PointerEvent<HTMLDivElement>) => {
@@ -91,8 +109,9 @@ export function DonutChart({
     }
   });
   const total = data.reduce((s, d) => s + d.value, 0);
+  const centerText = fmtInt(active !== undefined ? data[active]?.value : total);
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
+    <div className="donut-chart">
       <div
         role="img"
         aria-label={ariaLabel}
@@ -127,8 +146,8 @@ export function DonutChart({
               data={data}
               dataKey="value"
               nameKey="label"
-              innerRadius="68%"
-              outerRadius="92%"
+              innerRadius="64%"
+              outerRadius="88%"
               startAngle={90}
               endAngle={-270}
               stroke={C.surface}
@@ -150,33 +169,24 @@ export function DonutChart({
         </ResponsiveContainer>
         <div style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', pointerEvents: 'none', textAlign: 'center' }}>
           <div>
-            <div className="num" style={{ fontSize: '1.45rem', fontWeight: 650, fontStretch: '110%' }}>
-              {fmtInt(active !== undefined ? data[active]?.value : total)}
+            {/* 8자리 이상(예: 1,191,873)은 안쪽 원에 닿지 않도록 한 단계 작게 */}
+            <div className="num" style={{ fontSize: centerText.length > 7 ? '1.2rem' : '1.45rem', fontWeight: 650, fontStretch: '110%' }}>
+              {centerText}
             </div>
-            <div className="small muted">{active !== undefined ? data[active]?.label : centerLabel}</div>
+            {/* 긴 유형 이름은 안쪽 원 폭 안에서 줄바꿈 */}
+            <div className="small muted" style={{ maxWidth: size * 0.64 * 0.86, margin: '0 auto', lineHeight: 1.3, wordBreak: 'keep-all' }}>
+              {active !== undefined ? data[active]?.label : centerLabel}
+            </div>
           </div>
         </div>
       </div>
-      <ul
-        className={`donut-legend ${active !== undefined ? 'has-active' : ''}`}
-        style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 10, flex: 1, minWidth: 180 }}
-        onMouseLeave={() => setActive(undefined)}
-      >
+      <ul className={`donut-legend ${active !== undefined ? 'has-active' : ''}`} onMouseLeave={() => setActive(undefined)}>
         {data.map((d, i) => (
-          <li
-            key={d.key}
-            className={active === i ? 'is-active' : undefined}
-            onMouseEnter={() => setActive(i)}
-            style={{ display: 'grid', gridTemplateColumns: '12px 1fr auto', gap: 10, alignItems: 'baseline', fontSize: 'var(--t-sm)' }}
-          >
-            <span className="swatch" style={{ background: d.color, alignSelf: 'center' }} />
-            <span style={{ color: 'var(--ink-2)' }}>{d.label}</span>
-            <span className="num" style={{ textAlign: 'right' }}>
-              {fmtInt(d.value)}
-              <span className="muted small" style={{ marginLeft: 8, display: 'inline-block', minWidth: 46 }}>
-                {fmtPct(total ? (d.value / total) * 100 : null)}
-              </span>
-            </span>
+          <li key={d.key} className={active === i ? 'is-active' : undefined} onMouseEnter={() => setActive(i)}>
+            <span className="swatch" style={{ background: d.color }} />
+            <span className="donut-legend-name">{breakable(d.label)}</span>
+            <span className="num donut-legend-count">{fmtInt(d.value)}</span>
+            <span className="num muted donut-legend-share">{fmtPct(total ? (d.value / total) * 100 : null)}</span>
           </li>
         ))}
       </ul>

@@ -128,8 +128,9 @@ export function BoxPlot({
     1,
     ...rows.flatMap((r) => r.outlier_distribution.map((o) => o.station_count)),
   );
-  // 점이 밀집해 보이지 않도록 작게(1.6~4.6px) 그리고 반투명으로. 빈도 정보는 크기·툴팁으로 유지
-  const rOf = (freq: number) => 1.6 + 3 * Math.sqrt(freq / maxFreq);
+  // 이상치는 모두 그리되(삭제·제외 없음) 상자·중앙값·평균·수염보다 한 단계 뒤로: 작게(1.2~3.6px)·옅게, 상자 아래 층에 그림.
+  // 빈도 정보는 점 크기(면적 ∝ 충전소 수)와 툴팁으로 유지합니다.
+  const rOf = (freq: number) => 1.2 + 2.4 * Math.sqrt(freq / maxFreq);
 
   const place = (e: MouseEvent<SVGElement>) => {
     const box = wrap.current!.getBoundingClientRect();
@@ -164,7 +165,7 @@ export function BoxPlot({
                 x={x(t)}
                 y={rows.length * ROW_H + 16}
                 fill={C.muted}
-                fontSize={12}
+                fontSize={14}
                 textAnchor="middle"
                 fontFamily="var(--font-num)"
               >
@@ -176,7 +177,7 @@ export function BoxPlot({
             x={labelW + plotW / 2}
             y={rows.length * ROW_H + 32}
             fill={C.muted}
-            fontSize={12}
+            fontSize={14}
             textAnchor="middle"
           >
             충전소 1곳당 충전기 수 (기{log ? ", 로그 눈금" : ""})
@@ -209,8 +210,8 @@ export function BoxPlot({
                 <text
                   x={narrow ? 4 : 8}
                   y={cy - 2}
-                  fill={sel ? C.s3 : C.ink2}
-                  fontSize={13}
+                  fill={sel ? C.accent : C.ink2}
+                  fontSize={14}
                   fontWeight={sel ? 600 : 400}
                 >
                   {name}
@@ -219,11 +220,39 @@ export function BoxPlot({
                   x={narrow ? 4 : 8}
                   y={cy + 12}
                   fill={C.muted}
-                  fontSize={11}
+                  fontSize={13}
                   fontFamily="var(--font-num)"
                 >
                   n={fmtInt(r.sample_count)}
                 </text>
+                {/* outliers: one point per distinct value, size = frequency */}
+                {r.outlier_distribution.map((o) => (
+                  <circle
+                    className={`bx-out-pt ${motion.animate ? "bx-out" : ""}`}
+                    style={
+                      motion.animate
+                        ? { animationDelay: `${180 + i * MOTION.stagger}ms` }
+                        : undefined
+                    }
+                    key={o.charger_count}
+                    cx={x(o.charger_count)}
+                    cy={cy}
+                    r={rOf(o.station_count)}
+                    fill={sel ? C.accent : C.s1}
+                    fillOpacity={sel ? 0.5 : 0.32}
+                    stroke="none"
+                    onMouseMove={(e) => {
+                      e.stopPropagation();
+                      setHover({
+                        kind: "outlier",
+                        row: r,
+                        value: o.charger_count,
+                        freq: o.station_count,
+                        ...place(e),
+                      });
+                    }}
+                  />
+                ))}
                 <g
                   className={`bx-body ${motion.animate ? "enter" : ""}`}
                   style={
@@ -241,24 +270,24 @@ export function BoxPlot({
                     x2={xwh}
                     y1={cy}
                     y2={cy}
-                    stroke={C.ink2}
-                    strokeWidth={1.4}
+                    stroke={sel ? C.accent : C.ink2}
+                    strokeWidth={1.6}
                   />
                   <line
                     x1={xwl}
                     x2={xwl}
                     y1={cy - 6}
                     y2={cy + 6}
-                    stroke={C.ink2}
-                    strokeWidth={1.4}
+                    stroke={sel ? C.accent : C.ink2}
+                    strokeWidth={1.6}
                   />
                   <line
                     x1={xwh}
                     x2={xwh}
                     y1={cy - 6}
                     y2={cy + 6}
-                    stroke={C.ink2}
-                    strokeWidth={1.4}
+                    stroke={sel ? C.accent : C.ink2}
+                    strokeWidth={1.6}
                   />
                   {/* box q1..q3 */}
                   <rect
@@ -268,10 +297,10 @@ export function BoxPlot({
                     width={boxW}
                     height={BOX_H}
                     rx={2}
-                    fill={C.s1}
-                    fillOpacity={0.38}
-                    stroke={C.s1}
-                    strokeWidth={1.4}
+                    fill={sel ? C.accent : C.s1}
+                    fillOpacity={sel ? 0.5 : 0.42}
+                    stroke={sel ? C.accent : C.ink2}
+                    strokeWidth={1.5}
                   />
                   {/* median */}
                   <line
@@ -284,10 +313,10 @@ export function BoxPlot({
                   />
                   {/* mean */}
                   <path
-                    d={`M${m},${cy - 5} L${m + 5},${cy} L${m},${cy + 5} L${m - 5},${cy} Z`}
+                    d={`M${m},${cy - 5.5} L${m + 5.5},${cy} L${m},${cy + 5.5} L${m - 5.5},${cy} Z`}
                     fill={C.s3}
                     stroke={C.surface}
-                    strokeWidth={1}
+                    strokeWidth={1.5}
                   />
                   {/* 호버 시 Q1·중앙값·Q3 값 강조 (실제 API 값) */}
                   <text
@@ -295,7 +324,7 @@ export function BoxPlot({
                     x={xmed}
                     y={cy - BOX_H / 2 - 4}
                     fill={C.ink}
-                    fontSize={11}
+                    fontSize={14}
                     fontWeight={600}
                     textAnchor="middle"
                     fontFamily="var(--font-num)"
@@ -307,7 +336,7 @@ export function BoxPlot({
                     x={xq1 - 3}
                     y={cy + BOX_H / 2 + 11}
                     fill={C.s1}
-                    fontSize={10.5}
+                    fontSize={14}
                     textAnchor="end"
                     fontFamily="var(--font-num)"
                   >
@@ -318,7 +347,7 @@ export function BoxPlot({
                     x={xq3 + 3}
                     y={cy + BOX_H / 2 + 11}
                     fill={C.s1}
-                    fontSize={10.5}
+                    fontSize={14}
                     textAnchor="start"
                     fontFamily="var(--font-num)"
                   >
@@ -336,36 +365,6 @@ export function BoxPlot({
                     setHover({ kind: "box", row: r, ...place(e) })
                   }
                 />
-                {/* outliers: one point per distinct value, size = frequency */}
-                {r.outlier_distribution.map((o) => (
-                  <circle
-                    className={motion.animate ? "bx-out" : undefined}
-                    style={
-                      motion.animate
-                        ? { animationDelay: `${180 + i * MOTION.stagger}ms` }
-                        : undefined
-                    }
-                    key={o.charger_count}
-                    cx={x(o.charger_count)}
-                    cy={cy}
-                    r={rOf(o.station_count)}
-                    fill={C.s4}
-                    fillOpacity={0.32}
-                    stroke={C.s4}
-                    strokeOpacity={0.6}
-                    strokeWidth={0.8}
-                    onMouseMove={(e) => {
-                      e.stopPropagation();
-                      setHover({
-                        kind: "outlier",
-                        row: r,
-                        value: o.charger_count,
-                        freq: o.station_count,
-                        ...place(e),
-                      });
-                    }}
-                  />
-                ))}
               </g>
             );
           })}
@@ -452,15 +451,15 @@ export function BoxPlot({
   );
 }
 
-export function BoxLegend() {
+export function BoxLegend({ selectedName }: { selectedName?: string } = {}) {
   return (
     <div className="legend" style={{ marginBottom: 10 }}>
       <span className="legend-item">
         <span
           className="swatch"
           style={{
-            background: "rgba(164,155,200,0.38)",
-            outline: `1.4px solid ${C.s1}`,
+            background: "rgba(163,163,163,0.42)",
+            outline: `1.5px solid ${C.ink2}`,
           }}
         />
         상자 Q1–Q3
@@ -496,15 +495,20 @@ export function BoxLegend() {
         <span
           className="swatch"
           style={{
-            width: 8,
-            height: 8,
-            background: "rgba(191,111,139,0.45)",
-            border: `1px solid ${C.s4}`,
+            width: 7,
+            height: 7,
+            background: "rgba(163,163,163,0.45)",
             borderRadius: "50%",
           }}
         />
         이상치 (점 크기 = 충전소 수)
       </span>
+      {selectedName && (
+        <span className="legend-item">
+          <span className="swatch" style={{ background: C.accent }} />
+          선택 지역 ({selectedName})
+        </span>
+      )}
     </div>
   );
 }

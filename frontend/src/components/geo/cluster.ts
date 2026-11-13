@@ -14,10 +14,23 @@ export interface Projected {
 export interface Cluster<T> {
   /** 묶인 원본 항목 (한 개면 개별 충전소로 그립니다) */
   members: T[];
-  /** 투영 좌표 무게중심 */
+  /** 묶인 충전소 수 (항목이 충전소면 members.length, 격자 칸이면 칸별 충전소 수의 합) */
+  count: number;
+  /** 투영 좌표 무게중심 (충전소 수 가중) */
   x: number;
   y: number;
-  /** 위경도 평균과 범위 (클러스터를 누르면 이 범위로 확대) */
+  /** 위경도 평균(충전소 수 가중)과 범위 (클러스터를 누르면 이 범위로 확대) */
+  lat: number;
+  lng: number;
+  south: number;
+  west: number;
+  north: number;
+  east: number;
+}
+
+/** 묶을 항목 하나의 무게(충전소 수)·대표 위치·범위 */
+export interface WeightedItem {
+  weight: number;
   lat: number;
   lng: number;
   south: number;
@@ -31,15 +44,20 @@ interface Bucket<T> {
   cy: number;
   sx: number;
   sy: number;
+  w: number;
   items: T[];
-  pts: Projected[];
   used: boolean;
 }
 
-export function gridCluster<T>(
+/**
+ * 가중 격자 묶음. 항목마다 무게(충전소 수)를 두고, 같은 화면 칸의 항목을 모은 뒤
+ * 무게가 큰 칸부터 이웃 8칸 중 무게중심이 한 칸 거리 안인 칸을 흡수합니다.
+ * 무게가 모두 1이면 gridCluster(충전소 단위)와 같은 결과입니다.
+ */
+export function weightedGridCluster<T>(
   items: readonly T[],
   project: (item: T) => Projected,
-  latLng: (item: T) => [number, number],
+  info: (item: T) => WeightedItem,
   cellPx: number,
 ): Cluster<T>[] {
   const cell = Math.max(1, cellPx);
@@ -47,21 +65,23 @@ export function gridCluster<T>(
   for (const item of items) {
     const p = project(item);
     if (!Number.isFinite(p.x) || !Number.isFinite(p.y)) continue;
+    const w = Math.max(0, info(item).weight);
+    if (!w) continue;
     const cx = Math.floor(p.x / cell);
     const cy = Math.floor(p.y / cell);
     const key = `${cx}:${cy}`;
     let b = buckets.get(key);
     if (!b) {
-      b = { cx, cy, sx: 0, sy: 0, items: [], pts: [], used: false };
+      b = { cx, cy, sx: 0, sy: 0, w: 0, items: [], used: false };
       buckets.set(key, b);
     }
-    b.sx += p.x;
-    b.sy += p.y;
+    b.sx += p.x * w;
+    b.sy += p.y * w;
+    b.w += w;
     b.items.push(item);
-    b.pts.push(p);
   }
 
-  const order = [...buckets.values()].sort((a, b) => b.items.length - a.items.length || a.cx - b.cx || a.cy - b.cy);
+  const order = [...buckets.values()].sort((a, b) => b.w - a.w || a.cx - b.cx || a.cy - b.cy);
   const out: Cluster<T>[] = [];
   for (const b of order) {
     if (b.used) continue;
@@ -69,20 +89,20 @@ export function gridCluster<T>(
     const members = [...b.items];
     let sx = b.sx;
     let sy = b.sy;
-    const mx = b.sx / b.items.length;
-    const my = b.sy / b.items.length;
+    let w = b.w;
+    const mx = b.sx / b.w;
+    const my = b.sy / b.w;
     for (let dx = -1; dx <= 1; dx += 1) {
       for (let dy = -1; dy <= 1; dy += 1) {
         if (!dx && !dy) continue;
         const n = buckets.get(`${b.cx + dx}:${b.cy + dy}`);
         if (!n || n.used) continue;
-        const nx = n.sx / n.items.length;
-        const ny = n.sy / n.items.length;
-        if (Math.hypot(nx - mx, ny - my) < cell) {
+        if (Math.hypot(n.sx / n.w - mx, n.sy / n.w - my) < cell) {
           n.used = true;
           members.push(...n.items);
           sx += n.sx;
           sy += n.sy;
+          w += n.w;
         }
       }
     }
@@ -93,27 +113,35 @@ export function gridCluster<T>(
     let north = -Infinity;
     let east = -Infinity;
     for (const m of members) {
-      const [a, o] = latLng(m);
-      lat += a;
-      lng += o;
-      if (a < south) south = a;
-      if (a > north) north = a;
-      if (o < west) west = o;
-      if (o > east) east = o;
+      const i = info(m);
+      lat += i.lat * i.weight;
+      lng += i.lng * i.weight;
+      if (i.south < south) south = i.south;
+      if (i.north > north) north = i.north;
+      if (i.west < west) west = i.west;
+      if (i.east > east) east = i.east;
     }
-    out.push({
-      members,
-      x: sx / members.length,
-      y: sy / members.length,
-      lat: lat / members.length,
-      lng: lng / members.length,
-      south,
-      west,
-      north,
-      east,
-    });
+    out.push({ members, count: w, x: sx / w, y: sy / w, lat: lat / w, lng: lng / w, south, west, north, east });
   }
   return out;
+}
+
+/** 충전소(무게 1) 단위 격자 묶음. 개별 충전소 줌(16 이상)의 같은 위치 묶음에 씁니다. */
+export function gridCluster<T>(
+  items: readonly T[],
+  project: (item: T) => Projected,
+  latLng: (item: T) => [number, number],
+  cellPx: number,
+): Cluster<T>[] {
+  return weightedGridCluster(
+    items,
+    project,
+    (item) => {
+      const [lat, lng] = latLng(item);
+      return { weight: 1, lat, lng, south: lat, west: lng, north: lat, east: lng };
+    },
+    cellPx,
+  );
 }
 
 /** 클러스터 반지름(px): 충전소 수의 로그에 비례, 12~30px */

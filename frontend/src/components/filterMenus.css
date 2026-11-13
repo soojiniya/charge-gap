@@ -37,7 +37,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
-    scrollbar-color: #566173 transparent;
+    scrollbar-color: #525252 transparent;
   }
   :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select) option {
     min-block-size: 40px;
@@ -71,26 +71,26 @@
   }
   :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select)::picker(select)::-webkit-scrollbar { width: 6px; }
   :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select)::picker(select)::-webkit-scrollbar-thumb {
-    background: #566173;
+    background: #525252;
     border-radius: 6px;
   }
-  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select)::picker(select)::-webkit-scrollbar-thumb:hover { background: #758194; }
+  :is(.filterbar .cg-region-select, .filterbar .cg-type-select, .cg-menu-select)::picker(select)::-webkit-scrollbar-thumb:hover { background: #737373; }
 }
 
 .table-wrap[aria-label='운영기관별 충전기'],
 .filterbar .combo-list {
   scrollbar-width: thin;
-  scrollbar-color: #566173 transparent;
+  scrollbar-color: #525252 transparent;
 }
 .table-wrap[aria-label='운영기관별 충전기']::-webkit-scrollbar,
 .filterbar .combo-list::-webkit-scrollbar { width: 6px; height: 6px; }
 .table-wrap[aria-label='운영기관별 충전기']::-webkit-scrollbar-thumb,
 .filterbar .combo-list::-webkit-scrollbar-thumb {
-  background: #566173;
+  background: #525252;
   border-radius: 6px;
 }
 .table-wrap[aria-label='운영기관별 충전기']::-webkit-scrollbar-thumb:hover,
-.filterbar .combo-list::-webkit-scrollbar-thumb:hover { background: #758194; }
+.filterbar .combo-list::-webkit-scrollbar-thumb:hover { background: #737373; }
 
 /* Chromium uses the explicit 6px scrollbar; Firefox uses scrollbar-width: thin. */
 @supports selector(::-webkit-scrollbar) {
@@ -106,7 +106,7 @@
 div:has(> table.heatmap),
 .modal-body {
   scrollbar-width: thin;
-  scrollbar-color: #566173 transparent;
+  scrollbar-color: #525252 transparent;
 }
 .geo-panel::-webkit-scrollbar,
 .table-wrap::-webkit-scrollbar,
@@ -124,13 +124,13 @@ div:has(> table.heatmap)::-webkit-scrollbar-corner,
 .table-wrap::-webkit-scrollbar-thumb,
 div:has(> table.heatmap)::-webkit-scrollbar-thumb,
 .modal-body::-webkit-scrollbar-thumb {
-  background: #566173;
+  background: #525252;
   border-radius: 6px;
 }
 .geo-panel::-webkit-scrollbar-thumb:hover,
 .table-wrap::-webkit-scrollbar-thumb:hover,
 div:has(> table.heatmap)::-webkit-scrollbar-thumb:hover,
-.modal-body::-webkit-scrollbar-thumb:hover { background: #758194; }
+.modal-body::-webkit-scrollbar-thumb:hover { background: #737373; }
 @supports selector(::-webkit-scrollbar) {
   .geo-panel,
   .table-wrap,

@@ -138,7 +138,8 @@ test('heatmap color matches the original rule exactly', () => {
   const old = (delta, national) => {
     if (delta == null) return undefined;
     const intensity = Math.min(1, Math.abs(delta) / (Math.abs(national ?? 0) || 1));
-    return delta >= 0 ? [129, 211, 203, 0.1 + intensity * 0.35] : [177, 157, 255, 0.1 + intensity * 0.35];
+    // 무채색 리디자인: RGB만 바뀌고 강도 규칙(0.1 + 강도 × 0.35)은 그대로
+    return delta >= 0 ? [200, 200, 200, 0.1 + intensity * 0.35] : [140, 140, 140, 0.1 + intensity * 0.35];
   };
   const parse = (c) => c && c.match(/[\d.]+/g).map(Number);
   for (const [d, n] of [[0, 25], [5, 25], [-5, 25], [30, 25], [-100, 25], [0.4, 0], [3, null], [-0.2, 2], [null, 5], [500, 2000]]) {

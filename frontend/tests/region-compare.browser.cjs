@@ -1,7 +1,7 @@
 /* Reusable real-browser regression for the Regional Explorer "두 지역 비교" section:
  * await require(thisFile)(playwrightPage, baseUrl, apiUrl). Requires a running local frontend/backend.
  * Checks: empty default, URL clean-up (invalid / same region), keyboard selection with replace history, disabled duplicate option,
- * swap/clear, A lavender / B teal, same-row card alignment, no horizontal overflow on mobile, evidence panel reuse,
+ * swap/clear, A white / B grey, same-row card alignment, no horizontal overflow on mobile, evidence panel reuse,
  * filter basis note, top region filter not applied, cmp_* not carried to other pages, and the API request count. */
 module.exports = async function regionCompareRegressions(page, baseUrl = 'http://127.0.0.1:4180', apiUrl = 'http://127.0.0.1:10000') {
   const checks = [];
@@ -22,7 +22,7 @@ module.exports = async function regionCompareRegressions(page, baseUrl = 'http:/
       { timeout: 60000 },
     );
   };
-  await page.route(/tile\.openstreetmap\.org/, (r) => r.abort());
+  await page.route(/dapi\.kakao\.com|kakaocdn\.net|daumcdn\.net/, (r) => r.abort());
   await page.setViewportSize({ width: 1440, height: 1000 });
 
   // 1) 기본값: 선택 없음
@@ -97,12 +97,12 @@ module.exports = async function regionCompareRegressions(page, baseUrl = 'http:/
   check('changing one side needs at most 2 requests', metrics.changeOneSideRequests.length <= 2);
   check(`returning to a cached pair needs no compare requests (${metrics.backToCachedRequests.join('; ')})`, metrics.backToCachedRequests.filter((u) => /ev-registration|charger-types|charger-output|charger-regions|operators\?limit=3/.test(u)).length === 0);
 
-  // 6) 색상: A 라벤더, B 청록
+  // 6) 색상(무채색): A 흰색 #F5F5F5, B 회색 #A3A3A3
   const dot = (side) => page.locator(`.cmp-card .cmp-tag.cmp-${side} .cmp-dot`).first().evaluate((e) => getComputedStyle(e).backgroundColor);
-  check('A is lavender', (await dot('a')) === 'rgb(164, 155, 200)');
-  check('B is teal', (await dot('b')) === 'rgb(129, 173, 168)');
+  check('A is white', (await dot('a')) === 'rgb(245, 245, 245)');
+  check('B is grey', (await dot('b')) === 'rgb(163, 163, 163)');
   const bar = (side) => page.locator(`.cmp-duo-row.cmp-${side} .cmp-duo-track i`).first().evaluate((e) => getComputedStyle(e).backgroundColor);
-  check('bars use the same colours', (await bar('a')) === 'rgb(164, 155, 200)' && (await bar('b')) === 'rgb(129, 173, 168)');
+  check('bars use the same colours', (await bar('a')) === 'rgb(245, 245, 245)' && (await bar('b')) === 'rgb(163, 163, 163)');
 
   // 7) 같은 행 카드 정렬 (1440px: EV·충전 카드 나란히)
   const boxes = await page.locator('.cmp-card').evaluateAll((els) => els.map((e) => e.getBoundingClientRect()).map((r) => ({ top: Math.round(r.top), h: Math.round(r.height), w: Math.round(r.width) })));
@@ -140,7 +140,26 @@ module.exports = async function regionCompareRegressions(page, baseUrl = 'http:/
   await page.locator('.filterbar label.field', { hasText: '충전기 유형' }).locator('select').selectOption('04');
   await page.waitForURL((u) => u.searchParams.get('type') === '04');
   await ready();
-  check('type filter changes charger numbers', (await firstCell()) !== before);
+  // 비교 카드는 새 응답이 올 때까지 이전 값(keepPreviousData)을 보여 주므로, 고정 대기 대신
+  // "첫 칸 = 유형 04 API 값"이 되고 카드의 aria-busy가 풀릴 때까지 기다린 뒤 검증합니다(값 비교 조건은 그대로 엄격).
+  const apiCount = async (query) =>
+    (await (await fetch(`${apiUrl}/api/charger-regions?${query}`)).json()).data.find((r) => r.region_code === '41').charger_count;
+  const fmtCount = (n) => `${n.toLocaleString('en-US')}기`;
+  const expectedBase = fmtCount(await apiCount(''));
+  const expectedType = fmtCount(await apiCount('charger_type=04'));
+  check(`comparison shows the API charger count before the type filter (${before} = ${expectedBase})`, before === expectedBase);
+  await page
+    .waitForFunction(
+      (e) => {
+        const td = document.querySelectorAll('.cmp-card')[1]?.querySelector('tbody tr td');
+        return !!td && td.textContent.trim() === e && !document.querySelector('.cmp-card[aria-busy="true"]');
+      },
+      expectedType,
+      { timeout: 30000 },
+    )
+    .catch(() => {});
+  const afterType = await firstCell();
+  check(`type filter changes charger numbers to the API value (${before} → ${afterType}, expected ${expectedType})`, afterType === expectedType && afterType !== before);
   check('basis note lists the applied filter', (await page.locator('.cmp-basis').innerText()).includes('유형 04'));
   check('EV findings stay filter-independent', (await page.locator('.cmp-card').first().locator('.insight-key').innerText()) === evFindingsBeforeType);
   check('findings headers contain no auxiliary status', (await page.locator('.cmp-card .insight-key-head > :not(h3)').count()) === 0);

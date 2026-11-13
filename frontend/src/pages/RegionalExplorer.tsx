@@ -64,7 +64,7 @@ function StationList({
           isSelected={(r) => r.station_id === selectedId}
           columns={[
             { key: 'id', header: '충전소 ID', render: (r) => <span className="num muted">{r.station_id}</span> },
-            { key: 'name', header: '충전소명', render: (r) => r.station_name },
+            { key: 'name', header: '충전소명', wrap: true, render: (r) => r.station_name },
             { key: 'addr', header: '주소', wrap: true, render: (r) => r.address },
             { key: 'region', header: '지역', render: (r) => (r.region_code === '12' ? '전남광주' : r.region_name) },
             { key: 'cnt', header: '충전기(기)', numeric: true, render: (r) => fmtInt(r.charger_count) },
@@ -170,7 +170,7 @@ export function RegionalExplorerPage() {
           span={12}
           title="전국 충전소 지도"
           reveal={false}
-          sub={`줌 ${STATION_ZOOM} 미만은 시도별 충전소 수, 그 이상은 화면 영역(bbox)의 충전소 좌표를 1,000곳 단위로 불러와 묶음·개별 충전소로 표시합니다.`}
+          sub={`줌 ${STATION_ZOOM} 미만은 시도별 충전소 수, ${STATION_ZOOM}~15는 화면 영역(bbox) 전체 충전소의 묶음, 16 이상은 개별 충전소를 표시합니다.`}
           scope={{ kind: 'filtered' }}
           className="geo-card"
         >
@@ -178,6 +178,7 @@ export function RegionalExplorerPage() {
             <StationMap
               filters={chargerParams}
               onRegionSelect={(code) => update({ region: code })}
+              onClearRegion={() => update({ region: undefined })}
               selected={selected}
               onSelect={selectOnMap}
               onSelectGroup={selectGroup}

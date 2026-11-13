@@ -51,19 +51,64 @@ from matplotlib.patches import Rectangle  # noqa: E402
 from matplotlib.ticker import FuncFormatter, StrMethodFormatter  # noqa: E402
 from PIL import Image  # noqa: E402
 
-# ---------------------------------------------------------------- style (frontend/src/styles/tokens.css 와 같은 값)
+# ---------------------------------------------------------------- style: 웹사이트 그래프 1~10과 같은 색 (프런트엔드 코드에서 직접 읽음)
+# 색을 여기 다시 적지 않고 frontend/src/charts/theme.ts · styles/tokens.css · charts/OperatorTreemap.tsx 에서 읽어,
+# 웹 색을 바꾸면 이 스크립트를 다시 실행하는 것만으로 PNG가 같은 색이 됩니다.
+import re  # noqa: E402
+
 FONT = 'Noto Sans CJK KR'
 assert any(f.name == FONT for f in font_manager.fontManager.ttflist), f'{FONT} font is required'
-PANEL, PANEL2, GRID, AXIS = '#1b2230', '#222a39', '#273042', '#364052'
-INK, INK2, MUTED = '#e7eaf0', '#c0c7d2', '#95a2b3'
-S1, S2, S3, S4, OTHER, COMPARE, WARN = '#a49bc8', '#418f86', '#dbaa5e', '#bf6f8b', '#566173', '#81ada8', '#d9a85f'
-SEQ = LinearSegmentedColormap.from_list('chargegap_seq', ['#262e3f', '#6f689a', '#d6d1ee'])  # theme.ts seqColor
+_SRC = P / 'frontend/src'
+_theme = (_SRC / 'charts/theme.ts').read_text(encoding='utf-8')
+_tokens = (_SRC / 'styles/tokens.css').read_text(encoding='utf-8')
+_treemap = (_SRC / 'charts/OperatorTreemap.tsx').read_text(encoding='utf-8')
+
+
+def _block(text: str, start: str) -> str:
+    i = text.index(start)
+    return text[i:text.index('}', i)]
+
+
+_G = dict(re.findall(r"(g\d): '(#[0-9a-f]{6})'", _block(_theme, 'export const G = {')))
+WEB = {k: (_G[v[2:]] if v.startswith('G.') else v.strip("'"))
+       for k, v in re.findall(r"^\s*(\w+): (G\.g\d|'#[0-9a-f]{6}')", _block(_theme, 'export const C = {'), re.M)}
+VEHICLE = dict(re.findall(r"(\w+): '(#[0-9a-f]{6})'", _block(_theme, 'export const VEHICLE_COLORS = {')))
+TYPE_COLOR = dict(re.findall(r"'(\d\d)': '(#[0-9a-f]{6})'", _block(_theme, 'export const CHARGER_TYPE_COLORS')))
+TYPE_OTHER = re.search(r"CHARGER_TYPE_OTHER = '(#[0-9a-f]{6})'", _theme).group(1)
+SEQ_L0, SEQ_L1 = (float(re.search(rf'const {k} = ([\d.]+);', _theme).group(1)) for k in ('SEQ_L0', 'SEQ_L1'))
+TM_TOP = re.findall(r"'(#[0-9a-f]{6})'", re.search(r'const TOP_FILL = \[([^\]]+)\]', _treemap).group(1))
+TM_BANDS = [(float('inf') if last == 'Infinity' else int(last), int(v, 16))
+            for last, v in re.findall(r'\[(\d+|Infinity), 0x([0-9a-f]{2})\]', _block(_treemap, 'export const TREEMAP_BANDS'))]
+TM_OTHER = re.search(r"TREEMAP_OTHER = '(#[0-9a-f]{6})'", _treemap).group(1)
+_tok = dict(re.findall(r'--([\w-]+): (#[0-9a-f]{6});', _tokens))
+assert {'s1', 's2', 's3', 's4', 'other', 'compare', 'point', 'dim', 'grid', 'axis', 'ink', 'ink2', 'muted', 'surface', 'accent'} <= set(WEB), WEB
+assert len(VEHICLE) == 4 and {'02', '04', '06', '11', '05'} <= set(TYPE_COLOR) and len(TM_TOP) == 3 and len(TM_BANDS) == 3
+
+PANEL, GRID, AXIS = WEB['surface'], WEB['grid'], WEB['axis']  # 카드 배경 #222222 = 그래프 배경
+INK, INK2, MUTED = WEB['ink'], WEB['ink2'], WEB['muted']
+S1, S2, S3, S4, OTHER, COMPARE, POINT, DIM, ACCENT = (WEB[k] for k in ('s1', 's2', 's3', 's4', 'other', 'compare', 'point', 'dim', 'accent'))
+DARK_INK = _tok['btn-ink']  # 밝은 면 위 글씨 (#171717)
+
+
+def _gray_from_l(L: float) -> float:  # theme.ts grayFromL 와 같은 식 (L* → sRGB 0..1)
+    y = ((L + 16) / 116) ** 3 if L > 8 else L / 903.3
+    c = 12.92 * y if y <= .0031308 else 1.055 * y ** (1 / 2.4) - .055
+    return min(1.0, max(0.0, c))
+
+
+def seq_color(t: float):  # theme.ts seqColor: L* 20 → 96 균등
+    v = _gray_from_l(SEQ_L0 + (SEQ_L1 - SEQ_L0) * min(1.0, max(0.0, t)))
+    return (v, v, v)
+
+
+SEQ = LinearSegmentedColormap.from_list('chargegap_seq', [seq_color(i / 32) for i in range(33)])
 sns.set_theme(style='darkgrid', font=FONT, rc={
     'axes.unicode_minus': False, 'figure.facecolor': PANEL, 'axes.facecolor': PANEL, 'savefig.facecolor': PANEL,
-    'axes.edgecolor': AXIS, 'axes.labelcolor': INK2, 'grid.color': GRID, 'text.color': INK,
-    'xtick.color': MUTED, 'ytick.color': MUTED, 'axes.titlecolor': INK, 'legend.facecolor': PANEL2,
+    'axes.edgecolor': AXIS, 'axes.labelcolor': MUTED, 'grid.color': GRID, 'grid.linewidth': 1, 'text.color': INK,
+    'xtick.color': MUTED, 'ytick.color': MUTED, 'axes.titlecolor': INK, 'legend.facecolor': PANEL,
     'legend.edgecolor': AXIS, 'legend.labelcolor': INK2,
-    'font.size': 11, 'axes.labelsize': 12, 'xtick.labelsize': 10.5, 'ytick.labelsize': 10.5, 'legend.fontsize': 10,
+    # 웹 글씨 위계(카드 제목 > 주요 수치 > 축·라벨)를 1800px 너비 이미지에 맞춰 키움
+    'font.size': 12, 'axes.labelsize': 13, 'xtick.labelsize': 12, 'ytick.labelsize': 12.5, 'legend.fontsize': 12,
 })
 warnings.filterwarnings('error', message='Glyph .* missing')  # 한글 깨짐은 실패로 처리
 DPI = 150
@@ -117,19 +162,26 @@ def canvas(title: str, subtitle: str, source: str, basis: str, height: float = 7
     fig, ax = plt.subplots(figsize=(width, height))
     top = 1 - 1.15 / height
     fig.subplots_adjust(left=.1, right=.96, bottom=1.25 / height, top=top)
-    fig.text(.03, 1 - .42 / height, title, fontsize=19, weight='bold', color=INK)
-    fig.text(.03, 1 - .78 / height, subtitle, fontsize=11.5, color=INK2)
-    fig.text(.03, .52 / height, '출처 · ' + source, fontsize=9.5, color=MUTED)
-    fig.text(.03, .24 / height, '기준 · ' + basis + ' · ' + FIXED_NOTE, fontsize=9.5, color=MUTED)
+    fig.text(.03, 1 - .42 / height, title, fontsize=20, weight='bold', color=INK)
+    fig.text(.03, 1 - .8 / height, subtitle, fontsize=12.5, color=MUTED)
+    fig.text(.03, .52 / height, '출처 · ' + source, fontsize=10.5, color=MUTED)
+    fig.text(.03, .24 / height, '기준 · ' + basis + ' · ' + FIXED_NOTE, fontsize=10.5, color=MUTED)
     return fig, ax
 
 
-def style(ax):
+def style(ax, grid: str = 'y'):
+    """웹 차트와 같은 틀: 위·오른쪽 축선 없음, 축선 #404040, 격자선은 값 축 방향만(#2e2e2e)."""
     for side in ('top', 'right'):
         ax.spines[side].set_visible(False)
     for side in ('left', 'bottom'):
         ax.spines[side].set_color(AXIS)
     ax.tick_params(length=0)
+    ax.grid(False)
+    if grid in ('x', 'both'):
+        ax.xaxis.grid(True, color=GRID, linewidth=1)
+    if grid in ('y', 'both'):
+        ax.yaxis.grid(True, color=GRID, linewidth=1)
+    ax.set_axisbelow(True)
 
 
 def save(fig, n: int, slug: str, *, title: str, technique: str, libraries: list[str], data_date: str, basis: str,
@@ -187,14 +239,17 @@ def kfmt(v, _=None):
 # ================================================================ 1. 지역별 전기차 등록 대수 (가로 막대)
 e = ev.sort_values('ev_registration_count', ascending=False)  # 큰 지역이 위
 fig, ax = canvas('지역별 전기차 등록 대수', f'{EV_YEAR}년 {int(EV_MON)}월 · 순수 전기차 {EV_TOTAL:,}대 · {len(ev)}개 지역 전체', EV_SOURCE, EV_BASIS, height=8)
-sns.barplot(x=e.ev_registration_count, y=e.region_code.map(NAME), color=S1, orient='h', ax=ax, saturation=1, edgecolor='none')
+# 웹 그래프 1: 기본 막대 S1 회색, 1위 막대만 포인트 색
+sns.barplot(x=e.ev_registration_count, y=e.region_code.map(NAME), palette=[ACCENT] + [S1] * (len(e) - 1),
+            hue=e.region_code.map(NAME), legend=False, orient='h', ax=ax, saturation=1, edgecolor='none', width=.66)
 for patch, value in zip(ax.patches, e.ev_registration_count):
     ax.text(patch.get_width() + EV_TOTAL * .004, patch.get_y() + patch.get_height() / 2,
-            f'{value:,}대 ({value / EV_TOTAL * 100:.1f}%)', va='center', fontsize=9.5, color=INK2)
+            f'{value:,}대 ({value / EV_TOTAL * 100:.1f}%)', va='center', fontsize=11, color=INK2)
+ax.tick_params(axis='y', labelcolor=INK2, labelsize=13)
 ax.set_xlim(0, e.ev_registration_count.max() * 1.22)
 ax.xaxis.set_major_formatter(FuncFormatter(kfmt))
 ax.set(xlabel='전기차 등록 대수 (대)', ylabel='')
-style(ax)
+style(ax, 'x')
 top3 = ev.nlargest(3, 'ev_registration_count')
 first = top3.iloc[0]
 save(fig, 1, 'ev_registration_regions', title='지역별 전기차 등록 대수', technique='가로 막대 그래프',
@@ -208,17 +263,18 @@ save(fig, 1, 'ev_registration_regions', title='지역별 전기차 등록 대수
      metric={'national_total': EV_TOTAL, 'regions': {c: int(v) for c, v in zip(ev.region_code, ev.ev_registration_count)}})
 
 # ================================================================ 2. 차종별 등록 구성 (도넛)
-vehicle = [('승용', 'ev_passenger_count'), ('승합', 'ev_bus_count'), ('화물', 'ev_truck_count'), ('특수', 'ev_special_count')]
+vehicle = [('승용', 'ev_passenger_count'), ('화물', 'ev_truck_count'), ('승합', 'ev_bus_count'), ('특수', 'ev_special_count')]  # 웹 그래프 2와 같은 순서
+VEHICLE_KEY = {'승용': 'passenger', '화물': 'truck', '승합': 'bus', '특수': 'special'}
 vals = [int(ev[c].sum()) for _, c in vehicle]
 assert sum(vals) == EV_TOTAL
 fig, ax = canvas('차종별 전기차 등록 구성', f'{EV_YEAR}년 {int(EV_MON)}월 · 전국 순수 전기차 {EV_TOTAL:,}대', EV_SOURCE, EV_BASIS)
 fig.subplots_adjust(left=.05, right=.62)
-wedges, _ = ax.pie(vals, colors=[S1, S2, S3, S4], startangle=90, counterclock=False,
+wedges, _ = ax.pie(vals, colors=[VEHICLE[VEHICLE_KEY[l]] for l, _ in vehicle], startangle=90, counterclock=False,
                    wedgeprops={'width': .36, 'edgecolor': PANEL, 'linewidth': 2})
 ax.text(0, .07, f'{EV_TOTAL:,}', ha='center', va='center', fontsize=22, weight='bold', color=INK)
-ax.text(0, -.13, '등록 대수 (대)', ha='center', va='center', fontsize=11, color=MUTED)
+ax.text(0, -.13, '등록 대수 (대)', ha='center', va='center', fontsize=12, color=MUTED)
 ax.legend(wedges, [f'{l}   {v:,}대 ({v / EV_TOTAL * 100:.2f}%)' for (l, _), v in zip(vehicle, vals)],
-          loc='center left', bbox_to_anchor=(1.02, .5), fontsize=11.5, frameon=False)
+          loc='center left', bbox_to_anchor=(1.02, .5), fontsize=13, frameon=False, handlelength=1.1, handleheight=1.1, labelspacing=1.1)
 ax.set_aspect('equal')
 order = sorted(zip([l for l, _ in vehicle], vals), key=lambda x: -x[1])
 save(fig, 2, 'ev_vehicle_types', title='차종별 전기차 등록 구성', technique='도넛 차트', libraries=['Matplotlib pie', 'Seaborn 테마'],
@@ -233,17 +289,18 @@ save(fig, 2, 'ev_vehicle_types', title='차종별 전기차 등록 구성', tech
 c3 = (ev.assign(commercial_pct=ev.ev_commercial_count / ev.ev_registration_count * 100)
       .sort_values(['commercial_pct', 'region_code'], ascending=[False, True]).reset_index(drop=True))  # 위 = 사업용 비율 높은 지역
 assert (c3.ev_commercial_count + c3.ev_noncommercial_count).equals(c3.ev_registration_count)
-fig, ax = canvas('지역별 사업용·비사업용 전기차 구성', '지역별 등록 대수 = 100% · 사업용 비율 내림차순(위 → 아래) · 주황 막대 안 숫자 = 사업용 비율',
+fig, ax = canvas('지역별 사업용·비사업용 전기차 구성', '지역별 등록 대수 = 100% · 사업용 비율 내림차순(위 → 아래) · 밝은 막대 안 숫자 = 사업용 비율',
                  EV_SOURCE, EV_BASIS, height=8)
 y = c3.region_code.map(NAME)
-ax.barh(y, 100 - c3.commercial_pct, color=S1, label='비사업용', height=.66)
-ax.barh(y, c3.commercial_pct, left=100 - c3.commercial_pct, color=S3, label='사업용', height=.66)
+ax.barh(y, c3.commercial_pct, color=S3, label='사업용', height=.66, edgecolor=PANEL, linewidth=1)
+ax.barh(y, 100 - c3.commercial_pct, left=c3.commercial_pct, color=S2, label='비사업용', height=.66, edgecolor=PANEL, linewidth=1)
 ax.invert_yaxis()  # 데이터 순서(내림차순) 그대로 위에서 아래로
-for i, pct in enumerate(c3.commercial_pct):  # 사업용 막대(주황) 안 가운데
-    ax.text(100 - pct / 2, i, f'{pct:.1f}%', ha='center', va='center', fontsize=9.5, color='#141821', weight='bold')
+for i, pct in enumerate(c3.commercial_pct):  # 사업용 막대(밝은 색) 안 가운데
+    ax.text(pct / 2, i, f'{pct:.1f}%', ha='center', va='center', fontsize=11, color=DARK_INK, weight='bold')
+ax.tick_params(axis='y', labelcolor=INK2, labelsize=13)
 ax.set(xlim=(0, 100), xlabel='지역 내 등록 구성비 (%)', ylabel='')
-ax.legend(loc='lower center', bbox_to_anchor=(.5, 1.0), ncol=2, frameon=False)
-style(ax)
+ax.legend(loc='lower right', bbox_to_anchor=(1.0, 1.0), ncol=2, frameon=False, handlelength=1.1, handleheight=1.1)
+style(ax, 'x')
 nat = ev.ev_commercial_count.sum() / EV_TOTAL * 100
 hi, lo = c3.iloc[0], c3.iloc[-1]
 save(fig, 3, 'ev_commercial_share', title='지역별 사업용·비사업용 전기차 구성', technique='100% 누적 가로 막대', libraries=['Matplotlib barh', 'Seaborn 테마'],
@@ -262,15 +319,21 @@ x, yv = reg.station_count.to_numpy(float), reg.charger_count.to_numpy(float)
 slope, intercept = np.polyfit(x, yv, 1)
 r = float(np.corrcoef(x, yv)[0, 1])
 fig, ax = canvas('지역별 충전소 수와 충전기 수의 관계', f'{len(reg)}개 지역 · 최소제곱 회귀선(지역별 동일 가중치)', CH_SOURCE, CH_BASIS, height=7.6)
-sns.regplot(x=x, y=yv, ax=ax, ci=None, scatter=False, line_kws={'color': S3, 'linewidth': 2}, truncate=True)
-sns.scatterplot(x=x, y=yv, ax=ax, color=S1, s=90, edgecolor=PANEL, linewidth=1, zorder=3)
+sns.regplot(x=x, y=yv, ax=ax, ci=None, scatter=False, line_kws={'color': MUTED, 'linewidth': 1.6, 'dashes': (6, 4)}, truncate=True)
+sns.scatterplot(x=x, y=yv, ax=ax, color=S1, s=130, edgecolor=PANEL, linewidth=2, zorder=3)
 # 지역명: 겹치면 다른 방향을 시도하고, 그래도 겹치면 생략 (점은 16개 모두 표시)
 fig.canvas.draw()
-placed, skipped = [], []
+# 점 16개 자리도 장애물로 두어 지역명이 다른 점을 가리지 않게 함 (점 반지름 ≈ √s/2 pt)
+from matplotlib.transforms import Bbox  # noqa: E402
+_rad = np.sqrt(130) / 2 * fig.dpi / 72 + 2
+placed = [Bbox.from_extents(px - _rad, py - _rad, px + _rad, py + _rad)
+          for px, py in ax.transData.transform(np.column_stack([x, yv]))]
+skipped = []
 for row in reg.sort_values('charger_count', ascending=False).itertuples():
-    for dx, dy, ha, va in ((7, 5, 'left', 'bottom'), (7, -5, 'left', 'top'), (-7, 5, 'right', 'bottom'), (-7, -5, 'right', 'top')):
+    for dx, dy, ha, va in ((8, 6, 'left', 'bottom'), (8, -6, 'left', 'top'), (-8, 6, 'right', 'bottom'), (-8, -6, 'right', 'top'),
+                           (0, 10, 'center', 'bottom'), (0, -10, 'center', 'top'), (14, 0, 'left', 'center'), (-14, 0, 'right', 'center')):
         t = ax.annotate(row.name, (row.station_count, row.charger_count), xytext=(dx, dy), textcoords='offset points',
-                        ha=ha, va=va, fontsize=9.5, color=INK2)
+                        ha=ha, va=va, fontsize=11.5, color=INK2, weight='bold')
         bb = t.get_window_extent(fig.canvas.get_renderer()).expanded(1.04, 1.1)
         if not any(bb.overlaps(o) for o in placed):
             placed.append(bb)
@@ -279,13 +342,13 @@ for row in reg.sort_values('charger_count', ascending=False).itertuples():
     else:
         skipped.append(row.name)
 if skipped:
-    ax.text(.99, .03, '이름 생략(겹침): ' + ', '.join(skipped), transform=ax.transAxes, ha='right', va='bottom', fontsize=9, color=MUTED)
-ax.text(.02, .96, f'y = {slope:.3f}x {intercept:+,.0f}\nPearson r = {r:.4f} · R² = {r * r:.4f}', transform=ax.transAxes,
-        va='top', fontsize=11, color=S3)
+    ax.text(.99, .03, '이름 생략(겹침): ' + ', '.join(skipped), transform=ax.transAxes, ha='right', va='bottom', fontsize=10.5, color=MUTED)
+ax.text(.02, .96, f'회귀선(점선) y = {slope:.3f}x {intercept:+,.0f}\nPearson r = {r:.4f} · R² = {r * r:.4f}', transform=ax.transAxes,
+        va='top', fontsize=12, color=INK2)
 ax.set(xlabel='충전소 수 (곳)', ylabel='충전기 수 (기)')
 ax.xaxis.set_major_formatter(FuncFormatter(kfmt))
 ax.yaxis.set_major_formatter(FuncFormatter(kfmt))
-style(ax)
+style(ax, 'both')
 big = reg.nlargest(2, 'charger_count')
 save(fig, 4, 'stations_chargers_regression', title='지역별 충전소 수와 충전기 수의 관계', technique='산점도 + OLS 회귀선',
      libraries=['Seaborn scatterplot', 'Seaborn regplot', 'NumPy polyfit'], data_date=CH_DATE, basis=CH_BASIS,
@@ -312,16 +375,18 @@ for c in order5:
 fig, ax = canvas('지역별 충전소당 충전기 수 분포', '충전소 1곳 = 표본 1개 · 사분위수(선형 보간) · 수염 = 1.5×IQR 안의 관측 끝값 · 점 = 이상치', CH_SOURCE, CH_BASIS, height=9.4)
 fig.subplots_adjust(left=.2)
 sns.boxplot(data=sizes, x='size', y='label', order=[labels5[c] for c in order5], orient='h', whis=1.5, ax=ax,
-            color=S1, saturation=1, width=.62, showmeans=True, linecolor=INK2, linewidth=1.1,
-            flierprops={'marker': 'o', 'markersize': 2.6, 'markerfacecolor': COMPARE, 'markeredgecolor': 'none', 'alpha': .45},
-            meanprops={'marker': 'D', 'markerfacecolor': S3, 'markeredgecolor': PANEL, 'markersize': 5},
-            medianprops={'color': '#141821', 'linewidth': 2})
+            color=S1, saturation=1, width=.5, showmeans=True, linecolor=INK2, linewidth=1.5,
+            boxprops={'facecolor': matplotlib.colors.to_rgba(S1, .42), 'edgecolor': INK2},
+            flierprops={'marker': 'o', 'markersize': 2.2, 'markerfacecolor': S1, 'markeredgecolor': 'none', 'alpha': .32},
+            meanprops={'marker': 'D', 'markerfacecolor': S3, 'markeredgecolor': PANEL, 'markeredgewidth': 1.5, 'markersize': 7},
+            medianprops={'color': INK, 'linewidth': 2.6})
+ax.tick_params(axis='y', labelcolor=INK2, labelsize=12.5)
 ax.set_xscale('log')
 ax.set_xticks([1, 2, 3, 5, 10, 20, 50, 100])
 ax.xaxis.set_major_formatter(StrMethodFormatter('{x:g}'))
 ax.set(xlabel='충전소당 충전기 수 (기/곳, 로그 눈금)', ylabel='')
-ax.text(1.0, 1.01, '상자: Q1–Q3 · 굵은 선: 중앙값 · ◆: 평균 · 점: 이상치', transform=ax.transAxes, ha='right', va='bottom', fontsize=9.5, color=MUTED)
-style(ax)
+ax.text(1.0, 1.01, '상자: Q1–Q3 · 굵은 선: 중앙값 · ◆: 평균 · 점: 이상치', transform=ax.transAxes, ha='right', va='bottom', fontsize=11, color=MUTED)
+style(ax, 'x')
 # 그려진 상자가 실제 계산값과 같은지 확인 (Seaborn이 그린 상자 = cbook 통계)
 total_out = sum(v['outlier_count'] for v in box_stats.values())
 med = {c: v['median'] for c, v in box_stats.items()}
@@ -345,12 +410,13 @@ labels6 = [f'{c} {TYPE_DEFINITIONS.get(c, "정의 미확인")}' for c in top4.in
 assert sum(vals6) == N_ALL
 fig, ax = canvas('충전기 유형별 구성', '공식 커넥터 유형 코드 기준 · 상위 4개 유형 + 기타', CH_SOURCE, CH_BASIS)
 fig.subplots_adjust(left=.05, right=.6)
-wedges, _ = ax.pie(vals6, colors=[S1, S2, S3, S4, OTHER], startangle=90, counterclock=False,
+colors6 = [TYPE_COLOR.get(c, TYPE_OTHER) for c in top4.index] + [TYPE_OTHER]  # theme.ts CHARGER_TYPE_COLORS
+wedges, _ = ax.pie(vals6, colors=colors6, startangle=90, counterclock=False,
                    wedgeprops={'width': .36, 'edgecolor': PANEL, 'linewidth': 2})
 ax.text(0, .07, f'{N_ALL:,}', ha='center', va='center', fontsize=22, weight='bold', color=INK)
-ax.text(0, -.13, '충전기 (기)', ha='center', va='center', fontsize=11, color=MUTED)
+ax.text(0, -.13, '충전기 (기)', ha='center', va='center', fontsize=12, color=MUTED)
 ax.legend(wedges, [f'{l}   {v:,}기 ({v / N_ALL * 100:.2f}%)' for l, v in zip(labels6, vals6)], loc='center left',
-          bbox_to_anchor=(1.02, .5), fontsize=11, frameon=False)
+          bbox_to_anchor=(1.02, .5), fontsize=12, frameon=False, handlelength=1.1, handleheight=1.1, labelspacing=1.1)
 ax.set_aspect('equal')
 save(fig, 6, 'charger_types', title='충전기 유형별 구성', technique='도넛 차트 (상위 4개 + 기타)', libraries=['Matplotlib pie', 'Seaborn 테마'],
      data_date=CH_DATE, basis=CH_BASIS, regions='전국 (16개 지역 합계)', deletion='전체 (삭제 표시 포함)',
@@ -375,8 +441,8 @@ def fixed_bandwidth(kde):  # scipy gaussian_kde: factor × 가중 표준편차 =
 
 
 fig, ax = canvas('충전기 정격 출력 분포와 KDE', f'log10 등폭 구간(폭 {LOG_BIN}) · 가중 가우시안 KDE(대역폭 {LOG_BIN}, log10 단위)', CH_SOURCE, CH_BASIS)
-sns.histplot(x=lx, weights=wts, bins=edges.tolist(), kde=True, ax=ax, color=S1, alpha=.85, edgecolor=PANEL, linewidth=.6,
-             kde_kws={'bw_method': fixed_bandwidth, 'cut': 0}, line_kws={'color': COMPARE, 'linewidth': 2.2}, label='충전기 수')
+sns.histplot(x=lx, weights=wts, bins=edges.tolist(), kde=True, ax=ax, color=S1, alpha=.85, edgecolor=PANEL, linewidth=1,
+             kde_kws={'bw_method': fixed_bandwidth, 'cut': 0}, line_kws={'color': COMPARE, 'linewidth': 2}, label='충전기 수')
 hist_counts = np.array([p.get_height() for p in ax.patches])
 kde_line = ax.lines[0]
 kde_line.set_label('KDE 추정 (건수 축척)')
@@ -388,7 +454,7 @@ ax.set_xlim(LO, HI)
 ax.yaxis.set_major_formatter(FuncFormatter(kfmt))
 ax.set(xlabel='정격 출력 (kW, 로그 눈금)', ylabel='충전기 수 (기 / 구간)')
 ax.legend(frameon=False, loc='upper right')
-style(ax)
+style(ax, 'y')
 np_hist, _ = np.histogram(np.repeat(lx, wts.astype(int)), bins=edges)
 assert np.array_equal(hist_counts.astype(int), np_hist) and hist_counts.sum() == len(positive)
 invalid = int(len(frame) - len(positive))
@@ -413,17 +479,21 @@ counts8 = pd.crosstab(frame.zcode, band).reindex(columns=BANDS, fill_value=0)
 counts8 = counts8.loc[counts8.sum(axis=1).sort_values(ascending=False).index]
 assert counts8.to_numpy().sum() == N_ALL
 pct8 = counts8.div(counts8.sum(axis=1), axis=0) * 100
-fig, ax = canvas('지역별 충전기 출력 구간 구성', '지역 안의 충전기 = 100% · 칸 숫자 = 지역 내 비율(%) · 행 순서 = 충전기 수', CH_SOURCE, CH_BASIS, height=9)
-fig.subplots_adjust(left=.14, right=1.0)
-sns.heatmap(pct8, annot=True, fmt='.1f', cmap=SEQ, vmin=0, vmax=100, linewidths=1, linecolor=PANEL, ax=ax,
-            yticklabels=[f'{NAME[c]}' for c in pct8.index], cbar_kws={'label': '지역 내 비율 (%)', 'shrink': .8},
-            annot_kws={'fontsize': 10})
+fig, ax = canvas('지역별 충전기 출력 구간 구성', '지역 안의 충전기 = 100% · 칸 숫자 = 지역 내 비율(%) · 색 = 같은 출력 구간(열) 안에서 낮음(어두움)→높음(밝음) · 행 순서 = 충전기 수',
+                 CH_SOURCE, CH_BASIS, height=9)
+fig.subplots_adjust(left=.12, right=.97)
+span8 = (pct8.max() - pct8.min()).replace(0, np.nan)
+t8 = ((pct8 - pct8.min()) / span8).fillna(.5)  # 웹 Heatmap.tsx와 같은 열 기준 상대 명도
+sns.heatmap(t8, annot=pct8, fmt='.1f', cmap=SEQ, vmin=0, vmax=1, linewidths=2, linecolor=PANEL, ax=ax, cbar=False,
+            yticklabels=[f'{NAME[c]}' for c in pct8.index], annot_kws={'fontsize': 11.5})
+for text, t in zip(ax.texts, t8.to_numpy().ravel()):  # 웹 seqInk · seqWeight 와 같은 글씨 규칙
+    text.set_color(DARK_INK if t > .41 else ('#b3b3b3' if t < .1 else INK))
+    text.set_fontweight('bold' if t >= .8 else 'normal')
 ax.set(xlabel='정격 출력 구간 (kW)', ylabel='')
-ax.tick_params(axis='y', rotation=0, length=0)
-ax.tick_params(axis='x', length=0)
-cbar = ax.collections[0].colorbar
-cbar.ax.yaxis.label.set_color(INK2)
-cbar.outline.set_visible(False)
+ax.tick_params(axis='y', rotation=0, length=0, labelcolor=INK2, labelsize=13)
+ax.tick_params(axis='x', length=0, labelsize=12.5)
+ax.xaxis.tick_top()
+ax.xaxis.set_label_position('bottom')
 nat8 = counts8.sum()
 hi_fast = (pct8['200kW 이상']).idxmax()
 save(fig, 8, 'regional_output_heatmap', title='지역별 충전기 출력 구간 구성', technique='히트맵 (행 기준 구성비)',
@@ -442,20 +512,26 @@ partial = growth.loc[~growth.completed]
 fig, ax = canvas('연도별 누적 충전기 설치 추이', f'{int(growth.year.min())}–{int(growth.year.max())}년 공식 연도 통계 · 막대 = 연간 설치, 영역 = 누적',
                  f"충전기 설치 성장 추세 통계 (파일명 기준일 {growth.source_filename_date.iloc[0]}, 정확한 집계 마감일 미기재)",
                  f'연도별 설치 통계 · {int(partial.year.min()) if len(partial) else "-"}년은 부분 연도', height=7.4)
-ax.fill_between(growth.year, growth.cumulative_count, color=S2, alpha=.45, label='누적 설치 (기)', step=None)
-sns.lineplot(x=growth.year, y=growth.cumulative_count, ax=ax, color=COMPARE, marker='o', markersize=5, linewidth=2)
-ax.bar(growth.year, growth.annual_installed_count, color=[S1 if c else WARN for c in growth.completed], width=.6, label='연간 설치 (기)', zorder=3)
+done = growth.loc[growth.completed | (growth.index == growth.loc[growth.completed].index.max())]
+ax.fill_between(growth.year, growth.cumulative_count, color=S4, alpha=.35, label='누적 설치 (기)', linewidth=0)
+ax.plot(done.year, done.cumulative_count, color=POINT, linewidth=2)  # 완결 연도: 실선
+tail = growth.loc[growth.index >= growth.loc[growth.completed].index.max()]
+ax.plot(tail.year, tail.cumulative_count, color=S3, linewidth=2, dashes=(4, 4))  # 부분 연도 구간: 점선
+ax.bar(growth.year, growth.annual_installed_count, color=[S1 if c else matplotlib.colors.to_rgba(S3, .12) for c in growth.completed],
+       hatch=[None if c else '///' for c in growth.completed], edgecolor=[S1 if c else S3 for c in growth.completed], linewidth=0,
+       width=.6, label='연간 설치 (기)', zorder=3)
 for row in partial.itertuples():
-    ax.axvspan(row.year - .5, row.year + .5, color=WARN, alpha=.12, zorder=0)
+    ax.axvspan(row.year - .5, row.year + .5, color=S3, alpha=.06, zorder=0)
+    ax.plot([row.year], [row.cumulative_count], marker='o', markersize=8, markerfacecolor=PANEL, markeredgecolor=S3, markeredgewidth=2, zorder=4)
     ax.annotate(f'{row.year}년 부분 연도\n누적 {row.cumulative_count:,}기 · 연간 {row.annual_installed_count:,}기', (row.year, row.cumulative_count),
-                xytext=(-14, 0), textcoords='offset points', ha='right', va='center', fontsize=10, color=WARN)
+                xytext=(-14, 0), textcoords='offset points', ha='right', va='center', fontsize=11.5, color=S3)
 peak = growth.loc[growth.completed].nlargest(1, 'annual_installed_count').iloc[0]
 ax.set(xlabel='연도', ylabel='설치 수 (기)', xlim=(growth.year.min() - .6, growth.year.max() + .6))
 ax.set_xticks(growth.year)
 ax.tick_params(axis='x', rotation=45)
 ax.yaxis.set_major_formatter(FuncFormatter(kfmt))
-ax.legend(loc='upper left', frameon=False)
-style(ax)
+ax.legend(loc='upper left', frameon=False, handlelength=1.4, handleheight=1.1)
+style(ax, 'y')
 last_complete = growth.loc[growth.completed].iloc[-1]
 save(fig, 9, 'cumulative_installations', title='연도별 누적 충전기 설치 추이', technique='누적 영역 + 연간 막대',
      libraries=['Matplotlib fill_between', 'Seaborn lineplot'], data_date=f'{int(growth.year.min())}–{int(growth.year.max())}년 연도 통계 (마지막 해 부분 연도)',
@@ -495,18 +571,31 @@ rects = rectangles(vals10)
 assert np.allclose([w * h / 6000 for _, _, w, h in rects], np.array(vals10) / sum(vals10))
 fig, ax = canvas('운영기관별 충전기 규모', f'상위 20개 (기관 ID, 명칭) 조합 + 기타 · 면적 = 충전기 수 · 전체 {len(ops)}개 조합', CH_SOURCE, CH_BASIS, height=8.6)
 ax.set_position([.03, .16, .55, .69])
-shades = sns.light_palette(S1, 5, reverse=True)[:3] + sns.dark_palette(S2, 9, reverse=True)[:7] + sns.dark_palette(S4, 12, reverse=True)[:10] + [OTHER]
+def tm_fill(rank: int) -> str:  # OperatorTreemap.tsx 와 같은 순위 위계
+    if rank == 1:
+        return ACCENT
+    if rank <= 3:
+        return TM_TOP[rank - 1]
+    v = next(val for last, val in TM_BANDS if rank <= last)
+    return f'#{v:02x}{v:02x}{v:02x}'
+
+
+shades = [tm_fill(i + 1) for i in range(20)] + [TM_OTHER]
+dark_text = [matplotlib.colors.to_rgb(c)[0] >= 0x80 / 255 for c in shades]
 for i, ((rx, ry, rw, rh), n) in enumerate(zip(rects, vals10)):
-    patch = Rectangle((rx, ry), rw, rh, facecolor=shades[i], edgecolor=PANEL, linewidth=2)
+    patch = Rectangle((rx, ry), rw, rh, facecolor=shades[i], edgecolor=PANEL, linewidth=2.5)
     ax.add_patch(patch)
-    cell = f'{i + 1:02d}\n{n:,}기' if rw >= 12 and rh >= 9 else (f'{i + 1:02d}' if rw >= 4 and rh >= 4 else '')
-    t = ax.text(rx + rw / 2, ry + rh / 2, cell, ha='center', va='center', fontsize=9, color='#141821' if i < 3 else INK, clip_on=True)
+    rank = f'{i + 1:02d}' if i < 20 else '기타'
+    cell = f'{rank}\n{n:,}기' if rw >= 12 and rh >= 9 else (rank if rw >= 4 and rh >= 4 else '')
+    t = ax.text(rx + rw / 2, ry + rh / 2, cell, ha='center', va='center', fontsize=12 if i < 3 else 10.5,
+                weight='bold' if i < 3 else 'normal', color=DARK_INK if dark_text[i] else INK, clip_on=True)
     t.set_clip_path(patch)
 for i, (label, n) in enumerate(zip(labels10, vals10)):
     yy = .835 - i * .031
-    fig.add_artist(Rectangle((.61, yy), .01, .016, transform=fig.transFigure, facecolor=shades[i], edgecolor='none'))
-    fig.text(.627, yy + .002, f'{i + 1:02d}  {label}', fontsize=9.2, color=INK2, va='bottom')
-    fig.text(.985, yy + .002, f'{n:,}기 ({n / N_ALL * 100:.2f}%)', fontsize=9.2, color=INK2, va='bottom', ha='right')
+    fig.add_artist(Rectangle((.61, yy), .011, .018, transform=fig.transFigure, facecolor=shades[i], edgecolor=AXIS if i == 20 else 'none', linewidth=.8))
+    fig.text(.627, yy + .002, f'{i + 1:02d}  {label}' if i < 20 else label, fontsize=10.5, color=INK if i < 3 else INK2, va='bottom',
+             weight='bold' if i < 3 else 'normal')
+    fig.text(.985, yy + .002, f'{n:,}기 ({n / N_ALL * 100:.2f}%)', fontsize=10.5, color=INK2, va='bottom', ha='right')
 ax.set(xlim=(0, 100), ylim=(0, 60))
 ax.invert_yaxis()
 ax.axis('off')

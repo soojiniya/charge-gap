@@ -68,8 +68,8 @@ export function RegionScatter({
         style={m.animate ? { animationDelay: `${i * 24}ms` } : undefined}
         cx={p.cx}
         cy={p.cy}
-        r={fill === C.s3 ? 7 : 6}
-        fill={fill}
+        r={fill === C.accent ? 9 : p.payload && (p.payload as ScatterPoint & { lbl?: string }).lbl ? 7.5 : 6.5}
+        fill={fill === C.accent ? fill : (p.payload as ScatterPoint & { lbl?: string }).lbl ? C.ink2 : fill}
         stroke={C.surface}
         strokeWidth={2}
       />
@@ -138,7 +138,7 @@ export function RegionScatter({
                 position: "insideBottom",
                 offset: -16,
                 fill: C.muted,
-                fontSize: 12,
+                fontSize: 13,
               }}
             />
             <YAxis
@@ -157,15 +157,15 @@ export function RegionScatter({
                 position: "insideLeft",
                 offset: 10,
                 fill: C.muted,
-                fontSize: 12,
+                fontSize: 13,
                 dy: 50,
               }}
             />
-            <ZAxis range={[90, 90]} />
+            <ZAxis range={[130, 130]} />
             {segment && (
               <ReferenceLine
                 segment={segment!}
-                stroke={C.compare}
+                stroke={C.muted}
                 strokeWidth={1.5}
                 strokeDasharray="6 4"
                 ifOverflow="hidden"
@@ -219,15 +219,15 @@ export function RegionScatter({
               <LabelList
                 dataKey="lbl"
                 position="top"
-                offset={9}
-                style={{ fill: C.ink2, fontSize: 12 }}
+                offset={11}
+                style={{ fill: C.ink2, fontSize: 13, fontWeight: 600 }}
               />
             </Scatter>
             {sel.length > 0 && (
               <Scatter
                 data={sel}
-                fill={C.s3}
-                shape={shape(C.s3)}
+                fill={C.accent}
+                shape={shape(C.accent)}
                 isAnimationActive={m.animate}
                 animationDuration={MOTION.update}
                 animationEasing="ease-out"
@@ -235,8 +235,8 @@ export function RegionScatter({
                 <LabelList
                   dataKey="lbl"
                   position="top"
-                  offset={9}
-                  style={{ fill: C.ink, fontSize: 12, fontWeight: 600 }}
+                  offset={12}
+                  style={{ fill: C.accent, fontSize: 13.5, fontWeight: 700 }}
                 />
               </Scatter>
             )}

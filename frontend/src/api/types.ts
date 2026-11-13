@@ -153,6 +153,26 @@ export interface ChargerOutputMeta extends BaseMeta {
   output_statistics: OutputStatistics;
   output_note: string;
 }
+/** /api/charger-output/regions: 지역 하나의 결과. common_meta와 합치면 그 지역 /api/charger-output 응답과 같습니다. */
+export interface ChargerOutputRegion {
+  region_code: string;
+  data: ChargerOutputRow[];
+  filters: Record<string, unknown>;
+  matched: ChargerCounts;
+  count: number;
+  output_statistics: OutputStatistics;
+}
+/** 모든 지역에 공통인 meta (지역별 filters·matched·count·output_statistics 제외) */
+export type ChargerOutputCommonMeta = Omit<ChargerOutputMeta, 'filters' | 'matched' | 'count' | 'output_statistics'>;
+export interface ChargerOutputRegionsData {
+  common_meta: ChargerOutputCommonMeta;
+  regions: ChargerOutputRegion[];
+}
+export interface ChargerOutputRegionsMeta extends BaseMeta {
+  region_count: number;
+  region_filter_policy: string;
+  per_region_response_rule: string;
+}
 export interface ChargerTypesMeta extends BaseMeta {
   definition_source: string;
   classification_note: string;
@@ -211,6 +231,37 @@ export interface LocationsMeta extends BaseMeta {
 }
 /** 최소경도,최소위도,최대경도,최대위도 */
 export type BBox = [number, number, number, number];
+
+/* ---------- /api/locations/grid (지도 줌 11~15 충전소 묶음용 격자 집계) ---------- */
+export interface GridCell extends ChargerCounts {
+  /** 격자 칸 번호 [경도 칸, 위도 칸] */
+  cell: [number, number];
+  /** 칸 안 충전소 대표 좌표의 평균 */
+  latitude: number;
+  longitude: number;
+  /** 칸 안 충전소 대표 좌표의 범위 */
+  south: number;
+  west: number;
+  north: number;
+  east: number;
+  /** 칸에 충전소가 1곳이면 그 충전소 행(/api/locations 행과 같은 형식), 아니면 null */
+  station: LocationRow | null;
+}
+export interface LocationGridMeta extends BaseMeta {
+  /** 요청 bbox 안(경계 포함) 충전소 집계 = 같은 bbox의 /api/locations matched */
+  matched: ChargerCounts;
+  grid: {
+    zoom: number;
+    cell_px: number;
+    cell_meters: number;
+    cell_degrees: { lat: number; lng: number };
+    snapped_bbox: BBox;
+    cell_count: number;
+    station_count: number;
+    charger_count: number;
+  };
+  aggregation_rule: string;
+}
 
 /* ---------- /api/charts ---------- */
 export interface StaticChart {

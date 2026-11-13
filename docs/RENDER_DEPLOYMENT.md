@@ -131,14 +131,15 @@ Render Static 설정: Root Directory `frontend`, Build `npm ci && npm run build`
 | Name | Value |
 |---|---|
 | `X-Content-Type-Options` | `nosniff` (기존) |
-| `Content-Security-Policy` | `default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://tile.openstreetmap.org https://charge-gap-api.onrender.com; font-src 'self' data:; connect-src 'self' https://charge-gap-api.onrender.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'` |
+| `Content-Security-Policy` | `default-src 'self'; script-src 'self' https://dapi.kakao.com https://t1.kakaocdn.net https://t1.daumcdn.net; style-src 'self'; img-src 'self' data: https://*.kakaocdn.net https://*.daumcdn.net https://charge-gap-api.onrender.com; font-src 'self' data:; connect-src 'self' https://charge-gap-api.onrender.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'` |
 | `X-Frame-Options` | `DENY` |
 | `Referrer-Policy` | `strict-origin-when-cross-origin` |
 | `Strict-Transport-Security` | `max-age=31536000` |
 
-- CSP 출처는 빌드 결과가 실제로 불러오는 것만 넣었다: 자체 JS·CSS(폰트·Leaflet 이미지는 CSS 안의 data:), OSM 타일(img), API(fetch와 보고서 PNG). 인라인 스크립트·스타일과 eval은 허용하지 않는다.
-- **`VITE_API_BASE_URL`(현재 `https://charge-gap-api.onrender.com`)이나 `VITE_TILE_URL`을 바꾸면 CSP의 `connect-src`·`img-src`도 같이 바꾼다.** 그렇지 않으면 데이터나 타일이 차단된다.
-- `Referrer-Policy`는 다른 사이트에 출처(origin)만 보낸다. OSM 타일 이용 정책이 유효한 Referer를 요구하므로 `no-referrer`로 바꾸지 않는다.
+- CSP 출처는 빌드 결과가 실제로 불러오는 것만 넣었다: 자체 JS·CSS(폰트는 CSS 안의 data:), 카카오맵 JavaScript SDK(script: `dapi.kakao.com` 로더·`t1.kakaocdn.net` 본 스크립트, `t1.daumcdn.net`은 카카오 예전 CDN), 카카오 지도 타일·로고 이미지(img: `*.kakaocdn.net`, `*.daumcdn.net`), API(fetch와 보고서 PNG). 인라인 스크립트·스타일과 eval은 허용하지 않는다. SDK는 이 정책에서 지도·타일·확대/이동이 정상 동작하며, 콘솔에 eval 검사 1건과 인라인 style 속성 1건이 차단으로 보고된다.
+- **`VITE_API_BASE_URL`(현재 `https://charge-gap-api.onrender.com`)을 바꾸면 CSP의 `connect-src`·`img-src`도 같이 바꾼다.** 그렇지 않으면 데이터가 차단된다.
+- **지도는 카카오맵 JavaScript SDK를 쓴다.** 정적 사이트 환경 변수 `VITE_KAKAO_MAP_KEY`(빌드 시 주입, 저장소에 두지 않음)를 Render 대시보드에 넣고, 카카오 개발자 콘솔의 JavaScript SDK 도메인에 배포 주소를 등록한다. CSP는 `script-src`에 `https://dapi.kakao.com https://t1.kakaocdn.net https://t1.daumcdn.net`, `img-src`에 `https://*.kakaocdn.net https://*.daumcdn.net`을 허용한다(2026-11 실제 SDK 확인: 본 스크립트 t1.kakaocdn.net, 지도 이미지 mts.kakaocdn.net).
+- `Referrer-Policy`는 다른 사이트에 출처(origin)만 보낸다. 카카오맵 SDK가 Referer의 출처로 등록된 사이트 도메인을 확인하므로 `no-referrer`로 바꾸지 않는다.
 - HSTS는 `includeSubDomains`·`preload` 없이 이 호스트에만 적용한다(onrender.com 상위 도메인은 관리하지 않음).
 - 로컬 Compose Nginx(`frontend/nginx.conf`)는 API가 같은 출처(`/backend`)이므로 `connect-src 'self'`이고, HTTP이므로 HSTS를 보내지 않는다. Nginx `location` 블록에 `add_header`를 추가하면 상속된 보안 헤더가 사라지므로 추가하지 않는다.
 - `tests/security-headers.test.cjs`가 두 설정의 일치와 unsafe 지시어 부재를 확인한다. 적용 후 공개 사이트에서 지도 타일·그래프·보고서 PNG가 보이는지와 브라우저 콘솔의 CSP 오류를 확인한다.
@@ -198,7 +199,7 @@ API 공식 근거: [한국환경공단 전기자동차 충전소 정보](https:/
 
 공식 URL·조건·출처 표시 예·미확정 근거는 [데이터 출처·공개 이용 조건 기록](DATA_SOURCE_RIGHTS.md)에 정리했다. 공식 페이지의 현재 갱신일을 과거 Excel의 정확한 마감일로 소급 적용하지 않는다.
 
-지도는 기존 HTTPS OpenStreetMap 타일과 attribution을 유지한다. 브라우저 Referer를 차단하지 않고 bulk/prefetch/offline 다운로드를 하지 않는다. 타일 서비스 SLA를 보장하지 않으며 공개 트래픽이 커지면 적합한 타일 공급자를 검토한다. [OSM 타일 정책](https://operations.osmfoundation.org/policies/tiles/).
+지도는 카카오맵 JavaScript SDK와 카카오 지도 타일을 사용하며, 지도에 표시되는 카카오 로고·저작권 표시를 가리지 않는다. JavaScript 앱 키는 빌드 결과(JS)에 공개되므로 카카오 개발자 콘솔의 앱 > 플랫폼(Web) 사이트 도메인(배포 `https://charge-gap.onrender.com`, 로컬 `http://localhost:5173`)으로 사용 범위를 제한하고, REST·Admin 키는 프론트엔드에 넣지 않는다. 브라우저 Referer를 차단하지 않는다. 지도 API 이용 조건과 일일 사용량 한도는 카카오 개발자 콘솔 기준을 따르며 서비스 SLA는 보장하지 않는다.
 
 ## 예상 비용 및 가용성
 
