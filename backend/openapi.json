@@ -5030,7 +5030,7 @@
             "nullable": true,
             "minimum": 0,
             "maximum": 10000,
-            "description": "Σ(운영기관 그룹 충전기 수 / 충전기 수)² × 10000. 충전기 0기면 null"
+            "description": "Σ(운영기관 ID(busiId)별 충전기 수 / 충전기 수)² × 10000. 운영기관 ID 기준이며 같은 ID의 운영기관명 표기는 하나로 셉니다. 충전기 0기면 null"
           },
           "scale": {
             "type": "string",

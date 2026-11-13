@@ -92,7 +92,7 @@ export interface MetricReading {
   tiedCount: number;
   /** 순위가 매겨진 지역 수(값이 null인 지역 제외) */
   rankedCount: number;
-  /** 유형 지표: 그 유형 충전기 수 / HHI: 운영기관 그룹 수 */
+  /** 유형 지표: 그 유형 충전기 수 / HHI: 운영기관 ID 수 */
   count: number | null;
 }
 
