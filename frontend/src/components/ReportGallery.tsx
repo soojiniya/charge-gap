@@ -8,11 +8,11 @@ import { PythonChartBody } from './ui/PythonChartView';
 
 /**
  * Python Visualization 페이지의 "Python 데이터 시각화 그래프" 갤러리 (고정 PNG 10개, 웹사이트 필터와 무관).
- *  - variant "original"(페이지 기본): 처음 제작한 원본 PNG(outputs/charts/를 그대로 복사한 public/python-charts-original).
+ *  - variant "web"(Python Visualization 페이지가 사용): 현재 웹사이트 그래프 1~10을 같은 종류·자료·기준으로 Matplotlib·Seaborn에서
+ *    다시 구현한 흰 배경 PNG(public/python-charts-web = outputs/charts_web_matched_2026). 웹 그래프 상세 보기의 Python 탭도 같은 세트입니다.
+ *  - variant "original"(현재 사용처 없음, 보관): 처음 제작한 원본 PNG(outputs/charts/를 그대로 복사한 public/python-charts-original).
  *    흰 배경 원본 그대로이며 전기차 등록 그래프는 2025년 12월 자료 기준입니다.
- *  - variant "final": 2026년 9월 자료로 다시 그린 다크 테마 PNG(public/python-charts). 웹 그래프 상세 보기의 Python 탭이 계속 사용합니다.
- *  - variant "web"(Python Visualization 페이지): 현재 웹사이트 그래프 1~10을 같은 종류·자료·기준으로 Matplotlib·Seaborn에서
- *    다시 구현한 흰 배경 PNG(public/python-charts-web = outputs/charts_web_matched_2026).
+ *  - variant "final"(현재 사용처 없음, 보관): 2026년 9월 자료로 다시 그린 다크 테마 PNG(public/python-charts).
  * 접기·펼치기 없이 10개를 항상 표시합니다.
  */
 type Variant = 'web' | 'original' | 'final';

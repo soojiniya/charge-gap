@@ -105,7 +105,9 @@ export function Heatmap({
         <caption className="sr-only">{caption}</caption>
         <thead>
           <tr>
-            <th scope="col" />
+            <th scope="col">
+              <span className="sr-only">지역</span>
+            </th>
             {columns.map((c) => (
               <th key={c} scope="col">
                 {c}

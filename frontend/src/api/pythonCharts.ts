@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 
 /**
- * Python 데이터 시각화 그래프(정적 파일): scripts/create_python_charts_2026.py 가 만든
- * frontend/public/python-charts/charts.json 과 PNG 10개. 백엔드 API·R2와 무관하게 웹 정적 파일로 배포됩니다.
- * 고정 이미지이므로 웹사이트 필터에 따라 바뀌지 않습니다.
+ * Python 데이터 시각화 그래프(정적 파일) 메타데이터와 이미지 경로. 세 세트 모두 charts.json + PNG 10개이며
+ * 백엔드 API·R2와 무관하게 웹 정적 파일로 배포되고, 고정 이미지라 웹사이트 필터에 따라 바뀌지 않습니다.
+ * - python-charts-web: Python Visualization 페이지와 웹 그래프 상세 보기 Python 탭이 사용 (아래 useWebMatchedPythonCharts)
+ * - python-charts(다크 테마, scripts/create_python_charts_2026.py), python-charts-original(원본 복사본): 현재 사용처 없음, 보관
  */
 export interface PythonChart {
   id: number;
@@ -52,7 +53,7 @@ export const pythonChartUrl = (file: string) => BASE + file;
 
 /**
  * 처음 Python으로 제작한 원본 그래프 10개(outputs/charts/ PNG를 바이트 그대로 복사한 public/python-charts-original).
- * 전기차 등록 그래프는 2025년 12월 자료 기준입니다. Python Visualization 페이지가 이 세트를 표시합니다.
+ * 전기차 등록 그래프는 2025년 12월 자료 기준입니다. 현재 이 세트를 표시하는 화면은 없습니다(보관).
  */
 const ORIGINAL_BASE = `${import.meta.env.BASE_URL ?? '/'}python-charts-original/`;
 export const originalPythonChartUrl = (file: string) => ORIGINAL_BASE + file;

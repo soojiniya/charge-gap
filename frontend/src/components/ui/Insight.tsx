@@ -44,6 +44,8 @@ export interface InsightProps {
 export function Insight({ mode, modeNote, purpose, reason, findings, interpretation, caution, source, variables, method }: InsightProps) {
   const { title, no, inline, openRef, onOpenChange } = useContext(InsightContext);
   const [open, setOpen] = useState(false);
+  // 같은 화면에 여러 개가 있으므로 랜드마크 이름에 그래프 번호·제목을 붙여 구분합니다 (axe landmark-unique)
+  const keyLabel = no ? `그래프 ${no} 주요 분석 결과` : typeof title === 'string' ? `${title} 주요 분석 결과` : '주요 분석 결과';
   const basis = modeNote ?? (mode === 'dynamic' ? '현재 필터 결과로 계산' : '전국 기준 고정 분석');
   const evidence = { purpose, reason, caution, source, variables, basis, mode, findings, method };
   useEffect(() => {
@@ -58,7 +60,7 @@ export function Insight({ mode, modeNote, purpose, reason, findings, interpretat
   }, [open, onOpenChange]);
   return (
     <div className="insight">
-      <section className="insight-key" aria-label="주요 분석 결과">
+      <section className="insight-key" aria-label={keyLabel}>
         <header className="insight-key-head">
           <h3>주요 분석 결과</h3>
         </header>
