@@ -1,0 +1,1267 @@
+{
+ "title": "CHARGE GAP 웹사이트 그래프 1~10 Python 구현 (흰 배경)",
+ "generator": "scripts/create_web_matched_charts_2026.py",
+ "generated_at": "2026-11-14T16:08:29+09:00",
+ "libraries": {
+  "matplotlib": "3.11.2",
+  "seaborn": "0.13.2",
+  "pandas": "3.0.5",
+  "numpy": "2.5.3"
+ },
+ "font": "Malgun Gothic",
+ "reference": "현재 웹사이트 기본 필터 화면 (frontend/src/features/ChartCards.tsx, frontend/src/charts/*.tsx)",
+ "data": {
+  "ev_registration": {
+   "date": "2026년 9월 등록",
+   "total": 1191873,
+   "regions": 16
+  },
+  "chargers": {
+   "date": "2026-10-15 조회",
+   "snapshot": "2026-10-15 04:16–04:19 KST",
+   "total": 527433,
+   "not_deleted": 523312,
+   "deleted": 4121
+  },
+  "growth": {
+   "years": [
+    2011,
+    2026
+   ],
+   "partial_years": [
+    2026
+   ]
+  },
+  "source_sha256": {
+   "charger_info_clean.csv": "6cf8e89777a7720fdbb9f6800e555424896d870c4f45a6c5bde2f8012c5d00dd",
+   "ev_registration_by_region_2026_09.csv": "178124223410a5f4c143f7970bf362b13b8b793e022fba8ab3c4e29ce12cfc07",
+   "charger_installation_trend.csv": "7bf139ea609e6b4b7084e0a1aac65ed687f10b9094e4aee6b00697c8edd8e976"
+  }
+ },
+ "charts": [
+  {
+   "id": 1,
+   "file": "01_ev_registration_regions.png",
+   "image_pixels": [
+    2400,
+    1680
+   ],
+   "sha256": "3a03822f8f8138fcc8e6e9eafe94e01e3d9f2b98c68a200fbe6e96b73a4980c7",
+   "title": "지역별 전기차 등록 대수",
+   "web_title": "지역별 전기차 등록 대수",
+   "chart_type": "가로 막대그래프",
+   "functions": [
+    "seaborn.barplot(orient=\"h\")",
+    "matplotlib Axes.text (막대 끝 값)"
+   ],
+   "data_date": "2026년 9월 등록",
+   "basis": "16개 시도 전체 · 등록 대수 내림차순 · 전국 1,191,873대",
+   "deletion": "해당 없음 (등록 자료)",
+   "results": [
+    "경기 280,251대로 전국의 23.5%입니다.",
+    "상위 3개 지역(경기, 서울, 인천) 합계 512,148대, 전국의 43.0%입니다.",
+    "가장 적은 지역은 세종 10,062대입니다."
+   ],
+   "values": {
+    "order": [
+     "41",
+     "11",
+     "28",
+     "48",
+     "26",
+     "12",
+     "50",
+     "47",
+     "27",
+     "44",
+     "43",
+     "52",
+     "51",
+     "30",
+     "31",
+     "36"
+    ],
+    "counts": {
+     "41": 280251,
+     "11": 127750,
+     "28": 104147,
+     "48": 93919,
+     "26": 83422,
+     "12": 79371,
+     "50": 78509,
+     "47": 61551,
+     "27": 55710,
+     "44": 52276,
+     "43": 43156,
+     "52": 38426,
+     "51": 33347,
+     "30": 31453,
+     "31": 18523,
+     "36": 10062
+    },
+    "total": 1191873
+   },
+   "source": "국토교통부 자동차 등록자료 통계 2026년 9월 (연료: 전기) · 16개 시도(전남광주 통합)",
+   "data_file": "ev_registration_by_region_2026_09.csv",
+   "web_api": "/api/ev-registration",
+   "web_default_filter": "없음 (16개 시도 고정)"
+  },
+  {
+   "id": 2,
+   "file": "02_ev_vehicle_types_donut.png",
+   "image_pixels": [
+    2400,
+    1480
+   ],
+   "sha256": "fbb78beb456448cbb6b2e12b0956f08a8988f49e7867139aa5836a04e7a419c9",
+   "title": "차종별 등록 구성 (전국)",
+   "web_title": "차종별 등록 구성 (전국)",
+   "chart_type": "도넛 차트",
+   "functions": [
+    "matplotlib Axes.pie(wedgeprops width)",
+    "seaborn.set_theme"
+   ],
+   "data_date": "2026년 9월 등록",
+   "basis": "전국 16개 시도 합계 · 웹 기본 상태(등록 지역 필터 없음)",
+   "deletion": "해당 없음 (등록 자료)",
+   "results": [
+    "승용 969,627대(81.4%), 화물 202,429대(17.0%)입니다.",
+    "승합 18,258대(1.5%), 특수 1,559대(0.1%)입니다."
+   ],
+   "values": {
+    "labels": [
+     "승용",
+     "화물",
+     "승합",
+     "특수"
+    ],
+    "counts": [
+     969627,
+     202429,
+     18258,
+     1559
+    ],
+    "total": 1191873
+   },
+   "source": "국토교통부 자동차 등록자료 통계 2026년 9월 (연료: 전기) · 16개 시도(전남광주 통합)",
+   "data_file": "ev_registration_by_region_2026_09.csv",
+   "web_api": "/api/ev-registration",
+   "web_default_filter": "등록 지역 필터 없음 = 전국"
+  },
+  {
+   "id": 3,
+   "file": "03_ev_commercial_share.png",
+   "image_pixels": [
+    2400,
+    1680
+   ],
+   "sha256": "302daa89f03b6f33c0aadad050857a15a9d3a52dcdf9de202bd63403ecf445f3",
+   "title": "지역별 사업용·비사업용 전기차 구성",
+   "web_title": "지역별 사업용·비사업용 전기차 구성 (기본 보기: 비율)",
+   "chart_type": "100% 누적 가로 막대그래프",
+   "functions": [
+    "matplotlib Axes.barh(left=…) 2계열 누적",
+    "seaborn.set_theme"
+   ],
+   "data_date": "2026년 9월 등록",
+   "basis": "16개 시도 · 지역 등록 대수 = 100% · 사업용 비율 내림차순",
+   "deletion": "해당 없음 (등록 자료)",
+   "results": [
+    "전국 사업용 비율은 18.2%(216,974대)입니다.",
+    "사업용 비율 최고 인천 38.9%, 최저 세종 5.9%입니다."
+   ],
+   "values": {
+    "order": [
+     "28",
+     "50",
+     "12",
+     "48",
+     "26",
+     "11",
+     "30",
+     "27",
+     "31",
+     "41",
+     "51",
+     "52",
+     "43",
+     "47",
+     "44",
+     "36"
+    ],
+    "commercial_pct": {
+     "28": 38.910386,
+     "50": 33.612707,
+     "12": 25.286314,
+     "48": 23.273246,
+     "26": 22.491669,
+     "11": 18.945597,
+     "30": 18.115919,
+     "27": 14.548555,
+     "31": 11.882524,
+     "41": 11.076142,
+     "51": 10.078868,
+     "52": 8.6582,
+     "43": 7.66058,
+     "47": 6.714757,
+     "44": 6.503941,
+     "36": 5.913337
+    },
+    "commercial": {
+     "28": 40524,
+     "50": 26389,
+     "12": 20070,
+     "48": 21858,
+     "26": 18763,
+     "11": 24203,
+     "30": 5698,
+     "27": 8105,
+     "31": 2201,
+     "41": 31041,
+     "51": 3361,
+     "52": 3327,
+     "43": 3306,
+     "47": 4133,
+     "44": 3400,
+     "36": 595
+    },
+    "noncommercial": {
+     "28": 63623,
+     "50": 52120,
+     "12": 59301,
+     "48": 72061,
+     "26": 64659,
+     "11": 103547,
+     "30": 25755,
+     "27": 47605,
+     "31": 16322,
+     "41": 249210,
+     "51": 29986,
+     "52": 35099,
+     "43": 39850,
+     "47": 57418,
+     "44": 48876,
+     "36": 9467
+    }
+   },
+   "source": "국토교통부 자동차 등록자료 통계 2026년 9월 (연료: 전기) · 16개 시도(전남광주 통합)",
+   "data_file": "ev_registration_by_region_2026_09.csv",
+   "web_api": "/api/ev-registration",
+   "web_default_filter": "없음 (16개 시도 고정), 보기 = 비율"
+  },
+  {
+   "id": 4,
+   "file": "04_stations_chargers_regression.png",
+   "image_pixels": [
+    2400,
+    1560
+   ],
+   "sha256": "a75c4a9c4a7a03577f7c671ac5f26cfe2be7766bb4ee7437138b0a86dc2bc8ed",
+   "title": "지역별 충전소 수와 충전기 수의 관계",
+   "web_title": "지역별 충전소 수와 충전기 수의 관계",
+   "chart_type": "산점도 + 회귀선",
+   "functions": [
+    "seaborn.regplot(scatter=False, ci=None)",
+    "seaborn.scatterplot",
+    "numpy.polyfit (검증)"
+   ],
+   "data_date": "2026-10-15 조회",
+   "basis": "16개 시도 · 지역별 충전소 수(고유 statId)와 충전기 수 · 최소제곱 회귀",
+   "deletion": "전체 527,433기 (삭제 표시 포함)",
+   "results": [
+    "회귀선: 충전기 수 = -6,783 + 6.291 × 충전소 수, R² = 0.972입니다.",
+    "규모가 큰 두 지역은 경기(충전소 25,022곳·충전기 155,001기)와 서울(충전소 13,035곳·충전기 76,202기)입니다."
+   ],
+   "values": {
+    "slope": 6.2909174530939636,
+    "intercept": -6782.633515670134,
+    "r2": 0.9724747480942127,
+    "regions": {
+     "11": {
+      "station_count": 13035,
+      "charger_count": 76202
+     },
+     "12": {
+      "station_count": 8125,
+      "charger_count": 32913
+     },
+     "26": {
+      "station_count": 5172,
+      "charger_count": 32765
+     },
+     "27": {
+      "station_count": 4112,
+      "charger_count": 25203
+     },
+     "28": {
+      "station_count": 5275,
+      "charger_count": 33866
+     },
+     "30": {
+      "station_count": 2783,
+      "charger_count": 15092
+     },
+     "31": {
+      "station_count": 2101,
+      "charger_count": 10694
+     },
+     "36": {
+      "station_count": 1041,
+      "charger_count": 6571
+     },
+     "41": {
+      "station_count": 25022,
+      "charger_count": 155001
+     },
+     "43": {
+      "station_count": 3836,
+      "charger_count": 17800
+     },
+     "44": {
+      "station_count": 5054,
+      "charger_count": 22462
+     },
+     "47": {
+      "station_count": 5878,
+      "charger_count": 23226
+     },
+     "48": {
+      "station_count": 7006,
+      "charger_count": 31083
+     },
+     "50": {
+      "station_count": 3219,
+      "charger_count": 8779
+     },
+     "51": {
+      "station_count": 4498,
+      "charger_count": 17813
+     },
+     "52": {
+      "station_count": 4934,
+      "charger_count": 17963
+     }
+    }
+   },
+   "source": "한국환경공단 전기자동차 충전소 정보(getChargerInfo) · 2026-10-15 04:16–04:19 KST 조회",
+   "data_file": "charger_info_clean.csv",
+   "web_api": "/api/charger-regions",
+   "web_default_filter": "삭제 표시 전체 · 유형·기관 전체 (지역 필터는 이 그래프에서 제외)"
+  },
+  {
+   "id": 5,
+   "file": "05_station_size_boxplot.png",
+   "image_pixels": [
+    2400,
+    1880
+   ],
+   "sha256": "363b44e584a93e41bec8619c11ca1e4e99bf236cae7c528834769395316b1459",
+   "title": "충전소당 충전기 수 분포 (지역별 박스플롯)",
+   "web_title": "충전소당 충전기 수 분포 (지역별 박스플롯)",
+   "chart_type": "박스플롯",
+   "functions": [
+    "seaborn.boxplot(log_scale=True, showmeans=True, showfliers=False)",
+    "matplotlib Axes.scatter (빈도 크기 이상치)",
+    "pandas Series.quantile(linear) (검증)"
+   ],
+   "data_date": "2026-10-15 조회",
+   "basis": "비삭제 표시 충전소 100,590곳 · 지역별 사분위수 · 중앙값→Q3→평균 내림차순",
+   "deletion": "비삭제 표시만 523,312기 (웹: 필터 \"전체\"일 때 이 그래프만 비삭제 기준)",
+   "results": [
+    "지역별 중앙값은 2~3기/곳입니다. 3기: 세종·대구·인천·부산·경기·서울·울산·대전·충북·충남, 2기: 경남·전남광주·강원·경북·전북·제주.",
+    "1.5×IQR 밖 이상치 충전소는 모두 9,748곳이며, 가장 큰 충전소는 100기입니다."
+   ],
+   "values": {
+    "sample_count": 100590,
+    "order": [
+     "36",
+     "27",
+     "28",
+     "26",
+     "41",
+     "11",
+     "31",
+     "30",
+     "43",
+     "44",
+     "48",
+     "12",
+     "51",
+     "47",
+     "52",
+     "50"
+    ],
+    "regions": {
+     "11": {
+      "sample_count": 12936,
+      "q1": 2.0,
+      "median": 3.0,
+      "q3": 6.0,
+      "mean": 5.836889301175016,
+      "whisker_low": 1,
+      "whisker_high": 12,
+      "max": 100,
+      "outlier_count": 1149
+     },
+     "12": {
+      "sample_count": 8072,
+      "q1": 1.0,
+      "median": 2.0,
+      "q3": 5.0,
+      "mean": 4.031962338949455,
+      "whisker_low": 1,
+      "whisker_high": 11,
+      "max": 99,
+      "outlier_count": 449
+     },
+     "26": {
+      "sample_count": 5144,
+      "q1": 2.0,
+      "median": 3.0,
+      "q3": 6.0,
+      "mean": 6.313180404354588,
+      "whisker_low": 1,
+      "whisker_high": 12,
+      "max": 99,
+      "outlier_count": 551
+     },
+     "27": {
+      "sample_count": 4048,
+      "q1": 2.0,
+      "median": 3.0,
+      "q3": 7.0,
+      "mean": 6.0311264822134385,
+      "whisker_low": 1,
+      "whisker_high": 14,
+      "max": 99,
+      "outlier_count": 389
+     },
+     "28": {
+      "sample_count": 5231,
+      "q1": 2.0,
+      "median": 3.0,
+      "q3": 6.0,
+      "mean": 6.391512139170331,
+      "whisker_low": 1,
+      "whisker_high": 12,
+      "max": 100,
+      "outlier_count": 548
+     },
+     "30": {
+      "sample_count": 2774,
+      "q1": 2.0,
+      "median": 3.0,
+      "q3": 5.0,
+      "mean": 5.395457822638789,
+      "whisker_low": 1,
+      "whisker_high": 9,
+      "max": 99,
+      "outlier_count": 370
+     },
+     "31": {
+      "sample_count": 2082,
+      "q1": 2.0,
+      "median": 3.0,
+      "q3": 5.75,
+      "mean": 5.085014409221902,
+      "whisker_low": 1,
+      "whisker_high": 11,
+      "max": 99,
+      "outlier_count": 206
+     },
+     "36": {
+      "sample_count": 1038,
+      "q1": 2.0,
+      "median": 3.0,
+      "q3": 7.0,
+      "mean": 6.294797687861272,
+      "whisker_low": 1,
+      "whisker_high": 14,
+      "max": 86,
+      "outlier_count": 107
+     },
+     "41": {
+      "sample_count": 25003,
+      "q1": 2.0,
+      "median": 3.0,
+      "q3": 6.0,
+      "mean": 6.1943366795984485,
+      "whisker_low": 1,
+      "whisker_high": 12,
+      "max": 100,
+      "outlier_count": 2617
+     },
+     "43": {
+      "sample_count": 3830,
+      "q1": 2.0,
+      "median": 3.0,
+      "q3": 5.0,
+      "mean": 4.640731070496083,
+      "whisker_low": 1,
+      "whisker_high": 9,
+      "max": 100,
+      "outlier_count": 378
+     },
+     "44": {
+      "sample_count": 5029,
+      "q1": 2.0,
+      "median": 3.0,
+      "q3": 5.0,
+      "mean": 4.42950884867767,
+      "whisker_low": 1,
+      "whisker_high": 9,
+      "max": 99,
+      "outlier_count": 486
+     },
+     "47": {
+      "sample_count": 5835,
+      "q1": 1.0,
+      "median": 2.0,
+      "q3": 4.0,
+      "mean": 3.930248500428449,
+      "whisker_low": 1,
+      "whisker_high": 8,
+      "max": 62,
+      "outlier_count": 593
+     },
+     "48": {
+      "sample_count": 6972,
+      "q1": 1.0,
+      "median": 2.0,
+      "q3": 5.0,
+      "mean": 4.4258462421113025,
+      "whisker_low": 1,
+      "whisker_high": 11,
+      "max": 90,
+      "outlier_count": 543
+     },
+     "50": {
+      "sample_count": 3214,
+      "q1": 1.0,
+      "median": 2.0,
+      "q3": 2.0,
+      "mean": 2.7221530802738023,
+      "whisker_low": 1,
+      "whisker_high": 3,
+      "max": 91,
+      "outlier_count": 534
+     },
+     "51": {
+      "sample_count": 4479,
+      "q1": 1.0,
+      "median": 2.0,
+      "q3": 4.0,
+      "mean": 3.947309667336459,
+      "whisker_low": 1,
+      "whisker_high": 8,
+      "max": 89,
+      "outlier_count": 442
+     },
+     "52": {
+      "sample_count": 4903,
+      "q1": 1.0,
+      "median": 2.0,
+      "q3": 4.0,
+      "mean": 3.610646542932898,
+      "whisker_low": 1,
+      "whisker_high": 8,
+      "max": 99,
+      "outlier_count": 386
+     }
+    }
+   },
+   "source": "한국환경공단 전기자동차 충전소 정보(getChargerInfo) · 2026-10-15 04:16–04:19 KST 조회",
+   "data_file": "charger_info_clean.csv",
+   "web_api": "/api/station-size-distribution?deletion=not_deleted",
+   "web_default_filter": "삭제 표시 '전체' → 이 그래프는 비삭제(N)로 요청 · 유형·지역·기관 전체"
+  },
+  {
+   "id": 6,
+   "file": "06_charger_types_donut.png",
+   "image_pixels": [
+    2400,
+    1480
+   ],
+   "sha256": "f1115fbe9ba82f0b8962a8ed2f91c2bcaaa20e04fb38cecc3523d00c0247b1f4",
+   "title": "충전기 유형별 구성",
+   "web_title": "충전기 유형별 구성",
+   "chart_type": "도넛 차트 (상위 4개 + 기타)",
+   "functions": [
+    "matplotlib Axes.pie(wedgeprops width)",
+    "seaborn.set_theme"
+   ],
+   "data_date": "2026-10-15 조회",
+   "basis": "공식 커넥터 유형 코드(chgerType) · 대수 내림차순 상위 4개 + 기타",
+   "deletion": "전체 527,433기 (삭제 표시 포함)",
+   "results": [
+    "02 AC완속 469,049기(88.9%), 04 DC콤보 43,676기(8.3%)입니다.",
+    "기타 6개 유형 합계는 2,672기(0.5%)입니다."
+   ],
+   "values": {
+    "labels": [
+     "02 AC완속",
+     "04 DC콤보",
+     "06 DC차데모+AC3상+DC콤보",
+     "11 DC콤보2(버스전용)",
+     "기타 6개 유형"
+    ],
+    "counts": [
+     469049,
+     43676,
+     6449,
+     5587,
+     2672
+    ],
+    "by_type": {
+     "02": 469049,
+     "04": 43676,
+     "06": 6449,
+     "11": 5587,
+     "05": 1476,
+     "08": 600,
+     "07": 287,
+     "10": 266,
+     "01": 40,
+     "03": 3
+    }
+   },
+   "source": "한국환경공단 전기자동차 충전소 정보(getChargerInfo) · 2026-10-15 04:16–04:19 KST 조회",
+   "data_file": "charger_info_clean.csv",
+   "web_api": "/api/charger-types",
+   "web_default_filter": "삭제 표시 전체 · 지역·유형·기관 전체"
+  },
+  {
+   "id": 7,
+   "file": "07_output_histogram_kde.png",
+   "image_pixels": [
+    2400,
+    1480
+   ],
+   "sha256": "e08112205179e90e457059084a30eb38aa0c7b29c326a20903f057d5b0d3e6f1",
+   "title": "충전기 정격 출력 분포",
+   "web_title": "충전기 정격 출력 분포 (기본: 로그 y)",
+   "chart_type": "히스토그램 + KDE",
+   "functions": [
+    "seaborn.histplot(weights=…, bins=log10 구간, kde=True)",
+    "SciPy gaussian_kde (Seaborn 내부, 대역폭 고정)",
+    "matplotlib Axes.set_yscale(\"log\")"
+   ],
+   "data_date": "2026-10-15 조회",
+   "basis": "양수 출력 527,264기 · log10 구간 19개(폭 0.125) · KDE 대역폭 0.125(log10)",
+   "deletion": "전체 527,433기 (삭제 표시 포함)",
+   "results": [
+    "중앙값 7kW, 가장 많은 값은 7kW(406,961기)입니다.",
+    "100kW 이상은 42,417기(8.0%)입니다."
+   ],
+   "values": {
+    "bin_edges_log10": [
+     0.375,
+     0.5,
+     0.625,
+     0.75,
+     0.875,
+     1.0,
+     1.125,
+     1.25,
+     1.375,
+     1.5,
+     1.625,
+     1.75,
+     1.875,
+     2.0,
+     2.125,
+     2.25,
+     2.375,
+     2.5,
+     2.625,
+     2.75
+    ],
+    "bin_counts": [
+     46148,
+     1,
+     1,
+     406962,
+     0,
+     10194,
+     6198,
+     135,
+     2356,
+     51,
+     12784,
+     10,
+     7,
+     29652,
+     133,
+     8642,
+     3118,
+     872,
+     0
+    ],
+    "valid_positive": 527264,
+    "excluded": 169,
+    "median_kw": 7.0,
+    "kde_at_bin_mids_web_formula": [
+     18305.901,
+     27189.665,
+     77872.488,
+     158228.424,
+     126965.554,
+     41752.296,
+     8402.679,
+     2139.178,
+     1716.193,
+     3579.747,
+     5752.346,
+     6791.964,
+     10596.451,
+     11379.136,
+     7260.617,
+     5300.349,
+     3337.744,
+     1247.237,
+     309.063
+    ],
+    "kde_seaborn_vs_web_max_rel_diff": 0.0010910286539091737
+   },
+   "source": "한국환경공단 전기자동차 충전소 정보(getChargerInfo) · 2026-10-15 04:16–04:19 KST 조회",
+   "data_file": "charger_info_clean.csv",
+   "web_api": "/api/charger-output",
+   "web_default_filter": "삭제 표시 전체 · 지역·유형·기관 전체 · 세로축 로그"
+  },
+  {
+   "id": 8,
+   "file": "08_regional_output_heatmap.png",
+   "image_pixels": [
+    2400,
+    1800
+   ],
+   "sha256": "94a4bec76ac657868ac652adb9621aefd54a3e061d16bf39fa622e91544c9c51",
+   "title": "지역별 충전기 출력 구간 구성",
+   "web_title": "지역별 충전기 출력 구간 구성",
+   "chart_type": "히트맵 (행 기준 구성비)",
+   "functions": [
+    "seaborn.heatmap(annot=문자열, 열 기준 상대 색)",
+    "pandas.crosstab"
+   ],
+   "data_date": "2026-10-15 조회",
+   "basis": "16개 시도 × 6개 출력 구간(30 미만·30–50·50–100·100–200·200 이상·미상) · 지역 합계 = 100%",
+   "deletion": "전체 527,433기 (삭제 표시 포함)",
+   "results": [
+    "전국 30kW 미만 469,900기(89.1%), 200kW 이상 12,595기(2.4%)입니다.",
+    "200kW 이상 비율이 가장 높은 지역은 경북 4.9%이고, 출력 미상은 169기입니다."
+   ],
+   "values": {
+    "bands": [
+     "30kW 미만",
+     "30–50",
+     "50–100",
+     "100–200",
+     "200kW 이상",
+     "미상"
+    ],
+    "order": [
+     "41",
+     "11",
+     "28",
+     "12",
+     "26",
+     "48",
+     "27",
+     "47",
+     "44",
+     "52",
+     "51",
+     "43",
+     "30",
+     "31",
+     "50",
+     "36"
+    ],
+    "counts": {
+     "41": [
+      140810,
+      578,
+      2697,
+      7109,
+      3764,
+      43
+     ],
+     "11": [
+      70223,
+      240,
+      1553,
+      3199,
+      976,
+      11
+     ],
+     "28": [
+      31140,
+      113,
+      544,
+      1566,
+      501,
+      2
+     ],
+     "12": [
+      28877,
+      128,
+      1057,
+      2036,
+      795,
+      20
+     ],
+     "26": [
+      30210,
+      206,
+      476,
+      1426,
+      444,
+      3
+     ],
+     "48": [
+      26760,
+      184,
+      739,
+      2550,
+      834,
+      16
+     ],
+     "27": [
+      23389,
+      68,
+      563,
+      856,
+      325,
+      2
+     ],
+     "47": [
+      18752,
+      84,
+      980,
+      2252,
+      1149,
+      9
+     ],
+     "44": [
+      19195,
+      102,
+      568,
+      1708,
+      878,
+      11
+     ],
+     "52": [
+      14925,
+      123,
+      477,
+      1692,
+      730,
+      16
+     ],
+     "51": [
+      14761,
+      55,
+      531,
+      1703,
+      753,
+      10
+     ],
+     "43": [
+      15169,
+      137,
+      658,
+      1272,
+      558,
+      6
+     ],
+     "30": [
+      13633,
+      63,
+      429,
+      730,
+      232,
+      5
+     ],
+     "31": [
+      9555,
+      45,
+      250,
+      617,
+      222,
+      5
+     ],
+     "50": [
+      6471,
+      11,
+      1105,
+      900,
+      285,
+      7
+     ],
+     "36": [
+      6030,
+      9,
+      174,
+      206,
+      149,
+      3
+     ]
+    }
+   },
+   "source": "한국환경공단 전기자동차 충전소 정보(getChargerInfo) · 2026-10-15 04:16–04:19 KST 조회",
+   "data_file": "charger_info_clean.csv",
+   "web_api": "/api/charger-output/regions",
+   "web_default_filter": "삭제 표시 전체 · 유형·기관 전체 (16개 지역 각각)"
+  },
+  {
+   "id": 9,
+   "file": "09_cumulative_installations_area.png",
+   "image_pixels": [
+    2400,
+    1480
+   ],
+   "sha256": "fc979e4e58724c2f0b7878745bdd92fb82772e26d53808b14210f66ba377a5ef",
+   "title": "연도별 누적 충전기 설치 추이",
+   "web_title": "연도별 누적 충전기 설치 추이",
+   "chart_type": "누적 영역그래프",
+   "functions": [
+    "matplotlib Axes.stackplot (완료 연도 누적 영역, 웹과 같은 monotoneX 곡선)",
+    "matplotlib Axes.plot (실선·점선)",
+    "matplotlib Axes.axvspan (부분 연도 띠)"
+   ],
+   "data_date": "2011–2026년 연도 통계 (2026년 부분 연도)",
+   "basis": "웹 기본 연도 구간(전체) · 누적 = 2011년부터의 합",
+   "deletion": "해당 없음 (설치 통계)",
+   "results": [
+    "2025년 누적 478,802기, 2026년(부분 연도) 누적 540,210기입니다.",
+    "누적 10만 기를 처음 넘은 해는 2022년입니다."
+   ],
+   "values": {
+    "years": [
+     2011,
+     2012,
+     2013,
+     2014,
+     2015,
+     2016,
+     2017,
+     2018,
+     2019,
+     2020,
+     2021,
+     2022,
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "cumulative": [
+     4,
+     13,
+     16,
+     51,
+     177,
+     791,
+     6514,
+     18095,
+     34619,
+     44609,
+     76121,
+     168581,
+     280562,
+     388997,
+     478802,
+     540210
+    ],
+    "annual": [
+     4,
+     9,
+     3,
+     35,
+     126,
+     614,
+     5723,
+     11581,
+     16524,
+     9990,
+     31512,
+     92460,
+     111981,
+     108435,
+     89805,
+     61408
+    ],
+    "partial_years": [
+     2026
+    ]
+   },
+   "source": "충전기 설치 성장 추세 통계 (파일명 날짜 2026-10-15, 정확한 집계 마감일 미기재)",
+   "data_file": "charger_installation_trend.csv",
+   "web_api": "/api/growth",
+   "web_default_filter": "연도 구간 전체 (2011–마지막 해)"
+  },
+  {
+   "id": 10,
+   "file": "10_operator_treemap.png",
+   "image_pixels": [
+    2400,
+    1240
+   ],
+   "sha256": "3503fe5582cfc09f09bb4dc593ee1c5c0ad11388d8c30d38f7398d4bc4b97edf",
+   "title": "운영기관별 충전기 규모",
+   "web_title": "운영기관별 충전기 규모",
+   "chart_type": "트리맵 (상위 20 + 기타)",
+   "functions": [
+    "recharts_squarify (웹 recharts Treemap 배치를 Python으로 이식)",
+    "matplotlib patches.Rectangle",
+    "seaborn.set_theme"
+   ],
+   "data_date": "2026-10-15 조회",
+   "basis": "운영기관 ID(busiId) 144개 · 충전기 수 내림차순 상위 20개 + 기타 · 이름 = ID별 최다 기관명",
+   "deletion": "전체 527,433기 (삭제 표시 포함)",
+   "results": [
+    "1위 GS차지비 [PI] 88,543기(16.8%)입니다.",
+    "상위 20개 ID 합계 471,506기(89.4%), 나머지 124개 ID가 55,927기입니다."
+   ],
+   "values": {
+    "operator_ids": 144,
+    "top20": [
+     {
+      "id": "PI",
+      "name": "GS차지비",
+      "charger_count": 88543
+     },
+     {
+      "id": "PW",
+      "name": "파워큐브",
+      "charger_count": 69285
+     },
+     {
+      "id": "EV",
+      "name": "에버온",
+      "charger_count": 55112
+     },
+     {
+      "id": "PL",
+      "name": "플러그링크",
+      "charger_count": 51327
+     },
+     {
+      "id": "LU",
+      "name": "LG유플러스 볼트업",
+      "charger_count": 43868
+     },
+     {
+      "id": "NT",
+      "name": "NICE인프라",
+      "charger_count": 20892
+     },
+     {
+      "id": "SF",
+      "name": "스타코프",
+      "charger_count": 20119
+     },
+     {
+      "id": "HM",
+      "name": "휴맥스이브이",
+      "charger_count": 18573
+     },
+     {
+      "id": "CV",
+      "name": "채비",
+      "charger_count": 14391
+     },
+     {
+      "id": "HY",
+      "name": "현대엔지니어링",
+      "charger_count": 12409
+     },
+     {
+      "id": "ST",
+      "name": "SK일렉링크",
+      "charger_count": 11828
+     },
+     {
+      "id": "PC",
+      "name": "아이파킹",
+      "charger_count": 10976
+     },
+     {
+      "id": "ME",
+      "name": "기후에너지환경부",
+      "charger_count": 9571
+     },
+     {
+      "id": "KP",
+      "name": "한국전력공사",
+      "charger_count": 8599
+     },
+     {
+      "id": "JA",
+      "name": "이브이시스",
+      "charger_count": 8085
+     },
+     {
+      "id": "EC",
+      "name": "이지차저",
+      "charger_count": 7931
+     },
+     {
+      "id": "KE",
+      "name": "한국전기차인프라기술",
+      "charger_count": 5610
+     },
+     {
+      "id": "CG",
+      "name": "서울씨엔지",
+      "charger_count": 5583
+     },
+     {
+      "id": "IN",
+      "name": "신세계아이앤씨",
+      "charger_count": 4527
+     },
+     {
+      "id": "EP",
+      "name": "이카플러그",
+      "charger_count": 4277
+     }
+    ],
+    "other": 55927,
+    "matched_total": 527433,
+    "layout_px_1250x380": [
+     [
+      0,
+      0,
+      374,
+      213
+     ],
+     [
+      0,
+      213,
+      374,
+      167
+     ],
+     [
+      374,
+      0,
+      252,
+      197
+     ],
+     [
+      374,
+      197,
+      252,
+      183
+     ],
+     [
+      626,
+      0,
+      201,
+      197
+     ],
+     [
+      626,
+      197,
+      201,
+      94
+     ],
+     [
+      626,
+      291,
+      201,
+      89
+     ],
+     [
+      827,
+      0,
+      136,
+      123
+     ],
+     [
+      827,
+      123,
+      136,
+      95
+     ],
+     [
+      827,
+      218,
+      136,
+      82
+     ],
+     [
+      827,
+      300,
+      136,
+      80
+     ],
+     [
+      963,
+      0,
+      84,
+      117
+     ],
+     [
+      1047,
+      0,
+      74,
+      117
+     ],
+     [
+      1121,
+      0,
+      66,
+      117
+     ],
+     [
+      1187,
+      0,
+      63,
+      117
+     ],
+     [
+      963,
+      117,
+      96,
+      74
+     ],
+     [
+      963,
+      191,
+      96,
+      53
+     ],
+     [
+      963,
+      244,
+      96,
+      52
+     ],
+     [
+      963,
+      296,
+      96,
+      42
+     ],
+     [
+      963,
+      338,
+      96,
+      42
+     ],
+     [
+      1059,
+      117,
+      191,
+      263
+     ]
+    ]
+   },
+   "source": "한국환경공단 전기자동차 충전소 정보(getChargerInfo) · 2026-10-15 04:16–04:19 KST 조회",
+   "data_file": "charger_info_clean.csv",
+   "web_api": "/api/operators?page=1&limit=20",
+   "web_default_filter": "삭제 표시 전체 · 지역·유형 전체 (운영기관 필터는 이 그래프에서 제외)"
+  }
+ ]
+}
