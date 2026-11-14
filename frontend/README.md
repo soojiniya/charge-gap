@@ -45,7 +45,7 @@ npm run preview    # http://localhost:5173 에서 빌드 결과 확인
 
 production 빌드는 `VITE_API_BASE_URL`이 비어 있거나 localhost(`127.0.0.1`, `localhost` 등)를 가리키면 실패합니다. 배포 사이트에서 모든 API 요청이 방문자 PC의 localhost로 가는 것을 막기 위해서입니다. 로컬 미리보기용 빌드만 `$env:CHARGE_GAP_ALLOW_LOCAL_API_BUILD='1'; npm run build`처럼 명시적으로 허용합니다. 이 변수는 `VITE_` 접두사가 아니어서 번들에 들어가지 않습니다.
 
-**테스트**: `npm test`는 `tests/*.test.cjs` 27개 파일(160개 테스트: API 주소 검사, API 연결 오류 안내, 서버 절전 복귀 대기, URL 필터 검증, 사이드바 필터 유지, 줄바꿈, 히트맵 통합 요청·출력 해석 회귀, 보안 헤더, 폰트 자산, 지도 클러스터·캔버스 표시층·bbox 경계, 좌표 품질 안내, SPA 직접 URL rewrite 설정 등)를 Node 내장 테스트 러너로 실행합니다. `tests/*.browser.cjs` 18개는 실행 중인 로컬 서버와 Playwright `page`가 필요한 브라우저 회귀 모듈이며, 카카오맵 SDK는 `tests/fixtures/kakao-maps-stub.js`로 대신합니다.
+**테스트**: `npm test`는 `tests/*.test.cjs` 28개 파일(163개 테스트: API 주소 검사, API 연결 오류 안내, 서버 절전 복귀 대기, URL 필터 검증, 사이드바 필터 유지, 줄바꿈, 히트맵 통합 요청·출력 해석 회귀, 보안 헤더, 폰트 자산, 지도 클러스터·캔버스 표시층·bbox 경계, 좌표 품질 안내, SPA 직접 URL rewrite 설정, Python 그래프 세트, 지역 격차 히트맵 접근성 등)를 Node 내장 테스트 러너로 실행합니다. `tests/*.browser.cjs` 18개는 실행 중인 로컬 서버와 Playwright `page`가 필요한 브라우저 회귀 모듈이며, 카카오맵 SDK는 `tests/fixtures/kakao-maps-stub.js`로 대신합니다.
 
 **서버 절전 복귀**: 연결 실패나 JSON이 아닌 응답이 오면 요청마다 오류를 띄우지 않고 `src/api/readiness.ts`의 공용 대기열에서 기다립니다. 상태 확인 요청 하나만 2·4·8초 뒤, 이후 10초마다 최대 3분 보내고, 화면 위에 안내 하나(`src/components/ServerWakeNotice.tsx`)를 보여 줍니다. 서버가 응답하면 현재 화면·필터 그대로 다시 불러오고, 3분이 지나면 '다시 시도'를 안내합니다. 400·404·500처럼 API가 JSON으로 보낸 오류는 기존 카드 오류로 표시합니다.
 
@@ -67,7 +67,7 @@ production 빌드는 `VITE_API_BASE_URL`이 비어 있거나 localhost(`127.0.0.
 | `/charging-infrastructure` | Charging Infrastructure | 요약, 그래프 6(유형 도넛)과 유형 표, 7(히스토그램+KDE), 5(충전소당 충전기 수 박스플롯), 10(운영기관 트리맵), 운영기관 표 |
 | `/regional-explorer` | Regional Explorer | 충전소 지도, 두 지역 비교(`cmp_a`·`cmp_b`), 전국 충전 인프라 구성 격차(5개 지표, CSV·PDF 내보내기), 그래프 8(지역×출력 히트맵), 4(산점도), 지역 표, 충전소 목록 |
 | `/growth-trends` | Growth Trends | 구간 요약, 연간 설치 막대, 그래프 9(누적 영역), 연도 표 |
-| `/python-visualization` | Python Visualization | Python(Matplotlib·Seaborn) 고정 PNG 10개 갤러리(데스크톱 3~4열·태블릿 2열·모바일 1열)와 확대 보기. 정적 파일 `public/python-charts/`(PNG 10개 + `charts.json`), 필터 무관 |
+| `/python-visualization` | Python Visualization | Python(Matplotlib·Seaborn) 고정 PNG 10개 갤러리(데스크톱 3~4열·태블릿 2열·모바일 1열)와 확대 보기. 정적 파일 `public/python-charts-web/`(웹 그래프 1~10을 Matplotlib·Seaborn으로 구현한 PNG 10개 + `charts.json`), 필터 무관 |
 
 모든 주요 그래프 아래에는 분석 목적, 그래프 선택 이유, 주요 결과, 해석, 주의사항, 데이터 출처·변수가 있습니다.
 결과·해석의 수치는 그 그래프가 받은 실제 API 응답으로 계산하며(`src/analysis/insights.tsx`), 필터 반영 여부를 문단 위에 표시합니다.
@@ -125,7 +125,8 @@ frontend/
   tsconfig.json
   .env.example            # VITE_API_BASE_URL, VITE_KAKAO_MAP_KEY(빈 값 — 실제 키는 .env에만)
   public/favicon.svg
-  public/python-charts/   # Python 고정 PNG 10개 + charts.json (scripts/create_python_charts_2026.py 결과)
+  public/python-charts-web/ # Python 그래프 PNG 10개 + charts.json (최종, scripts/create_web_matched_charts_2026.py → build_python_charts_web_page.py)
+  public/python-charts/   # 다크 테마 Python PNG 10개 + charts.json (보관, scripts/create_python_charts_2026.py 결과)
   docs/CHART_PLAN.md      # 그래프 10종 지원 현황, 미완료 API 명세, 백엔드 작업 목록
   src/
     main.tsx              # QueryClient, Router, 폰트, 전역 CSS
@@ -133,7 +134,7 @@ frontend/
     api/
       client.ts           # fetch, ApiError, URL 생성(빈 값 제외), HTTP 상태와 error 우선 확인
       readiness.ts        # 서버 절전 복귀 대기열
-      pythonCharts.ts     # public/python-charts/charts.json 읽기
+      pythonCharts.ts     # Python 그래프 charts.json 읽기 (화면은 public/python-charts-web/)
       endpoints.ts        # 13개 엔드포인트 함수, 요청변수 매핑, bbox 직렬화
       hooks.ts            # TanStack Query 훅 (엔드포인트별 쿼리 키)
       types.ts            # API_SPEC/openapi.json 기반 응답 타입
@@ -175,7 +176,7 @@ frontend/
 - Python Visualization 페이지의 PNG 10종은 분석 스크립트가 만든 고정 이미지라 이번 리디자인에서 바꾸지 않았습니다.
 - 한글 가독성을 위해 최소 글자 크기를 13px로 올리고, 제목, 본문, 캡션, 출처의 위계를 나눴습니다.
 - 이중 축 차트는 쓰지 않습니다(연간·누적은 별도 차트).
-- 모든 차트 카드의 확대 버튼: 확대 차트와 분석 문단, 데이터 표, 출처와 기준, 대응하는 보고서 원본 PNG.
+- 모든 차트 카드의 확대 버튼: 확대 차트와 분석 문단, 데이터 표, 출처와 기준, 대응하는 Python 그래프(Python Visualization 페이지와 같은 `public/python-charts-web/`).
 - 접근성: 키보드 포커스, 본문 건너뛰기, 모달 포커스 가두기와 Esc, 차트 aria-label과 표 보기, 히트맵 칸 키보드 탐색, `prefers-reduced-motion`.
 - 반응형: 1280px 이하 2열, 960px 이하 1열·슬라이드 메뉴, 560px 이하 필터 2열·카드 헤더 줄바꿈. 560px 이하에서 상세 보기는 전체 화면(닫기 버튼 고정)이며, 박스플롯·점 그래프는 카드 안쪽 폭에 맞춰 그리고 그보다 좁으면 카드 안에서만 가로 스크롤합니다(페이지 가로 스크롤 없음).
 - 히트맵 툴팁은 화면 기준(position: fixed)으로 띄워 표의 스크롤 영역에 잘리지 않고, 위 공간이 부족하면 칸 아래로, 좌우 끝에서는 안쪽으로 옮깁니다.

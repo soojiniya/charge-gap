@@ -1,4 +1,4 @@
-import { usePythonCharts, pythonChartUrl, type PythonChart } from '../../api/pythonCharts';
+import { pythonChartUrl, useWebMatchedPythonCharts, webMatchedPythonChartUrl, type PythonChart } from '../../api/pythonCharts';
 import { QueryState } from './QueryState';
 import { Icon } from './Icon';
 import { DATA_SOURCES } from '../../analysis/dataSources';
@@ -101,13 +101,16 @@ export function PythonChartBody({
   );
 }
 
-/** 웹 그래프 상세 보기의 "Python 그래프" 탭: 대응하는 Python 그래프를 정적 메타데이터에서 찾아 표시 */
+/**
+ * 웹 그래프 상세 보기의 "Python 그래프" 탭: 대응하는 Python 그래프를 정적 메타데이터에서 찾아 표시.
+ * Python Visualization 페이지와 같은 검증 완료 세트(public/python-charts-web)를 씁니다.
+ */
 export function PythonChartsById({ ids }: { ids: number[] }) {
-  const q = usePythonCharts();
+  const q = useWebMatchedPythonCharts();
   const charts = q.data?.charts.filter((c) => ids.includes(c.id)) ?? [];
   return (
     <QueryState isLoading={q.isLoading} error={q.error} onRetry={() => q.refetch()} isEmpty={!charts.length}>
-      {q.data && charts.map((c) => <PythonChartBody key={c.id} chart={c} notice={q.data.fixed_notice} fromWebGraph />)}
+      {q.data && charts.map((c) => <PythonChartBody key={c.id} chart={c} notice={q.data.fixed_notice} fromWebGraph imageUrl={webMatchedPythonChartUrl} />)}
     </QueryState>
   );
 }

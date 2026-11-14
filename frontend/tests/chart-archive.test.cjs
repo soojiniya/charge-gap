@@ -108,9 +108,10 @@ test('original Python PNG set is kept byte-for-byte, with its own (2025-12 EV) d
   }
   assert.equal(om.data.ev_registration.total, 899101);
   assert.match(om.fixed_notice, /2025년 12월/);
-  // 다시 그린 다크 테마 세트는 보존되고 웹 그래프 상세 보기의 Python 탭이 계속 사용
+  // 다시 그린 다크 테마 세트(public/python-charts)는 파일만 보존합니다
   assert.equal(fs.readdirSync(dir).filter((f) => f.endsWith('.png')).length, 10);
-  assert.match(src('src/components/ui/PythonChartView.tsx'), /export function PythonChartsById[\s\S]*usePythonCharts\(\)/);
+  // 웹 그래프 상세 보기의 Python 탭도 Python Visualization 페이지와 같은 세트(python-charts-web)를 씁니다
+  assert.match(src('src/components/ui/PythonChartView.tsx'), /export function PythonChartsById[\s\S]*useWebMatchedPythonCharts\(\)[\s\S]*imageUrl=\{webMatchedPythonChartUrl\}/);
 });
 
 /* Python Visualization 페이지: 웹사이트 그래프 1~10의 Python(Matplotlib·Seaborn) 구현 (outputs/charts_web_matched_2026) */

@@ -329,23 +329,31 @@ export function RegionalDisparitySection() {
                   <h3 id="disparity-heat-title">지역 격차 히트맵</h3>
                   <p className="small muted">색은 전국 대비 차이의 방향과 크기 · 범례는 표 아래</p>
                 </div>
-                <div className="disparity-heat" role="table" aria-label={`${metricName} 지역별 전국 대비 차이 히트맵`}>
-                  <div className="disparity-heat-head" role="row">
-                    <span role="columnheader">지역</span>
-                    <span role="columnheader">
+                {/* 지역을 고르는 토글 버튼 묶음. 표 역할(row/cell)은 버튼에 허용되지 않으므로 쓰지 않고,
+                    각 버튼의 aria-label에 열 이름과 값을 모두 담습니다 (보이는 머리줄은 시각용). */}
+                <div className="disparity-heat" role="group" aria-label={`${metricName} 지역별 전국 대비 차이 히트맵 (지역을 누르면 선택)`}>
+                  <div className="disparity-heat-head" aria-hidden="true">
+                    <span>지역</span>
+                    <span>
                       {active.short} ({active.unit})
                     </span>
-                    <span role="columnheader">전국 대비 차이</span>
+                    <span>전국 대비 차이</span>
                   </div>
                   {rows.map((r) => {
                     const v = r.value;
                     const delta = diffFor(v, national);
                     return (
-                      <button type="button" role="row" key={r.region_code} className="disparity-heat-row" aria-pressed={state.region === r.region_code} onClick={() => selectRegion(r.region_code)}>
-                        <span role="cell">{regionLabel(r)}</span>
-                        <span role="cell">{active.format(v)}</span>
+                      <button
+                        type="button"
+                        key={r.region_code}
+                        className="disparity-heat-row"
+                        aria-pressed={state.region === r.region_code}
+                        aria-label={`${regionLabel(r)}: ${active.short} ${active.format(v)}, 전국 대비 차이 ${diffText(delta, active)}`}
+                        onClick={() => selectRegion(r.region_code)}
+                      >
+                        <span>{regionLabel(r)}</span>
+                        <span>{active.format(v)}</span>
                         <span
-                          role="cell"
                           data-heat={delta == null ? 'none' : delta >= 0 ? 'up' : 'down'}
                           style={{ background: heatColor(delta, national) }}
                         >
