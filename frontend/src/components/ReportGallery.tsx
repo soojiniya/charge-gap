@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { usePythonCharts, useOriginalPythonCharts, pythonChartUrl, originalPythonChartUrl } from '../api/pythonCharts';
+import { usePythonCharts, useOriginalPythonCharts, useWebMatchedPythonCharts, pythonChartUrl, originalPythonChartUrl, webMatchedPythonChartUrl } from '../api/pythonCharts';
 import { fmtInt } from '../lib/format';
 import { Card } from './ui/Card';
 import { Modal } from './ui/Modal';
@@ -11,10 +11,13 @@ import { PythonChartBody } from './ui/PythonChartView';
  *  - variant "original"(페이지 기본): 처음 제작한 원본 PNG(outputs/charts/를 그대로 복사한 public/python-charts-original).
  *    흰 배경 원본 그대로이며 전기차 등록 그래프는 2025년 12월 자료 기준입니다.
  *  - variant "final": 2026년 9월 자료로 다시 그린 다크 테마 PNG(public/python-charts). 웹 그래프 상세 보기의 Python 탭이 계속 사용합니다.
+ *  - variant "web"(Python Visualization 페이지): 현재 웹사이트 그래프 1~10을 같은 종류·자료·기준으로 Matplotlib·Seaborn에서
+ *    다시 구현한 흰 배경 PNG(public/python-charts-web = outputs/charts_web_matched_2026).
  * 접기·펼치기 없이 10개를 항상 표시합니다.
  */
-type Variant = 'original' | 'final';
+type Variant = 'web' | 'original' | 'final';
 const VARIANTS = {
+  web: { useCharts: useWebMatchedPythonCharts, url: webMatchedPythonChartUrl, label: 'PY', className: 'python-charts-original', titlePrefix: 'Python 그래프' },
   original: { useCharts: useOriginalPythonCharts, url: originalPythonChartUrl, label: '원본', className: 'python-charts-original', titlePrefix: 'Python 원본 그래프' },
   final: { useCharts: usePythonCharts, url: pythonChartUrl, label: 'PY', className: '', titlePrefix: 'Python 그래프' },
 } as const;
@@ -24,7 +27,11 @@ export function PythonChartGallery({ variant = 'final' }: { variant?: Variant })
   const q = v.useCharts();
   const d = q.data?.data;
   const sub =
-    variant === 'original'
+    variant === 'web'
+      ? d
+        ? `현재 웹사이트 그래프 1~10과 같은 그래프 종류·자료·집계 기준(웹 기본 필터)을 Matplotlib·Seaborn으로 다시 구현한 PNG 10개입니다. 전기차 ${d.ev_registration.date} ${fmtInt(d.ev_registration.total)}대, 충전기 ${d.chargers.date} 전체 ${fmtInt(d.chargers.total)}기(그래프 5만 비삭제 표시), 설치 통계 ${d.growth.years[0]}–${d.growth.years[1]}년 기준이며 웹사이트 필터에 따라 바뀌지 않습니다.`
+        : '현재 웹사이트 그래프 1~10을 Matplotlib·Seaborn으로 다시 구현한 PNG 10개입니다. 웹사이트 필터에 따라 바뀌지 않습니다.'
+      : variant === 'original'
       ? d
         ? `처음 Python(Matplotlib·Seaborn)으로 제작한 원본 PNG 10개를 수정 없이 보여 줍니다. 전기차 등록 그래프(01–03)는 ${d.ev_registration.date} 자료(${fmtInt(d.ev_registration.total)}대, ${d.ev_registration.regions}개 시도), 충전기 그래프는 ${d.chargers.snapshot} 조회 자료, 설치 추이는 ${d.growth.years[0]}–${d.growth.years[1]}년 통계 기준입니다. 웹사이트 필터에 따라 바뀌지 않습니다.`
         : '처음 Python(Matplotlib·Seaborn)으로 제작한 원본 PNG 10개를 수정 없이 보여 줍니다. 웹사이트 필터에 따라 바뀌지 않습니다.'

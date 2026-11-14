@@ -27,6 +27,9 @@ export interface PythonChart {
   reason?: string;
   data_files?: string;
   relation?: string;
+  /** 웹사이트 일치형 세트(python-charts-web)에만 있는 선택 항목: 실제 사용한 Python 함수, 웹 기본 필터 */
+  functions?: string[];
+  filter?: string;
 }
 
 export interface PythonChartsMeta {
@@ -72,4 +75,15 @@ export function usePythonCharts() {
 
 export function useOriginalPythonCharts() {
   return useQuery(chartsQuery(ORIGINAL_BASE, 'python-charts-original'));
+}
+
+/**
+ * 현재 웹사이트 그래프 1~10을 같은 그래프 종류·자료·집계 기준으로 Matplotlib·Seaborn에서 다시 구현한 흰 배경 PNG 10개
+ * (outputs/charts_web_matched_2026/ 를 바이트 그대로 복사한 public/python-charts-web, scripts/build_python_charts_web_page.py).
+ */
+const WEB_MATCHED_BASE = `${import.meta.env.BASE_URL ?? '/'}python-charts-web/`;
+export const webMatchedPythonChartUrl = (file: string) => WEB_MATCHED_BASE + file;
+
+export function useWebMatchedPythonCharts() {
+  return useQuery(chartsQuery(WEB_MATCHED_BASE, 'python-charts-web'));
 }

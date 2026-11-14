@@ -56,7 +56,7 @@ test('web graph details link each Python chart once; the annual-installation car
 
 test('the gallery lives on its own page (always open); Overview keeps only a shortcut; legacy PNGs are kept', () => {
   const page = src('src/pages/PythonVisualization.tsx');
-  assert.match(page, /<PythonChartGallery variant="original" \/>/);
+  assert.match(page, /<PythonChartGallery variant="web" \/>/);
   assert.match(page, /title="Python Visualization"/);
   assert.match(src('src/App.tsx'), /<Route path="python-visualization" element={<PythonVisualizationPage \/>} \/>/);
   const nav = src('src/components/layout/AppShell.tsx');
@@ -87,8 +87,8 @@ test('gallery columns favour readability (4 / 3 / 2 / 1) and keep each PNG uncro
   assert.ok(body.indexOf('pyc-results') < body.indexOf('pyc-notes'), 'results come before cautions');
 });
 
-/* Python Visualization 페이지는 처음 제작한 원본 PNG(outputs/charts/)를 그대로 보여 줍니다. */
-test('page shows the original Python PNGs byte-for-byte, with their own (2025-12 EV) dates', () => {
+/* 원본 PNG 세트(python-charts-original)는 outputs/charts/ 그대로 보존됩니다. */
+test('original Python PNG set is kept byte-for-byte, with its own (2025-12 EV) dates', () => {
   const odir = path.join(root, 'public/python-charts-original');
   const om = JSON.parse(fs.readFileSync(path.join(odir, 'charts.json'), 'utf8'));
   assert.deepEqual(om.charts.map((c) => c.id), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -111,4 +111,37 @@ test('page shows the original Python PNGs byte-for-byte, with their own (2025-12
   // 다시 그린 다크 테마 세트는 보존되고 웹 그래프 상세 보기의 Python 탭이 계속 사용
   assert.equal(fs.readdirSync(dir).filter((f) => f.endsWith('.png')).length, 10);
   assert.match(src('src/components/ui/PythonChartView.tsx'), /export function PythonChartsById[\s\S]*usePythonCharts\(\)/);
+});
+
+/* Python Visualization 페이지: 웹사이트 그래프 1~10의 Python(Matplotlib·Seaborn) 구현 (outputs/charts_web_matched_2026) */
+test('page shows the 10 web-matched Python charts copied byte-for-byte from outputs/charts_web_matched_2026', () => {
+  const wdir = path.join(root, 'public/python-charts-web');
+  const wm = JSON.parse(fs.readFileSync(path.join(wdir, 'charts.json'), 'utf8'));
+  assert.deepEqual(wm.charts.map((c) => c.id), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  assert.equal(fs.readdirSync(wdir).filter((f) => f.endsWith('.png')).length, 10);
+  const srcDir = path.resolve(root, '../outputs/charts_web_matched_2026');
+  const metrics = fs.existsSync(path.join(srcDir, 'metrics.json')) ? JSON.parse(fs.readFileSync(path.join(srcDir, 'metrics.json'), 'utf8')) : null;
+  for (const c of wm.charts) {
+    const buf = fs.readFileSync(path.join(wdir, c.file));
+    assert.equal(crypto.createHash('sha256').update(buf).digest('hex'), c.sha256, `${c.file} sha256`);
+    for (const k of ['title', 'technique', 'data_date', 'basis', 'regions', 'deletion', 'caution', 'source', 'relation', 'filter']) assert.ok(c[k] && c[k].length > 1, `${c.id} ${k}`);
+    assert.ok(c.functions.length >= 1 && c.libraries.length >= 1 && c.results.length >= 2, `${c.id} functions/libraries/results`);
+    assert.ok(c.web && c.web.graph === c.id, `chart ${c.id} ↔ web graph ${c.id}`);
+    if (metrics) {
+      const m = metrics.charts.find((x) => x.id === c.id);
+      assert.ok(buf.equals(fs.readFileSync(path.join(srcDir, m.file))), `${c.file} is a byte copy of outputs/charts_web_matched_2026`);
+      for (const [a, b] of [['title', 'title'], ['data_date', 'data_date'], ['source', 'source'], ['deletion', 'deletion'], ['technique', 'chart_type']]) assert.equal(c[a], m[b], `${c.id} ${a}`);
+      assert.deepEqual(c.results, m.results, `${c.id} results`);
+      assert.deepEqual(c.functions, m.functions, `${c.id} functions`);
+    }
+  }
+  const libs = wm.charts.flatMap((c) => c.functions).join(' ');
+  assert.match(libs, /seaborn\.(barplot|regplot|boxplot|histplot|heatmap)/);
+  assert.match(libs, /Axes\.(pie|barh|stackplot)/);
+  assert.equal(wm.data.ev_registration.total, 1191873);
+  assert.equal(wm.data.chargers.total, 527433);
+  assert.match(wm.charts.find((c) => c.id === 5).deletion, /비삭제/);
+  // 화면: 흰 배경 클래스 사용, 다른 세트(다크·원본)는 그대로
+  assert.match(src('src/components/ReportGallery.tsx'), /web: \{ useCharts: useWebMatchedPythonCharts, url: webMatchedPythonChartUrl, label: 'PY', className: 'python-charts-original'/);
+  assert.match(src('src/components/ui/PythonChartView.tsx'), /'사용 함수'/);
 });

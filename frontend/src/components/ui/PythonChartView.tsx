@@ -32,6 +32,9 @@ export function PythonChartBody({
     ['삭제 기준', chart.deletion],
     ['시각화 기법', chart.technique],
     ['사용 라이브러리', chart.libraries.join(' · ')],
+    // 웹사이트 일치형 세트에만 있는 항목 (다른 세트는 표시하지 않음)
+    ...(chart.functions?.length ? ([['사용 함수', chart.functions.join(' · ')]] as [string, string][]) : []),
+    ...(chart.filter ? ([['웹 기본 필터', chart.filter]] as [string, string][]) : []),
   ];
   return (
     <div className="pyc-body">

@@ -1,28 +1,19 @@
 import { PageHead } from '../components/layout/AppShell';
 import { PythonChartGallery } from '../components/ReportGallery';
 
-/** Python Visualization: 처음 Python으로 제작한 원본 그래프 PNG 10개(outputs/charts/ 그대로)를 보여 주는 독립 페이지. 필터와 무관합니다. */
+/**
+ * Python Visualization: 현재 웹사이트 그래프 1~10을 같은 그래프 종류·자료·집계 기준으로 Matplotlib·Seaborn에서 다시 구현한
+ * PNG 10개(public/python-charts-web = outputs/charts_web_matched_2026)를 보여 주는 독립 페이지. 필터와 무관합니다.
+ */
 export function PythonVisualizationPage() {
   return (
     <>
       <PageHead
         title="Python Visualization"
-        lede="처음 Python(Matplotlib·Seaborn)으로 제작한 원본 그래프 10개를 그대로 보여 줍니다. 전기차 등록 그래프는 2025년 12월 자료 기준이라 다른 페이지(2026년 9월)와 수치가 다릅니다. 그래프를 누르면 크게 보고 데이터 기준·분석 결과·해석 주의를 확인할 수 있습니다."
-      >
-        {/* 이 페이지의 원본 그래프 기준 시점 (사이트 공통 표시인 2026-09 등록 기준과 다름) */}
-        <div className="clock-rail" aria-label="원본 그래프 자료 기준 시점">
-          <div className="clock">
-            전기차 등록 (원본 01–03)
-            <b>2025-12</b>
-          </div>
-          <div className="clock">
-            충전기 조회 (원본 04–08·10)
-            <b>2026-10-15 04:16–04:19</b>
-          </div>
-        </div>
-      </PageHead>
+        lede="현재 웹사이트의 그래프 1~10을 같은 그래프 종류·자료·집계 기준으로 Python(Matplotlib·Seaborn)에서 다시 구현한 그래프 10개입니다. 그래프를 누르면 크게 보고 데이터 출처·기준일·사용 함수·분석 결과·해석 주의를 확인할 수 있습니다."
+      />
       <div className="grid">
-        <PythonChartGallery variant="original" />
+        <PythonChartGallery variant="web" />
       </div>
     </>
   );
