@@ -4476,6 +4476,10 @@ var(--panel);
 .heatmap { font-size: var(--t-table-cell); }
 .heatmap th { font-size: var(--t-table-head); padding: 6px 8px; }
 .heatmap td { height: 36px; min-width: 68px; padding: 0 8px; }
+/* 히트맵 블록(지역명 열 + 출력 구간 6칸 + 범례)을 적당한 너비로 묶어 카드 가로 중앙에 둡니다.
+   지역명 열은 이름 폭만 차지하고 남는 폭은 6칸이 나눕니다. 좁은 화면에서는 max-width가 걸리지 않아 기존 가로 스크롤 그대로. */
+.heatmap-wrap { width: 100%; max-width: 880px; margin-inline: auto; }
+.heatmap th[scope='row'] { width: 1%; }
 
 /* 지도 분석 패널: 구획 제목 15 · 막대 이름·수량·비율 14 · 지역 수치(KPI) 22 */
 .geo-panel-section { padding: 16px 18px; }

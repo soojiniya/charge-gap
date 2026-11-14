@@ -97,6 +97,7 @@ export function Heatmap({
 
   return (
     <div
+      className="heatmap-wrap"
       style={{ position: "relative", overflowX: "auto" }}
       onMouseLeave={() => setHover(null)}
     >
