@@ -18,7 +18,7 @@
 | **페이지** | Overview · EV Registration · Charging Infrastructure · Regional Explorer · Growth Trends · Python Visualization |
 | **분석 기능** | 두 지역 비교 · 16개 지역 충전 인프라 구성 격차(5개 지표, 히트맵) · CSV 내보내기 · A4 PDF 보고서 |
 | **시각화** | 웹 대화형 그래프 10종(Recharts) + 충전소 지도(카카오맵 JavaScript SDK) + Python 고정 그래프 10종(Matplotlib·Seaborn) |
-| **검증** | 백엔드·배포 테스트 321개, 프론트엔드 단위 테스트 160개, Python 그래프 수치 대조 51개 검사, 공개 사이트 실제 브라우저 점검 ([검증 기록](#검증-기록)) |
+| **검증** | 백엔드·배포 테스트 321개, 프론트엔드 단위 테스트 162개, Python 그래프 웹 API 대조 46개·화면 대조 13개, 공개 사이트 실제 브라우저 점검 ([검증 기록](#검증-기록)) |
 
 ### 해결하려는 문제
 
@@ -62,7 +62,7 @@
 | **Charging Infrastructure** | `/charging-infrastructure` | 충전기 유형 구성, 정격 출력 히스토그램·KDE(로그 축), 충전소당 충전기 수 박스플롯, 운영기관 트리맵·목록 | 충전기의 유형·출력·운영기관 구조 |
 | **Regional Explorer** | `/regional-explorer` | 충전소 지도, 두 지역 비교, **전국 충전 인프라 구성 격차**(5개 지표), 지역×출력 히트맵, 지역 표, 충전소 목록 | 지역 간 충전 인프라 구성 비교 |
 | **Growth Trends** | `/growth-trends` | 연간 설치 막대, 누적 설치 추이, 연도 구간 선택(빠른 선택 포함), 연도별 표 | 2011년 이후 설치 추이(2026년은 부분 연도) |
-| **Python Visualization** | `/python-visualization` | Matplotlib·Seaborn 고정 그래프 10종 갤러리와 확대 보기(출처·기준일·지역 체계·삭제 기준·기법·라이브러리, 분석 결과, 해석 주의) | 웹 그래프와 같은 자료를 Python으로 재현·검증 |
+| **Python Visualization** | `/python-visualization` | 웹 그래프 1~10을 Matplotlib·Seaborn으로 다시 구현한 흰 배경 고정 그래프 10종 갤러리와 확대 보기(출처·기준일·지역 체계·삭제 기준·기법·라이브러리·사용 함수·웹 기본 필터, 분석 목적·결과, 해석 주의) | 웹 그래프와 같은 그래프 종류·자료·집계 기준을 Python으로 재현·검증 |
 
 ### 분석 기능
 
@@ -102,32 +102,39 @@
 
 ### Python 그래프 10종 (Matplotlib · Seaborn)
 
-`scripts/create_python_charts_2026.py`가 웹과 같은 자료로 그린 고정 PNG입니다. 정적 파일 `frontend/public/python-charts/`(PNG 10개 + `charts.json`)로 배포되며 웹사이트 필터와 무관합니다.
+현재 웹사이트의 그래프 1~10을 **같은 그래프 종류·자료·정렬·필터·삭제 표시 기준(웹 기본 필터)**으로 Python에서 다시 구현한 흰 배경 고정 PNG입니다. 원본 CSV를 pandas로 다시 집계해 그렸고, 웹 화면을 캡처하거나 색만 바꾼 이미지가 아닙니다. 웹사이트 필터와 무관합니다.
 
-| # | 그래프 | 기법 | 라이브러리 |
-|---|---|---|---|
-| PY01 | 지역별 전기차 등록 대수 | 가로 막대 | Matplotlib · Seaborn barplot |
-| PY02 | 차종별 전기차 등록 구성 | 도넛 | Matplotlib pie · Seaborn 테마 |
-| PY03 | 지역별 사업용·비사업용 전기차 구성 | 100% 누적 가로 막대 | Matplotlib barh · Seaborn 테마 |
-| PY04 | 지역별 충전소 수와 충전기 수의 관계 | 산점도 + OLS 회귀선 | Seaborn scatterplot·regplot · NumPy polyfit |
-| PY05 | 지역별 충전소당 충전기 수 분포 | 박스플롯(1.5×IQR 이상치) | Seaborn boxplot · Matplotlib boxplot_stats |
-| PY06 | 충전기 유형별 구성 | 도넛(상위 4개 + 기타) | Matplotlib pie · Seaborn 테마 |
-| PY07 | 충전기 정격 출력 분포와 KDE | 히스토그램 + KDE(로그 축) | Seaborn histplot · SciPy gaussian_kde |
-| PY08 | 지역별 충전기 출력 구간 구성 | 히트맵(행 기준 구성비) | Seaborn heatmap |
-| PY09 | 연도별 누적 충전기 설치 추이 | 누적 영역 + 연간 막대 | Matplotlib fill_between · Seaborn lineplot |
-| PY10 | 운영기관별 충전기 규모 | 트리맵(면적 비례) | Matplotlib patches · Seaborn 팔레트 |
+- 자료: 전기차 등록 2026년 9월 1,191,873대(16개 시도, 전남광주 통합) · 충전기 2026-10-15 04:16–04:19 KST 조회 전체 527,433기(삭제 표시 4,121기 포함 = 웹 기본 필터) · 설치 통계 2011–2026년(2026년 부분 연도)
+- 생성: `scripts/create_web_matched_charts_2026.py` → `outputs/charts_web_matched_2026/` (PNG 10개, `metrics.json`, 검증 결과, 웹·Python 비교 이미지 `comparison/`)
+- 페이지 반영: `scripts/build_python_charts_web_page.py`가 PNG를 바이트 그대로 `frontend/public/python-charts-web/`에 복사하고 `metrics.json`으로 표시용 `charts.json`을 만듭니다.
+- 검증: `scripts/verify_web_matched_charts_2026.py`가 웹 코드와 같은 계산 규칙으로 API 값을 다시 계산해 대조합니다(46개 일치). 로컬 웹 화면 글자·트리맵 칸 배치 대조 13개도 일치했습니다(`verification_screen.json`).
 
-`scripts/verify_python_charts_2026.py`가 그래프 계산값을 실행 중인 API와 대조합니다.
+| # | 그래프 (웹 그래프와 같은 제목) | 기법 | 실제 사용 함수 | 데이터 · 집계 기준 |
+|---|---|---|---|---|
+| PY01 | 지역별 전기차 등록 대수 | 가로 막대 | `seaborn.barplot(orient="h")`, `Axes.text` | 등록 CSV · 16개 시도 내림차순, 1위 강조 |
+| PY02 | 차종별 등록 구성 (전국) | 도넛 | `Axes.pie(wedgeprops width)`, `seaborn.set_theme` | 등록 CSV · 전국 합계, 승용·화물·승합·특수 |
+| PY03 | 지역별 사업용·비사업용 전기차 구성 | 100% 누적 가로 막대 | `Axes.barh(left=…)` 2계열 누적, `seaborn.set_theme` | 등록 CSV · 지역 합계 = 100%, 사업용 비율 내림차순(웹 기본 "비율" 보기) |
+| PY04 | 지역별 충전소 수와 충전기 수의 관계 | 산점도 + 최소제곱 회귀선 | `seaborn.regplot(scatter=False, ci=None)`, `seaborn.scatterplot`, 검증용 `numpy.polyfit` | 충전기 CSV · 전체 527,433기, 16개 시도, 회귀식 −6,783 + 6.291 × 충전소 수(R² 0.972) |
+| PY05 | 충전소당 충전기 수 분포 (지역별 박스플롯) | 박스플롯(로그 가로축) | `seaborn.boxplot(log_scale=True, showmeans=True)`, 이상치 `Axes.scatter`(점 크기 = 빈도) | 충전기 CSV · **비삭제 표시만**(웹은 필터 '전체'에서도 이 그래프만 비삭제 기준), 충전소 100,590곳, 중앙값→Q3→평균 내림차순 |
+| PY06 | 충전기 유형별 구성 | 도넛(상위 4개 + 기타) | `Axes.pie(wedgeprops width)`, `seaborn.set_theme` | 충전기 CSV · 전체 527,433기, 공식 커넥터 유형 코드 |
+| PY07 | 충전기 정격 출력 분포 | 히스토그램 + KDE(로그 가로축·로그 세로축) | `seaborn.histplot(weights, bins, kde=True)`(SciPy `gaussian_kde`, 대역폭 고정), `Axes.set_yscale("log")` | 충전기 CSV · 양수 출력 527,264기, log10 구간 폭 0.125 |
+| PY08 | 지역별 충전기 출력 구간 구성 | 히트맵(행 기준 구성비) | `seaborn.heatmap(annot=…)`, `pandas.crosstab` | 충전기 CSV · 전체 527,433기, 6개 구간(미상 포함), 색은 열마다 상대값 |
+| PY09 | 연도별 누적 충전기 설치 추이 | 누적 영역 | `Axes.stackplot`, `Axes.plot`, `Axes.axvspan` | 설치 통계 CSV · 완료 연도 영역, 2026년 부분 연도는 점선·음영 띠 |
+| PY10 | 운영기관별 충전기 규모 | 트리맵(상위 20개 + 기타) | 웹 recharts Treemap 배치를 옮긴 `recharts_squarify`, `matplotlib.patches.Rectangle` | 충전기 CSV · 전체 527,433기, 운영기관 ID(busiId) 144개 |
 
-**그래프 폴더 구분.** Python Visualization 페이지가 쓰는 최종본은 `frontend/public/python-charts/`뿐입니다. 아래 두 폴더는 이전 버전으로 보존만 하며 페이지에 표시되지 않습니다.
+**그래프 폴더 구분.** Python Visualization 페이지가 쓰는 최종본은 `frontend/public/python-charts-web/`입니다. 나머지 폴더는 다른 화면에서 쓰거나 보존용으로 둡니다.
 
 | 폴더 | 구분 | 생성 | 데이터 기준 | 쓰는 곳 |
 |---|---|---|---|---|
-| `frontend/public/python-charts/` | **최종** (PY01–PY10, 다크 테마) | `scripts/create_python_charts_2026.py` | 전기차 등록 2026년 9월(1,191,873대·16개 지역), 충전기 2026-10-15 전체 527,433기 | Python Visualization 페이지 |
-| `outputs/charts/` | 구버전 (01–10, 첫 그래프 세트) | 2026-10-14, 저장소 밖 초기 스크립트 (`reports/chart_verification.json`) | 전기차 등록 2025년 12월(899,101대), 충전기 2026-10-15 | 백엔드 `/api/charts` 보존용 PNG |
-| `outputs/charts_v2_report/` | 구버전 (보고서용 v2) | 2026-10-16, `scripts/create_report_charts_v2.py` | 전기차 등록 2025년 12월(17개 시도), 충전기 2026-10-15 | 사용처 없음 (보관) |
+| `frontend/public/python-charts-web/` | **최종** (PY01–PY10, 흰 배경, 웹 그래프 1~10 구현) | `scripts/create_web_matched_charts_2026.py` → `scripts/build_python_charts_web_page.py` | 전기차 2026년 9월(1,191,873대), 충전기 2026-10-15 전체 527,433기(PY05만 비삭제) | **Python Visualization 페이지** |
+| `outputs/charts_web_matched_2026/` | 최종본의 생성 결과 원본(같은 PNG) + `metrics.json`·검증 결과·비교 이미지 | `scripts/create_web_matched_charts_2026.py` | 위와 같음 | 보관·검증 기록 |
+| `frontend/public/python-charts/` | 다크 테마 세트 (PY01–PY10) | `scripts/create_python_charts_2026.py` | 전기차 2026년 9월, 충전기 2026-10-15 전체 527,433기 | 웹 그래프 상세 보기의 "Python 그래프" 탭 |
+| `frontend/public/python-charts-original/` | 원본 PNG 복사본 (`outputs/charts/`와 바이트 동일) | 복사 | 전기차 2025년 12월(899,101대), 충전기 2026-10-15 | 사용처 없음 (보관) |
+| `outputs/charts_2026_09_updated/` | 원본 디자인 재현 갱신본 (01·02·03·06·07·08·10) | `scripts/create_original_style_charts_2026.py` | 전기차 2026년 9월, 충전기 2026-10-15 | 사용처 없음 (보관) |
+| `outputs/charts/` | 구버전 (01–10, 첫 그래프 세트) | 2026-10-14, 저장소 밖 초기 스크립트 (`reports/chart_verification.json`) | 전기차 2025년 12월(899,101대), 충전기 2026-10-15 | 백엔드 `/api/charts` 보존용 PNG |
+| `outputs/charts_v2_report/` | 구버전 (보고서용 v2) | 2026-10-16, `scripts/create_report_charts_v2.py` | 전기차 2025년 12월(17개 시도), 충전기 2026-10-15 | 사용처 없음 (보관) |
 
-구버전은 전기차 등록 기준월과 그래프 구성이 달라 최종본과 수치·형태가 다릅니다. 예를 들어 03번은 최종본이 사업용 비율 순 100% 누적 가로 막대이고, `outputs/charts/`는 대수 누적 막대입니다.
+구버전과 갱신본은 전기차 등록 기준월이나 그래프 종류가 최종본과 달라 수치·형태가 다릅니다. 예를 들어 03번은 최종본이 사업용 비율 순 100% 누적 가로 막대이고, `outputs/charts/`는 대수 누적 막대입니다.
 
 ## 데이터
 
@@ -285,9 +292,11 @@ Render Static Site(프론트엔드) + Docker Web Service(백엔드) + 비공개 
 | 대상 | 명령 | 결과 | 기록 |
 |---|---|---|---|
 | 백엔드 API · Render 기동 스크립트 | `python -m pytest backend/tests deploy/render/tests -q` | **321 passed** (backend 236 · deploy 85, 좌표 품질 22개·운영기관 ID 집계 9개 포함) | 2026-11-14 실행 |
-| 프론트엔드 단위·회귀 | `frontend`에서 `npm test` | **160개**: Git 저장소 밖 실행에서 159 통과 · 1 건너뜀(줄바꿈 검사). 건너뛴 줄바꿈 검사는 Git 저장소에서 따로 실행해 통과 | 2026-11-14 실행 |
+| 프론트엔드 단위·회귀 | `frontend`에서 `npm test` | **162 passed** (Git 저장소에서 실행, Python 그래프 세트 검사 포함) | 2026-11-14 실행 |
 | TypeScript · 프로덕션 빌드 | `npm run build` (배포 API 주소 지정) | 통과 | 2026-11-14 실행 |
-| Python 그래프 수치 대조 | `python scripts/verify_python_charts_2026.py` | **51개 검사, 실패 0** (PNG 10개 SHA-256, PY10 운영기관 ID·이름·순서 = `/api/operators` 포함) | 2026-11-14 실행 |
+| Python 그래프(최종) 웹 API 대조 | `python scripts/verify_web_matched_charts_2026.py --api http://127.0.0.1:5000` | **46개 일치** (정렬, 대수·비율 표기, 회귀계수, 박스플롯 통계, 히스토그램 19개 구간·KDE, 히트맵 96칸, 설치 추이, 운영기관 상위 20개) | 2026-11-14 실행 |
+| Python 그래프(최종) 화면 대조 | 로컬 웹 화면(기본 필터, 1600px)의 카드 글자·트리맵 칸 배치를 PNG 계산값과 비교 | **13개 일치** (트리맵 21칸 픽셀 위치·크기 포함, `outputs/charts_web_matched_2026/verification_screen.json`) | 2026-11-14 실행 |
+| Python 그래프(다크 테마, 상세 보기 탭) 수치 대조 | `python scripts/verify_python_charts_2026.py` | **51개 검사, 실패 0** (PNG 10개 SHA-256, PY10 운영기관 ID·이름·순서 = `/api/operators` 포함) | 2026-11-14 실행 |
 | 원본 CSV 재집계 대조 | 전기차·충전기·충전소·삭제 표시 수, 지역별 16행, 설치 추이 16행을 CSV에서 다시 세어 API와 비교 | 모두 일치 | 2026-11-05 실행 |
 | 히트맵 통합 API | `backend/tests/test_charger_output_regions.py` | 16개 지역 × 40개 이상 필터 조합에서 기존 지역별 응답과 data·meta 동일, 원본 CSV 재계산과 일치 | 2026-11-14 실행(위 321개에 포함) |
 | 데이터 수집기 | `python -m unittest test_collector -v` | 12 passed | 2026-11-14 실행 |
@@ -371,10 +380,14 @@ Render Static Site(프론트엔드) + Docker Web Service(백엔드) + 비공개 
 ```text
 backend/                  Flask API · 테스트 · API 명세 · Dockerfile
 frontend/                 React 앱 · 그래프 · 지도 · Nginx 설정 · Dockerfile
-  public/python-charts/   Python 고정 그래프 PNG 10개 + charts.json
+  public/python-charts-web/      Python Visualization 페이지 그래프 PNG 10개 + charts.json (최종)
+  public/python-charts/          다크 테마 Python 그래프 (웹 그래프 상세 보기 탭)
+  public/python-charts-original/ 원본 PNG 복사본 (보관)
 deploy/render/            Render 백엔드 Dockerfile · R2 다운로드 · data-manifest.json
-scripts/                  Python 그래프 생성·검증 코드
+scripts/                  Python 그래프 생성·검증 코드 (create_web_matched_charts_2026.py · verify_web_matched_charts_2026.py · build_python_charts_web_page.py 등)
 reports/                  분석 · 데이터 품질 · 그래프 · 배포 검증 보고서
+outputs/charts_web_matched_2026/ 최종 Python 그래프 생성 결과 · metrics.json · 검증 결과 · 웹 비교 이미지
+outputs/charts_2026_09_updated/  원본 디자인 재현 갱신본 (보관)
 outputs/charts/           /api/charts 보존용 PNG 10개 (구버전, 2025년 12월 등록 기준)
 outputs/charts_v2_report/ 보고서용 v2 PNG 10개 (구버전, 보관)
 docs/                     배포 안내 · 데이터 출처·이용 조건 · GitHub 공개 준비
