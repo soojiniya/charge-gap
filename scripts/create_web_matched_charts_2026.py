@@ -15,6 +15,9 @@
 
 실행: python scripts/create_web_matched_charts_2026.py [--data-dir data/processed] [--font-dir 경로]
 필요: pandas, numpy, matplotlib, seaborn, Pillow, 맑은 고딕(Malgun Gothic)
+재현 환경: Python 3.13 + scripts/requirements-web-matched-charts.txt (저장소 PNG를 만든 버전).
+    글자 렌더링은 text.hinting='no_hinting'으로 고정합니다(아래 sns.set_theme). 이 값은 설치본마다 기본값이 달라,
+    고정하지 않으면 값·모양은 같아도 PNG 바이트가 달라집니다.
 """
 from __future__ import annotations
 
@@ -77,7 +80,8 @@ TREE_BANDS = [(6, '#5B93BB'), (10, '#86AECB'), (float('inf'), '#B2CADC')]       
 sns.set_theme(style='white', font=FONT, rc={
     'axes.unicode_minus': False, 'figure.facecolor': 'white', 'axes.facecolor': 'white', 'savefig.facecolor': 'white',
     'axes.edgecolor': SPINE, 'axes.labelcolor': LABEL, 'text.color': INK, 'xtick.color': TICK, 'ytick.color': TICK,
-    'font.size': 12, 'axes.labelsize': 13, 'xtick.labelsize': 12, 'ytick.labelsize': 12.5, 'legend.fontsize': 12})
+    'font.size': 12, 'axes.labelsize': 13, 'xtick.labelsize': 12, 'ytick.labelsize': 12.5, 'legend.fontsize': 12,
+    'text.hinting': 'no_hinting'})  # 저장소 PNG를 만든 설정. 설치본 기본값(default 등)에 따라 글자 픽셀이 달라지지 않게 고정
 DPI = 200
 
 # ---------------------------------------------------------------- 데이터

@@ -1,0 +1,10 @@
+# scripts/create_web_matched_charts_2026.py 재현용 (Python 3.13)
+# 저장소 PNG(outputs/charts_web_matched_2026, frontend/public/python-charts-web)를 만든 버전입니다.
+# Pillow만 생성 당시 12.3.0 대신 보안 패치 버전 13.0.0으로 고정했습니다(같은 PNG 바이트를 확인함).
+# 글꼴: 맑은 고딕 malgun.ttf·malgunbd.ttf (--font-dir 또는 C:/Windows/Fonts, ~/.fonts_cg)
+pandas==3.0.5
+numpy==2.5.3
+matplotlib==3.11.2
+seaborn==0.13.2
+scipy==1.18.1
+Pillow==13.0.0

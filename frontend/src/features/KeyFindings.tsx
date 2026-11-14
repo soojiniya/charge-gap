@@ -213,7 +213,7 @@ export function KeyFindingsSection() {
                   전국 {fmtPct(d.national, 2)} 기준으로 {d.above}개 지역은 높고 {d.below}개 지역은 낮습니다. 충전기 대수와 별개로 구성 비율이 지역마다 크게 다릅니다.
                 </p>
                 <p className="kf-note">
-                  충전기가 가장 많은 {d.largest.name}({fmtInt(d.largest.chargers)}기)은 {fmtPct(d.largest.value, 2)}로 16개 지역 중 {d.largest.rank}위입니다.{' '}
+                  충전기가 가장 많은 {d.largest.name}({fmtInt(d.largest.chargers)}기)는 {fmtPct(d.largest.value, 2)}로 16개 지역 중 {d.largest.rank}위입니다.{' '}
                   <span className="kf-caution">비중이 높다고 충전 여건이 낫다는 뜻은 아닙니다.</span>
                 </p>
               </div>
