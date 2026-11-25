@@ -49,7 +49,9 @@ check(1, '전국 합계', ev['meta']['totals']['ev_registration_count'], PY[1]['
 # 2
 s = {k: sum(r[f'ev_{k}_count'] for r in rows) for k in ('passenger', 'truck', 'bus', 'special')}
 check(2, '차종별 대수 (승용·화물·승합·특수)', [s['passenger'], s['truck'], s['bus'], s['special']], PY[2]['counts'])
-check(2, '도넛 가운데 합계', sum(s.values()), PY[2]['total'])
+check(2, '4개 차종 합계', sum(s.values()), PY[2]['total'])
+_lab = {'passenger': '승용', 'truck': '화물', 'bus': '승합', 'special': '특수'}  # 웹 LollipopChart: 등록 대수 내림차순(안정 정렬)
+check(2, '롤리팝 순서 (등록 대수 순)', [_lab[k] for k in sorted(s, key=lambda k: -s[k])], PY[2]['order'])
 # 3
 share = lambda r: r['ev_commercial_count'] / r['ev_registration_count'] if r['ev_registration_count'] else 0  # noqa: E731
 web3 = sorted(rows, key=lambda r: (-share(r), r['region_code']))

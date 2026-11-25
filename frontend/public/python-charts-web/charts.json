@@ -1,7 +1,7 @@
 {
   "title": "Python 데이터 시각화 그래프 (웹사이트 그래프 1~10 Python 구현)",
   "generator": "scripts/create_web_matched_charts_2026.py → scripts/build_python_charts_web_page.py",
-  "generated_at": "2026-11-14T16:08:29+09:00",
+  "generated_at": "2026-11-25T18:35:05+09:00",
   "libraries": {
     "matplotlib": "3.11.2",
     "seaborn": "0.13.2",
@@ -81,19 +81,21 @@
     },
     {
       "id": 2,
-      "file": "02_ev_vehicle_types_donut.png",
+      "file": "02_ev_vehicle_types_lollipop.png",
       "title": "차종별 등록 구성 (전국)",
-      "technique": "도넛 차트",
+      "technique": "가로 롤리팝 차트",
       "libraries": [
         "Matplotlib",
         "Seaborn (테마)"
       ],
       "functions": [
-        "matplotlib Axes.pie(wedgeprops width)",
+        "matplotlib Axes.hlines (줄기)",
+        "matplotlib Axes.scatter (끝 점)",
+        "matplotlib Axes.annotate (대수·구성비)",
         "seaborn.set_theme"
       ],
       "data_date": "2026년 9월 등록",
-      "basis": "전국 16개 시도 합계 · 웹 기본 상태(등록 지역 필터 없음)",
+      "basis": "전국 16개 시도 합계 · 웹 기본 상태(등록 지역 필터 없음) · 등록 대수 순",
       "regions": "전국 (16개 시도 합계)",
       "deletion": "해당 없음 (등록 자료)",
       "results": [
@@ -109,7 +111,7 @@
         2400,
         1480
       ],
-      "sha256": "fbb78beb456448cbb6b2e12b0956f08a8988f49e7867139aa5836a04e7a419c9",
+      "sha256": "07a25496b1e949c9a1b7c27a5dd960f4ee59c1c6bb5130532d52d90ca9ba2223",
       "source": "국토교통부 자동차 등록자료 통계 2026년 9월 (연료: 전기) · 16개 시도(전남광주 통합)",
       "purpose": "전국 전기차가 어떤 차종으로 구성되는지 비율로 확인합니다.",
       "data_files": "ev_registration_by_region_2026_09.csv · 웹 대응 API /api/ev-registration",

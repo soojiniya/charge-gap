@@ -1,7 +1,7 @@
 {
  "title": "CHARGE GAP 웹사이트 그래프 1~10 Python 구현 (흰 배경)",
  "generator": "scripts/create_web_matched_charts_2026.py",
- "generated_at": "2026-11-14T16:08:29+09:00",
+ "generated_at": "2026-11-25T18:35:05+09:00",
  "libraries": {
   "matplotlib": "3.11.2",
   "seaborn": "0.13.2",
@@ -108,21 +108,23 @@
   },
   {
    "id": 2,
-   "file": "02_ev_vehicle_types_donut.png",
+   "file": "02_ev_vehicle_types_lollipop.png",
    "image_pixels": [
     2400,
     1480
    ],
-   "sha256": "fbb78beb456448cbb6b2e12b0956f08a8988f49e7867139aa5836a04e7a419c9",
+   "sha256": "07a25496b1e949c9a1b7c27a5dd960f4ee59c1c6bb5130532d52d90ca9ba2223",
    "title": "차종별 등록 구성 (전국)",
    "web_title": "차종별 등록 구성 (전국)",
-   "chart_type": "도넛 차트",
+   "chart_type": "가로 롤리팝 차트",
    "functions": [
-    "matplotlib Axes.pie(wedgeprops width)",
+    "matplotlib Axes.hlines (줄기)",
+    "matplotlib Axes.scatter (끝 점)",
+    "matplotlib Axes.annotate (대수·구성비)",
     "seaborn.set_theme"
    ],
    "data_date": "2026년 9월 등록",
-   "basis": "전국 16개 시도 합계 · 웹 기본 상태(등록 지역 필터 없음)",
+   "basis": "전국 16개 시도 합계 · 웹 기본 상태(등록 지역 필터 없음) · 등록 대수 순",
    "deletion": "해당 없음 (등록 자료)",
    "results": [
     "승용 969,627대(81.4%), 화물 202,429대(17.0%)입니다.",
@@ -141,7 +143,13 @@
      18258,
      1559
     ],
-    "total": 1191873
+    "total": 1191873,
+    "order": [
+     "승용",
+     "화물",
+     "승합",
+     "특수"
+    ]
    },
    "source": "국토교통부 자동차 등록자료 통계 2026년 9월 (연료: 전기) · 16개 시도(전남광주 통합)",
    "data_file": "ev_registration_by_region_2026_09.csv",

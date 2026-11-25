@@ -18,7 +18,7 @@
 | 번호 | 웹 카드 제목 | 웹 그래프 종류 | 웹 기본 동작 중 반영한 점 |
 |---|---|---|---|
 | 01 | 지역별 전기차 등록 대수 | 가로 막대 | 16개 시도 전체, 내림차순, 1위 강조, 막대 끝에 정수 표시 |
-| 02 | 차종별 등록 구성 (전국) | 도넛 | 승용·화물·승합·특수 순서, 가운데에 합계, 범례에 대수·비율(소수 1자리) |
+| 02 | 차종별 등록 구성 (전국) | 가로 롤리팝 | 등록 대수 순(승용·화물·승합·특수), 점 오른쪽에 대수·구성비(소수 1자리) |
 | 03 | 지역별 사업용·비사업용 전기차 구성 | 100% 누적 가로 막대 | 기본 보기는 "비율"(대수 보기는 미반영). 사업용 비율 내림차순, 같으면 지역 코드 순 |
 | 04 | 지역별 충전소 수와 충전기 수의 관계 | 산점도 + 최소제곱 회귀선 | 지역 필터 제외. 회귀선은 y=0 지점부터 최대 x × 1.04까지. 라벨은 충전소 수 상위 2곳과 충전소당 충전기 최대·최소 지역 |
 | 05 | 충전소당 충전기 수 분포 (지역별 박스플롯) | 박스플롯 | **삭제 표시 필터가 '전체'일 때 비삭제 표시(N)만 집계.** 중앙값→Q3→평균 내림차순, 로그 가로축. 이상치는 값마다 점 하나, 점 크기 = 그 값을 가진 충전소 수 |
@@ -33,7 +33,7 @@
 | 번호 | 실제 사용한 함수 |
 |---|---|
 | 01 | `seaborn.barplot(orient="h")`, `Axes.text` |
-| 02 | `Axes.pie(wedgeprops=width)` (Matplotlib), `seaborn.set_theme` |
+| 02 | `Axes.hlines`, `Axes.scatter`, `Axes.annotate` (Matplotlib), `seaborn.set_theme` |
 | 03 | `Axes.barh(left=…)` 2계열 누적 (Matplotlib) |
 | 04 | `seaborn.regplot(scatter=False, ci=None)`, `seaborn.scatterplot`, 검증용 `numpy.polyfit` |
 | 05 | `seaborn.boxplot(log_scale=True, showmeans=True)`, 이상치는 `Axes.scatter`, 검증용 `Series.quantile(linear)` |
