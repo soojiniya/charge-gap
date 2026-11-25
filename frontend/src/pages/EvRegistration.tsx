@@ -75,7 +75,7 @@ export function EvRegistrationPage() {
         </Card>
 
         <EvRegionsCard span={7} />
-        {/* 짧은 도넛 카드와 지역 체계 안내를 한 묶음으로 쌓아 왼쪽 막대 그래프 카드와 높이를 맞춥니다. */}
+        {/* 짧은 롤리팝 카드와 지역 체계 안내를 한 묶음으로 쌓아 왼쪽 막대 그래프 카드와 높이를 맞춥니다. */}
         <div className="span-5 card-stack">
           <EvTypesCard span={5} />
           <Card title="지역 체계" sub="광주·전남 통합 기준">

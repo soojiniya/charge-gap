@@ -215,29 +215,35 @@ save(fig, 1, 'ev_registration_regions', title='지역별 전기차 등록 대수
               f"가장 적은 지역은 {e.label.iloc[-1]} {int(e.ev_registration_count.iloc[-1]):,}대입니다."],
      values={'order': e.region_code.tolist(), 'counts': dict(zip(e.region_code, e.ev_registration_count.astype(int).tolist())), 'total': EV_TOTAL})
 
-# ================================================================ 2. 차종별 등록 구성 — 도넛 (웹 DonutChart, 전국)
+# ================================================================ 2. 차종별 등록 구성 — 가로 롤리팝 (웹 LollipopChart, 전국)
 veh = [('승용', 'ev_passenger_count'), ('화물', 'ev_truck_count'), ('승합', 'ev_bus_count'), ('특수', 'ev_special_count')]
 vals2 = [int(ev[c].sum()) for _, c in veh]
 assert sum(vals2) == EV_TOTAL
-fig, ax = canvas('차종별 등록 구성 (전국)', '승용·화물·승합·특수 4개 차종의 구성비 · 가운데 = 전체 등록 대수',
-                 [EV_SRC, EV_FOOT], rect=(.04, .14, .5, .86))
-wedges, _ = ax.pie(vals2, colors=[VEHICLE_COLORS[l] for l, _ in veh], startangle=90, counterclock=False,  # 웹 startAngle 90 → -270 (시계 방향)
-                   radius=1, wedgeprops={'width': 1 - .64 / .88, 'edgecolor': 'white', 'linewidth': 2})
-ax.text(0, .08, f'{EV_TOTAL:,}', ha='center', va='center', fontsize=22, weight='bold', color=TITLE)
-ax.text(0, -.14, '등록 대수', ha='center', va='center', fontsize=12, color=MUTED)
-ax.set_aspect('equal')
-for i, ((l, _), v) in enumerate(zip(veh, vals2)):  # 웹 범례: 이름 · 대수 · 구성비(소수 1자리)
-    y = .66 - i * .1
-    fig.patches.append(Rectangle((.55, y - .012), .016, .024, transform=fig.transFigure, color=VEHICLE_COLORS[l]))
-    fig.text(.58, y, l, fontsize=14, color=INK, va='center')
-    fig.text(.82, y, f'{v:,}', fontsize=14, color=INK, va='center', ha='right')
-    fig.text(.93, y, fmt_pct(v / EV_TOTAL * 100), fontsize=14, color=MUTED, va='center', ha='right')
-save(fig, 2, 'ev_vehicle_types_donut', title='차종별 등록 구성 (전국)', web_title='차종별 등록 구성 (전국)', chart_type='도넛 차트',
-     functions=['matplotlib Axes.pie(wedgeprops width)', 'seaborn.set_theme'],
-     data_date=EV_DATE, basis='전국 16개 시도 합계 · 웹 기본 상태(등록 지역 필터 없음)', deletion='해당 없음 (등록 자료)',
+order2 = sorted(range(len(veh)), key=lambda k: -vals2[k])  # 등록 대수 순 (웹 LollipopChart 정렬과 같음)
+lab2 = [veh[k][0] for k in order2]
+val2 = [vals2[k] for k in order2]
+y2 = np.arange(len(lab2))
+fig, ax = canvas('차종별 등록 구성 (전국)', '승용·화물·승합·특수 4개 차종의 등록 대수와 구성비 · 등록 대수 순',
+                 [EV_SRC, EV_FOOT], rect=(.09, .2, .8, .82))
+ax.hlines(y2, 0, val2, color=OTHER, linewidth=3, zorder=2, clip_on=False)                    # 줄기: 0 → 등록 대수
+ax.scatter(val2, y2, s=320, c=[VEHICLE_COLORS[l] for l in lab2], edgecolors='white', linewidths=2, zorder=3, clip_on=False)  # 끝 점: 차종 색
+for yy, v in zip(y2, val2):  # 웹 LabelList: 대수 · 구성비(소수 1자리)
+    ax.annotate(f'{v:,}대 · {fmt_pct(v / EV_TOTAL * 100)}', (v, yy), xytext=(16, 0), textcoords='offset points',
+                va='center', fontsize=13, color=INK)
+ax.set_yticks(y2, lab2)
+ax.set_ylim(len(lab2) - .4, -.6)                                                 # 큰 값이 위
+ax.set_xlim(0, max(val2))
+ax.xaxis.set_major_formatter(FuncFormatter(fmt_compact))
+ax.set(xlabel='전기차 등록 대수 (대)', ylabel='')
+ax.tick_params(axis='y', labelcolor=LABEL, labelsize=14)
+frame_axes(ax, 'x')
+ax.tick_params(axis='y', pad=16)                                                 # 0 위치 점과 차종 이름이 겹치지 않게
+save(fig, 2, 'ev_vehicle_types_lollipop', title='차종별 등록 구성 (전국)', web_title='차종별 등록 구성 (전국)', chart_type='가로 롤리팝 차트',
+     functions=['matplotlib Axes.hlines (줄기)', 'matplotlib Axes.scatter (끝 점)', 'matplotlib Axes.annotate (대수·구성비)', 'seaborn.set_theme'],
+     data_date=EV_DATE, basis='전국 16개 시도 합계 · 웹 기본 상태(등록 지역 필터 없음) · 등록 대수 순', deletion='해당 없음 (등록 자료)',
      results=[f"승용 {vals2[0]:,}대({vals2[0] / EV_TOTAL * 100:.1f}%), 화물 {vals2[1]:,}대({vals2[1] / EV_TOTAL * 100:.1f}%)입니다.",
               f"승합 {vals2[2]:,}대({vals2[2] / EV_TOTAL * 100:.1f}%), 특수 {vals2[3]:,}대({vals2[3] / EV_TOTAL * 100:.1f}%)입니다."],
-     values={'labels': [l for l, _ in veh], 'counts': vals2, 'total': EV_TOTAL})
+     values={'labels': [l for l, _ in veh], 'counts': vals2, 'total': EV_TOTAL, 'order': lab2})
 
 # ================================================================ 3. 사업용·비사업용 — 100% 누적 가로 막대 (웹 StackedHBar normalized)
 c3 = ev.assign(share=ev.ev_commercial_count / ev.ev_registration_count * 100)

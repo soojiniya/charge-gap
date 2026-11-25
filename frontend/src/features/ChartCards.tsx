@@ -9,6 +9,7 @@ import { DataTable } from '../components/ui/DataTable';
 import { Insight } from '../components/ui/Insight';
 import { HBarChart, type HBarDatum } from '../charts/HBarChart';
 import { DonutChart, type DonutSlice } from '../charts/DonutChart';
+import { LollipopChart, type LollipopDatum } from '../charts/LollipopChart';
 import { StackedHBar } from '../charts/StackedHBar';
 import { RegionScatter } from '../charts/RegionScatter';
 import { BoxLegend, BoxPlot } from '../charts/BoxPlot';
@@ -221,8 +222,8 @@ export function EvTypesCard({ span = 5 }: { span?: Span }) {
     }),
     { total: 0, passenger: 0, truck: 0, bus: 0, special: 0 },
   );
-  // 차종별 고정 색(theme.ts VEHICLE_COLORS): 도넛 조각·범례·툴팁이 같은 색을 씁니다.
-  const slices: DonutSlice[] = [
+  // 차종별 고정 색(theme.ts VEHICLE_COLORS): 롤리팝 끝 점과 툴팁이 같은 색을 씁니다. 순서는 차트가 등록 대수 순으로 정렬합니다.
+  const items: LollipopDatum[] = [
     { key: 'p', label: '승용', value: s.passenger, color: VEHICLE_COLORS.passenger },
     { key: 't', label: '화물', value: s.truck, color: VEHICLE_COLORS.truck },
     { key: 'b', label: '승합', value: s.bus, color: VEHICLE_COLORS.bus },
@@ -234,19 +235,19 @@ export function EvTypesCard({ span = 5 }: { span?: Span }) {
       no={2}
       span={span}
       title={`차종별 등록 구성 (${name})`}
-      sub="승용·화물·승합·특수 4개 차종의 구성비"
+      sub="승용·화물·승합·특수 4개 차종의 등록 대수와 구성비 (등록 대수 순)"
       scope={{ kind: 'filtered', label: '등록 지역 필터' }}
       isFetching={q.isFetching && !q.isLoading}
       detail={{
-        chart: <DonutChart data={slices} unit="대" centerLabel="등록 대수" ariaLabel="차종별 전기차 구성" size={300} />,
+        chart: <LollipopChart data={items} unit="대" ariaLabel="차종별 전기차 등록 대수 롤리팝 그래프" rowHeight={64} />,
         table: <EvTable rows={rows} selected={state.evRegion} />,
         meta: q.data?.meta,
         pythonChartIds: [2],
       }}
       insight={rows.length ? <Insight {...insightEvTypes(s, name, !!state.evRegion)} stack={span < 7} /> : undefined}
     >
-      <QueryState isLoading={q.isLoading} error={q.error} onRetry={() => q.refetch()} isEmpty={!rows.length} height={200}>
-        <DonutChart data={slices} unit="대" centerLabel="등록 대수" ariaLabel="차종별 전기차 구성 도넛 그래프" size={190} />
+      <QueryState isLoading={q.isLoading} error={q.error} onRetry={() => q.refetch()} isEmpty={!rows.length} height={212}>
+        <LollipopChart data={items} unit="대" ariaLabel="차종별 전기차 등록 대수 롤리팝 그래프" />
       </QueryState>
     </Card>
   );
