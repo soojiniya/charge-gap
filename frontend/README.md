@@ -45,7 +45,7 @@ npm run preview    # http://localhost:5173 에서 빌드 결과 확인
 
 production 빌드는 `VITE_API_BASE_URL`이 비어 있거나 localhost(`127.0.0.1`, `localhost` 등)를 가리키면 실패합니다. 배포 사이트에서 모든 API 요청이 방문자 PC의 localhost로 가는 것을 막기 위해서입니다. 로컬 미리보기용 빌드만 `$env:CHARGE_GAP_ALLOW_LOCAL_API_BUILD='1'; npm run build`처럼 명시적으로 허용합니다. 이 변수는 `VITE_` 접두사가 아니어서 번들에 들어가지 않습니다.
 
-**테스트**: `npm test`는 `tests/*.test.cjs` 28개 파일(163개 테스트: API 주소 검사, API 연결 오류 안내, 서버 절전 복귀 대기, URL 필터 검증, 사이드바 필터 유지, 줄바꿈, 히트맵 통합 요청·출력 해석 회귀, 보안 헤더, 폰트 자산, 지도 클러스터·캔버스 표시층·bbox 경계, 좌표 품질 안내, SPA 직접 URL rewrite 설정, Python 그래프 세트, 지역 격차 히트맵 접근성 등)를 Node 내장 테스트 러너로 실행합니다. `tests/*.browser.cjs` 18개는 실행 중인 로컬 서버와 Playwright `page`가 필요한 브라우저 회귀 모듈이며, 카카오맵 SDK는 `tests/fixtures/kakao-maps-stub.js`로 대신합니다.
+**테스트**: `npm test`는 `tests/*.test.cjs` 29개 파일(170개 테스트: API 주소 검사, API 연결 오류 안내, 서버 절전 복귀 대기, URL 필터 검증, 사이드바 필터 유지, 줄바꿈, 히트맵 통합 요청·출력 해석 회귀, 보안 헤더, 폰트 자산, 지도 클러스터·캔버스 표시층·bbox 경계, 좌표 품질 안내, SPA 직접 URL rewrite 설정, Python 그래프 세트, 지역 격차 히트맵 접근성, 그래프 2·6 비율 소수점 표기 등)를 Node 내장 테스트 러너로 실행합니다. `tests/*.browser.cjs` 18개는 실행 중인 로컬 서버와 Playwright `page`가 필요한 브라우저 회귀 모듈이며, 카카오맵 SDK는 `tests/fixtures/kakao-maps-stub.js`로 대신합니다.
 
 **서버 절전 복귀**: 연결 실패나 JSON이 아닌 응답이 오면 요청마다 오류를 띄우지 않고 `src/api/readiness.ts`의 공용 대기열에서 기다립니다. 상태 확인 요청 하나만 2·4·8초 뒤, 이후 10초마다 최대 3분 보내고, 화면 위에 안내 하나(`src/components/ServerWakeNotice.tsx`)를 보여 줍니다. 서버가 응답하면 현재 화면·필터 그대로 다시 불러오고, 3분이 지나면 '다시 시도'를 안내합니다. 400·404·500처럼 API가 JSON으로 보낸 오류는 기존 카드 오류로 표시합니다.
 

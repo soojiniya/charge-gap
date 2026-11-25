@@ -164,7 +164,7 @@ export function insightEvTypes(
           </>,
           <>
             {parts[2].n} {fmtInt(parts[2].v)}대({pct(parts[2].v, s.total)}),{" "}
-            {parts[3].n} {fmtInt(parts[3].v)}대({pct(parts[3].v, s.total, 2)}).
+            {parts[3].n} {fmtInt(parts[3].v)}대({pct(parts[3].v, s.total)}).
           </>,
         ]
       : [],
@@ -623,7 +623,8 @@ export function insightTypes(
   const sorted = [...rows].sort((a, b) => b.charger_count - a.charger_count);
   const total = sum(rows.map((r) => r.charger_count));
   const [a, b] = sorted;
-  const restShare = a && b ? 100 - (a.share_pct ?? 0) - (b.share_pct ?? 0) : 0;
+  // 100에서 빼면 부동소수점 오차(±1e-14 수준)가 남아 실제 0%가 -0.0%나 <0.1%로 보이므로, 오차만 지우고 음수를 막습니다.
+  const restShare = a && b ? Math.max(0, Number((100 - (a.share_pct ?? 0) - (b.share_pct ?? 0)).toFixed(9))) : 0;
   return {
     mode: filtered ? "dynamic" : "fixed",
     purpose: "충전기의 공식 커넥터 유형이 어떻게 구성되어 있는지 확인합니다.",
@@ -636,11 +637,11 @@ export function insightTypes(
           </>,
           <>
             1위 {a.charger_type_code} {a.official_definition}{" "}
-            <B>{fmtPct(a.share_pct, 2)}</B>
+            <B>{fmtPct(a.share_pct)}</B>
             {b && (
               <>
                 , 2위 {b.charger_type_code} {b.official_definition}{" "}
-                <B>{fmtPct(b.share_pct, 2)}</B>
+                <B>{fmtPct(b.share_pct)}</B>
               </>
             )}
             .
@@ -648,7 +649,7 @@ export function insightTypes(
           ...(b
             ? [
                 <>
-                  나머지 {rows.length - 2}개 유형 합계 {fmtPct(restShare, 2)}.
+                  나머지 {rows.length - 2}개 유형 합계 {fmtPct(restShare)}.
                 </>,
               ]
             : []),
